@@ -11,3 +11,4 @@ set(CMAKE_BUILD_PARALLEL_LEVEL)
 
 add_subdirectory(SystemLauncher)
 add_subdirectory(Core)
+add_subdirectory(ExternalGraphicsLibs)
