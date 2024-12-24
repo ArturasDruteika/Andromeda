@@ -1,8 +1,10 @@
-#include <iostream>
+#include "EngineRunner.hpp"
 
 
-int main()
+int main(void)
 {
-    std::cout << "Hello, Andromeda Galaxy!" << std::endl;
+    Core::EngineRunner engineRunner;
+    engineRunner.Run();
+
     return 0;
 }
