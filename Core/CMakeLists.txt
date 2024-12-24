@@ -22,12 +22,14 @@ include_directories(
 
 # Include directories
 include_directories(
-    ${CMAKE_SOURCE_DIR}/../ExternalGraphicsLibs/glfw/include
+    ..//ExternalGraphicsLibs//include
 )
-
 
 # Link GLFW and OpenGL to the executable
 target_link_libraries(${PROJECT_NAME} PRIVATE
-    glfw
-    OpenGL::GL
+    ExternalGraphicsLibs
+)
+
+add_dependencies(${PROJECT_NAME} 
+	ExternalGraphicsLibs
 )
