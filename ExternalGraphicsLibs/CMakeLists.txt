@@ -37,6 +37,7 @@ add_library(ExternalGraphicsLibs INTERFACE)
 target_include_directories(ExternalGraphicsLibs INTERFACE
     glfw/include
     glad/include
+	glm-1.0.1/
 )
 
 # Link GLFW, GLAD, and OpenGL into ExternalGraphicsLibs
