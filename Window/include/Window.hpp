@@ -17,6 +17,10 @@
 #endif
 
 
+#include <GLFW/glfw3.h>
+#include <string>
+
+
 namespace Andromeda
 {
 	namespace Window
@@ -24,11 +28,26 @@ namespace Andromeda
 		class WINDOW_API Window
 		{
 		public:
-			Window();
+			Window(int width = 640, int height = 640, const std::string& windowName = "Andromeda Window");
 			~Window();
 
-		private:
+			int GetWidth();
+			int GetHeight();
+			std::string GetWindowName();
 
+		private:
+			void InitGLFW();
+			void SetGLFWWindowHints();
+			void CreateWindow();
+			void SetCallbackFunctions();
+			void Init();
+			void DeInit();
+			void RunMainLoop();
+
+			int m_width;
+			int m_height;
+			std::string m_windowName;
+			GLFWwindow* m_window;
 		};
 	}
 }
