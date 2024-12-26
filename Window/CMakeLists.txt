@@ -16,6 +16,7 @@ add_library(${PROJECT_NAME} SHARED
     src/Window.cpp
 	include/Events.hpp
 	src/Events.cpp
+	include/EventType.hpp
 )
 
 include_directories(
