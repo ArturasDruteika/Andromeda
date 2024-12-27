@@ -2,35 +2,74 @@
 #include "spdlog/spdlog.h"
 
 
-
 namespace Andromeda
 {
 	namespace Window
 	{
-		Window::Window(int width, int height, const std::string& windowName)
+		Window::Window(int width, int height, const std::string& windowName, bool initWindow)
 			: m_width(width)
 			, m_height(height)
 			, m_windowName(windowName)
 			, m_window(nullptr)
+			, m_isInitialized(false)
 		{
-			Init();
+			if (initWindow)
+			{
+				Init();
+			}
 		}
 
 		Window::~Window()
 		{
 		}
 
-		int Window::GetWidth()
+		void Window::Init()
+		{
+			if (!m_isInitialized)
+			{
+				InitGLFW();
+				SetGLFWWindowHints();
+				CreateWindow();
+				// Make the context current
+				glfwMakeContextCurrent(m_window);
+				SetCallbackFunctions();
+				m_isInitialized = true;
+			}
+		}
+
+		void Window::DeInit()
+		{
+			// Cleanup
+			glfwDestroyWindow(m_window);
+			glfwTerminate();
+			m_isInitialized = false;
+		}
+
+		void Window::RunMainLoop()
+		{
+			// Main loop
+			while (!glfwWindowShouldClose(m_window))
+			{
+				// Clear the screen
+				glClear(GL_COLOR_BUFFER_BIT);
+
+				// Swap buffers and poll events
+				glfwSwapBuffers(m_window);
+				glfwPollEvents();
+			}
+		}
+
+		int Window::GetWidth() const
 		{
 			return m_width;
 		}
 
-		int Window::GetHeight()
+		int Window::GetHeight() const
 		{
 			return m_height;
 		}
 
-		std::string Window::GetWindowName()
+		std::string Window::GetWindowName() const
 		{
 			return m_windowName;
 		}
@@ -71,37 +110,6 @@ namespace Andromeda
 		void Window::SetCallbackFunctions()
 		{
 			// TODO: Implement callbacks
-		}
-
-		void Window::Init()
-		{
-			InitGLFW();
-			SetGLFWWindowHints();
-			CreateWindow();
-			// Make the context current
-			glfwMakeContextCurrent(m_window);
-			SetCallbackFunctions();
-		}
-
-		void Window::DeInit()
-		{
-			// Cleanup
-			glfwDestroyWindow(m_window);
-			glfwTerminate();
-		}
-
-		void Window::RunMainLoop()
-		{
-			// Main loop
-			while (!glfwWindowShouldClose(m_window)) 
-			{
-				// Clear the screen
-				glClear(GL_COLOR_BUFFER_BIT);
-
-				// Swap buffers and poll events
-				glfwSwapBuffers(m_window);
-				glfwPollEvents();
-			}
 		}
 	}
 }

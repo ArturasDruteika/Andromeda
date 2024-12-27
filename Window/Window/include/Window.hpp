@@ -28,22 +28,24 @@ namespace Andromeda
 		class WINDOW_API Window
 		{
 		public:
-			Window(int width = 640, int height = 640, const std::string& windowName = "Andromeda Window");
+			Window(int width = 640, int height = 640, const std::string& windowName = "Andromeda Window", bool initWindow = true);
 			~Window();
 
-			int GetWidth();
-			int GetHeight();
-			std::string GetWindowName();
+			void Init();
+			void DeInit();
+			void RunMainLoop();
+
+			int GetWidth() const;
+			int GetHeight() const;
+			std::string GetWindowName() const;
 
 		private:
 			void InitGLFW();
 			void SetGLFWWindowHints();
 			void CreateWindow();
 			void SetCallbackFunctions();
-			void Init();
-			void DeInit();
-			void RunMainLoop();
 
+			bool m_isInitialized;
 			int m_width;
 			int m_height;
 			std::string m_windowName;
