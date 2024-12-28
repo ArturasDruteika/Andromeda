@@ -3,7 +3,7 @@
 
 namespace Andromeda
 {
-	namespace Window
+	namespace GraphicalWindow
 	{
 		Event::Event()
 		{
@@ -13,7 +13,7 @@ namespace Andromeda
 		{
 		}
 
-		EventType Event::GetEventType() const
+		std::string Event::GetEventType() const
 		{
 			return m_eventType;
 		}
