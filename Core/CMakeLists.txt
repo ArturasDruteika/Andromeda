@@ -18,7 +18,7 @@ add_library(${PROJECT_NAME} SHARED
     src/EngineRunnerImpl.cpp
 )
 
-include_directories(
+target_include_directories(${PROJECT_NAME} PRIVATE
 	include/
 	..//GraphicalWindow//GLFWWindow//include//
 )
