@@ -1,7 +1,6 @@
 #include "GLFWWindowImpl.hpp"
 #include "spdlog/spdlog.h"
 
-
 namespace Andromeda
 {
 	namespace GraphicalWindow
@@ -22,6 +21,7 @@ namespace Andromeda
 
 		GLFWWindow::GLFWWindowImpl::~GLFWWindowImpl()
 		{
+			DeInit();
 		}
 
 		void GLFWWindow::GLFWWindowImpl::Init()
@@ -31,8 +31,22 @@ namespace Andromeda
 				InitGLFW();
 				SetGLFWWindowHints();
 				CreateWindow();
+
 				// Make the context current
 				glfwMakeContextCurrent(m_window);
+
+				// Initialize GLAD with modern interface
+				if (!gladLoadGL(glfwGetProcAddress))
+				{
+					spdlog::error("Failed to initialize GLAD");
+					glfwDestroyWindow(m_window);
+					glfwTerminate();
+					return;
+				}
+
+				const char* version = reinterpret_cast<const char*>(glGetString(GL_VERSION));
+				spdlog::info("GLAD initialized successfully. OpenGL version: {}", std::string(version));
+
 				SetCallbackFunctions();
 				m_isInitialized = true;
 			}
@@ -41,7 +55,11 @@ namespace Andromeda
 		void GLFWWindow::GLFWWindowImpl::DeInit()
 		{
 			// Cleanup
-			glfwDestroyWindow(m_window);
+			if (m_window)
+			{
+				glfwDestroyWindow(m_window);
+				m_window = nullptr;
+			}
 			glfwTerminate();
 			m_isInitialized = false;
 		}
@@ -110,8 +128,31 @@ namespace Andromeda
 
 		void GLFWWindow::GLFWWindowImpl::SetCallbackFunctions()
 		{
-			// TODO: Implement callbacks
-		}
+			// Set the resize callback
+			glfwSetFramebufferSizeCallback(m_window, [](GLFWwindow* window, int width, int height)
+				{
+					glViewport(0, 0, width, height);
+					spdlog::info("Window resized to {}x{}", width, height);
+				});
 
-}
+			// Set the mouse callback
+			glfwSetCursorPosCallback(m_window, [](GLFWwindow* window, double xpos, double ypos)
+				{
+					spdlog::info("Mouse moved to position: ({}, {})", xpos, ypos);
+				});
+
+			// Set the keyboard callback
+			glfwSetKeyCallback(m_window, [](GLFWwindow* window, int key, int scancode, int action, int mods)
+				{
+					if (action == GLFW_PRESS)
+					{
+						spdlog::info("Key {} pressed", key);
+					}
+					else if (action == GLFW_RELEASE)
+					{
+						spdlog::info("Key {} released", key);
+					}
+				});
+		}
+	}
 }
