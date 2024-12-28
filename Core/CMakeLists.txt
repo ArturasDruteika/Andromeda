@@ -14,22 +14,20 @@ find_package(OpenGL REQUIRED)
 add_library(${PROJECT_NAME} SHARED
 	include/EngineRunner.hpp
     src/EngineRunner.cpp
+    include/EngineRunnerImpl.hpp
+    src/EngineRunnerImpl.cpp
 )
 
 include_directories(
-	include
-)
-
-# Include directories
-include_directories(
-    ..//ExternalGraphicsLibs//include
+	include/
+	..//GraphicalWindow//GLFWWindow//include//
 )
 
 # Link GLFW and OpenGL to the executable
 target_link_libraries(${PROJECT_NAME} PRIVATE
-    ExternalGraphicsLibs
+    GraphicalWindow
 )
 
-add_dependencies(${PROJECT_NAME} 
-	ExternalGraphicsLibs
+add_dependencies(${PROJECT_NAME}
+	GraphicalWindow
 )

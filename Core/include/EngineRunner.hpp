@@ -28,7 +28,8 @@ namespace Core
 		void Run();
 
 	private:
-
+		class EngineRunnerImpl;
+		EngineRunnerImpl* m_pEngineRunnerImpl;
 	};
 }
 
