@@ -1,13 +1,14 @@
-#include "Window.hpp"
+#include "GLFWWindowImpl.hpp"
 #include "spdlog/spdlog.h"
 
 
 namespace Andromeda
 {
-	namespace Window
+	namespace GraphicalWindow
 	{
-		Window::Window(int width, int height, const std::string& windowName, bool initWindow)
-			: m_width(width)
+		GLFWWindow::GLFWWindowImpl::GLFWWindowImpl(GLFWWindow& parent, int width, int height, const std::string& windowName, bool initWindow)
+			: m_parent(parent)
+			, m_width(width)
 			, m_height(height)
 			, m_windowName(windowName)
 			, m_window(nullptr)
@@ -19,11 +20,11 @@ namespace Andromeda
 			}
 		}
 
-		Window::~Window()
+		GLFWWindow::GLFWWindowImpl::~GLFWWindowImpl()
 		{
 		}
 
-		void Window::Init()
+		void GLFWWindow::GLFWWindowImpl::Init()
 		{
 			if (!m_isInitialized)
 			{
@@ -37,7 +38,7 @@ namespace Andromeda
 			}
 		}
 
-		void Window::DeInit()
+		void GLFWWindow::GLFWWindowImpl::DeInit()
 		{
 			// Cleanup
 			glfwDestroyWindow(m_window);
@@ -45,7 +46,7 @@ namespace Andromeda
 			m_isInitialized = false;
 		}
 
-		void Window::RunMainLoop()
+		void GLFWWindow::GLFWWindowImpl::RunMainLoop()
 		{
 			// Main loop
 			while (!glfwWindowShouldClose(m_window))
@@ -59,22 +60,22 @@ namespace Andromeda
 			}
 		}
 
-		int Window::GetWidth() const
+		int GLFWWindow::GLFWWindowImpl::GetWidth() const
 		{
 			return m_width;
 		}
 
-		int Window::GetHeight() const
+		int GLFWWindow::GLFWWindowImpl::GetHeight() const
 		{
 			return m_height;
 		}
 
-		std::string Window::GetWindowName() const
+		std::string GLFWWindow::GLFWWindowImpl::GetWindowName() const
 		{
 			return m_windowName;
 		}
 
-		void Window::InitGLFW()
+		void GLFWWindow::GLFWWindowImpl::InitGLFW()
 		{
 			// Initialize GLFW
 			if (!glfwInit())
@@ -84,7 +85,7 @@ namespace Andromeda
 			}
 		}
 
-		void Window::SetGLFWWindowHints()
+		void GLFWWindow::GLFWWindowImpl::SetGLFWWindowHints()
 		{
 			// Set GLFW window hints
 			glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3); // Request OpenGL 3.3
@@ -95,7 +96,7 @@ namespace Andromeda
 #endif
 		}
 
-		void Window::CreateWindow()
+		void GLFWWindow::GLFWWindowImpl::CreateWindow()
 		{
 			m_window = glfwCreateWindow(m_width, m_height, m_windowName.c_str(), NULL, NULL);
 
@@ -107,9 +108,10 @@ namespace Andromeda
 			}
 		}
 
-		void Window::SetCallbackFunctions()
+		void GLFWWindow::GLFWWindowImpl::SetCallbackFunctions()
 		{
 			// TODO: Implement callbacks
 		}
-	}
+
+}
 }

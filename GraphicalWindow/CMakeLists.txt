@@ -1,15 +1,20 @@
 cmake_minimum_required(VERSION 3.24)
 
-project(Window)
+project(GraphicalWindow)
 
 set(CMAKE_BUILD_PARALLEL_LEVEL)
 set(CMAKE_CXX_STANDARD 23)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-add_definitions(-DWINDOW_EXPORT)
+add_definitions(-DGRAPHICALWINDOW_EXPORT)
 
-# Find and link OpenGL
+# OpenGL
 find_package(OpenGL REQUIRED)
+target_link_libraries(${EXEC_NAME} OpenGL::GL)
+if (APPLE)
+    # Ignore macOS OpenGL deprecation warnings
+    target_compile_definitions(${EXEC_NAME} PRIVATE GL_SILENCE_DEPRECATION)
+endif ()
 
 # spdlog
 file(TO_CMAKE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/../../3rdParty/spdlog-1.x/lib/cmake/spdlog/ spdlog_path)
@@ -17,8 +22,10 @@ set(spdlog_DIR ${spdlog_path})
 find_package(spdlog REQUIRED)
 
 add_library(${PROJECT_NAME} SHARED
-	Window/include/Window.hpp
-    Window/src/Window.cpp
+	GLFWWindow/include/GLFWWindow.hpp
+    GLFWWindow/src/GLFWWindow.cpp
+    GLFWWindow/include/GLFWWindowImpl.hpp
+    GLFWWindow/src/GLFWWindowImpl.cpp
 	Events/include/Event.hpp
 	Events/src/Event.cpp
 	Events/include/EventType.hpp
@@ -30,10 +37,9 @@ add_library(${PROJECT_NAME} SHARED
 	Events/src/KeyPressEvent.cpp
 )
 
-#target_include_directories(${PROJECT_NAME} PUBLIC
-include_directories(
-    Window//include//
-    Events//include//
+target_include_directories(${PROJECT_NAME} PRIVATE
+    GLFWWindow/include/
+    Events/include/
     ..//ExternalGraphicsLibs//glfw//include//
     ..//ExternalGraphicsLibs//glfw//
     ..//ExternalGraphicsLibs//glad//include//
