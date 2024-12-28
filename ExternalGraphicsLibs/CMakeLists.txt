@@ -1,10 +1,9 @@
 cmake_minimum_required(VERSION 3.24.0)
 project(ExternalGraphicsLibs)
 
-# Compiler-specific settings
-if (CMAKE_COMPILER_IS_GNUCXX)
-    add_definitions(-std=gnu++0x)
-endif()
+set(CMAKE_BUILD_PARALLEL_LEVEL)
+set(CMAKE_CXX_STANDARD 23)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 # Find and configure OpenGL
 find_package(OpenGL REQUIRED)
@@ -19,31 +18,18 @@ set(GLFW_INSTALL OFF CACHE BOOL "Disable GLFW install" FORCE)
 add_subdirectory(glfw)
 
 # Add GLAD source code
-add_library(GLAD STATIC
+add_library(${PROJECT_NAME} STATIC 
     ${CMAKE_CURRENT_SOURCE_DIR}/glad/src/gl.c
 )
 
-# Specify GLAD include directory explicitly
-target_include_directories(GLAD PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/glad/include)
-
-# Link GLAD with OpenGL
-target_link_libraries(GLAD PUBLIC OpenGL::GL)
-
-# Combine GLFW and GLAD into ExternalGraphicsLibs
-add_library(ExternalGraphicsLibs INTERFACE)
-
-# Include GLFW and GLAD headers for the combined library
-# INTERFACE target ensures headers are passed to dependent targets
-target_include_directories(ExternalGraphicsLibs INTERFACE
+target_include_directories(${PROJECT_NAME} PUBLIC
     glfw/include
     glad/include
 	glm/
+    ${OPENGL_INCLUDE_DIRS}
 )
 
-# Link GLFW, GLAD, and OpenGL into ExternalGraphicsLibs
-# INTERFACE target ensures libraries are passed to dependent targets
-target_link_libraries(ExternalGraphicsLibs INTERFACE
+target_link_libraries(${PROJECT_NAME} PUBLIC
     glfw
-    GLAD
-    OpenGL::GL
+    ${OPENGL_LIBRARIES}
 )
