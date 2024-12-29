@@ -19,7 +19,7 @@ add_library(${PROJECT_NAME} SHARED
 )
 
 target_include_directories(${PROJECT_NAME} PRIVATE
-	include/
+	include//
 	..//GraphicalWindow//GLFWWindow//include//
 )
 
@@ -30,4 +30,12 @@ target_link_libraries(${PROJECT_NAME} PRIVATE
 
 add_dependencies(${PROJECT_NAME}
 	GraphicalWindow
+)
+
+# Organize files into folders
+source_group(TREE ${CMAKE_CURRENT_SOURCE_DIR} FILES
+    include/EngineRunner.hpp
+    src/EngineRunner.cpp
+    include/EngineRunnerImpl.hpp
+    src/EngineRunnerImpl.cpp
 )

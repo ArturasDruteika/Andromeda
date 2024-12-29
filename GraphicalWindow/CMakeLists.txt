@@ -38,6 +38,30 @@ add_library(${PROJECT_NAME} SHARED
 	MouseCodes/include/MouseCodes.hpp
 )
 
+# Organize files into Solution Explorer folders
+source_group(TREE ${CMAKE_CURRENT_SOURCE_DIR}/GLFWWindow PREFIX "GLFWWindow" FILES
+    GLFWWindow/include/GLFWWindow.hpp
+    GLFWWindow/src/GLFWWindow.cpp
+    GLFWWindow/include/GLFWWindowImpl.hpp
+    GLFWWindow/src/GLFWWindowImpl.cpp
+)
+
+source_group(TREE ${CMAKE_CURRENT_SOURCE_DIR}/Events PREFIX "Events" FILES
+    Events/include/Event.hpp
+    Events/src/Event.cpp
+    Events/include/EventType.hpp
+    Events/include/MouseEvents.hpp
+    Events/src/MouseEvents.cpp
+    Events/include/FramebufferEvents.hpp
+    Events/src/FramebufferEvents.cpp
+    Events/include/KeyEvents.hpp
+    Events/src/KeyEvents.cpp
+)
+
+source_group(TREE ${CMAKE_CURRENT_SOURCE_DIR}/MouseCodes PREFIX "MouseCodes" FILES
+    MouseCodes/include/MouseCodes.hpp
+)
+
 target_include_directories(${PROJECT_NAME} PRIVATE
     ..//ExternalGraphicsLibs//glfw//include//
     ..//ExternalGraphicsLibs//glfw//
