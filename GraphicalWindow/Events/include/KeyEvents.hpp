@@ -16,7 +16,12 @@ namespace Andromeda
 			KeyPressEvent();
 			~KeyPressEvent();
 
-		protected:
+			int GetKey() const;
+			int GetAction() const;
+
+		private:
+			int m_key;
+			int m_action;
 		};
 	}
 }

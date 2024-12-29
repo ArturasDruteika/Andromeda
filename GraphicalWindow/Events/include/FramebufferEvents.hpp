@@ -4,6 +4,7 @@
 
 #include "EventType.hpp"
 #include "Event.hpp"
+#include <GLFW/glfw3.h>
 
 
 namespace Andromeda
@@ -16,7 +17,12 @@ namespace Andromeda
 			FramebufferResizeEvent();
 			~FramebufferResizeEvent();
 
-		protected:
+			int GetWidth() const;
+			int GetHeight() const;
+
+		private:
+			int m_width;
+			int m_height;
 		};
 	}
 }

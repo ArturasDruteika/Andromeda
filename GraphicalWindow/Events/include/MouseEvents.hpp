@@ -10,13 +10,18 @@ namespace Andromeda
 {
 	namespace GraphicalWindow
 	{
-		class CursorMoveEvent : public Event
+		class MouseMoveEvent : public Event
 		{
 		public:
-			CursorMoveEvent();
-			~CursorMoveEvent();
+			MouseMoveEvent();
+			~MouseMoveEvent();
 
-		protected:
+			double GetX() const;
+			double GetY() const;
+
+		private:
+			double m_x;
+			double m_y;
 		};
 	}
 }
