@@ -9,13 +9,40 @@ namespace Andromeda
 {
 	namespace GraphicalWindow
 	{
-		struct EventType
+#define BIT(x) (1 << x)
+
+
+		enum class EventType
 		{
-			inline static const std::string CURSOR_MOVE = "Cursor Move";
-			inline static const std::string KEYBOARD_PRESS = "Keyboard Press";
-			inline static const std::string RESIZE_WINDOW = "ResizeWindow";
+			None = 0,
+			WindowClose, 
+			WindowResize, 
+			WindowFocus, 
+			WindowLostFocus, 
+			WindowMoved,
+			AppTick,
+			AppUpdate,
+			AppRender,
+			KeyPressed,
+			KeyReleased,
+			KeyTyped,
+			MouseButtonPressed, 
+			MouseButtonReleased, 
+			MouseMoved, 
+			MouseScrolled
+		};
+
+		enum EventCategory
+		{
+			None = 0,
+			EventCategoryApplication = BIT(0),
+			EventCategoryInput = BIT(1),
+			EventCategoryKeyboard = BIT(2),
+			EventCategoryMouse = BIT(3),
+			EventCategoryMouseButton = BIT(4)
 		};
 	}
+
 }
 
 

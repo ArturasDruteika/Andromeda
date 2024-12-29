@@ -1,4 +1,4 @@
-#include "Event.hpp"
+#include "../include/Event.hpp"
 
 
 namespace Andromeda
@@ -13,9 +13,14 @@ namespace Andromeda
 		{
 		}
 
-		std::string Event::GetEventType() const
+		std::string Event::ToString() const
 		{
-			return m_eventType;
+			return GetName();
+		}
+
+		bool Event::IsInCategory(EventCategory category)
+		{
+			return GetCategoryFlags() & category;
 		}
 	}
 }
