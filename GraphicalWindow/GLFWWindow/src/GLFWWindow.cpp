@@ -1,5 +1,5 @@
-#include "GLFWWindow.hpp"
-#include "GLFWWindowImpl.hpp"
+#include "../include/GLFWWindow.hpp"
+#include "../include/GLFWWindowImpl.hpp"
 
 
 namespace Andromeda

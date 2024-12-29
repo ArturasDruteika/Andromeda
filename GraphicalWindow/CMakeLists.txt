@@ -29,17 +29,16 @@ add_library(${PROJECT_NAME} SHARED
 	Events/include/Event.hpp
 	Events/src/Event.cpp
 	Events/include/EventType.hpp
-	Events/include/CursorMoveEvent.hpp
-	Events/src/CursorMoveEvent.cpp
-	Events/include/FramebufferResizeEvent.hpp
-	Events/src/FramebufferResizeEvent.cpp
-	Events/include/KeyPressEvent.hpp
-	Events/src/KeyPressEvent.cpp
+	Events/include/MouseEvents.hpp
+	Events/src/MouseEvents.cpp
+	Events/include/FramebufferEvents.hpp
+	Events/src/FramebufferEvents.cpp
+	Events/include/KeyEvents.hpp
+	Events/src/KeyEvents.cpp
+	MouseCodes/include/MouseCodes.hpp
 )
 
 target_include_directories(${PROJECT_NAME} PRIVATE
-    GLFWWindow/include/
-    Events/include/
     ..//ExternalGraphicsLibs//glfw//include//
     ..//ExternalGraphicsLibs//glfw//
     ..//ExternalGraphicsLibs//glad//include//
