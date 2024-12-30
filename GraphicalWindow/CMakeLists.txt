@@ -35,7 +35,10 @@ add_library(${PROJECT_NAME} SHARED
 	Events/src/FramebufferEvents.cpp
 	Events/include/KeyEvents.hpp
 	Events/src/KeyEvents.cpp
-	MouseCodes/include/MouseCodes.hpp
+	Events/include/EventDispatcher.hpp
+	Events/src/EventDispatcher.cpp
+	MouseAndKeyCodes/include/MouseCodes.hpp
+	MouseAndKeyCodes/include/KeyCodes.hpp
 )
 
 # Organize files into Solution Explorer folders
@@ -56,10 +59,13 @@ source_group(TREE ${CMAKE_CURRENT_SOURCE_DIR}/Events PREFIX "Events" FILES
     Events/src/FramebufferEvents.cpp
     Events/include/KeyEvents.hpp
     Events/src/KeyEvents.cpp
+    Events/include/EventDispatcher.hpp
+	Events/src/EventDispatcher.cpp
 )
 
-source_group(TREE ${CMAKE_CURRENT_SOURCE_DIR}/MouseCodes PREFIX "MouseCodes" FILES
-    MouseCodes/include/MouseCodes.hpp
+source_group(TREE ${CMAKE_CURRENT_SOURCE_DIR}/MouseAndKeyCodes PREFIX "MouseAndKeyCodes" FILES
+    MouseAndKeyCodes/include/MouseCodes.hpp
+    MouseAndKeyCodes/include/KeyCodes.hpp
 )
 
 target_include_directories(${PROJECT_NAME} PRIVATE
