@@ -1,28 +1,60 @@
 #include "../include/KeyEvents.hpp"
+#include <sstream>
 
 
 namespace Andromeda
 {
 	namespace GraphicalWindow
 	{
-		KeyPressEvent::KeyPressEvent()
-			: m_key(0)
-			, m_action(0)
+		KeyCode KeyEvent::GetKeyCode() const
+		{
+			return m_keyCode;
+		}
+		KeyEvent::KeyEvent(const KeyCode keycode)
+			: m_keyCode(keycode)
 		{
 		}
 
-		KeyPressEvent::~KeyPressEvent()
+		KeyPressedEvent::KeyPressedEvent(const KeyCode keycode, bool isRepeat)
+			: KeyEvent(keycode)
+			, m_isRepeat(isRepeat)
 		{
 		}
 
-		int KeyPressEvent::GetKey() const
+		bool KeyPressedEvent::IsRepeat() const
 		{
-			return m_key;
+			return m_isRepeat;
 		}
 
-		int KeyPressEvent::GetAction() const
+		std::string KeyPressedEvent::ToString() const
 		{
-			return m_action;
+			std::stringstream ss;
+			ss << "KeyPressedEvent: " << m_keyCode << " (repeat = " << m_isRepeat << ")";
+			return ss.str();
+		}
+
+		KeyReleasedEvent::KeyReleasedEvent(const KeyCode keycode)
+			: KeyEvent(keycode)
+		{
+		}
+
+		std::string KeyReleasedEvent::ToString() const
+		{
+			std::stringstream ss;
+			ss << "KeyReleasedEvent: " << m_keyCode;
+			return ss.str();
+		}
+
+		KeyTypedEvent::KeyTypedEvent(const KeyCode keycode)
+			: KeyEvent(keycode)
+		{
+		}
+
+		std::string KeyTypedEvent::ToString() const
+		{
+			std::stringstream ss;
+			ss << "KeyTypedEvent: " << m_keyCode;
+			return ss.str();
 		}
 	}
 }

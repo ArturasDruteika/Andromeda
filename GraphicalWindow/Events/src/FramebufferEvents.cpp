@@ -1,28 +1,32 @@
 #include "../include/FramebufferEvents.hpp"
+#include <sstream>
 
 
 namespace Andromeda
 {
 	namespace GraphicalWindow
 	{
-		FramebufferResizeEvent::FramebufferResizeEvent()
-			: m_width(0)
-			, m_height(0)
+		WindowResizeEvent::WindowResizeEvent(unsigned int width, unsigned int height)
+			: m_width(width)
+			, m_height(height)
 		{
 		}
 
-		FramebufferResizeEvent::~FramebufferResizeEvent()
-		{
-		}
-
-		int FramebufferResizeEvent::GetWidth() const
+		unsigned int WindowResizeEvent::GetWidth() const
 		{
 			return m_width;
 		}
 
-		int FramebufferResizeEvent::GetHeight() const
+		unsigned int WindowResizeEvent::GetHeight() const
 		{
 			return m_height;
+		}
+
+		std::string WindowResizeEvent::ToString() const
+		{
+			std::stringstream ss;
+			ss << "WindowResizeEvent: " << m_width << ", " << m_height;
+			return ss.str();
 		}
 	}
 }
