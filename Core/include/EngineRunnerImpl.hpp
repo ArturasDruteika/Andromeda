@@ -6,20 +6,23 @@
 #include "GLFWWindow.hpp"
 
 
-namespace Core
+namespace Andromeda
 {
-	class EngineRunner::EngineRunnerImpl
+	namespace Core
 	{
-	public:
-		EngineRunnerImpl(EngineRunner& parent);
-		~EngineRunnerImpl();
+		class EngineRunner::EngineRunnerImpl
+		{
+		public:
+			EngineRunnerImpl(EngineRunner& parent);
+			~EngineRunnerImpl();
 
-		void Run();
+			void Run();
 
-	private:
-		EngineRunner& m_parent;
-		Andromeda::GraphicalWindow::GLFWWindow m_window;
-	};
+		private:
+			EngineRunner& m_parent;
+			Andromeda::GraphicalWindow::GLFWWindow m_window;
+		};
+	}
 }
 
 

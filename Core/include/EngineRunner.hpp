@@ -17,20 +17,23 @@
 #endif
 
 
-namespace Core
+namespace Andromeda
 {
-	class CORE_API EngineRunner
+	namespace Core
 	{
-	public:
-		EngineRunner();
-		~EngineRunner();
+		class CORE_API EngineRunner
+		{
+		public:
+			EngineRunner();
+			~EngineRunner();
 
-		void Run();
+			void Run();
 
-	private:
-		class EngineRunnerImpl;
-		EngineRunnerImpl* m_pEngineRunnerImpl;
-	};
+		private:
+			class EngineRunnerImpl;
+			EngineRunnerImpl* m_pEngineRunnerImpl;
+		};
+	}
 }
 
 

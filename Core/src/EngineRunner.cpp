@@ -2,20 +2,23 @@
 #include "EngineRunnerImpl.hpp"
 
 
-namespace Core
+namespace Andromeda
 {
-    EngineRunner::EngineRunner()
-		: m_pEngineRunnerImpl(new EngineRunner::EngineRunnerImpl(*this))
+    namespace Core
     {
-    }
+        EngineRunner::EngineRunner()
+            : m_pEngineRunnerImpl(new EngineRunner::EngineRunnerImpl(*this))
+        {
+        }
 
-    EngineRunner::~EngineRunner()
-    {
-    }
+        EngineRunner::~EngineRunner()
+        {
+        }
 
-    void EngineRunner::Run()
-    {
-        m_pEngineRunnerImpl->Run();
+        void EngineRunner::Run()
+        {
+            m_pEngineRunnerImpl->Run();
+        }
     }
-
 }
+
