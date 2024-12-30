@@ -12,8 +12,8 @@
 #endif
 
 #if defined(__GNUC__)
-// GCC
-#define GRAPHICALWINDOW_API __attribute__((visibility("default")))
+	// GCC
+	#define GRAPHICALWINDOW_API __attribute__((visibility("default")))
 #endif
 
 #include <string>
