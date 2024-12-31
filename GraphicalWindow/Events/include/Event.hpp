@@ -18,7 +18,6 @@
 
 
 #include "EventType.hpp"
-#include <sstream>
 
 
 namespace Andromeda

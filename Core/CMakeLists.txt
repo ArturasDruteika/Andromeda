@@ -27,10 +27,12 @@ target_include_directories(${PROJECT_NAME} PRIVATE
 # Link GLFW and OpenGL to the executable
 target_link_libraries(${PROJECT_NAME} PRIVATE
     GraphicalWindow
+    Utils
 )
 
 add_dependencies(${PROJECT_NAME}
 	GraphicalWindow
+    Utils
 )
 
 # Organize files into folders

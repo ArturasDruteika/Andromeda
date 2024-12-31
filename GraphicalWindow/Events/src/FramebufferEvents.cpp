@@ -1,5 +1,4 @@
 #include "../include/FramebufferEvents.hpp"
-#include <sstream>
 
 
 namespace Andromeda

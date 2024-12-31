@@ -73,14 +73,17 @@ target_include_directories(${PROJECT_NAME} PRIVATE
     ..//ExternalGraphicsLibs//glfw//
     ..//ExternalGraphicsLibs//glad//include//
 	..//ExternalGraphicsLibs//glm//
+    ..//Utils//precompiled_headers//include//
 )
 
 # Link GLFW and OpenGL to the executable
 target_link_libraries(${PROJECT_NAME} PRIVATE
+    Utils
     ExternalGraphicsLibs
 	spdlog::spdlog
 )
 
 add_dependencies(${PROJECT_NAME} 
+    Utils
 	ExternalGraphicsLibs
 )

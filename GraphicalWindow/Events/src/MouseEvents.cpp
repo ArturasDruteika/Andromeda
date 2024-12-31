@@ -1,6 +1,5 @@
 #include "../include/MouseEvents.hpp"
 #include "../include/EventType.hpp"
-#include <sstream>
 
 
 namespace Andromeda
