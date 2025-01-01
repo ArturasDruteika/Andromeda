@@ -2,7 +2,7 @@
 #define GRAPHICAL_WINDOW__MOUSE_CODES__HPP
 
 
-#include <cstdint>
+#include "pch.hpp"
 
 
 namespace Andromeda
