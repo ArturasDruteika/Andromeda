@@ -9,6 +9,7 @@ set(LIBRARY_OUTPUT_PATH ${PROJECT_BINARY_DIR})
 set(EXECUTABLE_OUTPUT_PATH ${PROJECT_BINARY_DIR})
 set(CMAKE_BUILD_PARALLEL_LEVEL)
 
+add_subdirectory(Utils)
 add_subdirectory(SystemLauncher)
 add_subdirectory(Core)
 add_subdirectory(ExternalGraphicsLibs)

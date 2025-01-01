@@ -2,7 +2,7 @@
 #define WINDOW__EVENTS_TYPE__HPP
 
 
-#include <string>
+#include "pch.hpp"
 
 
 namespace Andromeda

@@ -17,10 +17,9 @@
 #endif
 
 
-#include "Event.hpp"
 #include "EventType.hpp"
+#include "Event.hpp"
 #include "../../MouseAndKeyCodes/include/MouseCodes.hpp"
-#include <sstream>
 
 
 namespace Andromeda
