@@ -1,5 +1,5 @@
 #include "../include/GLFWWindowImpl.hpp"
-#include "../include/spdlog/spdlog.h"
+
 
 namespace Andromeda
 {

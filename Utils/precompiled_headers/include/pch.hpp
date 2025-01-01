@@ -14,5 +14,7 @@
 #include <sstream>
 #include <cstdint>
 
+#include "spdlog/spdlog.h"
+
 
 #endif // UTILS__PCH__HPP
