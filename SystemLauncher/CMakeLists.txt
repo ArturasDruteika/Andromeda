@@ -17,8 +17,9 @@ include_directories(
 	..//Core//include//
 )
 
-target_link_libraries(${PROJECT_NAME} PRIVATE 
-	Core
+target_link_libraries(${PROJECT_NAME} 
+	PRIVATE 
+		Core
 )
 
 add_dependencies(${PROJECT_NAME} 
@@ -27,6 +28,9 @@ add_dependencies(${PROJECT_NAME}
 
 ### Post builds
 # SPDLog
-add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD COMMAND ${CMAKE_COMMAND} ARGS -E copy_if_different
+add_custom_command(
+	TARGET ${PROJECT_NAME} POST_BUILD 
+	COMMAND ${CMAKE_COMMAND} ARGS -E copy_if_different
     ${spdlog_root_path}//bin//$<$<CONFIG:debug>:spdlogd.dll>$<$<CONFIG:release>:spdlog.dll>
-    $<TARGET_FILE_DIR:${PROJECT_NAME}>)
+    $<TARGET_FILE_DIR:${PROJECT_NAME}>
+)
