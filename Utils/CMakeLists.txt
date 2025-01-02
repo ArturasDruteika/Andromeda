@@ -7,6 +7,7 @@ set(CMAKE_CXX_STANDARD 23)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 # spdlog
+file(TO_CMAKE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/../../3rdParty/spdlog-1.x/ spdlog_root_path)
 file(TO_CMAKE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/../../3rdParty/spdlog-1.x/lib/cmake/spdlog/ spdlog_path)
 set(spdlog_DIR ${spdlog_path})
 find_package(spdlog REQUIRED)
@@ -42,4 +43,14 @@ source_group(
     FILES
         precompiled_headers/include/pch.hpp
         precompiled_headers/src/pch.cpp
+)
+
+
+### Post builds
+# SPDLog
+add_custom_command(
+	TARGET ${PROJECT_NAME} POST_BUILD 
+	COMMAND ${CMAKE_COMMAND} ARGS -E copy_if_different
+    ${spdlog_root_path}//bin//$<$<CONFIG:debug>:spdlogd.dll>$<$<CONFIG:release>:spdlog.dll>
+    $<TARGET_FILE_DIR:${PROJECT_NAME}>
 )
