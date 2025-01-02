@@ -33,8 +33,8 @@ namespace Andromeda
 			void DeInit();
 			void RunMainLoop();
 
-			int GetWidth() const;
-			int GetHeight() const;
+			unsigned int GetWidth() const;
+			unsigned int GetHeight() const;
 			std::string GetWindowName() const;
 
 		private:
