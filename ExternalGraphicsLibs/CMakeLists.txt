@@ -18,18 +18,21 @@ set(GLFW_INSTALL OFF CACHE BOOL "Disable GLFW install" FORCE)
 add_subdirectory(glfw)
 
 # Add GLAD source code
-add_library(${PROJECT_NAME} STATIC 
-    ${CMAKE_CURRENT_SOURCE_DIR}/glad/src/gl.c
+add_library(${PROJECT_NAME} 
+    STATIC 
+        ${CMAKE_CURRENT_SOURCE_DIR}/glad/src/gl.c
 )
 
-target_include_directories(${PROJECT_NAME} PUBLIC
-    glfw/include
-    glad/include
-	glm/
-    ${OPENGL_INCLUDE_DIRS}
+target_include_directories(${PROJECT_NAME} 
+    PUBLIC
+        glfw/include
+        glad/include
+	    glm/
+        ${OPENGL_INCLUDE_DIRS}
 )
 
-target_link_libraries(${PROJECT_NAME} PUBLIC
-    glfw
-    ${OPENGL_LIBRARIES}
+target_link_libraries(${PROJECT_NAME} 
+    PUBLIC
+        glfw
+        ${OPENGL_LIBRARIES}
 )
