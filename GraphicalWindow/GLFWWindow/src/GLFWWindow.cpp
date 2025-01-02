@@ -31,12 +31,12 @@ namespace Andromeda
 			m_pGLFWWindowImpl->RunMainLoop();
 		}
 
-		int GLFWWindow::GetWidth() const
+		unsigned int GLFWWindow::GetWidth() const
 		{
 			return m_pGLFWWindowImpl->GetWidth();
 		}
 
-		int GLFWWindow::GetHeight() const
+		unsigned int GLFWWindow::GetHeight() const
 		{
 			return m_pGLFWWindowImpl->GetHeight();
 		}

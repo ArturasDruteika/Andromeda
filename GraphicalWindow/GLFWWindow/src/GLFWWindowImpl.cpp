@@ -78,12 +78,12 @@ namespace Andromeda
 			}
 		}
 
-		int GLFWWindow::GLFWWindowImpl::GetWidth() const
+		unsigned int GLFWWindow::GLFWWindowImpl::GetWidth() const
 		{
 			return m_width;
 		}
 
-		int GLFWWindow::GLFWWindowImpl::GetHeight() const
+		unsigned int GLFWWindow::GLFWWindowImpl::GetHeight() const
 		{
 			return m_height;
 		}
