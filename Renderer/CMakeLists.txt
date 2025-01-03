@@ -17,11 +17,11 @@ if (APPLE)
 endif ()
 
 add_library(${PROJECT_NAME} 
-    SHARED
-	    include/Renderer.hpp
-		src/Renderer.cpp
-		include/RendererImpl.hpp
-		src/RendererImpl.cpp
+    STATIC
+	    include/OpenGLRenderer.hpp
+		src/OpenGLRenderer.cpp
+		include/OpenGLRendererImpl.hpp
+		src/OpenGLRendererImpl.cpp
 )
 
 # Organize files into Solution Explorer folders
@@ -29,25 +29,29 @@ source_group(
     TREE 
         ${CMAKE_CURRENT_SOURCE_DIR}
     FILES
-        include/Renderer.hpp
-		src/Renderer.cpp
-		include/RendererImpl.hpp
-		src/RendererImpl.cpp
+        include/OpenGLRenderer.hpp
+		src/OpenGLRenderer.cpp
+		include/OpenGLRendererImpl.hpp
+		src/OpenGLRendererImpl.cpp
 )
 
 target_include_directories(${PROJECT_NAME} 
     PRIVATE
         ..//Utils//precompiled_headers//include//
+        ..//ExternalGraphicsLibs//glad//include//
+	    ..//ExternalGraphicsLibs//glm//
 )
 
 # Link GLFW and OpenGL to the executable
 target_link_libraries(${PROJECT_NAME} 
     PRIVATE
         Utils
+        ExternalGraphicsLibs
 )
 
 add_dependencies(${PROJECT_NAME} 
     Utils
+    ExternalGraphicsLibs
 )
 
 # Enable precompiled headers
