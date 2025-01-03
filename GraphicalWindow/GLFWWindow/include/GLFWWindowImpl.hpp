@@ -3,6 +3,7 @@
 
 
 #include "GLFWWindow.hpp"
+#include "OpenGLRenderer.hpp"
 #include "glad/gl.h"
 #include <GLFW/glfw3.h>
 #include <string>
@@ -38,6 +39,7 @@ namespace Andromeda
 			std::string m_windowName;
 			GLFWwindow* m_window;
 			GLFWWindow& m_parent;
+			Renderer::OpenGLRenderer* m_renderer;
 		};
 	}
 }

@@ -91,6 +91,7 @@ target_include_directories(${PROJECT_NAME}
         ..//ExternalGraphicsLibs//glad//include//
 	    ..//ExternalGraphicsLibs//glm//
         ..//Utils//precompiled_headers//include//
+        ..//Renderer//include//
 )
 
 # Link GLFW and OpenGL to the executable
@@ -98,11 +99,13 @@ target_link_libraries(${PROJECT_NAME}
     PRIVATE
         Utils
         ExternalGraphicsLibs
+        Renderer
 )
 
 add_dependencies(${PROJECT_NAME} 
     Utils
 	ExternalGraphicsLibs
+    Renderer
 )
 
 # Enable precompiled headers
