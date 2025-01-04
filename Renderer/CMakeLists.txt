@@ -20,8 +20,6 @@ add_library(${PROJECT_NAME}
     STATIC
 	    include/OpenGLRenderer.hpp
 		src/OpenGLRenderer.cpp
-		include/OpenGLRendererImpl.hpp
-		src/OpenGLRendererImpl.cpp
 )
 
 # Organize files into Solution Explorer folders
@@ -31,8 +29,6 @@ source_group(
     FILES
         include/OpenGLRenderer.hpp
 		src/OpenGLRenderer.cpp
-		include/OpenGLRendererImpl.hpp
-		src/OpenGLRendererImpl.cpp
 )
 
 target_include_directories(${PROJECT_NAME} 
