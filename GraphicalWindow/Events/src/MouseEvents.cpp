@@ -7,7 +7,8 @@ namespace Andromeda
 	namespace GraphicalWindow 
 	{
 		MouseMovedEvent::MouseMovedEvent(const float x, const float y)
-			: m_x(x), m_y(y)
+			: m_x{ x }
+			, m_y{ y }
 		{
 		}
 
@@ -29,8 +30,8 @@ namespace Andromeda
 		}
 
 		MouseScrolledEvent::MouseScrolledEvent(const float xOffset, const float yOffset)
-			: m_xOffset(xOffset)
-			, m_yOffset(yOffset)
+			: m_xOffset{ xOffset }
+			, m_yOffset{ yOffset }
 		{
 		}
 
@@ -57,12 +58,12 @@ namespace Andromeda
 		}
 
 		MouseButtonEvent::MouseButtonEvent(const MouseCode button)
-			: m_button(button)
+			: m_button{ button }
 		{
 		}
 
 		MouseButtonPressedEvent::MouseButtonPressedEvent(const MouseCode button)
-			: MouseButtonEvent(button)
+			: MouseButtonEvent{ button }
 		{
 		}
 
@@ -74,7 +75,7 @@ namespace Andromeda
 		}
 
 		MouseButtonReleasedEvent::MouseButtonReleasedEvent(const MouseCode button)
-			: MouseButtonEvent(button)
+			: MouseButtonEvent{ button }
 		{
 		}
 

@@ -6,9 +6,10 @@ namespace Andromeda
 	namespace Renderer
 	{
 		OpenGLRenderer::OpenGLRenderer()
-			: m_VAO(0)
-			, m_VBO(0)
-			, m_program(0)
+			: m_VAO{ 0 }
+			, m_VBO{ 0 }
+			, m_program{ 0 }
+			, m_isInitialized{ false }
 		{
 		}
 

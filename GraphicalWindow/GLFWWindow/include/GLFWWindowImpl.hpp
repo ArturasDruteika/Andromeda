@@ -32,6 +32,8 @@ namespace Andromeda
 			void SetGLFWWindowHints();
 			void CreateWindow();
 			void SetCallbackFunctions();
+			void GLFWMakeContextCurrent();
+			void LoadGLAD();
 
 			bool m_isInitialized;
 			int m_width;
