@@ -15,6 +15,7 @@ namespace Andromeda
 			OpenGLRenderer();
 			~OpenGLRenderer();
 
+			bool IsInitialized() const;
 			void Initialize();
 			void RenderFrame();
 			void Shutdown();
@@ -24,6 +25,7 @@ namespace Andromeda
 			GLuint CreateShaderProgram(const char* vertexShaderSource, const char* fragmentShaderSource);
 			void CheckCompileErrors(GLuint shader, const std::string& type);
 
+			bool m_isInitialized;
 			GLuint m_VAO, m_VBO, m_program;
 		};
 	}

@@ -107,6 +107,7 @@ namespace Andromeda
             if (m_renderer)
             {
                 m_renderer->Shutdown();
+				delete m_renderer;
             }
 
             if (m_window)

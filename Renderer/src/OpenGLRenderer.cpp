@@ -16,8 +16,14 @@ namespace Andromeda
 		{
 		}
 
+        bool OpenGLRenderer::IsInitialized() const
+        {
+            return m_isInitialized;
+        }
+
 		void OpenGLRenderer::Initialize()
 		{
+			m_isInitialized = true;
             // Initialize OpenGL-specific states
             glEnable(GL_DEPTH_TEST);
             glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
@@ -43,6 +49,7 @@ namespace Andromeda
             glDeleteProgram(m_program);
             glDeleteBuffers(1, &m_VBO);
             glDeleteVertexArrays(1, &m_VAO);
+			m_isInitialized = false;
 		}
 
 		void OpenGLRenderer::SetupTriangle()
