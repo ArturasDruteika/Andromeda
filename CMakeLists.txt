@@ -1,9 +1,9 @@
 cmake_minimum_required(VERSION 3.24.0)
 project(Andromeda)
 
-if (CMAKE_COMPILER_IS_GNUCXX)
-    add_definitions(-std=gnu++0x)
-endif ()
+set(CMAKE_BUILD_PARALLEL_LEVEL)
+set(CMAKE_CXX_STANDARD 23)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 set(LIBRARY_OUTPUT_PATH ${PROJECT_BINARY_DIR})
 set(EXECUTABLE_OUTPUT_PATH ${PROJECT_BINARY_DIR})
@@ -14,3 +14,4 @@ add_subdirectory(SystemLauncher)
 add_subdirectory(Core)
 add_subdirectory(ExternalGraphicsLibs)
 add_subdirectory(GraphicalWindow)
+add_subdirectory(Renderer)
