@@ -3,7 +3,7 @@
 
 int main(void)
 {
-    Andromeda::Core::EngineRunner engineRunner;
+    Andromeda::EngineCore::EngineRunner engineRunner;
     engineRunner.Run();
 
     return 0;
