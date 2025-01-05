@@ -11,14 +11,14 @@ add_executable(${PROJECT_NAME}
 )
 
 include_directories(
-	..//Core//include//
+	..//EngineCore//EngineRunner//include//
 )
 
 target_link_libraries(${PROJECT_NAME} 
 	PRIVATE 
-		Core
+		EngineCore
 )
 
 add_dependencies(${PROJECT_NAME} 
-	Core
+	EngineCore
 )
