@@ -11,13 +11,13 @@ namespace Andromeda
 			return m_keyCode;
 		}
 		KeyEvent::KeyEvent(const KeyCode keycode)
-			: m_keyCode(keycode)
+			: m_keyCode{ keycode }
 		{
 		}
 
 		KeyPressedEvent::KeyPressedEvent(const KeyCode keycode, bool isRepeat)
-			: KeyEvent(keycode)
-			, m_isRepeat(isRepeat)
+			: KeyEvent{ keycode }
+			, m_isRepeat{ isRepeat }
 		{
 		}
 
@@ -34,7 +34,7 @@ namespace Andromeda
 		}
 
 		KeyReleasedEvent::KeyReleasedEvent(const KeyCode keycode)
-			: KeyEvent(keycode)
+			: KeyEvent{ keycode }
 		{
 		}
 
@@ -46,7 +46,7 @@ namespace Andromeda
 		}
 
 		KeyTypedEvent::KeyTypedEvent(const KeyCode keycode)
-			: KeyEvent(keycode)
+			: KeyEvent{ keycode }
 		{
 		}
 

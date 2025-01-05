@@ -6,7 +6,7 @@ namespace Andromeda
     namespace Core
     {
         EngineRunner::EngineRunnerImpl::EngineRunnerImpl(EngineRunner& parent)
-            : m_parent(parent)
+			: m_parent{ parent }
         {
         }
 

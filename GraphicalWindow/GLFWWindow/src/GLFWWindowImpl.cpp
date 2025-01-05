@@ -5,13 +5,13 @@ namespace Andromeda
     namespace GraphicalWindow
     {
         GLFWWindow::GLFWWindowImpl::GLFWWindowImpl(GLFWWindow& parent, int width, int height, const std::string& windowName, bool initWindow)
-            : m_parent(parent)
-            , m_width(width)
-            , m_height(height)
-            , m_windowName(windowName)
-            , m_window(nullptr)
-            , m_isInitialized(false)
-			, m_renderer(nullptr)
+			: m_parent{ parent }
+			, m_width{ width }
+			, m_height{ height }
+			, m_windowName{ windowName }
+			, m_window{ nullptr }
+			, m_isInitialized{ false }
+			, m_renderer{ nullptr }
         {
             if (initWindow)
             {
@@ -31,39 +31,8 @@ namespace Andromeda
                 InitGLFW();
                 SetGLFWWindowHints();
                 CreateWindow();
-
-                if (!m_window)
-                {
-                    spdlog::error("Failed to create GLFW window.");
-                    glfwTerminate();
-                    return;
-                }
-
-                // Make the OpenGL context current
-                glfwMakeContextCurrent(m_window);
-
-                if (glfwGetCurrentContext() == nullptr)
-                {
-                    spdlog::error("Failed to make OpenGL context current.");
-                    glfwDestroyWindow(m_window);
-                    glfwTerminate();
-                    return;
-                }
-
-                if (!gladLoadGL(glfwGetProcAddress))
-                {
-                    spdlog::error("Failed to initialize GLAD.");
-                    glfwDestroyWindow(m_window);
-                    glfwTerminate();
-                    return;
-                }
-                else
-                {
-                    spdlog::info("GLAD initialized successfully.");
-                }
-
-                const char* version = reinterpret_cast<const char*>(glGetString(GL_VERSION));
-                spdlog::info("GLAD initialized successfully. OpenGL version: {}", std::string(version));
+				GLFWMakeContextCurrent();
+				LoadGLAD();
 
                 // Create and initialize the Renderer
                 m_renderer = new Renderer::OpenGLRenderer();
@@ -157,6 +126,34 @@ namespace Andromeda
                     glViewport(0, 0, width, height);
                     spdlog::info("Window resized to {}x{}", width, height);
                 });
+        }
+
+        void GLFWWindow::GLFWWindowImpl::GLFWMakeContextCurrent()
+        {
+            // Make the OpenGL context current
+            glfwMakeContextCurrent(m_window);
+
+            if (glfwGetCurrentContext() == nullptr)
+            {
+                spdlog::error("Failed to make OpenGL context current.");
+                glfwDestroyWindow(m_window);
+                glfwTerminate();
+                return;
+            }
+        }
+
+        void GLFWWindow::GLFWWindowImpl::LoadGLAD()
+        {
+            if (!gladLoadGL(glfwGetProcAddress))
+            {
+                spdlog::error("Failed to initialize GLAD.");
+                glfwDestroyWindow(m_window);
+                glfwTerminate();
+                return;
+            }
+
+            const char* version = reinterpret_cast<const char*>(glGetString(GL_VERSION));
+            spdlog::info("GLAD initialized successfully. OpenGL version: {}", std::string(version));
         }
     }
 }

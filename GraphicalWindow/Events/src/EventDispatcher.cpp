@@ -7,7 +7,7 @@ namespace Andromeda
 	namespace GraphicalWindow
 	{
 		EventDispatcher::EventDispatcher(Event& event)
-			: m_event(event)
+			: m_event{ event }
 		{
 		}
 	}
