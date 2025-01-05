@@ -17,9 +17,6 @@
 #endif
 
 
-#include "../../GLFWWindow/include/GLFWWindow.hpp"
-
-
 namespace Andromeda
 {
 	namespace EngineCore
@@ -33,7 +30,8 @@ namespace Andromeda
 			void Run();
 
 		private:
-			GLFWWindow m_glfwWindow;
+			class EngineRunnerImpl;
+			EngineRunnerImpl* m_pEngineRunnerImpl;
 		};
 	}
 }

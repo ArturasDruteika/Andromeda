@@ -37,6 +37,8 @@ add_library(${PROJECT_NAME}
 	    MouseAndKeyCodes/include/KeyCodes.hpp
         EngineRunner/include/EngineRunner.hpp
 	    EngineRunner/src/EngineRunner.cpp
+        EngineRunner/include/EngineRunnerImpl.hpp
+	    EngineRunner/src/EngineRunnerImpl.cpp
 )
 
 # Organize files into Solution Explorer folders
@@ -89,6 +91,8 @@ source_group(
     FILES
         EngineRunner/include/EngineRunner.hpp
 	    EngineRunner/src/EngineRunner.cpp
+        EngineRunner/include/EngineRunnerImpl.hpp
+	    EngineRunner/src/EngineRunnerImpl.cpp
 )
 
 target_include_directories(${PROJECT_NAME} 
