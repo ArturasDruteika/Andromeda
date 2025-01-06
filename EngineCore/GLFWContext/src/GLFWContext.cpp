@@ -55,20 +55,20 @@ namespace Andromeda
 			}
 		}
 
-		void GLFWContext::LoadGLAD()
+		void GLFWContext::SwapBuffers(GLFWwindow* window)
 		{
-			if (!gladLoadGL(glfwGetProcAddress))
-			{
-				spdlog::error("Failed to initialize GLAD.");
-				return;
-			}
-			const char* version = reinterpret_cast<const char*>(glGetString(GL_VERSION));
-			spdlog::info("GLAD initialized successfully. OpenGL version: {}", std::string(version));
+			// Swap buffers and poll events
+			glfwSwapBuffers(window);
 		}
 
 		bool GLFWContext::IsInitialized()
 		{
 			return m_isInitialized;
+		}
+
+		GLFWglproc GLFWContext::GetGLFWglproc()
+		{
+			return reinterpret_cast<GLFWglproc>(glfwGetProcAddress);
 		}
 	}
 }

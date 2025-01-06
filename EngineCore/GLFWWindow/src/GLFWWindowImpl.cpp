@@ -29,21 +29,28 @@ namespace Andromeda
         {
             if (!m_isInitialized)
             {
-                m_context = new GLFWContext();
-                m_context->InitGLFW();
-                if (m_context->IsInitialized())
+                try
                 {
-                    CreateWindow();
-                    m_context->MakeContextCurrent(m_window);
-                    m_context->LoadGLAD();
-                    m_context->SetContextHints();
+                    m_context = new GLFWContext();
+                    m_context->InitGLFW();
 
-                    // Create and initialize the Renderer
-                    m_renderer = new Renderer::OpenGLRenderer();
-                    m_renderer->Initialize();
+                    if (m_context->IsInitialized())
+                    {
+                        CreateWindow();
+                        m_context->MakeContextCurrent(m_window);
 
-                    SetCallbackFunctions();
-                    m_isInitialized = true;
+                        // Create and initialize the Renderer
+                        m_renderer = new Renderer::OpenGLRenderer();
+                        m_renderer->Initialize(reinterpret_cast<GLADloadfunc>(m_context->GetGLFWglproc()));
+
+                        SetCallbackFunctions();
+                        m_isInitialized = true;
+                    }
+                }
+                catch (const std::exception& e)
+                {
+                    spdlog::error("Initialization failed: {}", e.what());
+                    DeInit();
                 }
             }
         }
@@ -54,9 +61,7 @@ namespace Andromeda
             {
                 // Delegate rendering to the Renderer
                 m_renderer->RenderFrame();
-
-                // Swap buffers and poll events
-                glfwSwapBuffers(m_window);
+                m_context->SwapBuffers(m_window);
                 glfwPollEvents();
             }
         }
@@ -108,7 +113,7 @@ namespace Andromeda
             if (!m_window)
             {
                 spdlog::error("Failed to create GLFW window.");
-                glfwTerminate();
+                m_context->TerminateGLFW();
             }
         }
 

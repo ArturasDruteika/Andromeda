@@ -3,8 +3,8 @@
 
 
 #include "GLFWWindow.hpp"
-#include "../../GLFWContext/include/GLFWContext.hpp"
 #include "../../Renderer/include/OpenGLRenderer.hpp"
+#include "../../GLFWContext/include/GLFWContext.hpp"
 
 
 namespace Andromeda

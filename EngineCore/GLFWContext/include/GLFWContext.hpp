@@ -3,7 +3,6 @@
 
 
 #include "pch.hpp"
-#include "glad/gl.h"
 #include "GLFW/glfw3.h"
 
 
@@ -21,10 +20,11 @@ namespace Andromeda
 			void TerminateGLFW();
 			void SetContextHints();
 			void MakeContextCurrent(GLFWwindow* window);
-			void LoadGLAD();
+			void SwapBuffers(GLFWwindow* window);
 
 			bool IsInitialized();
-
+			GLFWglproc GetGLFWglproc();
+			
 		private:
 			bool m_isInitialized;
 		};
