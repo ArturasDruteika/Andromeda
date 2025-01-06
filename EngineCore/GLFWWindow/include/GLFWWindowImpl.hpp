@@ -3,9 +3,8 @@
 
 
 #include "GLFWWindow.hpp"
-#include "OpenGLRenderer.hpp"
-#include "glad/gl.h"
-#include <GLFW/glfw3.h>
+#include "../../GLFWContext/include/GLFWContext.hpp"
+#include "../../Renderer/include/OpenGLRenderer.hpp"
 
 
 namespace Andromeda
@@ -25,20 +24,18 @@ namespace Andromeda
 			unsigned int GetWidth() const;
 			unsigned int GetHeight() const;
 			std::string GetWindowName() const;
+			bool IsInitialized();
 
 		private:
-			void InitGLFW();
-			void SetGLFWWindowHints();
 			void CreateWindow();
 			void SetCallbackFunctions();
-			void GLFWMakeContextCurrent();
-			void LoadGLAD();
 
 			bool m_isInitialized;
 			int m_width;
 			int m_height;
 			std::string m_windowName;
 			GLFWwindow* m_window;
+			GLFWContext* m_context;
 			GLFWWindow& m_parent;
 			Renderer::OpenGLRenderer* m_renderer;
 		};

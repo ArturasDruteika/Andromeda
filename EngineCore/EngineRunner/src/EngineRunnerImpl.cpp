@@ -15,6 +15,7 @@ namespace Andromeda
 		void EngineRunner::EngineRunnerImpl::Run()
 		{
 			m_glfwWindow.RunMainLoop();
+			m_glfwWindow.DeInit();
 		}
 	}
 }

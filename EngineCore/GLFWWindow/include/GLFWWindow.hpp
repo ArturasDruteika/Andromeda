@@ -22,6 +22,7 @@ namespace Andromeda
 			unsigned int GetWidth() const;
 			unsigned int GetHeight() const;
 			std::string GetWindowName() const;
+			bool IsInitialized();
 
 		private:
 			class GLFWWindowImpl;

@@ -45,5 +45,9 @@ namespace Andromeda
 		{
 			return m_pGLFWWindowImpl->GetWindowName();
 		}
+		bool GLFWWindow::IsInitialized()
+		{
+			return m_pGLFWWindowImpl->IsInitialized();
+		}
 	}
 }
