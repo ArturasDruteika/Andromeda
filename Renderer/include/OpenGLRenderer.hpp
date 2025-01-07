@@ -16,11 +16,12 @@ namespace Andromeda
 			~OpenGLRenderer();
 
 			bool IsInitialized() const;
-			void Initialize();
+			void Initialize(GLADloadfunc load);
 			void RenderFrame();
 			void Shutdown();
 
 		private:
+			void LoadGlad(GLADloadfunc load);
 			void SetupTriangle();
 			GLuint CreateShaderProgram(const char* vertexShaderSource, const char* fragmentShaderSource);
 			void CheckCompileErrors(GLuint shader, const std::string& type);

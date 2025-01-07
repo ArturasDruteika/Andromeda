@@ -22,8 +22,9 @@ namespace Andromeda
             return m_isInitialized;
         }
 
-		void OpenGLRenderer::Initialize()
+		void OpenGLRenderer::Initialize(GLADloadfunc load)
 		{
+            LoadGlad(load);
 			m_isInitialized = true;
             // Initialize OpenGL-specific states
             glEnable(GL_DEPTH_TEST);
@@ -53,7 +54,18 @@ namespace Andromeda
 			m_isInitialized = false;
 		}
 
-		void OpenGLRenderer::SetupTriangle()
+        void OpenGLRenderer::LoadGlad(GLADloadfunc load)
+        {
+            if (!gladLoadGL(load))
+            {
+                spdlog::error("Failed to initialize GLAD.");
+                return;
+            }
+            const char* version = reinterpret_cast<const char*>(glGetString(GL_VERSION));
+            spdlog::info("GLAD initialized successfully. OpenGL version: {}", std::string(version));
+        }
+
+        void OpenGLRenderer::SetupTriangle()
 		{
             // Vertex data for a triangle
             std::vector<float> vertices = {

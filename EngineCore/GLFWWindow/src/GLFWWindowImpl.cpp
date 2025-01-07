@@ -12,6 +12,7 @@ namespace Andromeda
 			, m_window{ nullptr }
 			, m_isInitialized{ false }
 			, m_renderer{ nullptr }
+            , m_context{ nullptr }
         {
             if (initWindow)
             {
@@ -28,18 +29,29 @@ namespace Andromeda
         {
             if (!m_isInitialized)
             {
-                InitGLFW();
-                SetGLFWWindowHints();
-                CreateWindow();
-				GLFWMakeContextCurrent();
-				LoadGLAD();
+                try
+                {
+                    m_context = new GLFWContext();
+                    m_context->InitGLFW();
 
-                // Create and initialize the Renderer
-                m_renderer = new Renderer::OpenGLRenderer();
-                m_renderer->Initialize();
+                    if (m_context->IsInitialized())
+                    {
+                        CreateWindow();
+                        m_context->MakeContextCurrent(m_window);
 
-                SetCallbackFunctions();
-                m_isInitialized = true;
+                        // Create and initialize the Renderer
+                        m_renderer = new Renderer::OpenGLRenderer();
+                        m_renderer->Initialize(reinterpret_cast<GLADloadfunc>(m_context->GetGLFWglproc()));
+
+                        SetCallbackFunctions();
+                        m_isInitialized = true;
+                    }
+                }
+                catch (const std::exception& e)
+                {
+                    spdlog::error("Initialization failed: {}", e.what());
+                    DeInit();
+                }
             }
         }
 
@@ -49,9 +61,7 @@ namespace Andromeda
             {
                 // Delegate rendering to the Renderer
                 m_renderer->RenderFrame();
-
-                // Swap buffers and poll events
-                glfwSwapBuffers(m_window);
+                m_context->SwapBuffers(m_window);
                 glfwPollEvents();
             }
         }
@@ -71,41 +81,31 @@ namespace Andromeda
             return m_windowName;
         }
 
+        bool GLFWWindow::GLFWWindowImpl::IsInitialized()
+        {
+            return m_isInitialized;
+        }
+
         void GLFWWindow::GLFWWindowImpl::DeInit()
         {
             if (m_renderer)
             {
                 m_renderer->Shutdown();
 				delete m_renderer;
+                m_renderer = nullptr;
             }
-
             if (m_window)
             {
                 glfwDestroyWindow(m_window);
                 m_window = nullptr;
             }
-
-            glfwTerminate();
-            m_isInitialized = false;
-        }
-
-        void GLFWWindow::GLFWWindowImpl::InitGLFW()
-        {
-            if (!glfwInit())
+            if (m_context->IsInitialized())
             {
-                spdlog::error("Failed to initialize GLFW.");
+                m_context->TerminateGLFW();
+                m_context = nullptr;
             }
-        }
 
-        void GLFWWindow::GLFWWindowImpl::SetGLFWWindowHints()
-        {
-            glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
-            glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
-            glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
-
-#ifdef __APPLE__
-            glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE); // Required on macOS
-#endif
+            m_isInitialized = false;
         }
 
         void GLFWWindow::GLFWWindowImpl::CreateWindow()
@@ -115,7 +115,7 @@ namespace Andromeda
             if (!m_window)
             {
                 spdlog::error("Failed to create GLFW window.");
-                glfwTerminate();
+                m_context->TerminateGLFW();
             }
         }
 
@@ -126,34 +126,6 @@ namespace Andromeda
                     glViewport(0, 0, width, height);
                     spdlog::info("Window resized to {}x{}", width, height);
                 });
-        }
-
-        void GLFWWindow::GLFWWindowImpl::GLFWMakeContextCurrent()
-        {
-            // Make the OpenGL context current
-            glfwMakeContextCurrent(m_window);
-
-            if (glfwGetCurrentContext() == nullptr)
-            {
-                spdlog::error("Failed to make OpenGL context current.");
-                glfwDestroyWindow(m_window);
-                glfwTerminate();
-                return;
-            }
-        }
-
-        void GLFWWindow::GLFWWindowImpl::LoadGLAD()
-        {
-            if (!gladLoadGL(glfwGetProcAddress))
-            {
-                spdlog::error("Failed to initialize GLAD.");
-                glfwDestroyWindow(m_window);
-                glfwTerminate();
-                return;
-            }
-
-            const char* version = reinterpret_cast<const char*>(glGetString(GL_VERSION));
-            spdlog::info("GLAD initialized successfully. OpenGL version: {}", std::string(version));
         }
     }
 }

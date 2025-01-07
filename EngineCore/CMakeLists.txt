@@ -39,6 +39,8 @@ add_library(${PROJECT_NAME}
 	    EngineRunner/src/EngineRunner.cpp
         EngineRunner/include/EngineRunnerImpl.hpp
 	    EngineRunner/src/EngineRunnerImpl.cpp
+        GLFWContext/include/GLFWContext.hpp
+	    GLFWContext/src/GLFWContext.cpp
 )
 
 # Organize files into Solution Explorer folders
@@ -95,6 +97,16 @@ source_group(
 	    EngineRunner/src/EngineRunnerImpl.cpp
 )
 
+source_group(
+    TREE 
+        ${CMAKE_CURRENT_SOURCE_DIR}/GLFWContext
+    PREFIX
+        "GLFWContext"
+    FILES
+        GLFWContext/include/GLFWContext.hpp
+	    GLFWContext/src/GLFWContext.cpp
+)
+
 target_include_directories(${PROJECT_NAME} 
     PRIVATE
         ..//ExternalGraphicsLibs//glfw//include//
@@ -102,7 +114,6 @@ target_include_directories(${PROJECT_NAME}
         ..//ExternalGraphicsLibs//glad//include//
 	    ..//ExternalGraphicsLibs//glm//
         ..//Utils//precompiled_headers//include//
-        ..//Renderer//include//
 )
 
 # Link GLFW and OpenGL to the executable
