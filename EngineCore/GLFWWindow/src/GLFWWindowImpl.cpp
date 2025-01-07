@@ -92,6 +92,7 @@ namespace Andromeda
             {
                 m_renderer->Shutdown();
 				delete m_renderer;
+                m_renderer = nullptr;
             }
             if (m_window)
             {
@@ -101,6 +102,7 @@ namespace Andromeda
             if (m_context->IsInitialized())
             {
                 m_context->TerminateGLFW();
+                m_context = nullptr;
             }
 
             m_isInitialized = false;
