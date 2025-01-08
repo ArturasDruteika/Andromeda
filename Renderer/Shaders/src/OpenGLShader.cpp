@@ -8,7 +8,7 @@ namespace Andromeda
 	{
 		OpenGLShader::OpenGLShader(const std::string& vertexCode, const std::string& fragmentCode)
 		{
-			m_program = CreateShader(vertexCode, fragmentCode);
+			m_program = CreateShaderProgram(vertexCode, fragmentCode);
 		}
 
 		OpenGLShader::~OpenGLShader()
@@ -35,7 +35,7 @@ namespace Andromeda
 			return shader;
 		}
 
-		unsigned int OpenGLShader::CreateShader(const std::string& vertexCode, const std::string& fragmentCode)
+		unsigned int OpenGLShader::CreateShaderProgram(const std::string& vertexCode, const std::string& fragmentCode)
 		{
 			unsigned int program = glCreateProgram();
 			unsigned int vertexShader = CompileShader(GL_VERTEX_SHADER, vertexCode);
