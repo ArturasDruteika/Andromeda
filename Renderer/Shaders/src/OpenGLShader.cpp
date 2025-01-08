@@ -60,7 +60,8 @@ namespace Andromeda
 			if (!success)
 			{
 				glGetShaderiv(shader, GL_INFO_LOG_LENGTH, &length);
-				char* message = (char*)_malloca(length * sizeof(char));
+				char* message = (char*)alloca(length * sizeof(char));
+				glGetShaderInfoLog(shader, length, nullptr, message);
 				std::string shaderTypeStr = (type == GL_VERTEX_SHADER ? "vertex" : "fragment");
 				spdlog::error("Shader compilation error ({}): {}", shaderTypeStr, message);
 				glDeleteShader(shader);
