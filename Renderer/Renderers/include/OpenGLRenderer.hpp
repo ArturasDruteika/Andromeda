@@ -3,6 +3,7 @@
 
 
 #include <glad/gl.h> // Include OpenGL functions
+#include "../../Shaders/include/OpenGLShader.hpp"
 
 
 namespace Andromeda
@@ -23,11 +24,13 @@ namespace Andromeda
 		private:
 			void LoadGlad(GLADloadfunc load);
 			void SetupTriangle();
-			GLuint CreateShaderProgram(const char* vertexShaderSource, const char* fragmentShaderSource);
-			void CheckCompileErrors(GLuint shader, const std::string& type);
+			unsigned int CreateShaderProgram(const char* vertexShaderSource, const char* fragmentShaderSource);
 
 			bool m_isInitialized;
-			GLuint m_VAO, m_VBO, m_program;
+			// VBO - vertex buffer obj
+			// VAO - vertex array obj
+			unsigned int m_VBO, m_VAO;
+			OpenGLShader* m_shader;
 		};
 	}
 }

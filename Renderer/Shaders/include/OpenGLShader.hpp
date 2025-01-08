@@ -15,7 +15,14 @@ namespace Andromeda
 			OpenGLShader(const std::string& vertexCode, const std::string& fragmentCode);
 			~OpenGLShader();
 
+			unsigned int GetProgram();
+
 		private:
+			unsigned int CompileShader(unsigned int type, const std::string& shaderSource);
+			unsigned int CreateShader(const std::string& vertexCode, const std::string& fragmentCode);
+			void CheckCompileErrors(unsigned int shader, int type);
+
+			unsigned int m_program;
 		};
 	}
 }
