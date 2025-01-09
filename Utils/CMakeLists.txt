@@ -15,13 +15,15 @@ find_package(spdlog REQUIRED)
 # Create a library target
 add_library(${PROJECT_NAME} 
     STATIC
-        precompiled_headers/src/pch.cpp
+        PrecompiledHeaders/src/pch.cpp
 )
 
 target_sources(${PROJECT_NAME}
     PRIVATE
-        precompiled_headers/include/pch.hpp
-        precompiled_headers/src/pch.cpp
+        PrecompiledHeaders/include/pch.hpp
+        PrecompiledHeaders/src/pch.cpp
+		FileOperations/include/FileOperations.hpp
+        FileOperations/src/FileOperations.cpp
 )
 
 # Link spdlog
@@ -33,16 +35,28 @@ target_link_libraries(${PROJECT_NAME}
 # Enable precompiled headers
 target_precompile_headers(${PROJECT_NAME} 
     PUBLIC
-        precompiled_headers/include/pch.hpp
+        PrecompiledHeaders/include/pch.hpp
 )
 
 # Organize files in Solution Explorer
 source_group(
     TREE 
-        ${CMAKE_CURRENT_SOURCE_DIR} 
+        ${CMAKE_CURRENT_SOURCE_DIR}/PrecompiledHeaders
+    PREFIX
+        "PrecompiledHeaders"
     FILES
-        precompiled_headers/include/pch.hpp
-        precompiled_headers/src/pch.cpp
+        PrecompiledHeaders/include/pch.hpp
+        PrecompiledHeaders/src/pch.cpp
+)
+
+source_group(
+    TREE 
+        ${CMAKE_CURRENT_SOURCE_DIR}/FileOperations
+    PREFIX
+        "FileOperations"
+    FILES
+        FileOperations/include/FileOperations.hpp
+        FileOperations/src/FileOperations.cpp
 )
 
 

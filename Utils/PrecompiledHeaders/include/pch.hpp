@@ -11,8 +11,11 @@
 #include <unordered_map>
 #include <algorithm>
 #include <functional>
+#include <fstream>
 #include <sstream>
 #include <cstdint>
+#include <stdexcept>
+#include <filesystem>
 
 #include "spdlog/spdlog.h"
 

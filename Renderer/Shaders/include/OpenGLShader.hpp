@@ -13,6 +13,7 @@ namespace Andromeda
 		class OpenGLShader
 		{
 		public:
+			OpenGLShader();
 			OpenGLShader(const std::string& vertexCode, const std::string& fragmentCode);
 			~OpenGLShader();
 
@@ -21,6 +22,8 @@ namespace Andromeda
 			void SetUniform(const std::string& name, float value);
 			void SetUniform(const std::string& name, const glm::mat4& matrix);
 
+			void SetVertexShaderProgramSource(const std::string& filepath);
+			void SetFragmentShaderProgramSource(const std::string& filepath);
 			unsigned int GetProgram();
 
 		private:
@@ -31,6 +34,8 @@ namespace Andromeda
 			void CheckProgramErrors(unsigned int program);
 
 			unsigned int m_program;
+			std::string m_vertexShaderSourceCode;
+			std::string m_fragmentShaderSourceCode;
 			std::unordered_map<std::string, int> m_uniformLocationCache;
 		};
 	}

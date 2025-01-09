@@ -1,4 +1,5 @@
 #include "../include/OpenGLShader.hpp"
+#include "FileOperations.hpp"
 #include "glad/gl.h"
 #include <glm/gtc/type_ptr.hpp>
 
@@ -8,7 +9,16 @@ namespace Andromeda
 {
 	namespace Renderer
 	{
+		OpenGLShader::OpenGLShader()
+			: m_program{ 0 }
+			, m_vertexShaderSourceCode{}
+			, m_fragmentShaderSourceCode{}
+		{
+		}
+
 		OpenGLShader::OpenGLShader(const std::string& vertexCode, const std::string& fragmentCode)
+			: m_vertexShaderSourceCode{ vertexCode }
+			, m_fragmentShaderSourceCode{ fragmentCode }
 		{
 			m_program = CreateShaderProgram(vertexCode, fragmentCode);
 		}
@@ -48,6 +58,16 @@ namespace Andromeda
 			{
 				glUniformMatrix4fv(location, 1, GL_FALSE, glm::value_ptr(matrix));
 			}
+		}
+
+		void OpenGLShader::SetVertexShaderProgramSource(const std::string& filepath)
+		{
+			m_vertexShaderSourceCode = Utils::FileOperations::LoadFileAsString(filepath);
+		}
+
+		void OpenGLShader::SetFragmentShaderProgramSource(const std::string& filepath)
+		{
+			m_fragmentShaderSourceCode = Utils::FileOperations::LoadFileAsString(filepath);
 		}
 
 		unsigned int OpenGLShader::GetProgram()

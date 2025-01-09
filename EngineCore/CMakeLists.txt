@@ -111,7 +111,7 @@ target_include_directories(${PROJECT_NAME}
     PRIVATE
         ..//ExternalGraphicsLibs//glfw//include//
         ..//ExternalGraphicsLibs//glfw//
-        ..//Utils//precompiled_headers//include//
+        ..//Utils//PrecompiledHeaders//include//
         ..//Renderer//Renderers//include//
 )
 
