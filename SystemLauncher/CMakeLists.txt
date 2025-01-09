@@ -10,6 +10,12 @@ add_executable(${PROJECT_NAME}
     main.cpp
 )
 
+# set working directory same as .exe to find resources from it
+file(TO_CMAKE_PATH $<TARGET_FILE_DIR:${PROJECT_NAME}>// exe_dir)
+set_target_properties(
+    ${PROJECT_NAME} PROPERTIES
+    VS_DEBUGGER_WORKING_DIRECTORY ${exe_dir})
+
 include_directories(
 	..//EngineCore//EngineRunner//include//
 )
