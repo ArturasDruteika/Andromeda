@@ -3,7 +3,7 @@
 
 
 #include "GLFWWindow.hpp"
-#include "../../Renderer/include/OpenGLRenderer.hpp"
+#include "OpenGLRenderer.hpp"
 #include "../../GLFWContext/include/GLFWContext.hpp"
 
 

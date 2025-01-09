@@ -16,17 +16,31 @@ endif ()
 
 add_library(${PROJECT_NAME} 
     STATIC
-	    include/OpenGLRenderer.hpp
-		src/OpenGLRenderer.cpp
+	    Renderers/include/OpenGLRenderer.hpp
+		Renderers/src/OpenGLRenderer.cpp
+        Shaders/include/OpenGLShader.hpp
+		Shaders/src/OpenGLShader.cpp
 )
 
 # Organize files into Solution Explorer folders
 source_group(
     TREE 
-        ${CMAKE_CURRENT_SOURCE_DIR}
+        ${CMAKE_CURRENT_SOURCE_DIR}/Renderers
+    PREFIX
+        "Renderers"
     FILES
-        include/OpenGLRenderer.hpp
-		src/OpenGLRenderer.cpp
+        Renderers/include/OpenGLRenderer.hpp
+		Renderers/src/OpenGLRenderer.cpp
+)
+
+source_group(
+    TREE 
+        ${CMAKE_CURRENT_SOURCE_DIR}/Shaders
+    PREFIX
+        "Shaders"
+    FILES
+        Shaders/include/OpenGLShader.hpp
+		Shaders/src/OpenGLShader.cpp
 )
 
 target_include_directories(${PROJECT_NAME} 

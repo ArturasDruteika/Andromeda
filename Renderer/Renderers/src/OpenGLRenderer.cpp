@@ -8,8 +8,8 @@ namespace Andromeda
 		OpenGLRenderer::OpenGLRenderer()
 			: m_VAO{ 0 }
 			, m_VBO{ 0 }
-			, m_program{ 0 }
 			, m_isInitialized{ false }
+            , m_shader{ nullptr }
 		{
 		}
 
@@ -40,7 +40,7 @@ namespace Andromeda
             glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
             // Render the triangle
-            glUseProgram(m_program);
+            glUseProgram(m_shader->GetProgram());
             glBindVertexArray(m_VAO);
             glDrawArrays(GL_TRIANGLES, 0, 3);
 		}
@@ -48,7 +48,7 @@ namespace Andromeda
 		void OpenGLRenderer::Shutdown()
 		{
             // Cleanup resources
-            glDeleteProgram(m_program);
+            delete m_shader;
             glDeleteBuffers(1, &m_VBO);
             glDeleteVertexArrays(1, &m_VAO);
 			m_isInitialized = false;
@@ -102,8 +102,7 @@ namespace Andromeda
                 }
             )";
 
-            // Compile shaders and link program
-            m_program = CreateShaderProgram(vertexShaderSource, fragmentShaderSource);
+            m_shader = new OpenGLShader(vertexShaderSource, fragmentShaderSource);
 
             // Generate and bind VAO
             glGenVertexArrays(1, &m_VAO);
@@ -124,53 +123,5 @@ namespace Andromeda
             glBindBuffer(GL_ARRAY_BUFFER, 0);
             glBindVertexArray(0);
 		}
-
-        GLuint OpenGLRenderer::CreateShaderProgram(const char* vertexShaderSource, const char* fragmentShaderSource)
-        {
-            GLuint vertexShader = glCreateShader(GL_VERTEX_SHADER);
-            glShaderSource(vertexShader, 1, &vertexShaderSource, nullptr);
-            glCompileShader(vertexShader);
-            CheckCompileErrors(vertexShader, "VERTEX");
-
-            GLuint fragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
-            glShaderSource(fragmentShader, 1, &fragmentShaderSource, nullptr);
-            glCompileShader(fragmentShader);
-            CheckCompileErrors(fragmentShader, "FRAGMENT");
-
-            GLuint shaderProgram = glCreateProgram();
-            glAttachShader(shaderProgram, vertexShader);
-            glAttachShader(shaderProgram, fragmentShader);
-            glLinkProgram(shaderProgram);
-            CheckCompileErrors(shaderProgram, "PROGRAM");
-
-            glDeleteShader(vertexShader);
-            glDeleteShader(fragmentShader);
-
-            return shaderProgram;
-        }
-
-        void OpenGLRenderer::CheckCompileErrors(GLuint shader, const std::string& type)
-        {
-            GLint success;
-            GLchar infoLog[1024];
-            if (type != "PROGRAM")
-            {
-                glGetShaderiv(shader, GL_COMPILE_STATUS, &success);
-                if (!success)
-                {
-                    glGetShaderInfoLog(shader, 1024, nullptr, infoLog);
-                    spdlog::error("Shader compilation error ({}): {}", type, infoLog);
-                }
-            }
-            else
-            {
-                glGetProgramiv(shader, GL_LINK_STATUS, &success);
-                if (!success)
-                {
-                    glGetProgramInfoLog(shader, 1024, nullptr, infoLog);
-                    spdlog::error("Program linking error: {}", infoLog);
-                }
-            }
-        }
 	}
 }

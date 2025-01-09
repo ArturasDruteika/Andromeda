@@ -111,9 +111,8 @@ target_include_directories(${PROJECT_NAME}
     PRIVATE
         ..//ExternalGraphicsLibs//glfw//include//
         ..//ExternalGraphicsLibs//glfw//
-        ..//ExternalGraphicsLibs//glad//include//
-	    ..//ExternalGraphicsLibs//glm//
         ..//Utils//precompiled_headers//include//
+        ..//Renderer//Renderers//include//
 )
 
 # Link GLFW and OpenGL to the executable
