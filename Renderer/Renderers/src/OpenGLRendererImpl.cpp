@@ -1,4 +1,5 @@
 #include "../include/OpenGLRendererImpl.hpp"
+#include "FileOperations.hpp"
 
 
 namespace Andromeda
@@ -77,31 +78,8 @@ namespace Andromeda
             };
 
             // Vertex shader source
-            const char* vertexShaderSource = R"(
-                #version 330 core
-                layout(location = 0) in vec3 aPos;
-                layout(location = 1) in vec3 aColor;
-
-                out vec3 ourColor;
-
-                void main()
-                {
-                    gl_Position = vec4(aPos, 1.0);
-                    ourColor = aColor;
-                }
-            )";
-
-            // Fragment shader source
-            const char* fragmentShaderSource = R"(
-                #version 330 core
-                in vec3 ourColor;
-                out vec4 FragColor;
-
-                void main()
-                {
-                    FragColor = vec4(ourColor, 1.0);
-                }
-            )";
+            std::string vertexShaderSource = Utils::FileOperations::LoadFileAsString("shader_program_sources/vertex_shader.glsl");
+            std::string fragmentShaderSource = Utils::FileOperations::LoadFileAsString("shader_program_sources/fragment_shader.glsl");
 
             m_shader = new OpenGLShader(vertexShaderSource, fragmentShaderSource);
 

@@ -51,7 +51,8 @@ source_group(
 
 target_include_directories(${PROJECT_NAME} 
     PRIVATE
-        ..//Utils//precompiled_headers//include//
+        ..//Utils//PrecompiledHeaders//include//
+        ..//Utils//FileOperations//include//
         ..//ExternalGraphicsLibs//glad//include//
 	    ..//ExternalGraphicsLibs//glm//
 )
@@ -72,4 +73,34 @@ add_dependencies(${PROJECT_NAME}
 target_precompile_headers(${PROJECT_NAME} 
     REUSE_FROM
         Utils
+)
+
+
+### Post builds
+
+# Define filenames
+set(VERTEX_SHADER_FILENAME "vertex_shader.glsl")
+set(FRAGMENT_SHADER_FILENAME "fragment_shader.glsl")
+
+# Define source shader file paths
+set(VERTEX_SHADER_SOURCE "${CMAKE_CURRENT_SOURCE_DIR}/ShaderProgramSources/${VERTEX_SHADER_FILENAME}")
+set(FRAGMENT_SHADER_SOURCE "${CMAKE_CURRENT_SOURCE_DIR}/ShaderProgramSources/${FRAGMENT_SHADER_FILENAME}")
+
+# Define the output directory (binary directory where executables are placed)
+set(SHADER_OUTPUT_DIR "${CMAKE_BINARY_DIR}/$<CONFIG>/shader_program_sources")
+
+# Post-build step to copy shader files
+add_custom_command(
+    TARGET 
+        ${PROJECT_NAME} POST_BUILD
+    COMMAND 
+        ${CMAKE_COMMAND} -E make_directory "${SHADER_OUTPUT_DIR}"
+    COMMAND 
+        ${CMAKE_COMMAND} -E copy_if_different
+        "${VERTEX_SHADER_SOURCE}" "${SHADER_OUTPUT_DIR}/${VERTEX_SHADER_FILENAME}"
+    COMMAND 
+        ${CMAKE_COMMAND} -E copy_if_different
+        "${FRAGMENT_SHADER_SOURCE}" "${SHADER_OUTPUT_DIR}/${FRAGMENT_SHADER_FILENAME}"
+    COMMENT 
+        "Creating directory and copying shader files to ${SHADER_OUTPUT_DIR}"
 )

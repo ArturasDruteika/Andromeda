@@ -24,7 +24,6 @@ namespace Andromeda
 		private:
 			void LoadGlad(GLADloadfunc load);
 			void SetupTriangle();
-			unsigned int CreateShaderProgram(const char* vertexShaderSource, const char* fragmentShaderSource);
 
 			OpenGLRenderer m_parent;
 			bool m_isInitialized;
