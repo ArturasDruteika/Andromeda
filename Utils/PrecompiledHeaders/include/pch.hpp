@@ -15,6 +15,7 @@
 #include <sstream>
 #include <cstdint>
 #include <stdexcept>
+#include <filesystem>
 
 #include "spdlog/spdlog.h"
 
