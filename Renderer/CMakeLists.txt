@@ -6,6 +6,8 @@ set(CMAKE_BUILD_PARALLEL_LEVEL)
 set(CMAKE_CXX_STANDARD 23)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
+add_definitions(-DRENDERER_EXPORT)
+
 # OpenGL
 find_package(OpenGL REQUIRED)
 target_link_libraries(${EXEC_NAME} OpenGL::GL)
@@ -15,9 +17,11 @@ if (APPLE)
 endif ()
 
 add_library(${PROJECT_NAME} 
-    STATIC
+    SHARED
 	    Renderers/include/OpenGLRenderer.hpp
 		Renderers/src/OpenGLRenderer.cpp
+        Renderers/include/OpenGLRendererImpl.hpp
+		Renderers/src/OpenGLRendererImpl.cpp
         Shaders/include/OpenGLShader.hpp
 		Shaders/src/OpenGLShader.cpp
 )
@@ -31,6 +35,8 @@ source_group(
     FILES
         Renderers/include/OpenGLRenderer.hpp
 		Renderers/src/OpenGLRenderer.cpp
+        Renderers/include/OpenGLRendererImpl.hpp
+		Renderers/src/OpenGLRendererImpl.cpp
 )
 
 source_group(

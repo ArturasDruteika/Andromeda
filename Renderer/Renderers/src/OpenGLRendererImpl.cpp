@@ -1,0 +1,128 @@
+#include "../include/OpenGLRendererImpl.hpp"
+
+
+namespace Andromeda
+{
+	namespace Renderer
+	{
+		OpenGLRenderer::OpenGLRendererImpl::OpenGLRendererImpl(OpenGLRenderer& parent)
+			: m_parent{ parent }
+            , m_VAO{ 0 }
+			, m_VBO{ 0 }
+			, m_isInitialized{ false }
+            , m_shader{ nullptr }
+		{
+		}
+
+		OpenGLRenderer::OpenGLRendererImpl::~OpenGLRendererImpl()
+		{
+		}
+
+        bool OpenGLRenderer::OpenGLRendererImpl::IsInitialized() const
+        {
+            return m_isInitialized;
+        }
+
+		void OpenGLRenderer::OpenGLRendererImpl::Initialize(GLADloadfunc load)
+		{
+            LoadGlad(load);
+			m_isInitialized = true;
+            // Initialize OpenGL-specific states
+            glEnable(GL_DEPTH_TEST);
+            glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
+
+            // Set up the triangle
+            SetupTriangle();
+		}
+
+		void OpenGLRenderer::OpenGLRendererImpl::RenderFrame()
+		{
+            // Clear the screen
+            glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+            // Render the triangle
+            glUseProgram(m_shader->GetProgram());
+            glBindVertexArray(m_VAO);
+            glDrawArrays(GL_TRIANGLES, 0, 3);
+		}
+
+		void OpenGLRenderer::OpenGLRendererImpl::Shutdown()
+		{
+            // Cleanup resources
+            delete m_shader;
+            glDeleteBuffers(1, &m_VBO);
+            glDeleteVertexArrays(1, &m_VAO);
+			m_isInitialized = false;
+		}
+
+        void OpenGLRenderer::OpenGLRendererImpl::LoadGlad(GLADloadfunc load)
+        {
+            if (!gladLoadGL(load))
+            {
+                spdlog::error("Failed to initialize GLAD.");
+                return;
+            }
+            const char* version = reinterpret_cast<const char*>(glGetString(GL_VERSION));
+            spdlog::info("GLAD initialized successfully. OpenGL version: {}", std::string(version));
+        }
+
+        void OpenGLRenderer::OpenGLRendererImpl::SetupTriangle()
+		{
+            // Vertex data for a triangle
+            std::vector<float> vertices = {
+                // Positions        // Colors
+                0.0f,  0.5f, 0.0f,  1.0f, 0.0f, 0.0f, // Top vertex (red)
+               -0.5f, -0.5f, 0.0f,  0.0f, 1.0f, 0.0f, // Bottom left (green)
+                0.5f, -0.5f, 0.0f,  0.0f, 0.0f, 1.0f  // Bottom right (blue)
+            };
+
+            // Vertex shader source
+            const char* vertexShaderSource = R"(
+                #version 330 core
+                layout(location = 0) in vec3 aPos;
+                layout(location = 1) in vec3 aColor;
+
+                out vec3 ourColor;
+
+                void main()
+                {
+                    gl_Position = vec4(aPos, 1.0);
+                    ourColor = aColor;
+                }
+            )";
+
+            // Fragment shader source
+            const char* fragmentShaderSource = R"(
+                #version 330 core
+                in vec3 ourColor;
+                out vec4 FragColor;
+
+                void main()
+                {
+                    FragColor = vec4(ourColor, 1.0);
+                }
+            )";
+
+            m_shader = new OpenGLShader(vertexShaderSource, fragmentShaderSource);
+
+            // Generate and bind VAO
+            glGenVertexArrays(1, &m_VAO);
+            glBindVertexArray(m_VAO);
+
+            // Generate and bind VBO
+            glGenBuffers(1, &m_VBO);
+            glBindBuffer(GL_ARRAY_BUFFER, m_VBO);
+            glBufferData(GL_ARRAY_BUFFER, vertices.size() * sizeof(float), vertices.data(), GL_STATIC_DRAW);
+
+            // Vertex attribute pointers
+            glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)0); // Position
+            glEnableVertexAttribArray(0);
+            glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)(3 * sizeof(float))); // Color
+            glEnableVertexAttribArray(1);
+
+            // Unbind
+            glBindBuffer(GL_ARRAY_BUFFER, 0);
+            glBindVertexArray(0);
+		}
+	}
+}

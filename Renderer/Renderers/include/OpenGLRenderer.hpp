@@ -2,15 +2,29 @@
 #define RENDERER__OPENGL_RENDERER__HPP
 
 
-#include <glad/gl.h> // Include OpenGL functions
-#include "../../Shaders/include/OpenGLShader.hpp"
+#if defined(_WIN32)
+	#if defined(RENDERER_EXPORT)
+		#define RENDERER_API __declspec(dllexport)
+	#else
+		#define RENDERER_API __declspec(dllimport)
+	#endif /* RENDERER_API */
+	#define _sprintf sprintf_s
+#endif
+
+#if defined(__GNUC__)
+	// GCC
+	#define RENDERER_API __attribute__((visibility("default")))
+#endif
+
+
+#include <glad/gl.h>
 
 
 namespace Andromeda
 {
 	namespace Renderer
 	{
-		class OpenGLRenderer
+		class RENDERER_API OpenGLRenderer
 		{
 		public:
 			OpenGLRenderer();
@@ -22,15 +36,8 @@ namespace Andromeda
 			void Shutdown();
 
 		private:
-			void LoadGlad(GLADloadfunc load);
-			void SetupTriangle();
-			unsigned int CreateShaderProgram(const char* vertexShaderSource, const char* fragmentShaderSource);
-
-			bool m_isInitialized;
-			// VBO - vertex buffer obj
-			// VAO - vertex array obj
-			unsigned int m_VBO, m_VAO;
-			OpenGLShader* m_shader;
+			class OpenGLRendererImpl;
+			OpenGLRendererImpl* m_pOpenGLRendererImpl;
 		};
 	}
 }
