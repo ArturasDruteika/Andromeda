@@ -23,7 +23,9 @@ namespace Andromeda
 			void SetUniform(const std::string& name, const glm::mat4& matrix);
 
 			void SetVertexShaderProgramSource(const std::string& filepath);
+			std::string GetVertexShaderSourceCode();
 			void SetFragmentShaderProgramSource(const std::string& filepath);
+			std::string GetFragmentShaderSourceCode();
 			unsigned int GetProgram();
 
 		private:
