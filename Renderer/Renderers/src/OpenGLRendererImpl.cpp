@@ -22,65 +22,6 @@ namespace Andromeda
             }
 		}
 
-        OpenGLRenderer::OpenGLRendererImpl::OpenGLRendererImpl(const OpenGLRendererImpl& other)
-            : m_isInitialized{ other.m_isInitialized }
-            , m_VBO{ 0 }
-            , m_VAO{ 0 }
-            , m_shader{ other.m_shader ? new OpenGLShader(*other.m_shader) : nullptr }
-        {
-        }
-
-        OpenGLRenderer::OpenGLRendererImpl& OpenGLRenderer::OpenGLRendererImpl::operator=(const OpenGLRendererImpl& other)
-        {
-            if (this != &other)
-            {
-                m_isInitialized = other.m_isInitialized;
-
-                // Deep copy shader
-                delete m_shader;
-                m_shader = other.m_shader ? new OpenGLShader(*other.m_shader) : nullptr;
-
-                // Handle VBO/VAO
-                m_VBO = other.m_VBO;
-                m_VAO = other.m_VAO;
-            }
-            return *this;
-        }
-
-        OpenGLRenderer::OpenGLRendererImpl::OpenGLRendererImpl(OpenGLRendererImpl&& other) noexcept
-            : m_isInitialized{ other.m_isInitialized }
-            , m_VBO{ other.m_VBO }
-            , m_VAO{ other.m_VAO }
-            , m_shader{ other.m_shader }
-        {
-            other.m_isInitialized = false;
-            other.m_VBO = 0;
-            other.m_VAO = 0;
-            other.m_shader = nullptr;
-        }
-
-        OpenGLRenderer::OpenGLRendererImpl& OpenGLRenderer::OpenGLRendererImpl::operator=(OpenGLRendererImpl&& other) noexcept
-        {
-            if (this != &other)
-            {
-                // Cleanup existing resources
-                Shutdown();
-
-                // Move resources
-                m_isInitialized = other.m_isInitialized;
-                m_VBO = other.m_VBO;
-                m_VAO = other.m_VAO;
-                m_shader = other.m_shader;
-
-                // Invalidate other
-                other.m_isInitialized = false;
-                other.m_VBO = 0;
-                other.m_VAO = 0;
-                other.m_shader = nullptr;
-            }
-            return *this;
-        }
-
         bool OpenGLRenderer::OpenGLRendererImpl::IsInitialized() const
         {
             return m_isInitialized;

@@ -16,10 +16,10 @@
 				OpenGLRendererImpl();
 				~OpenGLRendererImpl();
 
-				OpenGLRendererImpl(const OpenGLRendererImpl& other);             // Copy Constructor
-				OpenGLRendererImpl& operator=(const OpenGLRendererImpl& other);  // Copy Assignment
-				OpenGLRendererImpl(OpenGLRendererImpl&& other) noexcept;         // Move Constructor
-				OpenGLRendererImpl& operator=(OpenGLRendererImpl&& other) noexcept; // Move Assignment
+				OpenGLRendererImpl(const OpenGLRendererImpl& other) = delete;	// Prevent Copy Constructor
+				OpenGLRendererImpl& operator=(const OpenGLRendererImpl& other) = delete;	// Prevent Copy Assignment
+				OpenGLRendererImpl(OpenGLRendererImpl&& other) noexcept = delete;	// Prevent Move Constructor
+				OpenGLRendererImpl& operator=(OpenGLRendererImpl&& other) noexcept = delete;	// Prevent Move Assignment
 
 				bool IsInitialized() const;
 				void Initialize(GLADloadfunc load);
