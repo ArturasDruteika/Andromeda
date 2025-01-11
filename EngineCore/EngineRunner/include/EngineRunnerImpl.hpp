@@ -13,7 +13,7 @@ namespace Andromeda
 		class EngineRunner::EngineRunnerImpl
 		{
 		public:
-			EngineRunnerImpl(EngineRunner& parent);
+			EngineRunnerImpl();
 			~EngineRunnerImpl();
 
 			EngineRunnerImpl(const EngineRunnerImpl& other) = delete;	// Prevent Copy Constructor
@@ -24,7 +24,6 @@ namespace Andromeda
 			void Run();
 
 		private:
-			EngineRunner& m_parent;
 			GLFWWindow m_glfwWindow;
 		};
 	}
