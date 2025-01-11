@@ -27,6 +27,11 @@ namespace Andromeda
 			EngineRunner();
 			~EngineRunner();
 
+			EngineRunner(const EngineRunner& other) = delete;	// Prevent Copy Constructor
+			EngineRunner& operator=(const EngineRunner& other) = delete;	// Prevent Copy assignment
+			EngineRunner(EngineRunner&& other) noexcept = delete;	// Prevent Move constructor
+			EngineRunner& operator=(const EngineRunner&& other) noexcept = delete;	//Prevent Move assignment
+
 			void Run();
 
 		private:

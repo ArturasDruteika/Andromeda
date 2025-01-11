@@ -7,7 +7,7 @@ namespace Andromeda
 	namespace EngineCore
 	{
 		EngineRunner::EngineRunner()
-			: m_pEngineRunnerImpl{ new EngineRunner::EngineRunnerImpl(*this) }
+			: m_pEngineRunnerImpl{ new EngineRunner::EngineRunnerImpl() }
 		{
 		}
 

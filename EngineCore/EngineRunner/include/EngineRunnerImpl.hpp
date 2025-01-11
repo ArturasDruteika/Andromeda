@@ -13,13 +13,17 @@ namespace Andromeda
 		class EngineRunner::EngineRunnerImpl
 		{
 		public:
-			EngineRunnerImpl(EngineRunner& parent);
+			EngineRunnerImpl();
 			~EngineRunnerImpl();
+
+			EngineRunnerImpl(const EngineRunnerImpl& other) = delete;	// Prevent Copy Constructor
+			EngineRunnerImpl& operator=(const EngineRunnerImpl& other) = delete;	// Prevent Copy assignment
+			EngineRunnerImpl(EngineRunnerImpl&& other) noexcept = delete;	// Prevent Move constructor
+			EngineRunnerImpl& operator=(const EngineRunnerImpl&& other) noexcept = delete;	//Prevent Move assignment
 
 			void Run();
 
 		private:
-			EngineRunner& m_parent;
 			GLFWWindow m_glfwWindow;
 		};
 	}

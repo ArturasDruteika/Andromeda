@@ -30,6 +30,11 @@ namespace Andromeda
 			OpenGLRenderer();
 			~OpenGLRenderer();
 
+			OpenGLRenderer(const OpenGLRenderer& other) = delete;	// Prevent Copy Constructor
+			OpenGLRenderer& operator=(const OpenGLRenderer& other) = delete;	// Prevent Copy Assignment
+			OpenGLRenderer(OpenGLRenderer&& other) noexcept = delete;	// Prevent Move Constructor
+			OpenGLRenderer& operator=(OpenGLRenderer&& other) noexcept = delete;	// Prevent Move Assignment
+
 			bool IsInitialized() const;
 			void Initialize(GLADloadfunc load);
 			void RenderFrame();

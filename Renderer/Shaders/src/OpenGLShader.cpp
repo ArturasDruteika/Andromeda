@@ -65,9 +65,19 @@ namespace Andromeda
 			m_vertexShaderSourceCode = Utils::FileOperations::LoadFileAsString(filepath);
 		}
 
+		std::string OpenGLShader::GetVertexShaderSourceCode()
+		{
+			return m_vertexShaderSourceCode;
+		}
+
 		void OpenGLShader::SetFragmentShaderProgramSource(const std::string& filepath)
 		{
 			m_fragmentShaderSourceCode = Utils::FileOperations::LoadFileAsString(filepath);
+		}
+
+		std::string OpenGLShader::GetFragmentShaderSourceCode()
+		{
+			return m_fragmentShaderSourceCode;
 		}
 
 		unsigned int OpenGLShader::GetProgram()

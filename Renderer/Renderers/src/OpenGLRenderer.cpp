@@ -7,12 +7,13 @@ namespace Andromeda
 	namespace Renderer
 	{
 		OpenGLRenderer::OpenGLRenderer()
-            : m_pOpenGLRendererImpl{ new OpenGLRenderer::OpenGLRendererImpl(*this)}
+            : m_pOpenGLRendererImpl{ new OpenGLRenderer::OpenGLRendererImpl()}
 		{
 		}
 
 		OpenGLRenderer::~OpenGLRenderer()
 		{
+			delete m_pOpenGLRendererImpl;
 		}
 
         bool OpenGLRenderer::IsInitialized() const
