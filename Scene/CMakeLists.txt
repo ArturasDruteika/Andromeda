@@ -1,0 +1,80 @@
+cmake_minimum_required(VERSION 3.24)
+
+project(Scene)
+
+set(CMAKE_BUILD_PARALLEL_LEVEL)
+set(CMAKE_CXX_STANDARD 23)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+
+add_definitions(-DSCENE_EXPORT)
+
+# OpenGL
+find_package(OpenGL REQUIRED)
+target_link_libraries(${EXEC_NAME} OpenGL::GL)
+if (APPLE)
+    # Ignore macOS OpenGL deprecation warnings
+    target_compile_definitions(${EXEC_NAME} PRIVATE GL_SILENCE_DEPRECATION)
+endif ()
+
+add_library(${PROJECT_NAME} 
+    SHARED
+	    Scene/include/OpenGLScene.hpp
+		Scene/src/OpenGLScene.cpp
+        Scene/include/OpenGLSceneImpl.hpp
+		Scene/src/OpenGLSceneImpl.cpp
+        RenderableObjects/include/RenderableObject.hpp
+		RenderableObjects/src/RenderableObject.cpp
+        RenderableObjects/include/RenderableObjectImpl.hpp
+		RenderableObjects/src/RenderableObjectImpl.cpp
+)
+
+# Organize files into Solution Explorer folders
+source_group(
+    TREE 
+        ${CMAKE_CURRENT_SOURCE_DIR}/Scene
+    PREFIX
+        "Scene"
+    FILES
+        Scene/include/OpenGLScene.hpp
+		Scene/src/OpenGLScene.cpp
+        Scene/include/OpenGLSceneImpl.hpp
+		Scene/src/OpenGLSceneImpl.cpp
+)
+
+source_group(
+    TREE 
+        ${CMAKE_CURRENT_SOURCE_DIR}/RenderableObjects
+    PREFIX
+        "RenderableObjects"
+    FILES
+        RenderableObjects/include/RenderableObject.hpp
+		RenderableObjects/src/RenderableObject.cpp
+        RenderableObjects/include/RenderableObjectImpl.hpp
+		RenderableObjects/src/RenderableObjectImpl.cpp
+)
+
+target_include_directories(${PROJECT_NAME} 
+    PRIVATE
+        ..//Utils//PrecompiledHeaders//include//
+        ..//Utils//FileOperations//include//
+        ..//ExternalGraphicsLibs//glad//include//
+	    ..//ExternalGraphicsLibs//glm//
+)
+
+# Link GLFW and OpenGL to the executable
+target_link_libraries(${PROJECT_NAME} 
+    PRIVATE
+        Utils
+        ExternalGraphicsLibs
+)
+
+add_dependencies(${PROJECT_NAME} 
+    Utils
+    ExternalGraphicsLibs
+)
+
+# Enable precompiled headers
+target_precompile_headers(${PROJECT_NAME} 
+    REUSE_FROM
+        Utils
+)
