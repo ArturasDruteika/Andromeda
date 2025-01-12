@@ -18,7 +18,6 @@
 
 
 #include "pch.hpp"
-#include <glm/glm.hpp>
 
 
 namespace Andromeda
@@ -35,6 +34,13 @@ namespace Andromeda
 			OpenGLRenderableObject& operator=(const OpenGLRenderableObject& other) = delete;	// Prevent Copy Assignment
 			OpenGLRenderableObject(OpenGLRenderableObject&& other) noexcept = delete;	// Prevent Move Constructor
 			OpenGLRenderableObject& operator=(OpenGLRenderableObject&& other) noexcept = delete;	// Prevent Move Assignment
+
+			void SetPosition(float x, float y, float z);
+			std::vector<float> GetPosition();
+			void SetRotation(float pitch, float yaw, float roll);
+			std::vector<float> GetRotation();
+			void SetScale(float x, float y, float z);
+			std::vector<float> GetScale();
 
 		private:
 			class OpenGLRenderableObjectImpl;

@@ -22,10 +22,10 @@ add_library(${PROJECT_NAME}
 		Scene/src/OpenGLScene.cpp
         Scene/include/OpenGLSceneImpl.hpp
 		Scene/src/OpenGLSceneImpl.cpp
-        RenderableObjects/include/RenderableObject.hpp
-		RenderableObjects/src/RenderableObject.cpp
-        RenderableObjects/include/RenderableObjectImpl.hpp
-		RenderableObjects/src/RenderableObjectImpl.cpp
+        RenderableObjects/include/OpenGLRenderableObject.hpp
+		RenderableObjects/src/OpenGLRenderableObject.cpp
+        RenderableObjects/include/OpenGLRenderableObjectImpl.hpp
+		RenderableObjects/src/OpenGLRenderableObjectImpl.cpp
 )
 
 # Organize files into Solution Explorer folders
@@ -47,10 +47,10 @@ source_group(
     PREFIX
         "RenderableObjects"
     FILES
-        RenderableObjects/include/RenderableObject.hpp
-		RenderableObjects/src/RenderableObject.cpp
-        RenderableObjects/include/RenderableObjectImpl.hpp
-		RenderableObjects/src/RenderableObjectImpl.cpp
+        RenderableObjects/include/OpenGLRenderableObject.hpp
+		RenderableObjects/src/OpenGLRenderableObject.cpp
+        RenderableObjects/include/OpenGLRenderableObjectImpl.hpp
+		RenderableObjects/src/OpenGLRenderableObjectImpl.cpp
 )
 
 target_include_directories(${PROJECT_NAME} 

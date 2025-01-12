@@ -3,6 +3,7 @@
 
 
 	#include "../include/OpenGLScene.hpp"
+	#include "../../RenderableObjects/include/OpenGLRenderableObject.hpp"
 
 
 	namespace Andromeda
@@ -20,7 +21,12 @@
 				OpenGLSceneImpl(OpenGLSceneImpl&& other) noexcept = delete;	// Prevent Move Constructor
 				OpenGLSceneImpl& operator=(OpenGLSceneImpl&& other) noexcept = delete;	// Prevent Move Assignment
 
+				void AddObject(OpenGLRenderableObject* object);
+				void RemoveObject(OpenGLRenderableObject* object);
+				const std::vector<OpenGLRenderableObject*> GetObjects() const;
+
 			private:
+				std::vector<OpenGLRenderableObject*> m_renderableObjsPtrsVec;
 			};
 		}
 	}

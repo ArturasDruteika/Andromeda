@@ -18,6 +18,7 @@
 
 
 #include "pch.hpp"
+#include "../../RenderableObjects/include/OpenGLRenderableObject.hpp"
 
 
 namespace Andromeda
@@ -34,6 +35,10 @@ namespace Andromeda
 			OpenGLScene& operator=(const OpenGLScene& other) = delete;	// Prevent Copy Assignment
 			OpenGLScene(OpenGLScene&& other) noexcept = delete;	// Prevent Move Constructor
 			OpenGLScene& operator=(OpenGLScene&& other) noexcept = delete;	// Prevent Move Assignment
+
+			void AddObject(OpenGLRenderableObject* object);
+			void RemoveObject(OpenGLRenderableObject* object);
+			const std::vector<OpenGLRenderableObject*> GetObjects() const;
 
 		private:
 			class OpenGLSceneImpl;

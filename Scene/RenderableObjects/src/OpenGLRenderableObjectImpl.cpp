@@ -1,4 +1,4 @@
-#include "../include/RenderableObjectImpl.hpp"
+#include "../include/OpenGLRenderableObjectImpl.hpp"
 #include "glad/gl.h"
 
 
@@ -43,6 +43,36 @@ namespace Andromeda
 			// Unbind buffers
 			glBindBuffer(GL_ARRAY_BUFFER, 0);
 			glBindVertexArray(0);
+		}
+
+		void OpenGLRenderableObject::OpenGLRenderableObjectImpl::SetPosition(float x, float y, float z)
+		{
+			m_position = glm::vec3(x, y, z);
+		}
+
+		std::vector<float> OpenGLRenderableObject::OpenGLRenderableObjectImpl::GetPosition()
+		{
+			return { m_position.x, m_position.y, m_position.z };
+		}
+
+		void OpenGLRenderableObject::OpenGLRenderableObjectImpl::SetRotation(float pitch, float yaw, float roll)
+		{
+			m_rotation = glm::vec3(pitch, yaw, roll);
+		}
+
+		std::vector<float> OpenGLRenderableObject::OpenGLRenderableObjectImpl::GetRotation()
+		{
+			return { m_rotation.x, m_rotation.y, m_rotation.z };
+		}
+
+		void OpenGLRenderableObject::OpenGLRenderableObjectImpl::SetScale(float x, float y, float z)
+		{
+			m_scale = glm::vec3(x, y, z);
+		}
+
+		std::vector<float> OpenGLRenderableObject::OpenGLRenderableObjectImpl::GetScale()
+		{
+			return { m_scale.x, m_scale.y, m_scale.z };
 		}
 	}
 }
