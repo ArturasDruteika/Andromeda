@@ -38,6 +38,17 @@ target_precompile_headers(${PROJECT_NAME}
         PrecompiledHeaders/include/pch.hpp
 )
 
+
+### Post builds
+# SPDLog
+add_custom_command(
+	TARGET ${PROJECT_NAME} POST_BUILD 
+	COMMAND ${CMAKE_COMMAND} ARGS -E copy_if_different
+    ${spdlog_root_path}//bin//$<$<CONFIG:debug>:spdlogd.dll>$<$<CONFIG:release>:spdlog.dll>
+    $<TARGET_FILE_DIR:${PROJECT_NAME}>
+)
+
+
 # Organize files in Solution Explorer
 source_group(
     TREE 
@@ -57,14 +68,4 @@ source_group(
     FILES
         FileOperations/include/FileOperations.hpp
         FileOperations/src/FileOperations.cpp
-)
-
-
-### Post builds
-# SPDLog
-add_custom_command(
-	TARGET ${PROJECT_NAME} POST_BUILD 
-	COMMAND ${CMAKE_COMMAND} ARGS -E copy_if_different
-    ${spdlog_root_path}//bin//$<$<CONFIG:debug>:spdlogd.dll>$<$<CONFIG:release>:spdlog.dll>
-    $<TARGET_FILE_DIR:${PROJECT_NAME}>
 )

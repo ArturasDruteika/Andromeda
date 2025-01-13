@@ -28,31 +28,6 @@ add_library(${PROJECT_NAME}
 		RenderableObjects/src/OpenGLRenderableObjectImpl.cpp
 )
 
-# Organize files into Solution Explorer folders
-source_group(
-    TREE 
-        ${CMAKE_CURRENT_SOURCE_DIR}/Scene
-    PREFIX
-        "Scene"
-    FILES
-        Scene/include/OpenGLScene.hpp
-		Scene/src/OpenGLScene.cpp
-        Scene/include/OpenGLSceneImpl.hpp
-		Scene/src/OpenGLSceneImpl.cpp
-)
-
-source_group(
-    TREE 
-        ${CMAKE_CURRENT_SOURCE_DIR}/RenderableObjects
-    PREFIX
-        "RenderableObjects"
-    FILES
-        RenderableObjects/include/OpenGLRenderableObject.hpp
-		RenderableObjects/src/OpenGLRenderableObject.cpp
-        RenderableObjects/include/OpenGLRenderableObjectImpl.hpp
-		RenderableObjects/src/OpenGLRenderableObjectImpl.cpp
-)
-
 target_include_directories(${PROJECT_NAME} 
     PRIVATE
         ..//Utils//PrecompiledHeaders//include//
@@ -77,4 +52,30 @@ add_dependencies(${PROJECT_NAME}
 target_precompile_headers(${PROJECT_NAME} 
     REUSE_FROM
         Utils
+)
+
+
+# Organize files into Solution Explorer folders
+source_group(
+    TREE 
+        ${CMAKE_CURRENT_SOURCE_DIR}/Scene
+    PREFIX
+        "Scene"
+    FILES
+        Scene/include/OpenGLScene.hpp
+		Scene/src/OpenGLScene.cpp
+        Scene/include/OpenGLSceneImpl.hpp
+		Scene/src/OpenGLSceneImpl.cpp
+)
+
+source_group(
+    TREE 
+        ${CMAKE_CURRENT_SOURCE_DIR}/RenderableObjects
+    PREFIX
+        "RenderableObjects"
+    FILES
+        RenderableObjects/include/OpenGLRenderableObject.hpp
+		RenderableObjects/src/OpenGLRenderableObject.cpp
+        RenderableObjects/include/OpenGLRenderableObjectImpl.hpp
+		RenderableObjects/src/OpenGLRenderableObjectImpl.cpp
 )

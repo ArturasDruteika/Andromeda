@@ -26,29 +26,6 @@ add_library(${PROJECT_NAME}
 		Shaders/src/OpenGLShader.cpp
 )
 
-# Organize files into Solution Explorer folders
-source_group(
-    TREE 
-        ${CMAKE_CURRENT_SOURCE_DIR}/Renderers
-    PREFIX
-        "Renderers"
-    FILES
-        Renderers/include/OpenGLRenderer.hpp
-		Renderers/src/OpenGLRenderer.cpp
-        Renderers/include/OpenGLRendererImpl.hpp
-		Renderers/src/OpenGLRendererImpl.cpp
-)
-
-source_group(
-    TREE 
-        ${CMAKE_CURRENT_SOURCE_DIR}/Shaders
-    PREFIX
-        "Shaders"
-    FILES
-        Shaders/include/OpenGLShader.hpp
-		Shaders/src/OpenGLShader.cpp
-)
-
 target_include_directories(${PROJECT_NAME} 
     PRIVATE
         ..//Utils//PrecompiledHeaders//include//
@@ -77,7 +54,6 @@ target_precompile_headers(${PROJECT_NAME}
 
 
 ### Post builds
-
 # Define filenames
 set(VERTEX_SHADER_FILENAME "vertex_shader.glsl")
 set(FRAGMENT_SHADER_FILENAME "fragment_shader.glsl")
@@ -103,4 +79,28 @@ add_custom_command(
         "${FRAGMENT_SHADER_SOURCE}" "${SHADER_OUTPUT_DIR}/${FRAGMENT_SHADER_FILENAME}"
     COMMENT 
         "Creating directory and copying shader files to ${SHADER_OUTPUT_DIR}"
+)
+
+
+# Organize files into Solution Explorer folders
+source_group(
+    TREE 
+        ${CMAKE_CURRENT_SOURCE_DIR}/Renderers
+    PREFIX
+        "Renderers"
+    FILES
+        Renderers/include/OpenGLRenderer.hpp
+		Renderers/src/OpenGLRenderer.cpp
+        Renderers/include/OpenGLRendererImpl.hpp
+		Renderers/src/OpenGLRendererImpl.cpp
+)
+
+source_group(
+    TREE 
+        ${CMAKE_CURRENT_SOURCE_DIR}/Shaders
+    PREFIX
+        "Shaders"
+    FILES
+        Shaders/include/OpenGLShader.hpp
+		Shaders/src/OpenGLShader.cpp
 )
