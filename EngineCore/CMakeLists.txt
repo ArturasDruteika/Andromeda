@@ -49,8 +49,8 @@ target_include_directories(${PROJECT_NAME}
         ..//ExternalGraphicsLibs//glfw//
         ..//Utils//PrecompiledHeaders//include//
         ..//Renderer//Renderers//include//
-        ..//Scene//RenderableObjects//include//
-        ..//Scene//Scene//include//
+        ..//Environment//RenderableObjects//include//
+        ..//Environment//Scene//include//
 )
 
 # Link GLFW and OpenGL to the executable
@@ -59,14 +59,14 @@ target_link_libraries(${PROJECT_NAME}
         Utils
         ExternalGraphicsLibs
         Renderer
-        Scene
+        Environment
 )
 
 add_dependencies(${PROJECT_NAME} 
     Utils
 	ExternalGraphicsLibs
     Renderer
-    Scene
+    Environment
 )
 
 # Enable precompiled headers
