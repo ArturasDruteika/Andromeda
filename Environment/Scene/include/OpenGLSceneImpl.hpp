@@ -1,5 +1,5 @@
-	#ifndef SCENE__SCENE_IMPL__HPP
-	#define SCENE__SCENE_IMPL__HPP
+	#ifndef ENVIRONMENT__SCENE_IMPL__HPP
+	#define ENVIRONMENT__SCENE_IMPL__HPP
 
 
 	#include "../include/OpenGLScene.hpp"
@@ -8,7 +8,7 @@
 
 	namespace Andromeda
 	{
-		namespace Scene
+		namespace Environment
 		{
 			class OpenGLScene::OpenGLSceneImpl
 			{

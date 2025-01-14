@@ -1,12 +1,12 @@
 cmake_minimum_required(VERSION 3.24)
 
-project(Scene)
+project(Environment)
 
 set(CMAKE_BUILD_PARALLEL_LEVEL)
 set(CMAKE_CXX_STANDARD 23)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-add_definitions(-DSCENE_EXPORT)
+add_definitions(-DENVIRONMENT_EXPORT)
 
 # OpenGL
 find_package(OpenGL REQUIRED)

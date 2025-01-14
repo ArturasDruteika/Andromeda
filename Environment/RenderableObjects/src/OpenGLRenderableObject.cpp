@@ -4,7 +4,7 @@
 
 namespace Andromeda
 {
-	namespace Scene
+	namespace Environment
 	{
 		OpenGLRenderableObject::OpenGLRenderableObject(const std::vector<float>& vertices)
 			: m_pOpenGLRenderableObjectImpl{ new OpenGLRenderableObject ::OpenGLRenderableObjectImpl(vertices) }

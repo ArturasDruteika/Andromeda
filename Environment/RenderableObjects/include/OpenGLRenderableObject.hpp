@@ -1,19 +1,19 @@
-#ifndef SCENE__RENDERABLE_OBJECT__HPP
-#define SCENE__RENDERABLE_OBJECT__HPP
+#ifndef ENVIRONMENT__RENDERABLE_OBJECT__HPP
+#define ENVIRONMENT__RENDERABLE_OBJECT__HPP
 
 
 #if defined(_WIN32)
-	#if defined(SCENE_EXPORT)
-		#define SCENE_API __declspec(dllexport)
+	#if defined(ENVIRONMENT_EXPORT)
+		#define ENVIRONMENT_API __declspec(dllexport)
 	#else
-		#define SCENE_API __declspec(dllimport)
-	#endif /* SCENE_API */
+		#define ENVIRONMENT_API __declspec(dllimport)
+	#endif /* ENVIRONMENT_API */
 	#define _sprintf sprintf_s
 #endif
 
 #if defined(__GNUC__)
 	// GCC
-	#define SCENE_API __attribute__((visibility("default")))
+	#define ENVIRONMENT_API __attribute__((visibility("default")))
 #endif
 
 
@@ -22,9 +22,9 @@
 
 namespace Andromeda
 {
-	namespace Scene
+	namespace Environment
 	{
-		class SCENE_API OpenGLRenderableObject
+		class ENVIRONMENT_API OpenGLRenderableObject
 		{
 		public:
 			OpenGLRenderableObject(const std::vector<float>& vertices);
@@ -50,4 +50,4 @@ namespace Andromeda
 }
 
 
-#endif // SCENE__RENDERABLE_OBJECT__HPP
+#endif // ENVIRONMENT__RENDERABLE_OBJECT__HPP

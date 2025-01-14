@@ -4,7 +4,7 @@
 
 namespace Andromeda
 {
-	namespace Scene
+	namespace Environment
 	{
 		OpenGLScene::OpenGLScene()
 			: m_pOpenGLSceneImpl{ new OpenGLScene::OpenGLSceneImpl() }

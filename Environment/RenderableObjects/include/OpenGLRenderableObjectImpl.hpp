@@ -9,7 +9,7 @@
 
 namespace Andromeda
 {
-	namespace Scene
+	namespace Environment
 	{
 		class OpenGLRenderableObject::OpenGLRenderableObjectImpl
 		{
