@@ -35,12 +35,15 @@ namespace Andromeda
 			OpenGLRenderableObject(OpenGLRenderableObject&& other) noexcept = delete;	// Prevent Move Constructor
 			OpenGLRenderableObject& operator=(OpenGLRenderableObject&& other) noexcept = delete;	// Prevent Move Assignment
 
+			unsigned int GetVBO() const;
+			unsigned int GetVAO() const;
+			unsigned int GetVertexCount() const;
+			std::vector<float> GetPosition() const;
 			void SetPosition(float x, float y, float z);
-			std::vector<float> GetPosition();
+			std::vector<float> GetRotation() const;
 			void SetRotation(float pitch, float yaw, float roll);
-			std::vector<float> GetRotation();
+			std::vector<float> GetScale() const;
 			void SetScale(float x, float y, float z);
-			std::vector<float> GetScale();
 
 		private:
 			class OpenGLRenderableObjectImpl;

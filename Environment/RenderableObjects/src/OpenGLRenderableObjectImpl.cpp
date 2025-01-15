@@ -12,7 +12,7 @@ namespace Andromeda
 			, m_position{ 0.f }
 			, m_rotation{ 0.f }
 			, m_scale{ 1.f }
-			, m_vertextCount{ 0 }
+			, m_vertextCount{ static_cast<unsigned int>(vertices.size() / 6) }
 		{
 			Init(vertices);
 		}
@@ -45,14 +45,34 @@ namespace Andromeda
 			glBindVertexArray(0);
 		}
 
+		unsigned int OpenGLRenderableObject::OpenGLRenderableObjectImpl::GetVBO() const
+		{
+			return m_VBO;
+		}
+
+		unsigned int OpenGLRenderableObject::OpenGLRenderableObjectImpl::GetVAO() const
+		{
+			return m_VAO;
+		}
+
+		unsigned int OpenGLRenderableObject::OpenGLRenderableObjectImpl::GetVertexCount() const
+		{
+			return m_vertextCount;
+		}
+
+		std::vector<float> OpenGLRenderableObject::OpenGLRenderableObjectImpl::GetPosition() const
+		{
+			return { m_position.x, m_position.y, m_position.z };
+		}
+
 		void OpenGLRenderableObject::OpenGLRenderableObjectImpl::SetPosition(float x, float y, float z)
 		{
 			m_position = glm::vec3(x, y, z);
 		}
 
-		std::vector<float> OpenGLRenderableObject::OpenGLRenderableObjectImpl::GetPosition()
+		std::vector<float> OpenGLRenderableObject::OpenGLRenderableObjectImpl::GetRotation() const
 		{
-			return { m_position.x, m_position.y, m_position.z };
+			return { m_rotation.x, m_rotation.y, m_rotation.z };
 		}
 
 		void OpenGLRenderableObject::OpenGLRenderableObjectImpl::SetRotation(float pitch, float yaw, float roll)
@@ -60,19 +80,14 @@ namespace Andromeda
 			m_rotation = glm::vec3(pitch, yaw, roll);
 		}
 
-		std::vector<float> OpenGLRenderableObject::OpenGLRenderableObjectImpl::GetRotation()
+		std::vector<float> OpenGLRenderableObject::OpenGLRenderableObjectImpl::GetScale() const
 		{
-			return { m_rotation.x, m_rotation.y, m_rotation.z };
+			return { m_scale.x, m_scale.y, m_scale.z };
 		}
 
 		void OpenGLRenderableObject::OpenGLRenderableObjectImpl::SetScale(float x, float y, float z)
 		{
 			m_scale = glm::vec3(x, y, z);
-		}
-
-		std::vector<float> OpenGLRenderableObject::OpenGLRenderableObjectImpl::GetScale()
-		{
-			return { m_scale.x, m_scale.y, m_scale.z };
 		}
 	}
 }
