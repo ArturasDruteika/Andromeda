@@ -15,6 +15,7 @@ namespace Andromeda
 
 		void OpenGLScene::OpenGLSceneImpl::AddObject(OpenGLRenderableObject* object)
 		{
+			m_renderableObjsPtrsVec.push_back(object);
 		}
 
 		void OpenGLScene::OpenGLSceneImpl::RemoveObject(OpenGLRenderableObject* object)
