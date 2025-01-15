@@ -45,7 +45,7 @@ namespace Andromeda
             // Clear the screen
             glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
             glUseProgram(m_shader->GetProgram());
-            for (const auto& object : scene.GetObjects())
+            for (const auto& [id, object] : scene.GetObjects())
             {
                 glBindVertexArray(object->GetVAO());
                 glDrawArrays(GL_TRIANGLES, 0, object->GetVertexCount());

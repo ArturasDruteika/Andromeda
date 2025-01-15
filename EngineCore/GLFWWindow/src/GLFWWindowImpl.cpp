@@ -54,7 +54,8 @@ namespace Andromeda
                         };
 
                         Environment::OpenGLRenderableObject* object = new Environment::OpenGLRenderableObject(vertices);
-                        m_scene->AddObject(object);
+                        // TODO: implement dynamic ID assignment
+                        m_scene->AddObject(0, object);
 
                         SetCallbackFunctions();
                         m_isInitialized = true;

@@ -21,12 +21,12 @@
 				OpenGLSceneImpl(OpenGLSceneImpl&& other) noexcept = delete;	// Prevent Move Constructor
 				OpenGLSceneImpl& operator=(OpenGLSceneImpl&& other) noexcept = delete;	// Prevent Move Assignment
 
-				void AddObject(OpenGLRenderableObject* object);
-				void RemoveObject(OpenGLRenderableObject* object);
-				const std::vector<OpenGLRenderableObject*> GetObjects() const;
+				void AddObject(int id, OpenGLRenderableObject* object);
+				void RemoveObject(int id);
+				const std::unordered_map<int, OpenGLRenderableObject*> GetObjects() const;
 
 			private:
-				std::vector<OpenGLRenderableObject*> m_renderableObjsPtrsVec;
+				std::unordered_map<int, OpenGLRenderableObject*> m_renderableObjsPtrsMap;
 			};
 		}
 	}

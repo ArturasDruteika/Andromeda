@@ -13,18 +13,20 @@ namespace Andromeda
 		{
 		}
 
-		void OpenGLScene::OpenGLSceneImpl::AddObject(OpenGLRenderableObject* object)
+		void OpenGLScene::OpenGLSceneImpl::AddObject(int id, OpenGLRenderableObject* object)
 		{
-			m_renderableObjsPtrsVec.push_back(object);
+			m_renderableObjsPtrsMap.insert({ id, object });
 		}
 
-		void OpenGLScene::OpenGLSceneImpl::RemoveObject(OpenGLRenderableObject* object)
+		void OpenGLScene::OpenGLSceneImpl::RemoveObject(int id)
 		{
+			delete m_renderableObjsPtrsMap[id];
+			m_renderableObjsPtrsMap.erase(id);
 		}
 
-		const std::vector<OpenGLRenderableObject*> OpenGLScene::OpenGLSceneImpl::GetObjects() const
+		const std::unordered_map<int, OpenGLRenderableObject*> OpenGLScene::OpenGLSceneImpl::GetObjects() const
 		{
-			return m_renderableObjsPtrsVec;
+			return m_renderableObjsPtrsMap;
 		}
 	}
 }
