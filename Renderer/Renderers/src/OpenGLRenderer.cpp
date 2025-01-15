@@ -26,9 +26,9 @@ namespace Andromeda
 			m_pOpenGLRendererImpl->Initialize(load);
 		}
 
-		void OpenGLRenderer::RenderFrame()
+		void OpenGLRenderer::RenderFrame(const Environment::OpenGLScene& scene)
 		{
-			m_pOpenGLRendererImpl->RenderFrame();
+			m_pOpenGLRendererImpl->RenderFrame(scene);
 		}
 
 		void OpenGLRenderer::Shutdown()

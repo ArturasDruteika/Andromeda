@@ -35,19 +35,22 @@ namespace Andromeda
             glEnable(GL_DEPTH_TEST);
             glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
 
-            // Set up the triangle
-            SetupTriangle();
+            std::string vertexShaderSource = Utils::FileOperations::LoadFileAsString("shader_program_sources/vertex_shader.glsl");
+            std::string fragmentShaderSource = Utils::FileOperations::LoadFileAsString("shader_program_sources/fragment_shader.glsl");
+
+            m_shader = new OpenGLShader(vertexShaderSource, fragmentShaderSource);
 		}
 
-		void OpenGLRenderer::OpenGLRendererImpl::RenderFrame()
+		void OpenGLRenderer::OpenGLRendererImpl::RenderFrame(const Environment::OpenGLScene& scene)
 		{
             // Clear the screen
             glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
-            // Render the triangle
             glUseProgram(m_shader->GetProgram());
-            glBindVertexArray(m_VAO);
-            glDrawArrays(GL_TRIANGLES, 0, 3);
+            for (const auto& object : scene.GetObjects())
+            {
+                glBindVertexArray(object->GetVAO());
+                glDrawArrays(GL_TRIANGLES, 0, object->GetVertexCount());
+            }
 		}
 
 		void OpenGLRenderer::OpenGLRendererImpl::Shutdown()
@@ -83,10 +86,7 @@ namespace Andromeda
 
             // TODO: move shader creation to init
             // Vertex shader source
-            std::string vertexShaderSource = Utils::FileOperations::LoadFileAsString("shader_program_sources/vertex_shader.glsl");
-            std::string fragmentShaderSource = Utils::FileOperations::LoadFileAsString("shader_program_sources/fragment_shader.glsl");
 
-            m_shader = new OpenGLShader(vertexShaderSource, fragmentShaderSource);
 
             // Generate and bind VAO
             glGenVertexArrays(1, &m_VAO);

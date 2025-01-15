@@ -18,6 +18,7 @@
 
 
 #include <glad/gl.h>
+#include "OpenGLScene.hpp"
 
 
 namespace Andromeda
@@ -37,7 +38,7 @@ namespace Andromeda
 
 			bool IsInitialized() const;
 			void Initialize(GLADloadfunc load);
-			void RenderFrame();
+			void RenderFrame(const Environment::OpenGLScene& scene);
 			void Shutdown();
 
 		private:
