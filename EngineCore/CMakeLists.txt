@@ -43,6 +43,39 @@ add_library(${PROJECT_NAME}
 	    GLFWContext/src/GLFWContext.cpp
 )
 
+target_include_directories(${PROJECT_NAME} 
+    PRIVATE
+        ..//ExternalGraphicsLibs//glfw//include//
+        ..//ExternalGraphicsLibs//glfw//
+        ..//Utils//PrecompiledHeaders//include//
+        ..//Renderer//Renderers//include//
+        ..//Environment//RenderableObjects//include//
+        ..//Environment//Scene//include//
+)
+
+# Link GLFW and OpenGL to the executable
+target_link_libraries(${PROJECT_NAME} 
+    PRIVATE
+        Utils
+        ExternalGraphicsLibs
+        Renderer
+        Environment
+)
+
+add_dependencies(${PROJECT_NAME} 
+    Utils
+	ExternalGraphicsLibs
+    Renderer
+    Environment
+)
+
+# Enable precompiled headers
+target_precompile_headers(${PROJECT_NAME} 
+    REUSE_FROM
+        Utils
+)
+
+
 # Organize files into Solution Explorer folders
 source_group(
     TREE 
@@ -105,32 +138,4 @@ source_group(
     FILES
         GLFWContext/include/GLFWContext.hpp
 	    GLFWContext/src/GLFWContext.cpp
-)
-
-target_include_directories(${PROJECT_NAME} 
-    PRIVATE
-        ..//ExternalGraphicsLibs//glfw//include//
-        ..//ExternalGraphicsLibs//glfw//
-        ..//Utils//PrecompiledHeaders//include//
-        ..//Renderer//Renderers//include//
-)
-
-# Link GLFW and OpenGL to the executable
-target_link_libraries(${PROJECT_NAME} 
-    PRIVATE
-        Utils
-        ExternalGraphicsLibs
-        Renderer
-)
-
-add_dependencies(${PROJECT_NAME} 
-    Utils
-	ExternalGraphicsLibs
-    Renderer
-)
-
-# Enable precompiled headers
-target_precompile_headers(${PROJECT_NAME} 
-    REUSE_FROM
-        Utils
 )

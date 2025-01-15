@@ -23,13 +23,13 @@
 
 				bool IsInitialized() const;
 				void Initialize(GLADloadfunc load);
-				void RenderFrame();
+				void RenderFrame(const Environment::OpenGLScene& scene);
 				void Shutdown();
 
 			private:
 				void LoadGlad(GLADloadfunc load);
-				void SetupTriangle();
-
+				void CreateShader();
+				 
 				bool m_isInitialized;
 				// VBO - vertex buffer obj
 				// VAO - vertex array obj

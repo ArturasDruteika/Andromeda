@@ -19,8 +19,16 @@ add_subdirectory(glfw)
 
 # Add GLAD source code
 add_library(${PROJECT_NAME} 
-    STATIC 
+    SHARED 
         ${CMAKE_CURRENT_SOURCE_DIR}/glad/src/gl.c
+)
+
+# Define GLM_DLL_EXPORT for exporting symbols
+target_compile_definitions(${PROJECT_NAME} 
+    PRIVATE 
+        GLAD_API_CALL_EXPORT_BUILD
+    PUBLIC 
+        GLAD_API_CALL_EXPORT
 )
 
 target_include_directories(${PROJECT_NAME} 

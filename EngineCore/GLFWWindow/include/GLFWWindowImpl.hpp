@@ -4,6 +4,7 @@
 
 #include "GLFWWindow.hpp"
 #include "OpenGLRenderer.hpp"
+#include "OpenGLScene.hpp"
 #include "../../GLFWContext/include/GLFWContext.hpp"
 
 
@@ -43,6 +44,7 @@ namespace Andromeda
 			GLFWContext* m_context;
 			GLFWWindow& m_parent;
 			Renderer::OpenGLRenderer* m_renderer;
+			Environment::OpenGLScene* m_scene;
 		};
 	}
 }

@@ -1,4 +1,5 @@
 #include "../include/GLFWWindowImpl.hpp"
+#include "OpenGLRenderableObject.hpp"
 
 namespace Andromeda
 {
@@ -13,6 +14,7 @@ namespace Andromeda
 			, m_isInitialized{ false }
 			, m_renderer{ nullptr }
             , m_context{ nullptr }
+            , m_scene{ nullptr }
         {
             if (initWindow)
             {
@@ -41,7 +43,19 @@ namespace Andromeda
 
                         // Create and initialize the Renderer
                         m_renderer = new Renderer::OpenGLRenderer();
+                        m_scene = new Environment::OpenGLScene();
                         m_renderer->Initialize(reinterpret_cast<GLADloadfunc>(m_context->GetGLFWglproc()));
+
+                        std::vector<float> vertices = {
+                            // Positions        // Colors
+                            0.0f,  0.5f, 0.0f,  1.0f, 0.0f, 0.0f, // Top vertex (red)
+                           -0.5f, -0.5f, 0.0f,  0.0f, 1.0f, 0.0f, // Bottom left (green)
+                            0.5f, -0.5f, 0.0f,  0.0f, 0.0f, 1.0f  // Bottom right (blue)
+                        };
+
+                        Environment::OpenGLRenderableObject* object = new Environment::OpenGLRenderableObject(vertices);
+                        // TODO: implement dynamic ID assignment
+                        m_scene->AddObject(0, object);
 
                         SetCallbackFunctions();
                         m_isInitialized = true;
@@ -60,7 +74,7 @@ namespace Andromeda
             while (!glfwWindowShouldClose(m_window))
             {
                 // Delegate rendering to the Renderer
-                m_renderer->RenderFrame();
+                m_renderer->RenderFrame(*m_scene);
                 m_context->SwapBuffers(m_window);
                 glfwPollEvents();
             }

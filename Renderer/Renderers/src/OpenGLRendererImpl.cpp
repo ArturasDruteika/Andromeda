@@ -30,24 +30,26 @@ namespace Andromeda
 		void OpenGLRenderer::OpenGLRendererImpl::Initialize(GLADloadfunc load)
 		{
             LoadGlad(load);
-			m_isInitialized = true;
-            // Initialize OpenGL-specific states
-            glEnable(GL_DEPTH_TEST);
-            glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
 
-            // Set up the triangle
-            SetupTriangle();
+            // Initialize OpenGL-specific states
+            // TODO: Uncomment it when 3D stuff begins
+            //glEnable(GL_DEPTH_TEST);
+
+            glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
+            CreateShader();
+            m_isInitialized = true;
 		}
 
-		void OpenGLRenderer::OpenGLRendererImpl::RenderFrame()
+		void OpenGLRenderer::OpenGLRendererImpl::RenderFrame(const Environment::OpenGLScene& scene)
 		{
             // Clear the screen
             glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
-            // Render the triangle
             glUseProgram(m_shader->GetProgram());
-            glBindVertexArray(m_VAO);
-            glDrawArrays(GL_TRIANGLES, 0, 3);
+            for (const auto& [id, object] : scene.GetObjects())
+            {
+                glBindVertexArray(object->GetVAO());
+                glDrawArrays(GL_TRIANGLES, 0, object->GetVertexCount());
+            }
 		}
 
 		void OpenGLRenderer::OpenGLRendererImpl::Shutdown()
@@ -71,40 +73,11 @@ namespace Andromeda
             spdlog::info("GLAD initialized successfully. OpenGL version: {}", std::string(version));
         }
 
-        void OpenGLRenderer::OpenGLRendererImpl::SetupTriangle()
-		{
-            // Vertex data for a triangle
-            std::vector<float> vertices = {
-                // Positions        // Colors
-                0.0f,  0.5f, 0.0f,  1.0f, 0.0f, 0.0f, // Top vertex (red)
-               -0.5f, -0.5f, 0.0f,  0.0f, 1.0f, 0.0f, // Bottom left (green)
-                0.5f, -0.5f, 0.0f,  0.0f, 0.0f, 1.0f  // Bottom right (blue)
-            };
-
-            // Vertex shader source
+        void OpenGLRenderer::OpenGLRendererImpl::CreateShader()
+        {
             std::string vertexShaderSource = Utils::FileOperations::LoadFileAsString("shader_program_sources/vertex_shader.glsl");
             std::string fragmentShaderSource = Utils::FileOperations::LoadFileAsString("shader_program_sources/fragment_shader.glsl");
-
             m_shader = new OpenGLShader(vertexShaderSource, fragmentShaderSource);
-
-            // Generate and bind VAO
-            glGenVertexArrays(1, &m_VAO);
-            glBindVertexArray(m_VAO);
-
-            // Generate and bind VBO
-            glGenBuffers(1, &m_VBO);
-            glBindBuffer(GL_ARRAY_BUFFER, m_VBO);
-            glBufferData(GL_ARRAY_BUFFER, vertices.size() * sizeof(float), vertices.data(), GL_STATIC_DRAW);
-
-            // Vertex attribute pointers
-            glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)0); // Position
-            glEnableVertexAttribArray(0);
-            glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)(3 * sizeof(float))); // Color
-            glEnableVertexAttribArray(1);
-
-            // Unbind
-            glBindBuffer(GL_ARRAY_BUFFER, 0);
-            glBindVertexArray(0);
-		}
+        }
 	}
 }
