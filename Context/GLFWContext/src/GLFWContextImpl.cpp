@@ -14,11 +14,6 @@ namespace Andromeda
 
 		void GLFWContext::GLFWContextImpl::InitGLFW()
 		{
-			//if (!glfwInit())
-			//{
-			//	spdlog::error("Failed to initialize GLFW.");
-			//}
-			//spdlog::info("GLFW initialized successfully.");
 			m_isInitialized = true;
 			SetContextHints();
 		}
