@@ -29,10 +29,10 @@ namespace Andromeda
 			std::string GetWindowName() const;
 			bool IsInitialized();
 			GLFWwindow* GetWindow() const;
+			void SetCallbackFunctions();
 
 		private:
 			void CreateWindow();
-			void SetCallbackFunctions();
 
 			bool m_isInitialized;
 			int m_width;

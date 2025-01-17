@@ -76,6 +76,15 @@ namespace Andromeda
             m_isInitialized = false;
         }
 
+        void GLFWWindow::GLFWWindowImpl::SetCallbackFunctions()
+        {
+            glfwSetFramebufferSizeCallback(m_window, [](GLFWwindow* window, int width, int height)
+                {
+                    glViewport(0, 0, width, height);
+                    spdlog::info("Window resized to {}x{}", width, height);
+                });
+        }
+
         void GLFWWindow::GLFWWindowImpl::CreateWindow()
         {
             m_window = glfwCreateWindow(m_width, m_height, m_windowName.c_str(), nullptr, nullptr);
@@ -84,15 +93,6 @@ namespace Andromeda
             {
                 spdlog::error("Failed to create GLFW window.");
             }
-        }
-
-        void GLFWWindow::GLFWWindowImpl::SetCallbackFunctions()
-        {
-            //glfwSetFramebufferSizeCallback(m_window, [](GLFWwindow* window, int width, int height)
-            //    {
-            //        glViewport(0, 0, width, height);
-            //        spdlog::info("Window resized to {}x{}", width, height);
-            //    });
         }
     }
 }

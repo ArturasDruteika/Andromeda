@@ -48,5 +48,10 @@ namespace Andromeda
 		{
 			return m_pGLFWWindowImpl->GetWindow();
 		}
+
+		void GLFWWindow::SetCallbackFunctions()
+		{
+			m_pGLFWWindowImpl->SetCallbackFunctions();
+		}
 	}
 }

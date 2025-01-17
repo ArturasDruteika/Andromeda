@@ -44,6 +44,7 @@ namespace Andromeda
 			std::string GetWindowName() const;
 			bool IsInitialized();
 			GLFWwindow* GetWindow() const;
+			void SetCallbackFunctions();
 
 		private:
 			class GLFWWindowImpl;

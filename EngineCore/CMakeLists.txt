@@ -41,6 +41,7 @@ target_link_libraries(${PROJECT_NAME}
     PRIVATE
         Utils
         glfw
+        OpenGL::GL
         ExternalGraphicsLibs
         Window
         Context

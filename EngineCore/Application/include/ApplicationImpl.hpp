@@ -30,6 +30,8 @@ namespace Andromeda
 			void DeInit();
 
 		private:
+			void InitGLFW();
+
 			bool m_isInitialized;
 			Context::GLFWContext* m_context;
 			Window::GLFWWindow* m_window;

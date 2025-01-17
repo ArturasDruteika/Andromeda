@@ -41,7 +41,7 @@ target_include_directories(${PROJECT_NAME}
     PRIVATE
         ..//Utils//PrecompiledHeaders//include//
         ..//glfw//include//
-        ..//glfw//
+        ..//glfw//src//
 
 )
 
@@ -50,6 +50,7 @@ target_link_libraries(${PROJECT_NAME}
     PRIVATE
         Utils
         glfw
+        OpenGL::GL
 )
 
 add_dependencies(${PROJECT_NAME} 

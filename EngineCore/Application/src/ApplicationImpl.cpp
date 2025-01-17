@@ -32,6 +32,7 @@ namespace Andromeda
             {
                 try
                 {
+                    InitGLFW();
                     m_context = new Context::GLFWContext();
                     m_context->InitGLFW();
 
@@ -39,6 +40,7 @@ namespace Andromeda
                     {
                         m_window = new Window::GLFWWindow();
                         m_context->MakeContextCurrent(m_window->GetWindow());
+                        m_window->SetCallbackFunctions();
 
                         // Create and initialize the Renderer
                         m_renderer = new Renderer::OpenGLRenderer();
@@ -69,6 +71,15 @@ namespace Andromeda
         void Application::ApplicationImpl::DeInit()
         {
             
+        }
+
+        void Application::ApplicationImpl::InitGLFW()
+        {
+            if (!glfwInit())
+            {
+                spdlog::error("Failed to initialize GLFW.");
+            }
+            spdlog::info("GLFW initialized successfully.");
         }
 	}
 }

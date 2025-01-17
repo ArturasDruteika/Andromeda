@@ -36,6 +36,7 @@ target_link_libraries(${PROJECT_NAME}
     PRIVATE
         Utils
         glfw
+        OpenGL::GL
 )
 
 add_dependencies(${PROJECT_NAME} 
