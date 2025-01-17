@@ -1,5 +1,5 @@
-#ifndef ENGINECORE__MOUSE_EVENTS__HPP
-#define ENGINECORE__MOUSE_EVENTS__HPP
+#ifndef WINDOW__MOUSE_EVENTS__HPP
+#define WINDOW__MOUSE_EVENTS__HPP
 
 
 #include "EventType.hpp"
@@ -78,4 +78,4 @@ namespace Andromeda
 }
 
 
-#endif // ENGINECORE__MOUSE_EVENTS__HPP
+#endif // WINDOW__MOUSE_EVENTS__HPP

@@ -4,10 +4,10 @@
 
 namespace Andromeda
 {
-	namespace EngineCore
+	namespace Window
 	{
 		GLFWWindow::GLFWWindow(int width, int height, const std::string& windowName, bool initWindow)
-			: m_pGLFWWindowImpl(new GLFWWindow::GLFWWindowImpl(*this, width, height, windowName, initWindow))
+			: m_pGLFWWindowImpl{ new GLFWWindow::GLFWWindowImpl(width, height, windowName, initWindow) }
 		{
 		}
 
@@ -24,11 +24,6 @@ namespace Andromeda
 		void GLFWWindow::DeInit()
 		{
 			m_pGLFWWindowImpl->DeInit();
-		}
-
-		void GLFWWindow::RunMainLoop()
-		{
-			m_pGLFWWindowImpl->RunMainLoop();
 		}
 
 		unsigned int GLFWWindow::GetWidth() const
@@ -48,6 +43,10 @@ namespace Andromeda
 		bool GLFWWindow::IsInitialized()
 		{
 			return m_pGLFWWindowImpl->IsInitialized();
+		}
+		GLFWwindow* GLFWWindow::GetWindow() const
+		{
+			return m_pGLFWWindowImpl->GetWindow();
 		}
 	}
 }

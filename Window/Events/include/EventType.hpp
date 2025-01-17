@@ -1,5 +1,5 @@
-#ifndef ENGINECORE__EVENTS_TYPE__HPP
-#define ENGINECORE__EVENTS_TYPE__HPP
+#ifndef WINDOW__EVENTS_TYPE__HPP
+#define WINDOW__EVENTS_TYPE__HPP
 
 
 #include "pch.hpp"
@@ -46,4 +46,4 @@ namespace Andromeda
 }
 
 
-#endif // ENGINECORE__EVENTS_TYPE__HPP
+#endif // WINDOW__EVENTS_TYPE__HPP

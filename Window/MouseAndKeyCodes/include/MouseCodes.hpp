@@ -1,5 +1,5 @@
-#ifndef ENGINECORE__MOUSE_CODES__HPP
-#define ENGINECORE__MOUSE_CODES__HPP
+#ifndef WINDOW__MOUSE_CODES__HPP
+#define WINDOW__MOUSE_CODES__HPP
 
 
 #include "pch.hpp"
@@ -32,4 +32,4 @@ namespace Andromeda
 }
 
 
-#endif // ENGINECORE__MOUSE_CODES__HPP
+#endif // WINDOW__MOUSE_CODES__HPP

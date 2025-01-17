@@ -1,5 +1,5 @@
-#ifndef ENGINECORE__EVENT_DISPATCHER__HPP
-#define ENGINECORE__EVENT_DISPATCHER__HPP
+#ifndef WINDOW__EVENT_DISPATCHER__HPP
+#define WINDOW__EVENT_DISPATCHER__HPP
 
 
 #include "Event.hpp"
@@ -33,4 +33,4 @@ namespace Andromeda
 }
 
 
-#endif // ENGINECORE__EVENT_DISPATCHER__HPP
+#endif // WINDOW__EVENT_DISPATCHER__HPP

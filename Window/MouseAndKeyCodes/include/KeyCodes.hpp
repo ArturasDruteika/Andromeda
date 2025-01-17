@@ -1,5 +1,5 @@
-#ifndef ENGINECORE__KEY_CODES__HPP
-#define ENGINECORE__KEY_CODES__HPP
+#ifndef WINDOW__KEY_CODES__HPP
+#define WINDOW__KEY_CODES__HPP
 
 
 #include "pch.hpp"
@@ -149,4 +149,4 @@ namespace Andromeda
 }
 
 
-#endif // ENGINECORE__KEY_CODES__HPP
+#endif // WINDOW__KEY_CODES__HPP

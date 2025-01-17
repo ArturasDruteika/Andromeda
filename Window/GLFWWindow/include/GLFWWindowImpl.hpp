@@ -3,19 +3,17 @@
 
 
 #include "GLFWWindow.hpp"
-#include "OpenGLRenderer.hpp"
-#include "OpenGLScene.hpp"
-#include "../../GLFWContext/include/GLFWContext.hpp"
+#include "GLFW/glfw3.h"
 
 
 namespace Andromeda
 {
-	namespace EngineCore
+	namespace Window
 	{
 		class GLFWWindow::GLFWWindowImpl
 		{
 		public:
-			GLFWWindowImpl(GLFWWindow& parent, int width = 640, int height = 640, const std::string& windowName = "Andromeda Window", bool initWindow = true);
+			GLFWWindowImpl(int width = 640, int height = 640, const std::string& windowName = "Andromeda Window", bool initWindow = true);
 			~GLFWWindowImpl();
 
 			GLFWWindowImpl(const GLFWWindowImpl& other) = delete;	// Prevent Copy Constructor
@@ -25,12 +23,12 @@ namespace Andromeda
 
 			void Init();
 			void DeInit();
-			void RunMainLoop();
 
 			unsigned int GetWidth() const;
 			unsigned int GetHeight() const;
 			std::string GetWindowName() const;
 			bool IsInitialized();
+			GLFWwindow* GetWindow() const;
 
 		private:
 			void CreateWindow();
@@ -41,10 +39,6 @@ namespace Andromeda
 			int m_height;
 			std::string m_windowName;
 			GLFWwindow* m_window;
-			GLFWContext* m_context;
-			GLFWWindow& m_parent;
-			Renderer::OpenGLRenderer* m_renderer;
-			Environment::OpenGLScene* m_scene;
 		};
 	}
 }

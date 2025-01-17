@@ -1,5 +1,5 @@
-#ifndef ENGINECORE__KEY_EVENTS__HPP
-#define ENGINECORE__KEY_EVENTS__HPP
+#ifndef WINDOW__KEY_EVENTS__HPP
+#define WINDOW__KEY_EVENTS__HPP
 
 
 #include "EventType.hpp"
@@ -60,4 +60,4 @@ namespace Andromeda
 }
 
 
-#endif // ENGINECORE__KEY_EVENTS__HPP
+#endif // WINDOW__KEY_EVENTS__HPP

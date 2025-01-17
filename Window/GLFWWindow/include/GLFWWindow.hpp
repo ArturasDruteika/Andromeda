@@ -2,14 +2,30 @@
 #define ENGINECORE__GLFW_WINDOW__HPP
 
 
+#if defined(_WIN32)
+	#if defined(WINDOW_EXPORT)
+		#define WINDOW_API __declspec(dllexport)
+	#else
+	#define WINDOW_API __declspec(dllimport)
+#endif /* WINDOW_API */
+	#define _sprintf sprintf_s
+#endif
+
+#if defined(__GNUC__)
+	// GCC
+	#define WINDOW_API __attribute__((visibility("default")))
+#endif
+
+
 #include "pch.hpp"
+#include "GLFW/glfw3.h"
 
 
 namespace Andromeda
 {
-	namespace EngineCore
+	namespace Window
 	{
-		class GLFWWindow
+		class WINDOW_API GLFWWindow
 		{
 		public:
 			GLFWWindow(int width = 640, int height = 640, const std::string& windowName = "Andromeda Window", bool initWindow = true);
@@ -22,12 +38,12 @@ namespace Andromeda
 
 			void Init();
 			void DeInit();
-			void RunMainLoop();
 
 			unsigned int GetWidth() const;
 			unsigned int GetHeight() const;
 			std::string GetWindowName() const;
 			bool IsInitialized();
+			GLFWwindow* GetWindow() const;
 
 		private:
 			class GLFWWindowImpl;
