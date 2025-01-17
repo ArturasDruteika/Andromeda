@@ -1,18 +1,18 @@
-#include "../include/GLFWContext.hpp"
+#include "../include/GLFWContextImpl.hpp"
 
 
 namespace Andromeda
 {
-	namespace EngineCore
+	namespace Context
 	{
-		GLFWContext::GLFWContext()
+		GLFWContext::GLFWContextImpl::GLFWContextImpl()
 			: m_isInitialized{ false }
 		{
 		}
 
-		GLFWContext::~GLFWContext() = default;
+		GLFWContext::GLFWContextImpl::~GLFWContextImpl() = default;
 
-		void GLFWContext::InitGLFW()
+		void GLFWContext::GLFWContextImpl::InitGLFW()
 		{
 			if (!glfwInit())
 			{
@@ -23,14 +23,14 @@ namespace Andromeda
 			SetContextHints();
 		}
 
-		void GLFWContext::TerminateGLFW()
+		void GLFWContext::GLFWContextImpl::TerminateGLFW()
 		{
 			glfwTerminate();
 			spdlog::info("GLFW terminated.");
 			m_isInitialized = false;
 		}
 
-		void GLFWContext::SetContextHints()
+		void GLFWContext::GLFWContextImpl::SetContextHints()
 		{
 			glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
 			glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
@@ -41,7 +41,7 @@ namespace Andromeda
 #endif
 		}
 
-		void GLFWContext::MakeContextCurrent(GLFWwindow* window)
+		void GLFWContext::GLFWContextImpl::MakeContextCurrent(GLFWwindow* window)
 		{
 			// Make the OpenGL context current
 			glfwMakeContextCurrent(window);
@@ -55,18 +55,18 @@ namespace Andromeda
 			}
 		}
 
-		void GLFWContext::SwapBuffers(GLFWwindow* window)
+		void GLFWContext::GLFWContextImpl::SwapBuffers(GLFWwindow* window)
 		{
 			// Swap buffers and poll events
 			glfwSwapBuffers(window);
 		}
 
-		bool GLFWContext::IsInitialized()
+		bool GLFWContext::GLFWContextImpl::IsInitialized()
 		{
 			return m_isInitialized;
 		}
 
-		GLFWglproc GLFWContext::GetGLFWglproc()
+		GLFWglproc GLFWContext::GLFWContextImpl::GetGLFWglproc()
 		{
 			return reinterpret_cast<GLFWglproc>(glfwGetProcAddress);
 		}
