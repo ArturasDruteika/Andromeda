@@ -88,11 +88,11 @@ namespace Andromeda
 
         void GLFWWindow::GLFWWindowImpl::SetCallbackFunctions()
         {
-            glfwSetFramebufferSizeCallback(m_window, [](GLFWwindow* window, int width, int height)
-                {
-                    glViewport(0, 0, width, height);
-                    spdlog::info("Window resized to {}x{}", width, height);
-                });
+            //glfwSetFramebufferSizeCallback(m_window, [](GLFWwindow* window, int width, int height)
+            //    {
+            //        glViewport(0, 0, width, height);
+            //        spdlog::info("Window resized to {}x{}", width, height);
+            //    });
         }
     }
 }

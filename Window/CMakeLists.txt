@@ -40,8 +40,8 @@ add_library(${PROJECT_NAME}
 target_include_directories(${PROJECT_NAME} 
     PRIVATE
         ..//Utils//PrecompiledHeaders//include//
-        ..//ExternalGraphicsLibs//glfw//include//
-        ..//ExternalGraphicsLibs//glfw//
+        ..//glfw//include//
+        ..//glfw//
 
 )
 
@@ -49,12 +49,12 @@ target_include_directories(${PROJECT_NAME}
 target_link_libraries(${PROJECT_NAME} 
     PRIVATE
         Utils
-        ExternalGraphicsLibs
+        glfw
 )
 
 add_dependencies(${PROJECT_NAME} 
     Utils
-    ExternalGraphicsLibs
+    glfw
 )
 
 # Enable precompiled headers
