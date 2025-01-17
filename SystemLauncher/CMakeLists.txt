@@ -17,7 +17,7 @@ set_target_properties(
     VS_DEBUGGER_WORKING_DIRECTORY ${exe_dir})
 
 include_directories(
-	..//EngineCore//EngineRunner//include//
+	..//EngineCore//Application//include//
 )
 
 target_link_libraries(${PROJECT_NAME} 

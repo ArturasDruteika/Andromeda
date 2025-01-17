@@ -1,10 +1,12 @@
-#include "EngineRunner.hpp"
+#include "Application.hpp"
 
 
 int main(void)
 {
-    Andromeda::EngineCore::EngineRunner engineRunner;
-    engineRunner.Run();
+    Andromeda::EngineCore::Application app;
+    app.Init();
+    app.RunMainLoop();
+    app.DeInit();
 
     return 0;
 }
