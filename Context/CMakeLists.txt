@@ -1,12 +1,12 @@
 cmake_minimum_required(VERSION 3.24)
 
-project(EngineCore)
+project(Context)
 
 set(CMAKE_BUILD_PARALLEL_LEVEL)
 set(CMAKE_CXX_STANDARD 23)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-add_definitions(-DENGINECORE_EXPORT)
+add_definitions(-DCONTEXT_EXPORT)
 
 # OpenGL
 find_package(OpenGL REQUIRED)
@@ -18,10 +18,10 @@ endif ()
 
 add_library(${PROJECT_NAME} 
     SHARED
-	    Application/include/Application.hpp
-        Application/src/Application.cpp
-        Application/include/ApplicationImpl.hpp
-        Application/src/ApplicationImpl.cpp
+        GLFWContext/include/GLFWContext.hpp
+	    GLFWContext/src/GLFWContext.cpp
+        GLFWContext/include/GLFWContextImpl.hpp
+	    GLFWContext/src/GLFWContextImpl.cpp
 )
 
 target_include_directories(${PROJECT_NAME} 
@@ -29,11 +29,6 @@ target_include_directories(${PROJECT_NAME}
         ..//Utils//PrecompiledHeaders//include//
         ..//glfw//include//
         ..//glfw//
-        ..//Window//GLFWWindow//include//
-        ..//Context//GLFWCOntext//include//
-        ..//Renderer//Renderers//include//
-        ..//Environment//RenderableObjects//include//
-        ..//Environment//Scene//include//
 )
 
 # Link GLFW and OpenGL to the executable
@@ -42,21 +37,11 @@ target_link_libraries(${PROJECT_NAME}
         Utils
         glfw
         OpenGL::GL
-        ExternalGraphicsLibs
-        Window
-        Context
-        Renderer
-        Environment
 )
 
 add_dependencies(${PROJECT_NAME} 
     Utils
-    glfw
-	ExternalGraphicsLibs
-    Window
-    Context
-    Renderer
-    Environment
+	glfw
 )
 
 # Enable precompiled headers
@@ -69,12 +54,12 @@ target_precompile_headers(${PROJECT_NAME}
 # Organize files into Solution Explorer folders
 source_group(
     TREE 
-        ${CMAKE_CURRENT_SOURCE_DIR}/Application 
-    PREFIX 
-        "Application" 
+        ${CMAKE_CURRENT_SOURCE_DIR}/GLFWContext
+    PREFIX
+        "GLFWContext"
     FILES
-	    Application/include/Application.hpp
-        Application/src/Application.cpp
-        Application/include/ApplicationImpl.hpp
-        Application/src/ApplicationImpl.cpp
+        GLFWContext/include/GLFWContext.hpp
+	    GLFWContext/src/GLFWContext.cpp
+        GLFWContext/include/GLFWContextImpl.hpp
+	    GLFWContext/src/GLFWContextImpl.cpp
 )
