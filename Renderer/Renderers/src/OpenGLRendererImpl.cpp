@@ -27,9 +27,9 @@ namespace Andromeda
             return m_isInitialized;
         }
 
-		void OpenGLRenderer::OpenGLRendererImpl::Initialize(GLADloadfunc load)
+		void OpenGLRenderer::OpenGLRendererImpl::Initialize(const char* name)
 		{
-            LoadGlad(load);
+            LoadGlad(reinterpret_cast<GLADloadfunc>(name));
 
             // Initialize OpenGL-specific states
             // TODO: Uncomment it when 3D stuff begins

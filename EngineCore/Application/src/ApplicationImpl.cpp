@@ -45,7 +45,7 @@ namespace Andromeda
                         // Create and initialize the Renderer
                         m_renderer = new Renderer::OpenGLRenderer();
                         m_scene = new Environment::OpenGLScene();
-                        m_renderer->Initialize(reinterpret_cast<GLADloadfunc>(m_context->GetGLFWglproc()));
+                        m_renderer->Initialize(reinterpret_cast<const char*>(m_context->GetGLFWglproc()));
 
                         std::vector<float> vertices = {
                             // Positions        // Colors

@@ -17,7 +17,6 @@
 #endif
 
 
-#include <glad/gl.h>
 #include "OpenGLScene.hpp"
 
 
@@ -37,7 +36,7 @@ namespace Andromeda
 			OpenGLRenderer& operator=(OpenGLRenderer&& other) noexcept = delete;	// Prevent Move Assignment
 
 			bool IsInitialized() const;
-			void Initialize(GLADloadfunc load);
+			void Initialize(const char* name);
 			void RenderFrame(const Environment::OpenGLScene& scene);
 			void Shutdown();
 

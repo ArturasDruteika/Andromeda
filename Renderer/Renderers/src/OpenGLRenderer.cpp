@@ -21,9 +21,9 @@ namespace Andromeda
             return m_pOpenGLRendererImpl->IsInitialized();
         }
 
-		void OpenGLRenderer::Initialize(GLADloadfunc load)
+		void OpenGLRenderer::Initialize(const char* name)
 		{
-			m_pOpenGLRendererImpl->Initialize(load);
+			m_pOpenGLRendererImpl->Initialize(name);
 		}
 
 		void OpenGLRenderer::RenderFrame(const Environment::OpenGLScene& scene)
