@@ -7,9 +7,7 @@ namespace Andromeda
 	namespace Renderer
 	{
 		OpenGLRenderer::OpenGLRendererImpl::OpenGLRendererImpl()
-			: m_VAO{ 0 }
-			, m_VBO{ 0 }
-			, m_isInitialized{ false }
+			: m_isInitialized{ false }
             , m_shader{ nullptr }
 		{
 		}
@@ -57,8 +55,8 @@ namespace Andromeda
             // Cleanup resources
             delete m_shader;
             m_shader = nullptr;
-            glDeleteBuffers(1, &m_VBO);
-            glDeleteVertexArrays(1, &m_VAO);
+            //glDeleteBuffers(1, &m_VBO);
+            //glDeleteVertexArrays(1, &m_VAO);
 			m_isInitialized = false;
 		}
 

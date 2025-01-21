@@ -35,7 +35,6 @@ namespace Andromeda
 			bool m_isInitialized;
 			// VBO - vertex buffer obj
 			// VAO - vertex array obj
-			unsigned int m_VBO, m_VAO;
 			OpenGLShader* m_shader;
 		};
 	}
