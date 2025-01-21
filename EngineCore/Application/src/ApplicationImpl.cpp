@@ -70,7 +70,18 @@ namespace Andromeda
 
         void Application::ApplicationImpl::DeInit()
         {
-            
+			if (m_isInitialized)
+			{
+				m_renderer->Shutdown();
+				delete m_renderer;
+				m_renderer = nullptr;
+				delete m_scene;
+				m_scene = nullptr;
+				m_context->TerminateGLFW();
+				delete m_context;
+				m_context = nullptr;
+				m_isInitialized = false;
+			}
         }
 
         void Application::ApplicationImpl::InitGLFW()
