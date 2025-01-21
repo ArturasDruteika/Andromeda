@@ -9,6 +9,8 @@ namespace Andromeda
 		OpenGLRenderer::OpenGLRendererImpl::OpenGLRendererImpl()
 			: m_isInitialized{ false }
             , m_shader{ nullptr }
+			, m_FBO{ 0 }
+			, m_FBOTexture{ 0 }
 		{
 		}
 
@@ -55,10 +57,33 @@ namespace Andromeda
             // Cleanup resources
             delete m_shader;
             m_shader = nullptr;
-            //glDeleteBuffers(1, &m_VBO);
-            //glDeleteVertexArrays(1, &m_VAO);
+            glDeleteFramebuffers(1, &m_FBO);
+            glDeleteTextures(1, &m_FBOTexture);
 			m_isInitialized = false;
 		}
+
+        unsigned int OpenGLRenderer::OpenGLRendererImpl::GetFrameBufferObject()
+        {
+            return m_FBO;
+        }
+
+        unsigned int OpenGLRenderer::OpenGLRendererImpl::GetFrameBufferObjectTexture()
+        {
+            return m_FBOTexture;
+        }
+
+        void OpenGLRenderer::OpenGLRendererImpl::InitFrameBuffer()
+        {
+            glGenFramebuffers(1, &m_FBO);
+            glBindFramebuffer(GL_FRAMEBUFFER, m_FBO);
+
+            glGenTextures(1, &m_FBOTexture);
+            glBindTexture(GL_TEXTURE_2D, m_FBOTexture);
+            glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, 800, 600, 0, GL_RGBA, GL_UNSIGNED_BYTE, nullptr);
+            glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+            glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+            glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, m_FBOTexture, 0);
+        }
 
         void OpenGLRenderer::OpenGLRendererImpl::LoadGlad(GLADloadfunc load)
         {

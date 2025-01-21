@@ -28,13 +28,16 @@ namespace Andromeda
 			void RenderFrame(const Environment::OpenGLScene& scene);
 			void Shutdown();
 
+			unsigned int GetFrameBufferObject();
+			unsigned int GetFrameBufferObjectTexture();
+
 		private:
+			void InitFrameBuffer();
 			void LoadGlad(GLADloadfunc load);
 			void CreateShader();
 				 
 			bool m_isInitialized;
-			// VBO - vertex buffer obj
-			// VAO - vertex array obj
+			unsigned int m_FBO, m_FBOTexture;
 			OpenGLShader* m_shader;
 		};
 	}

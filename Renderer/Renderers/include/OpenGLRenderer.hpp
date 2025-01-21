@@ -40,6 +40,9 @@ namespace Andromeda
 			void RenderFrame(const Environment::OpenGLScene& scene);
 			void Shutdown();
 
+			unsigned int GetFrameBufferObject();
+			unsigned int GetFrameBufferObjectTexture();
+
 		private:
 			class OpenGLRendererImpl;
 			OpenGLRendererImpl* m_pOpenGLRendererImpl;
