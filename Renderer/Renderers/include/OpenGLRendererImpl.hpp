@@ -28,8 +28,8 @@ namespace Andromeda
 			void RenderFrame(const Environment::OpenGLScene& scene);
 			void Shutdown();
 
-			unsigned int GetFrameBufferObject();
-			unsigned int GetFrameBufferObjectTexture();
+			unsigned int GetFrameBufferObject() const;
+			unsigned int GetFrameBufferObjectTexture() const;
 
 		private:
 			void InitFrameBuffer();
