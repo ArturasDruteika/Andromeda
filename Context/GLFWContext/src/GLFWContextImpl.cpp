@@ -12,10 +12,10 @@ namespace Andromeda
 
 		GLFWContext::GLFWContextImpl::~GLFWContextImpl() = default;
 
-		void GLFWContext::GLFWContextImpl::InitGLFW()
+		void GLFWContext::GLFWContextImpl::Init()
 		{
-			m_isInitialized = true;
 			SetContextHints();
+			m_isInitialized = true;
 		}
 
 		void GLFWContext::GLFWContextImpl::TerminateGLFW()
