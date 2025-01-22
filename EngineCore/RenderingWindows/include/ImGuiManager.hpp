@@ -13,7 +13,7 @@ namespace Andromeda
 		class ImGuiManager
 		{
 		public:
-			ImGuiManager(GLFWwindow* window);
+			ImGuiManager(GLFWwindow* window, bool initialize = false);
 			~ImGuiManager();
 
 			ImGuiManager(const ImGuiManager& other) = delete;	// Prevent Copy Constructor
@@ -25,9 +25,12 @@ namespace Andromeda
 			void Render();
 			void DeInit();
 
+			bool IsInitialized() const;
+
 		private:
 			void InitImGui(GLFWwindow* window);
 
+			bool m_isInitialized;
 			ImGuiIO* m_io;
 		};
 	}

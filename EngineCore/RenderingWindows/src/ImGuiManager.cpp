@@ -2,15 +2,21 @@
 #include <imgui.h>
 #include <backends/imgui_impl_glfw.h>
 #include <backends/imgui_impl_opengl3.h>
+#include "spdlog/spdlog.h"
 
 
 namespace Andromeda
 {
 	namespace EngineCore
 	{
-		ImGuiManager::ImGuiManager(GLFWwindow* window)
+		ImGuiManager::ImGuiManager(GLFWwindow* window, bool initialize)
 			: m_io{ nullptr } // Initialize m_io as nullptr
+			, m_isInitialized{ initialize }
 		{
+			if (initialize)
+			{
+				Init(window);
+			}
 		}
 
 		ImGuiManager::~ImGuiManager()
@@ -19,7 +25,15 @@ namespace Andromeda
 
 		void ImGuiManager::Init(GLFWwindow* window)
 		{
-			InitImGui(window);
+			if (!m_isInitialized)
+			{
+				InitImGui(window);
+				m_isInitialized = true;
+			}
+			else
+			{
+				spdlog::info("ImGuiManager is already initialized.");
+			}
 		}
 
 		void ImGuiManager::Render()
@@ -58,6 +72,12 @@ namespace Andromeda
 			ImGui_ImplOpenGL3_Shutdown();
 			ImGui_ImplGlfw_Shutdown();
 			ImGui::DestroyContext();
+			m_isInitialized = false;
+		}
+
+		bool ImGuiManager::IsInitialized() const
+		{
+			return m_isInitialized;
 		}
 
 		void ImGuiManager::InitImGui(GLFWwindow* window)
