@@ -63,11 +63,13 @@ namespace Andromeda
 
 		void Application::ApplicationImpl::RunMainLoop()
 		{
+            unsigned int fboTexture = 0;
 			while (!glfwWindowShouldClose(m_window->GetWindow()))
 			{
                 glfwPollEvents();
-                m_imGuiManager->Render();
-				m_renderer->RenderFrame(*m_scene);
+                m_renderer->RenderFrame(*m_scene);
+				fboTexture = m_renderer->GetFrameBufferObjectTexture();
+                m_imGuiManager->Render(fboTexture);
 				glfwSwapBuffers(m_window->GetWindow());
 			}
 		}

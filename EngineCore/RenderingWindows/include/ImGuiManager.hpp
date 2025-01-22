@@ -22,7 +22,7 @@ namespace Andromeda
 			ImGuiManager& operator=(const ImGuiManager&& other) noexcept = delete;	//Prevent Move assignment
 
 			void Init(GLFWwindow* window);
-			void Render();
+			void Render(unsigned int texture);
 			void DeInit();
 
 			bool IsInitialized() const;

@@ -36,7 +36,7 @@ namespace Andromeda
 			}
 		}
 
-		void ImGuiManager::Render()
+		void ImGuiManager::Render(unsigned int texture)
 		{
 			// Start ImGui frame
 			ImGui_ImplOpenGL3_NewFrame();
@@ -48,7 +48,7 @@ namespace Andromeda
 
 			// ImGui window
 			ImGui::Begin("Triangle Window");
-			//ImGui::Image((ImTextureID)(intptr_t)fboTexture, ImVec2(800, 600), ImVec2(0, 1), ImVec2(1, 0));
+			ImGui::Image((ImTextureID)(intptr_t)texture, ImVec2(800, 600), ImVec2(0, 1), ImVec2(1, 0));
 			ImGui::End();
 
 			// Render ImGui
