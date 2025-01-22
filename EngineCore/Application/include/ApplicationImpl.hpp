@@ -3,9 +3,9 @@
 
 
 #include "../include/Application.hpp"
+#include "../../RenderingWindows/include/ImGuiManager.hpp"
 #include "OpenGLRenderer.hpp"
 #include "OpenGLScene.hpp"
-
 #include "GLFWContext.hpp"
 #include "GLFWWindow.hpp"
 
@@ -37,6 +37,7 @@ namespace Andromeda
 			Window::GLFWWindow* m_window;
 			Renderer::OpenGLRenderer* m_renderer;
 			Environment::OpenGLScene* m_scene;
+			ImGuiManager* m_imGuiManager;
 		};
 	}
 }

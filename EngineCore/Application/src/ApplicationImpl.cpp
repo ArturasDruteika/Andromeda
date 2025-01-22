@@ -11,36 +11,29 @@ namespace Andromeda
 			, m_window{ nullptr }
 			, m_renderer{ nullptr }
 			, m_scene{ nullptr }
+			, m_imGuiManager{ nullptr }
 		{
 		}
 
 		Application::ApplicationImpl::~ApplicationImpl() = default;
 
-		void Application::ApplicationImpl::RunMainLoop()
-		{
-            while (!glfwWindowShouldClose(m_window->GetWindow()))
-            {
-                m_renderer->RenderFrame(*m_scene);
-                glfwSwapBuffers(m_window->GetWindow());
-                glfwPollEvents();
-            }
-		}
-
-		void Application::ApplicationImpl::Init()
-		{
+        void Application::ApplicationImpl::Init()
+        {
             if (!m_isInitialized)
             {
                 try
                 {
                     InitGLFW();
                     m_context = new Context::GLFWContext();
-                    m_context->InitGLFW();
+                    m_context->Init();
 
                     if (m_context->IsInitialized())
                     {
                         m_window = new Window::GLFWWindow();
                         m_context->MakeContextCurrent(m_window->GetWindow());
                         m_window->SetCallbackFunctions();
+                        m_imGuiManager = new ImGuiManager(m_window->GetWindow());
+                        m_imGuiManager->Init(m_window->GetWindow());
 
                         // Create and initialize the Renderer
                         m_renderer = new Renderer::OpenGLRenderer();
@@ -66,12 +59,26 @@ namespace Andromeda
                     DeInit();
                 }
             }
+        }
+
+		void Application::ApplicationImpl::RunMainLoop()
+		{
+			while (!glfwWindowShouldClose(m_window->GetWindow()))
+			{
+                m_imGuiManager->Render();
+				m_renderer->RenderFrame(*m_scene);
+				glfwSwapBuffers(m_window->GetWindow());
+				glfwPollEvents();
+			}
 		}
 
         void Application::ApplicationImpl::DeInit()
         {
 			if (m_isInitialized)
 			{
+                m_imGuiManager->DeInit();
+                delete m_imGuiManager;
+                m_imGuiManager = nullptr;
 				m_renderer->Shutdown();
 				delete m_renderer;
 				m_renderer = nullptr;
