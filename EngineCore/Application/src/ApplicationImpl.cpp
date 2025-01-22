@@ -65,10 +65,10 @@ namespace Andromeda
 		{
 			while (!glfwWindowShouldClose(m_window->GetWindow()))
 			{
+                glfwPollEvents();
                 m_imGuiManager->Render();
 				m_renderer->RenderFrame(*m_scene);
 				glfwSwapBuffers(m_window->GetWindow());
-				glfwPollEvents();
 			}
 		}
 
