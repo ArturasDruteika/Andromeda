@@ -1,5 +1,6 @@
 #include "../include/GLFWWindowImpl.hpp"
 
+
 namespace Andromeda
 {
     namespace Window

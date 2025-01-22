@@ -22,6 +22,10 @@ add_library(${PROJECT_NAME}
         Application/src/Application.cpp
         Application/include/ApplicationImpl.hpp
         Application/src/ApplicationImpl.cpp
+        RenderingWindows/include/GraphicalModalWindow.hpp
+        RenderingWindows/src/GraphicalModalWindow.cpp
+        RenderingWindows/include/ImGuiManager.hpp
+        RenderingWindows/src/ImGuiManager.cpp
 )
 
 target_include_directories(${PROJECT_NAME} 
@@ -34,6 +38,8 @@ target_include_directories(${PROJECT_NAME}
         ..//Renderer//Renderers//include//
         ..//Environment//RenderableObjects//include//
         ..//Environment//Scene//include//
+        ..//imgui//imgui//
+	    ..//imgui//imgui//backends//
 )
 
 # Link GLFW and OpenGL to the executable
@@ -47,6 +53,7 @@ target_link_libraries(${PROJECT_NAME}
         Context
         Renderer
         Environment
+        imgui
 )
 
 add_dependencies(${PROJECT_NAME} 
@@ -57,6 +64,7 @@ add_dependencies(${PROJECT_NAME}
     Context
     Renderer
     Environment
+    imgui
 )
 
 # Enable precompiled headers
@@ -77,4 +85,16 @@ source_group(
         Application/src/Application.cpp
         Application/include/ApplicationImpl.hpp
         Application/src/ApplicationImpl.cpp
+)
+
+source_group(
+    TREE 
+        ${CMAKE_CURRENT_SOURCE_DIR}/RenderingWindows 
+    PREFIX 
+        "RenderingWindows" 
+    FILES
+        RenderingWindows/include/GraphicalModalWindow.hpp
+        RenderingWindows/src/GraphicalModalWindow.cpp
+        RenderingWindows/include/ImGuiManager.hpp
+        RenderingWindows/src/ImGuiManager.cpp
 )

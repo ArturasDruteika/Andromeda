@@ -20,7 +20,7 @@ namespace Andromeda
 			GLFWContextImpl(GLFWContextImpl&& other) noexcept = delete;	// Prevent Move constructor
 			GLFWContextImpl& operator=(const GLFWContextImpl&& other) noexcept = delete;	//Prevent Move assignment
 
-			void InitGLFW();
+			void Init();
 			void TerminateGLFW();
 			void SetContextHints();
 			void MakeContextCurrent(GLFWwindow* window);

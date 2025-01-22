@@ -16,9 +16,9 @@ namespace Andromeda
 			delete m_pGLFWContextImpl;
 		}
 
-		void GLFWContext::InitGLFW()
+		void GLFWContext::Init()
 		{
-			m_pGLFWContextImpl->InitGLFW();
+			m_pGLFWContextImpl->Init();
 		}
 
 		void GLFWContext::TerminateGLFW()

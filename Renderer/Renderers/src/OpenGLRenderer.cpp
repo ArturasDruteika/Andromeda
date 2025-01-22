@@ -35,5 +35,13 @@ namespace Andromeda
 		{
 			m_pOpenGLRendererImpl->Shutdown();
 		}
+		unsigned int OpenGLRenderer::GetFrameBufferObject()
+		{
+			return m_pOpenGLRendererImpl->GetFrameBufferObject();
+		}
+		unsigned int OpenGLRenderer::GetFrameBufferObjectTexture()
+		{
+			return m_pOpenGLRendererImpl->GetFrameBufferObjectTexture();
+		}
 	}
 }
