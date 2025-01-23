@@ -16,14 +16,14 @@ namespace Andromeda
 			delete m_pOpenGLRendererImpl;
 		}
 
-        bool OpenGLRenderer::IsInitialized() const
-        {
-            return m_pOpenGLRendererImpl->IsInitialized();
-        }
-
-		void OpenGLRenderer::Initialize(const char* name)
+		void OpenGLRenderer::Init(const char* name)
 		{
-			m_pOpenGLRendererImpl->Initialize(name);
+			m_pOpenGLRendererImpl->Init(name);
+		}
+
+		void OpenGLRenderer::DeInit()
+		{
+			m_pOpenGLRendererImpl->DeInit();
 		}
 
 		void OpenGLRenderer::RenderFrame(const Environment::OpenGLScene& scene)
@@ -31,14 +31,21 @@ namespace Andromeda
 			m_pOpenGLRendererImpl->RenderFrame(scene);
 		}
 
-		void OpenGLRenderer::Shutdown()
+		void OpenGLRenderer::ResizeViewport(int width, int height)
 		{
-			m_pOpenGLRendererImpl->Shutdown();
+			m_pOpenGLRendererImpl->ResizeViewport(width, height);
 		}
+
+		bool OpenGLRenderer::IsInitialized() const
+		{
+			return m_pOpenGLRendererImpl->IsInitialized();
+		}
+
 		unsigned int OpenGLRenderer::GetFrameBufferObject()
 		{
 			return m_pOpenGLRendererImpl->GetFrameBufferObject();
 		}
+
 		unsigned int OpenGLRenderer::GetFrameBufferObjectTexture()
 		{
 			return m_pOpenGLRendererImpl->GetFrameBufferObjectTexture();

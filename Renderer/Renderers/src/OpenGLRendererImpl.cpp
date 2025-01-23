@@ -24,12 +24,7 @@ namespace Andromeda
             glDeleteTextures(1, &m_FBOTexture);
         }
 
-        bool OpenGLRenderer::OpenGLRendererImpl::IsInitialized() const
-        {
-            return m_isInitialized;
-        }
-
-        void OpenGLRenderer::OpenGLRendererImpl::Initialize(const char* name)
+        void OpenGLRenderer::OpenGLRendererImpl::Init(const char* name)
         {
             LoadGlad(reinterpret_cast<GLADloadfunc>(name));
 
@@ -40,6 +35,19 @@ namespace Andromeda
             CreateShader();
             InitFrameBuffer(); // Initialize the framebuffer here
             m_isInitialized = true;
+        }
+
+        void OpenGLRenderer::OpenGLRendererImpl::DeInit()
+        {
+            // Cleanup resources
+            if (m_shader != nullptr)
+            {
+                delete m_shader;
+                m_shader = nullptr;
+            }
+            glDeleteFramebuffers(1, &m_FBO);
+            glDeleteTextures(1, &m_FBOTexture);
+            m_isInitialized = false;
         }
 
         void OpenGLRenderer::OpenGLRendererImpl::RenderFrame(const Environment::OpenGLScene& scene)
@@ -70,17 +78,31 @@ namespace Andromeda
             glBindFramebuffer(GL_FRAMEBUFFER, 0);
         }
 
-        void OpenGLRenderer::OpenGLRendererImpl::Shutdown()
+        void OpenGLRenderer::OpenGLRendererImpl::ResizeViewport(int width, int height) const
         {
-            // Cleanup resources
-            if (m_shader != nullptr)
+            glViewport(0, 0, width, height);
+
+            // Update the framebuffer texture size
+            glBindTexture(GL_TEXTURE_2D, m_FBOTexture);
+            glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, nullptr);
+
+            // Reattach the texture to the framebuffer
+            glBindFramebuffer(GL_FRAMEBUFFER, m_FBO);
+            glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, m_FBOTexture, 0);
+
+            if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE)
             {
-                delete m_shader;
-                m_shader = nullptr;
+                spdlog::error("Framebuffer is incomplete after resizing.");
             }
-            glDeleteFramebuffers(1, &m_FBO);
-            glDeleteTextures(1, &m_FBOTexture);
-            m_isInitialized = false;
+
+            glBindFramebuffer(GL_FRAMEBUFFER, 0);
+
+            spdlog::info("Renderer viewport resized to {}x{}", width, height);
+        }
+
+        bool OpenGLRenderer::OpenGLRendererImpl::IsInitialized() const
+        {
+            return m_isInitialized;
         }
 
         unsigned int OpenGLRenderer::OpenGLRendererImpl::GetFrameBufferObject() const
