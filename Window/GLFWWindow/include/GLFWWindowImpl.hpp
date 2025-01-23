@@ -33,6 +33,7 @@ namespace Andromeda
 
 		private:
 			void CreateWindow();
+			static void OnWindowResized(GLFWwindow* window, int width, int height);
 
 			bool m_isInitialized;
 			int m_width;
