@@ -3,9 +3,10 @@
 
 
 #include "../include/Application.hpp"
-#include "../../RenderingWindows/include/ImGuiManager.hpp"
 #include "OpenGLRenderer.hpp"
 #include "OpenGLScene.hpp"
+#include "../../RenderingWindows/include/ImGuiManager.hpp"
+
 #include "GLFWContext.hpp"
 #include "GLFWWindow.hpp"
 
@@ -31,6 +32,7 @@ namespace Andromeda
 
 		private:
 			void InitGLFW();
+			void InitGLAD();
 
 			bool m_isInitialized;
 			Context::GLFWContext* m_context;
