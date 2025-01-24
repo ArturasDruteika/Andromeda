@@ -1,7 +1,7 @@
 #include "../include/OpenGLShader.hpp"
 #include "FileOperations.hpp"
 #include "glad/gl.h"
-#include <glm/gtc/type_ptr.hpp>
+//#include <glm/gtc/type_ptr.hpp>
 
 
 
@@ -42,23 +42,23 @@ namespace Andromeda
 			glUseProgram(0);
 		}
 
-		void OpenGLShader::SetUniform(const std::string& name, float value)
-		{
-			int location = GetUniformLocation(name);
-			if (location != -1)
-			{
-				glUniform1f(location, value);
-			}
-		}
+		//void OpenGLShader::SetUniform(const std::string& name, float value)
+		//{
+		//	int location = GetUniformLocation(name);
+		//	if (location != -1)
+		//	{
+		//		glUniform1f(location, value);
+		//	}
+		//}
 
-		void OpenGLShader::SetUniform(const std::string& name, const glm::mat4& matrix)
-		{
-			int location = GetUniformLocation(name);
-			if (location != -1)
-			{
-				glUniformMatrix4fv(location, 1, GL_FALSE, glm::value_ptr(matrix));
-			}
-		}
+		//void OpenGLShader::SetUniform(const std::string& name, const glm::mat4& matrix)
+		//{
+		//	int location = GetUniformLocation(name);
+		//	if (location != -1)
+		//	{
+		//		glUniformMatrix4fv(location, 1, GL_FALSE, glm::value_ptr(matrix));
+		//	}
+		//}
 
 		void OpenGLShader::SetVertexShaderProgramSource(const std::string& filepath)
 		{

@@ -31,14 +31,15 @@ namespace Andromeda
                     {
                         m_window = new Window::GLFWWindow();
                         m_context->MakeContextCurrent(m_window->GetWindow());
+                        InitGLAD();
                         m_window->SetCallbackFunctions();
                         m_imGuiManager = new ImGuiManager(m_window->GetWindow());
                         m_imGuiManager->Init(m_window->GetWindow());
 
                         // Create and initialize the Renderer
                         m_renderer = new Renderer::OpenGLRenderer();
+						m_renderer->Initialize();
                         m_scene = new Environment::OpenGLScene();
-                        m_renderer->Initialize(reinterpret_cast<const char*>(m_context->GetGLFWglproc()));
 
                         std::vector<float> vertices = {
                             // Positions        // Colors
@@ -100,6 +101,17 @@ namespace Andromeda
                 spdlog::error("Failed to initialize GLFW.");
             }
             spdlog::info("GLFW initialized successfully.");
+        }
+
+        void Application::ApplicationImpl::InitGLAD()
+        {
+            if (!gladLoadGL(glfwGetProcAddress))
+            {
+                spdlog::error("Failed to initialize GLAD.");
+                return;
+            }
+            const char* version = reinterpret_cast<const char*>(glGetString(GL_VERSION));
+            spdlog::info("GLAD initialized successfully. OpenGL version: {}", std::string(version));
         }
 	}
 }

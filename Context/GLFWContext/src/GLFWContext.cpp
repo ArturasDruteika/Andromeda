@@ -1,5 +1,4 @@
 #include "../include/GLFWContext.hpp"
-#include "../include/GLFWContextImpl.hpp"
 
 
 namespace Andromeda
@@ -7,48 +6,64 @@ namespace Andromeda
 	namespace Context
 	{
 		GLFWContext::GLFWContext()
-			: m_pGLFWContextImpl{ new GLFWContext::GLFWContextImpl() }
+			: m_isInitialized{ false }
 		{
 		}
 
-		GLFWContext::~GLFWContext()
-		{
-			delete m_pGLFWContextImpl;
-		}
+		GLFWContext::~GLFWContext() = default;
 
 		void GLFWContext::Init()
 		{
-			m_pGLFWContextImpl->Init();
+			SetContextHints();
+			m_isInitialized = true;
 		}
 
 		void GLFWContext::TerminateGLFW()
 		{
-			m_pGLFWContextImpl->TerminateGLFW();
+			glfwTerminate();
+			spdlog::info("GLFW terminated.");
+			m_isInitialized = false;
 		}
 
 		void GLFWContext::SetContextHints()
 		{
-			m_pGLFWContextImpl->SetContextHints();
+			glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
+			glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
+			glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
+
+#ifdef __APPLE__
+			glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE); // Required on macOS
+#endif
 		}
 
 		void GLFWContext::MakeContextCurrent(GLFWwindow* window)
 		{
-			m_pGLFWContextImpl->MakeContextCurrent(window);
+			// Make the OpenGL context current
+			glfwMakeContextCurrent(window);
+
+			if (glfwGetCurrentContext() == nullptr)
+			{
+				spdlog::error("Failed to make OpenGL context current.");
+				glfwDestroyWindow(window);
+				glfwTerminate();
+				return;
+			}
 		}
 
 		void GLFWContext::SwapBuffers(GLFWwindow* window)
 		{
-			m_pGLFWContextImpl->SwapBuffers(window);
+			// Swap buffers and poll events
+			glfwSwapBuffers(window);
 		}
 
 		bool GLFWContext::IsInitialized()
 		{
-			return m_pGLFWContextImpl->IsInitialized();
+			return m_isInitialized;
 		}
 
 		GLFWglproc GLFWContext::GetGLFWglproc()
 		{
-			return m_pGLFWContextImpl->GetGLFWglproc();
+			return reinterpret_cast<GLFWglproc>(glfwGetProcAddress);
 		}
 	}
 }

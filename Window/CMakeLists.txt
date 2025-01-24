@@ -6,8 +6,6 @@ set(CMAKE_BUILD_PARALLEL_LEVEL)
 set(CMAKE_CXX_STANDARD 23)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-add_definitions(-DWINDOW_EXPORT)
-
 # OpenGL
 find_package(OpenGL REQUIRED)
 target_link_libraries(${EXEC_NAME} OpenGL::GL)
@@ -17,11 +15,9 @@ if (APPLE)
 endif ()
 
 add_library(${PROJECT_NAME} 
-    SHARED
-	    GLFWWindow/include/GLFWWindow.hpp
+    STATIC
+        GLFWWindow/include/GLFWWindow.hpp
         GLFWWindow/src/GLFWWindow.cpp
-        GLFWWindow/include/GLFWWindowImpl.hpp
-        GLFWWindow/src/GLFWWindowImpl.cpp
 	    Events/include/Event.hpp
 	    Events/src/Event.cpp
 	    Events/include/EventType.hpp
@@ -74,8 +70,6 @@ source_group(
     FILES
         GLFWWindow/include/GLFWWindow.hpp
         GLFWWindow/src/GLFWWindow.cpp
-        GLFWWindow/include/GLFWWindowImpl.hpp
-        GLFWWindow/src/GLFWWindowImpl.cpp
 )
 
 source_group(

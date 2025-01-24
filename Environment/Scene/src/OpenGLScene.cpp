@@ -1,5 +1,4 @@
 #include "../include/OpenGLScene.hpp"
-#include "../include/OpenGLSceneImpl.hpp"
 
 
 namespace Andromeda
@@ -7,28 +6,27 @@ namespace Andromeda
 	namespace Environment
 	{
 		OpenGLScene::OpenGLScene()
-			: m_pOpenGLSceneImpl{ new OpenGLScene::OpenGLSceneImpl() }
 		{
 		}
 
 		OpenGLScene::~OpenGLScene()
 		{
-			delete m_pOpenGLSceneImpl;
 		}
 
 		void OpenGLScene::AddObject(int id, OpenGLRenderableObject* object)
 		{
-			m_pOpenGLSceneImpl->AddObject(id, object);
+			m_renderableObjsPtrsMap.insert({ id, object });
 		}
 
 		void OpenGLScene::RemoveObject(int id)
 		{
-			m_pOpenGLSceneImpl->RemoveObject(id);
+			delete m_renderableObjsPtrsMap[id];
+			m_renderableObjsPtrsMap.erase(id);
 		}
 
 		const std::unordered_map<int, OpenGLRenderableObject*> OpenGLScene::GetObjects() const
 		{
-			return m_pOpenGLSceneImpl->GetObjects();
+			return m_renderableObjsPtrsMap;
 		}
 	}
 }
