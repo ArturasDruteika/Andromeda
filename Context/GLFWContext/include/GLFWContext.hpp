@@ -2,21 +2,6 @@
 #define CONTEXT__GLFW_CONTEXT__HPP
 
 
-#if defined(_WIN32)
-	#if defined(CONTEXT_EXPORT)
-		#define CONTEXT_API __declspec(dllexport)
-	#else
-	#define CONTEXT_API __declspec(dllimport)
-#endif /* CONTEXT_API */
-	#define _sprintf sprintf_s
-#endif
-
-#if defined(__GNUC__)
-	// GCC
-	#define CONTEXT_API __attribute__((visibility("default")))
-#endif
-
-
 #include "pch.hpp"
 #include "GLFW/glfw3.h"
 
@@ -25,7 +10,7 @@ namespace Andromeda
 {
 	namespace Context
 	{
-		class CONTEXT_API GLFWContext
+		class GLFWContext
 		{
 		public:
 			GLFWContext();
@@ -44,10 +29,9 @@ namespace Andromeda
 
 			bool IsInitialized();
 			GLFWglproc GetGLFWglproc();
-			
+
 		private:
-			class GLFWContextImpl;
-			GLFWContextImpl* m_pGLFWContextImpl;
+			bool m_isInitialized;
 		};
 	}
 }
