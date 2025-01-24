@@ -6,8 +6,6 @@ set(CMAKE_BUILD_PARALLEL_LEVEL)
 set(CMAKE_CXX_STANDARD 23)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-add_definitions(-DCONTEXT_EXPORT)
-
 # OpenGL
 find_package(OpenGL REQUIRED)
 target_link_libraries(${EXEC_NAME} OpenGL::GL)
@@ -17,11 +15,9 @@ if (APPLE)
 endif ()
 
 add_library(${PROJECT_NAME} 
-    SHARED
+    STATIC
         GLFWContext/include/GLFWContext.hpp
 	    GLFWContext/src/GLFWContext.cpp
-        GLFWContext/include/GLFWContextImpl.hpp
-	    GLFWContext/src/GLFWContextImpl.cpp
 )
 
 target_include_directories(${PROJECT_NAME} 
@@ -60,6 +56,4 @@ source_group(
     FILES
         GLFWContext/include/GLFWContext.hpp
 	    GLFWContext/src/GLFWContext.cpp
-        GLFWContext/include/GLFWContextImpl.hpp
-	    GLFWContext/src/GLFWContextImpl.cpp
 )

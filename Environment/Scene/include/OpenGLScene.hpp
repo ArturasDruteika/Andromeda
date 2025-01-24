@@ -2,21 +2,6 @@
 #define ENVIRONMENT__SCENE__HPP
 
 
-#if defined(_WIN32)
-	#if defined(ENVIRONMENT_EXPORT)
-		#define ENVIRONMENT_API __declspec(dllexport)
-	#else
-		#define ENVIRONMENT_API __declspec(dllimport)
-	#endif /* ENVIRONMENT_API */
-	#define _sprintf sprintf_s
-#endif
-
-#if defined(__GNUC__)
-	// GCC
-	#define ENVIRONMENT_API __attribute__((visibility("default")))
-#endif
-
-
 #include "pch.hpp"
 #include "../../RenderableObjects/include/OpenGLRenderableObject.hpp"
 
@@ -25,7 +10,7 @@ namespace Andromeda
 {
 	namespace Environment
 	{
-		class ENVIRONMENT_API OpenGLScene
+		class OpenGLScene
 		{
 		public:
 			OpenGLScene();
@@ -41,8 +26,7 @@ namespace Andromeda
 			const std::unordered_map<int, OpenGLRenderableObject*> GetObjects() const;
 
 		private:
-			class OpenGLSceneImpl;
-			OpenGLSceneImpl* m_pOpenGLSceneImpl;
+			std::unordered_map<int, OpenGLRenderableObject*> m_renderableObjsPtrsMap;
 		};
 	}
 }

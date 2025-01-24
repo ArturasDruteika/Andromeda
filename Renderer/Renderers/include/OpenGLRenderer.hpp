@@ -2,21 +2,7 @@
 #define RENDERER__OPENGL_RENDERER__HPP
 
 
-#if defined(_WIN32)
-	#if defined(RENDERER_EXPORT)
-		#define RENDERER_API __declspec(dllexport)
-	#else
-		#define RENDERER_API __declspec(dllimport)
-	#endif /* RENDERER_API */
-	#define _sprintf sprintf_s
-#endif
-
-#if defined(__GNUC__)
-	// GCC
-	#define RENDERER_API __attribute__((visibility("default")))
-#endif
-
-
+#include "../../Shaders/include/OpenGLShader.hpp"
 #include "OpenGLScene.hpp"
 
 
@@ -24,7 +10,7 @@ namespace Andromeda
 {
 	namespace Renderer
 	{
-		class RENDERER_API OpenGLRenderer
+		class OpenGLRenderer
 		{
 		public:
 			OpenGLRenderer();
@@ -35,18 +21,22 @@ namespace Andromeda
 			OpenGLRenderer(OpenGLRenderer&& other) noexcept = delete;	// Prevent Move Constructor
 			OpenGLRenderer& operator=(OpenGLRenderer&& other) noexcept = delete;	// Prevent Move Assignment
 
-			void Init(const char* name);
+			void Init();
 			void DeInit();
 			void RenderFrame(const Environment::OpenGLScene& scene);
-			void ResizeViewport(int width, int height);
+			void ResizeViewport(int width, int height) const;
 
 			bool IsInitialized() const;
-			unsigned int GetFrameBufferObject();
-			unsigned int GetFrameBufferObjectTexture();
+			unsigned int GetFrameBufferObject() const;
+			unsigned int GetFrameBufferObjectTexture() const;
 
 		private:
-			class OpenGLRendererImpl;
-			OpenGLRendererImpl* m_pOpenGLRendererImpl;
+			void InitFrameBuffer();
+			void CreateShader();
+
+			bool m_isInitialized;
+			unsigned int m_FBO, m_FBOTexture;
+			OpenGLShader* m_shader;
 		};
 	}
 }
