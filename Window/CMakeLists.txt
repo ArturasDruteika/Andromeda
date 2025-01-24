@@ -70,8 +70,6 @@ source_group(
     FILES
         GLFWWindow/include/GLFWWindow.hpp
         GLFWWindow/src/GLFWWindow.cpp
-        GLFWWindow/include/GLFWWindowImpl.hpp
-        GLFWWindow/src/GLFWWindowImpl.cpp
 )
 
 source_group(

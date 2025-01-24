@@ -3,7 +3,7 @@
 
 
 #include "pch.hpp"
-#include <glm/glm.hpp>
+//#include "glm/glm.hpp"
 
 
 namespace Andromeda
@@ -19,8 +19,8 @@ namespace Andromeda
 
 			void Bind() const;
 			void UnBind() const;
-			void SetUniform(const std::string& name, float value);
-			void SetUniform(const std::string& name, const glm::mat4& matrix);
+			//void SetUniform(const std::string& name, float value);
+			//void SetUniform(const std::string& name, const glm::mat4& matrix);
 
 			void SetVertexShaderProgramSource(const std::string& filepath);
 			std::string GetVertexShaderSourceCode();

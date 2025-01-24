@@ -2,29 +2,16 @@
 #define ENVIRONMENT__RENDERABLE_OBJECT__HPP
 
 
-#if defined(_WIN32)
-	#if defined(ENVIRONMENT_EXPORT)
-		#define ENVIRONMENT_API __declspec(dllexport)
-	#else
-		#define ENVIRONMENT_API __declspec(dllimport)
-	#endif /* ENVIRONMENT_API */
-	#define _sprintf sprintf_s
-#endif
-
-#if defined(__GNUC__)
-	// GCC
-	#define ENVIRONMENT_API __attribute__((visibility("default")))
-#endif
-
-
 #include "pch.hpp"
+#include "glad/gl.h"
+#include "glm/glm.hpp"
 
 
 namespace Andromeda
 {
 	namespace Environment
 	{
-		class ENVIRONMENT_API OpenGLRenderableObject
+		class OpenGLRenderableObject
 		{
 		public:
 			OpenGLRenderableObject(const std::vector<float>& vertices);
@@ -34,6 +21,7 @@ namespace Andromeda
 			OpenGLRenderableObject& operator=(const OpenGLRenderableObject& other) = delete;	// Prevent Copy Assignment
 			OpenGLRenderableObject(OpenGLRenderableObject&& other) noexcept = delete;	// Prevent Move Constructor
 			OpenGLRenderableObject& operator=(OpenGLRenderableObject&& other) noexcept = delete;	// Prevent Move Assignment
+
 
 			unsigned int GetVBO() const;
 			unsigned int GetVAO() const;
@@ -45,9 +33,16 @@ namespace Andromeda
 			std::vector<float> GetScale() const;
 			void SetScale(float x, float y, float z);
 
+
 		private:
-			class OpenGLRenderableObjectImpl;
-			OpenGLRenderableObjectImpl* m_pOpenGLRenderableObjectImpl;
+			void Init(const std::vector<float>& vertices);
+
+			unsigned int m_VBO;
+			unsigned int m_VAO;
+			unsigned int m_vertextCount;
+			glm::vec3 m_position;
+			glm::vec3 m_rotation;
+			glm::vec3 m_scale;
 		};
 	}
 }
