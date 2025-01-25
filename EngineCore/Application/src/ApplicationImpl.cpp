@@ -52,6 +52,15 @@ namespace Andromeda
                         // TODO: implement dynamic ID assignment
                         m_scene->AddObject(0, object);
                         m_isInitialized = true;
+
+                        m_window->OnResizeWindow.connect(
+                            boost::bind(
+                                &Renderer::OpenGLRenderer::ResizeViewport,
+                                m_renderer,
+                                boost::placeholders::_1,
+                                boost::placeholders::_2
+                            )
+                        );
                     }
                 }
                 catch (const std::exception& e)

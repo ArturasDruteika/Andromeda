@@ -5,6 +5,8 @@ namespace Andromeda
 {
 	namespace Window
 	{
+        ResizeWindowSignal GLFWWindow::OnResizeWindow;
+
         GLFWWindow::GLFWWindow(int width, int height, const std::string& windowName, bool initWindow)
             : m_width{ width }
             , m_height{ height }
@@ -83,6 +85,7 @@ namespace Andromeda
                 {
                     glViewport(0, 0, width, height);
                     spdlog::info("Window resized to {}x{}", width, height);
+                    OnResizeWindow(width, height);
                 });
         }
 
@@ -94,6 +97,12 @@ namespace Andromeda
             {
                 spdlog::error("Failed to create GLFW window.");
             }
+        }
+
+        void GLFWWindow::ResizeWindow(int width, int height)
+        {
+            glViewport(0, 0, width, height);
+            spdlog::info("Window resized to {}x{}", width, height);
         }
 	}
 }

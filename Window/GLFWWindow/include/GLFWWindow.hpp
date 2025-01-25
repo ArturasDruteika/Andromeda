@@ -4,12 +4,15 @@
 
 #include "pch.hpp"
 #include "GLFW/glfw3.h"
+#include "boost/signals2.hpp"
 
 
 namespace Andromeda
 {
 	namespace Window
 	{
+		typedef boost::signals2::signal<void(int, int)> ResizeWindowSignal;
+
 		class GLFWWindow
 		{
 		public:
@@ -31,8 +34,11 @@ namespace Andromeda
 			GLFWwindow* GetWindow() const;
 			void SetCallbackFunctions();
 
+			static ResizeWindowSignal OnResizeWindow;
+
 		private:
 			void CreateWindow();
+			void ResizeWindow(int width, int height);
 
 			bool m_isInitialized;
 			int m_width;
