@@ -103,6 +103,8 @@ namespace Andromeda
         {
             glViewport(0, 0, width, height);
             spdlog::info("Window resized to {}x{}", width, height);
+            m_width = width;
+            m_height = height;
         }
 	}
 }

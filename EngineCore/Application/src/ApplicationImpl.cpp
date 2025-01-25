@@ -75,9 +75,11 @@ namespace Andromeda
 		{
 			while (!glfwWindowShouldClose(m_window->GetWindow()))
 			{
+                int width, height;
+                glfwGetWindowSize(m_window->GetWindow(), &width, &height);
                 glfwPollEvents();
                 m_renderer->RenderFrame(*m_scene);
-                m_imGuiManager->Render(m_renderer->GetFrameBufferObjectTexture());
+                m_imGuiManager->Render(m_renderer->GetFrameBufferObjectTexture(), width, height);
 				glfwSwapBuffers(m_window->GetWindow());
 			}
 		}
