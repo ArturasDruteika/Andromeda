@@ -14,6 +14,11 @@ if (APPLE)
     target_compile_definitions(${EXEC_NAME} PRIVATE GL_SILENCE_DEPRECATION)
 endif ()
 
+set(Boost_USE_STATIC_LIBS   ON)
+set(Boost_USE_MULTITHREADED ON)
+set(Boost_USE_STATIC_RUNTIME OFF)
+find_package(Boost 1.79.0 COMPONENTS system serialization REQUIRED)
+
 add_library(${PROJECT_NAME} 
     STATIC
         GLFWWindow/include/GLFWWindow.hpp
@@ -38,6 +43,7 @@ target_include_directories(${PROJECT_NAME}
         ..//Utils//PrecompiledHeaders//include//
         ..//glfw//include//
         ..//glfw//src//
+        ${Boost_INCLUDE_DIR}
 
 )
 
@@ -47,6 +53,7 @@ target_link_libraries(${PROJECT_NAME}
         Utils
         glfw
         OpenGL::GL
+        ${Boost_LIBRARIES}
 )
 
 add_dependencies(${PROJECT_NAME} 
