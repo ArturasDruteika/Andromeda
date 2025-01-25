@@ -76,6 +76,17 @@ namespace Andromeda
             glBindFramebuffer(GL_FRAMEBUFFER, 0);
         }
 
+        void OpenGLRenderer::ResizeViewport(int width, int height) const
+        {
+            if (width > 0 && height > 0) {
+                glViewport(0, 0, width, height);
+                glBindTexture(GL_TEXTURE_2D, m_FBOTexture);
+                glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, nullptr);
+                glBindTexture(GL_TEXTURE_2D, 0);
+                spdlog::info("Viewport resized to {}x{}", width, height);
+            }
+        }
+
         bool OpenGLRenderer::IsInitialized() const
         {
             return m_isInitialized;
