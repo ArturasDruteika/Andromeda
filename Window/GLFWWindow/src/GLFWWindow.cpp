@@ -58,7 +58,7 @@ namespace Andromeda
             return m_windowName;
         }
 
-        bool GLFWWindow::IsInitialized()
+        bool GLFWWindow::IsInitialized() const
         {
             return m_isInitialized;
         }
@@ -81,12 +81,7 @@ namespace Andromeda
 
         void GLFWWindow::SetCallbackFunctions()
         {
-            glfwSetFramebufferSizeCallback(m_window, [](GLFWwindow* window, int width, int height)
-                {
-                    glViewport(0, 0, width, height);
-                    spdlog::info("Window resized to {}x{}", width, height);
-                    OnResizeWindow(width, height);
-                });
+            glfwSetFramebufferSizeCallback(m_window, ResizeWindow);
         }
 
         void GLFWWindow::CreateWindow()
@@ -97,14 +92,27 @@ namespace Andromeda
             {
                 spdlog::error("Failed to create GLFW window.");
             }
+
+            // Associate this instance with the GLFW window
+            glfwSetWindowUserPointer(m_window, this);
         }
 
-        void GLFWWindow::ResizeWindow(int width, int height)
+        void GLFWWindow::ResizeWindow(GLFWwindow* window, int width, int height)
         {
+            // Retrieve the instance of GLFWWindow associated with this GLFWwindow
+            GLFWWindow* instance = static_cast<GLFWWindow*>(glfwGetWindowUserPointer(window));
+            if (instance)
+            {
+                instance->m_width = width;  // Update the instance's width
+                instance->m_height = height; // Update the instance's height
+                spdlog::info("Window resized to {}x{}", width, height);
+
+                // Emit the signal for other listeners
+                OnResizeWindow(width, height);
+            }
+
+            // Update OpenGL viewport as well
             glViewport(0, 0, width, height);
-            spdlog::info("Window resized to {}x{}", width, height);
-            m_width = width;
-            m_height = height;
         }
 	}
 }
