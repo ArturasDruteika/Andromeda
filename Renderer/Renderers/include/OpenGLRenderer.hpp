@@ -21,16 +21,16 @@ namespace Andromeda
 			OpenGLRenderer(OpenGLRenderer&& other) noexcept = delete;	// Prevent Move Constructor
 			OpenGLRenderer& operator=(OpenGLRenderer&& other) noexcept = delete;	// Prevent Move Assignment
 
-			bool IsInitialized() const;
-			void Initialize();
-			void RenderFrame(const Environment::OpenGLScene& scene);
-			void Shutdown();
+			void Init(int width, int height);
+			void DeInit();
+			void RenderFrame(const Environment::OpenGLScene& scene, int width, int height);
 
+			bool IsInitialized() const;
 			unsigned int GetFrameBufferObject() const;
 			unsigned int GetFrameBufferObjectTexture() const;
 
 		private:
-			void InitFrameBuffer();
+			void InitFrameBuffer(int width, int height);
 			void CreateShader();
 
 			bool m_isInitialized;

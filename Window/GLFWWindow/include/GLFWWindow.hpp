@@ -6,6 +6,10 @@
 #include "GLFW/glfw3.h"
 
 
+constexpr int DEFAULT_WINDOW_WIDTH = 640;
+constexpr int DEFAULT_WINDOW_HEIGHT = 640;
+
+
 namespace Andromeda
 {
 	namespace Window
@@ -13,7 +17,12 @@ namespace Andromeda
 		class GLFWWindow
 		{
 		public:
-			GLFWWindow(int width = 640, int height = 640, const std::string& windowName = "Andromeda Window", bool initWindow = true);
+			GLFWWindow(
+				int width = DEFAULT_WINDOW_WIDTH, 
+				int height = DEFAULT_WINDOW_HEIGHT, 
+				const std::string& windowName = "Andromeda Window", 
+				bool initWindow = true
+			);
 			~GLFWWindow();
 
 			GLFWWindow(const GLFWWindow& other) = delete;	// Prevent Copy Constructor
@@ -27,12 +36,13 @@ namespace Andromeda
 			unsigned int GetWidth() const;
 			unsigned int GetHeight() const;
 			std::string GetWindowName() const;
-			bool IsInitialized();
+			bool IsInitialized() const;
 			GLFWwindow* GetWindow() const;
 			void SetCallbackFunctions();
 
 		private:
 			void CreateWindow();
+			static void ResizeWindow(GLFWwindow* window, int width, int height);
 
 			bool m_isInitialized;
 			int m_width;
