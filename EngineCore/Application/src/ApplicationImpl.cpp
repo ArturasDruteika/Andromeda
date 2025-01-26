@@ -38,7 +38,7 @@ namespace Andromeda
 
                         // Create and initialize the Renderer
                         m_renderer = new Renderer::OpenGLRenderer();
-						m_renderer->Init();
+						m_renderer->Init(m_window->GetWidth(), m_window->GetHeight());
                         m_scene = new Environment::OpenGLScene();
 
                         std::vector<float> vertices = {
@@ -75,11 +75,13 @@ namespace Andromeda
 		{
 			while (!glfwWindowShouldClose(m_window->GetWindow()))
 			{
-                int width, height;
-                glfwGetWindowSize(m_window->GetWindow(), &width, &height);
                 glfwPollEvents();
                 m_renderer->RenderFrame(*m_scene);
-                m_imGuiManager->Render(m_renderer->GetFrameBufferObjectTexture(), width, height);
+                m_imGuiManager->Render(
+                    m_renderer->GetFrameBufferObjectTexture(), 
+                    m_window->GetWidth(),
+					m_window->GetHeight()
+                );
 				glfwSwapBuffers(m_window->GetWindow());
 			}
 		}
