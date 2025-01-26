@@ -48,7 +48,7 @@ namespace Andromeda
             m_isInitialized = false;
         }
 
-        void OpenGLRenderer::RenderFrame(const Environment::OpenGLScene& scene)
+        void OpenGLRenderer::RenderFrame(const Environment::OpenGLScene& scene, int width, int height)
         {
             if (!m_isInitialized)
             {
@@ -58,7 +58,7 @@ namespace Andromeda
 
             // Bind the framebuffer for rendering
             glBindFramebuffer(GL_FRAMEBUFFER, m_FBO);
-            glViewport(0, 0, 800, 600);
+            glViewport(0, 0, width, height);
             glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
             glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); // Clear the framebuffer
 
