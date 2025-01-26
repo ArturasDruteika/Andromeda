@@ -24,14 +24,14 @@ namespace Andromeda
             glDeleteTextures(1, &m_FBOTexture);
         }
 
-        void OpenGLRenderer::Init()
+        void OpenGLRenderer::Init(int width, int height)
         {
             // Initialize OpenGL-specific states
             glEnable(GL_DEPTH_TEST); // Enable depth testing for 3D rendering
 
             glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
             CreateShader();
-            InitFrameBuffer(); // Initialize the framebuffer here
+            InitFrameBuffer(width, height); // Initialize the framebuffer here
             m_isInitialized = true;
         }
 
@@ -103,7 +103,7 @@ namespace Andromeda
             return m_FBOTexture;
         }
 
-        void OpenGLRenderer::InitFrameBuffer()
+        void OpenGLRenderer::InitFrameBuffer(int width, int height)
         {
             // Generate and bind the framebuffer
             glGenFramebuffers(1, &m_FBO);
@@ -112,7 +112,7 @@ namespace Andromeda
             // Generate and configure the texture for the framebuffer
             glGenTextures(1, &m_FBOTexture);
             glBindTexture(GL_TEXTURE_2D, m_FBOTexture);
-            glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, 800, 600, 0, GL_RGBA, GL_UNSIGNED_BYTE, nullptr);
+            glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, nullptr);
             glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
             glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
             glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, m_FBOTexture, 0);

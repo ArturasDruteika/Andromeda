@@ -21,7 +21,7 @@ namespace Andromeda
 			OpenGLRenderer(OpenGLRenderer&& other) noexcept = delete;	// Prevent Move Constructor
 			OpenGLRenderer& operator=(OpenGLRenderer&& other) noexcept = delete;	// Prevent Move Assignment
 
-			void Init();
+			void Init(int width, int height);
 			void DeInit();
 			void RenderFrame(const Environment::OpenGLScene& scene);
 			void ResizeViewport(int width, int height) const;
@@ -31,7 +31,7 @@ namespace Andromeda
 			unsigned int GetFrameBufferObjectTexture() const;
 
 		private:
-			void InitFrameBuffer();
+			void InitFrameBuffer(int width, int height);
 			void CreateShader();
 
 			bool m_isInitialized;
