@@ -16,11 +16,6 @@ if (APPLE)
     target_compile_definitions(${EXEC_NAME} PRIVATE GL_SILENCE_DEPRECATION)
 endif ()
 
-set(Boost_USE_STATIC_LIBS   ON)
-set(Boost_USE_MULTITHREADED ON)
-set(Boost_USE_STATIC_RUNTIME OFF)
-find_package(Boost 1.79.0 COMPONENTS system serialization REQUIRED)
-
 add_library(${PROJECT_NAME} 
     SHARED
 	    Application/include/Application.hpp
@@ -45,7 +40,6 @@ target_include_directories(${PROJECT_NAME}
         ..//Environment//Scene//include//
         ..//imgui//imgui//
 	    ..//imgui//imgui//backends//
-        ${Boost_INCLUDE_DIR}
 )
 
 # Link GLFW and OpenGL to the executable
@@ -60,7 +54,6 @@ target_link_libraries(${PROJECT_NAME}
         Renderer
         Environment
         imgui
-        ${Boost_LIBRARIES}
 )
 
 add_dependencies(${PROJECT_NAME} 
