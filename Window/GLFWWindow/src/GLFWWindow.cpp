@@ -5,7 +5,6 @@ namespace Andromeda
 {
 	namespace Window
 	{
-        ResizeWindowSignal GLFWWindow::OnResizeWindow;
 
         GLFWWindow::GLFWWindow(int width, int height, const std::string& windowName, bool initWindow)
             : m_width{ width }
@@ -106,9 +105,6 @@ namespace Andromeda
                 instance->m_width = width;  // Update the instance's width
                 instance->m_height = height; // Update the instance's height
                 spdlog::info("Window resized to {}x{}", width, height);
-
-                // Emit the signal for other listeners
-                OnResizeWindow(width, height);
             }
 
             // Update OpenGL viewport as well

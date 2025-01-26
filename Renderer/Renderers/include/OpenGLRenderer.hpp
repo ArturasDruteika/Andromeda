@@ -24,7 +24,6 @@ namespace Andromeda
 			void Init(int width, int height);
 			void DeInit();
 			void RenderFrame(const Environment::OpenGLScene& scene, int width, int height);
-			void ResizeViewport(int width, int height) const;
 
 			bool IsInitialized() const;
 			unsigned int GetFrameBufferObject() const;
