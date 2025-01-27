@@ -1,12 +1,13 @@
-#include "../include/OpenGLRenderer.hpp"
+#include "../include/OpenGLRendererImpl.hpp"
 #include "FileOperations.hpp"
+#include "glad/gl.h"
 
 
 namespace Andromeda
 {
-	namespace Renderer
+	namespace Rendering
 	{
-        OpenGLRenderer::OpenGLRenderer()
+        OpenGLRenderer::OpenGLRendererImpl::OpenGLRendererImpl()
             : m_isInitialized{ false }
             , m_shader{ nullptr }
             , m_FBO{ 0 }
@@ -14,7 +15,7 @@ namespace Andromeda
         {
         }
 
-        OpenGLRenderer::~OpenGLRenderer()
+        OpenGLRenderer::OpenGLRendererImpl::~OpenGLRendererImpl()
         {
             if (m_shader != nullptr)
             {
@@ -24,7 +25,7 @@ namespace Andromeda
             glDeleteTextures(1, &m_FBOTexture);
         }
 
-        void OpenGLRenderer::Init(int width, int height)
+        void OpenGLRenderer::OpenGLRendererImpl::Init(int width, int height)
         {
             // Initialize OpenGL-specific states
             glEnable(GL_DEPTH_TEST); // Enable depth testing for 3D rendering
@@ -35,7 +36,7 @@ namespace Andromeda
             m_isInitialized = true;
         }
 
-        void OpenGLRenderer::DeInit()
+        void OpenGLRenderer::OpenGLRendererImpl::DeInit()
         {
             // Cleanup resources
             if (m_shader != nullptr)
@@ -48,7 +49,7 @@ namespace Andromeda
             m_isInitialized = false;
         }
 
-        void OpenGLRenderer::RenderFrame(const Environment::OpenGLScene& scene, int width, int height)
+        void OpenGLRenderer::OpenGLRendererImpl::RenderFrame(const Rendering::OpenGLScene& scene, int width, int height)
         {
             if (!m_isInitialized)
             {
@@ -79,22 +80,22 @@ namespace Andromeda
             glBindFramebuffer(GL_FRAMEBUFFER, 0);
         }
 
-        bool OpenGLRenderer::IsInitialized() const
+        bool OpenGLRenderer::OpenGLRendererImpl::IsInitialized() const
         {
             return m_isInitialized;
         }
 
-        unsigned int OpenGLRenderer::GetFrameBufferObject() const
+        unsigned int OpenGLRenderer::OpenGLRendererImpl::GetFrameBufferObject() const
         {
             return m_FBO;
         }
 
-        unsigned int OpenGLRenderer::GetFrameBufferObjectTexture() const
+        unsigned int OpenGLRenderer::OpenGLRendererImpl::GetFrameBufferObjectTexture() const
         {
             return m_FBOTexture;
         }
 
-        void OpenGLRenderer::InitFrameBuffer(int width, int height)
+        void OpenGLRenderer::OpenGLRendererImpl::InitFrameBuffer(int width, int height)
         {
             // Generate and bind the framebuffer
             glGenFramebuffers(1, &m_FBO);
@@ -118,7 +119,7 @@ namespace Andromeda
             glBindFramebuffer(GL_FRAMEBUFFER, 0);
         }
 
-        void OpenGLRenderer::CreateShader()
+        void OpenGLRenderer::OpenGLRendererImpl::CreateShader()
         {
             std::string vertexShaderSource = Utils::FileOperations::LoadFileAsString("shader_program_sources/vertex_shader.glsl");
             std::string fragmentShaderSource = Utils::FileOperations::LoadFileAsString("shader_program_sources/fragment_shader.glsl");

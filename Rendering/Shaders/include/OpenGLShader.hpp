@@ -3,12 +3,11 @@
 
 
 #include "pch.hpp"
-//#include "glm/glm.hpp"
 
 
 namespace Andromeda
 {
-	namespace Renderer
+	namespace Rendering
 	{
 		class OpenGLShader
 		{

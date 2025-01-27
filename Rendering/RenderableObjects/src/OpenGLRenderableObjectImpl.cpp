@@ -1,11 +1,12 @@
-#include "../include/OpenGLRenderableObject.hpp"
+#include "../include/OpenGLRenderableObjectImpl.hpp"
+#include "glad/gl.h"
 
 
 namespace Andromeda
 {
-	namespace Environment
+	namespace Rendering
 	{
-		OpenGLRenderableObject::OpenGLRenderableObject(const std::vector<float>& vertices)
+		OpenGLRenderableObject::OpenGLRenderableObjectImpl::OpenGLRenderableObjectImpl(const std::vector<float>& vertices)
 			: m_VBO{ 0 }
 			, m_VAO{ 0 }
 			, m_position{ 0.f }
@@ -16,11 +17,13 @@ namespace Andromeda
 			Init(vertices);
 		}
 
-		OpenGLRenderableObject::~OpenGLRenderableObject()
+		OpenGLRenderableObject::OpenGLRenderableObjectImpl::~OpenGLRenderableObjectImpl()
 		{
+			glDeleteVertexArrays(1, &m_VAO);
+			glDeleteBuffers(1, &m_VBO);
 		}
 
-		void OpenGLRenderableObject::Init(const std::vector<float>& vertices)
+		void OpenGLRenderableObject::OpenGLRenderableObjectImpl::Init(const std::vector<float>& vertices)
 		{
 			// Generate VAO and VBO
 			glGenVertexArrays(1, &m_VAO);
@@ -44,47 +47,47 @@ namespace Andromeda
 			glBindVertexArray(0);
 		}
 
-		unsigned int OpenGLRenderableObject::GetVBO() const
+		unsigned int OpenGLRenderableObject::OpenGLRenderableObjectImpl::GetVBO() const
 		{
 			return m_VBO;
 		}
 
-		unsigned int OpenGLRenderableObject::GetVAO() const
+		unsigned int OpenGLRenderableObject::OpenGLRenderableObjectImpl::GetVAO() const
 		{
 			return m_VAO;
 		}
 
-		unsigned int OpenGLRenderableObject::GetVertexCount() const
+		unsigned int OpenGLRenderableObject::OpenGLRenderableObjectImpl::GetVertexCount() const
 		{
 			return m_vertextCount;
 		}
 
-		std::vector<float> OpenGLRenderableObject::GetPosition() const
+		std::vector<float> OpenGLRenderableObject::OpenGLRenderableObjectImpl::GetPosition() const
 		{
 			return { m_position.x, m_position.y, m_position.z };
 		}
 
-		void OpenGLRenderableObject::SetPosition(float x, float y, float z)
+		void OpenGLRenderableObject::OpenGLRenderableObjectImpl::SetPosition(float x, float y, float z)
 		{
 			m_position = glm::vec3(x, y, z);
 		}
 
-		std::vector<float> OpenGLRenderableObject::GetRotation() const
+		std::vector<float> OpenGLRenderableObject::OpenGLRenderableObjectImpl::GetRotation() const
 		{
 			return { m_rotation.x, m_rotation.y, m_rotation.z };
 		}
 
-		void OpenGLRenderableObject::SetRotation(float pitch, float yaw, float roll)
+		void OpenGLRenderableObject::OpenGLRenderableObjectImpl::SetRotation(float pitch, float yaw, float roll)
 		{
 			m_rotation = glm::vec3(pitch, yaw, roll);
 		}
 
-		std::vector<float> OpenGLRenderableObject::GetScale() const
+		std::vector<float> OpenGLRenderableObject::OpenGLRenderableObjectImpl::GetScale() const
 		{
 			return { m_scale.x, m_scale.y, m_scale.z };
 		}
 
-		void OpenGLRenderableObject::SetScale(float x, float y, float z)
+		void OpenGLRenderableObject::OpenGLRenderableObjectImpl::SetScale(float x, float y, float z)
 		{
 			m_scale = glm::vec3(x, y, z);
 		}

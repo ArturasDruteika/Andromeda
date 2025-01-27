@@ -35,9 +35,10 @@ target_include_directories(${PROJECT_NAME}
         ..//glfw//
         ..//Window//GLFWWindow//include//
         ..//Context//GLFWCOntext//include//
-        ..//Renderer//Renderers//include//
-        ..//Environment//RenderableObjects//include//
-        ..//Environment//Scene//include//
+        ..//Rendering//Renderers//include//
+        ..//Rendering//RenderableObjects//include//
+        ..//Rendering//Scene//include//
+        ..//Rendering//OpenGLLoader//include//
         ..//imgui//imgui//
 	    ..//imgui//imgui//backends//
 )
@@ -51,8 +52,7 @@ target_link_libraries(${PROJECT_NAME}
         ExternalGraphicsLibs
         Window
         Context
-        Renderer
-        Environment
+        Rendering
         imgui
 )
 
@@ -62,8 +62,7 @@ add_dependencies(${PROJECT_NAME}
 	ExternalGraphicsLibs
     Window
     Context
-    Renderer
-    Environment
+    Rendering
     imgui
 )
 

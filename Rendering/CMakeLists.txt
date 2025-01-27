@@ -1,10 +1,12 @@
 cmake_minimum_required(VERSION 3.24)
 
-project(Renderer)
+project(Rendering)
 
 set(CMAKE_BUILD_PARALLEL_LEVEL)
 set(CMAKE_CXX_STANDARD 23)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
+
+add_definitions(-DRENDERING_EXPORT)
 
 # OpenGL
 find_package(OpenGL REQUIRED)
@@ -15,11 +17,29 @@ if (APPLE)
 endif ()
 
 add_library(${PROJECT_NAME} 
-    STATIC
+    SHARED
 	    Renderers/include/OpenGLRenderer.hpp
 		Renderers/src/OpenGLRenderer.cpp
+        Renderers/include/OpenGLRendererImpl.hpp
+		Renderers/src/OpenGLRendererImpl.cpp
+
         Shaders/include/OpenGLShader.hpp
 		Shaders/src/OpenGLShader.cpp
+
+        Scene/include/OpenGLScene.hpp
+		Scene/src/OpenGLScene.cpp
+        Scene/include/OpenGLSceneImpl.hpp
+		Scene/src/OpenGLSceneImpl.cpp
+
+        RenderableObjects/include/OpenGLRenderableObject.hpp
+		RenderableObjects/src/OpenGLRenderableObject.cpp
+        RenderableObjects/include/OpenGLRenderableObjectImpl.hpp
+		RenderableObjects/src/OpenGLRenderableObjectImpl.cpp
+
+        OpenGLLoader/include/OpenGLLoader.hpp
+		OpenGLLoader/src/OpenGLLoader.cpp
+        OpenGLLoader/include/OpenGLLoaderImpl.hpp
+		OpenGLLoader/src/OpenGLLoaderImpl.cpp
 )
 
 target_include_directories(${PROJECT_NAME} 
@@ -28,8 +48,6 @@ target_include_directories(${PROJECT_NAME}
         ..//Utils//FileOperations//include//
         ..//ExternalGraphicsLibs//glad//include//
 	    ..//ExternalGraphicsLibs//glm//
-        ..//Environment//RenderableObjects//include//
-        ..//Environment//Scene//include//
 )
 
 # Link GLFW and OpenGL to the executable
@@ -37,13 +55,11 @@ target_link_libraries(${PROJECT_NAME}
     PRIVATE
         Utils
         ExternalGraphicsLibs
-        Environment
 )
 
 add_dependencies(${PROJECT_NAME} 
     Utils
     ExternalGraphicsLibs
-    Environment
 )
 
 # Enable precompiled headers
@@ -91,6 +107,8 @@ source_group(
     FILES
         Renderers/include/OpenGLRenderer.hpp
 		Renderers/src/OpenGLRenderer.cpp
+        Renderers/include/OpenGLRendererImpl.hpp
+		Renderers/src/OpenGLRendererImpl.cpp
 )
 
 source_group(
@@ -101,4 +119,40 @@ source_group(
     FILES
         Shaders/include/OpenGLShader.hpp
 		Shaders/src/OpenGLShader.cpp
+)
+
+source_group(
+    TREE 
+        ${CMAKE_CURRENT_SOURCE_DIR}/Scene
+    PREFIX
+        "Scene"
+    FILES
+        Scene/include/OpenGLScene.hpp
+		Scene/src/OpenGLScene.cpp
+        Scene/include/OpenGLSceneImpl.hpp
+		Scene/src/OpenGLSceneImpl.cpp
+)
+
+source_group(
+    TREE 
+        ${CMAKE_CURRENT_SOURCE_DIR}/RenderableObjects
+    PREFIX
+        "RenderableObjects"
+    FILES
+        RenderableObjects/include/OpenGLRenderableObject.hpp
+		RenderableObjects/src/OpenGLRenderableObject.cpp
+        RenderableObjects/include/OpenGLRenderableObjectImpl.hpp
+		RenderableObjects/src/OpenGLRenderableObjectImpl.cpp
+)
+
+source_group(
+    TREE 
+        ${CMAKE_CURRENT_SOURCE_DIR}/OpenGLLoader
+    PREFIX
+        "OpenGLLoader"
+    FILES
+        OpenGLLoader/include/OpenGLLoader.hpp
+		OpenGLLoader/src/OpenGLLoader.cpp
+        OpenGLLoader/include/OpenGLLoaderImpl.hpp
+		OpenGLLoader/src/OpenGLLoaderImpl.cpp
 )
