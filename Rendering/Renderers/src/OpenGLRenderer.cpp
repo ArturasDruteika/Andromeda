@@ -4,7 +4,7 @@
 
 namespace Andromeda
 {
-	namespace Renderer
+	namespace Rendering
 	{
         OpenGLRenderer::OpenGLRenderer()
             : m_isInitialized{ false }
@@ -48,7 +48,7 @@ namespace Andromeda
             m_isInitialized = false;
         }
 
-        void OpenGLRenderer::RenderFrame(const Environment::OpenGLScene& scene, int width, int height)
+        void OpenGLRenderer::RenderFrame(const Rendering::OpenGLScene& scene, int width, int height)
         {
             if (!m_isInitialized)
             {

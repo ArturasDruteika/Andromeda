@@ -37,9 +37,9 @@ namespace Andromeda
                         m_imGuiManager->Init(m_window->GetWindow());
 
                         // Create and initialize the Renderer
-                        m_renderer = new Renderer::OpenGLRenderer();
+                        m_renderer = new Rendering::OpenGLRenderer();
 						m_renderer->Init(m_window->GetWidth(), m_window->GetHeight());
-                        m_scene = new Environment::OpenGLScene();
+                        m_scene = new Rendering::OpenGLScene();
 
                         std::vector<float> vertices = {
                             // Positions        // Colors
@@ -48,7 +48,7 @@ namespace Andromeda
                             0.5f, -0.5f, 0.0f,  0.0f, 0.0f, 1.0f  // Bottom right (blue)
                         };
 
-                        Environment::OpenGLRenderableObject* object = new Environment::OpenGLRenderableObject(vertices);
+                        Rendering::OpenGLRenderableObject* object = new Rendering::OpenGLRenderableObject(vertices);
                         // TODO: implement dynamic ID assignment
                         m_scene->AddObject(0, object);
                         m_isInitialized = true;

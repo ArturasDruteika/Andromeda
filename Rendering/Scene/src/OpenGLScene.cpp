@@ -3,7 +3,7 @@
 
 namespace Andromeda
 {
-	namespace Environment
+	namespace Rendering
 	{
 		OpenGLScene::OpenGLScene()
 		{

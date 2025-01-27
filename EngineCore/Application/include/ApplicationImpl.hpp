@@ -37,8 +37,8 @@ namespace Andromeda
 			bool m_isInitialized;
 			Context::GLFWContext* m_context;
 			Window::GLFWWindow* m_window;
-			Renderer::OpenGLRenderer* m_renderer;
-			Environment::OpenGLScene* m_scene;
+			Rendering::OpenGLRenderer* m_renderer;
+			Rendering::OpenGLScene* m_scene;
 			ImGuiManager* m_imGuiManager;
 		};
 	}

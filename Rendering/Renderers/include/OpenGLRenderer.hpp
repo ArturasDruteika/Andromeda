@@ -3,12 +3,12 @@
 
 
 #include "../../Shaders/include/OpenGLShader.hpp"
-#include "OpenGLScene.hpp"
+#include "../../Scene/include/OpenGLScene.hpp"
 
 
 namespace Andromeda
 {
-	namespace Renderer
+	namespace Rendering
 	{
 		class OpenGLRenderer
 		{
@@ -23,7 +23,7 @@ namespace Andromeda
 
 			void Init(int width, int height);
 			void DeInit();
-			void RenderFrame(const Environment::OpenGLScene& scene, int width, int height);
+			void RenderFrame(const Rendering::OpenGLScene& scene, int width, int height);
 
 			bool IsInitialized() const;
 			unsigned int GetFrameBufferObject() const;

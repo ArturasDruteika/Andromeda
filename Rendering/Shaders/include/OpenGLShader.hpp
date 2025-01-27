@@ -8,7 +8,7 @@
 
 namespace Andromeda
 {
-	namespace Renderer
+	namespace Rendering
 	{
 		class OpenGLShader
 		{

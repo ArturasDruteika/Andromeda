@@ -8,7 +8,7 @@
 
 namespace Andromeda
 {
-	namespace Environment
+	namespace Rendering
 	{
 		class OpenGLScene
 		{

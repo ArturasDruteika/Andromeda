@@ -3,7 +3,7 @@
 
 namespace Andromeda
 {
-	namespace Environment
+	namespace Rendering
 	{
 		OpenGLRenderableObject::OpenGLRenderableObject(const std::vector<float>& vertices)
 			: m_VBO{ 0 }
