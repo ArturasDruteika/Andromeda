@@ -19,6 +19,8 @@ namespace Andromeda
 
 		OpenGLRenderableObject::OpenGLRenderableObjectImpl::~OpenGLRenderableObjectImpl()
 		{
+			glDeleteVertexArrays(1, &m_VAO);
+			glDeleteBuffers(1, &m_VBO);
 		}
 
 		void OpenGLRenderableObject::OpenGLRenderableObjectImpl::Init(const std::vector<float>& vertices)

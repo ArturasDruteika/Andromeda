@@ -11,6 +11,11 @@ namespace Andromeda
 
 		OpenGLScene::OpenGLSceneImpl::~OpenGLSceneImpl()
 		{
+			for (auto& [id, obj] : m_renderableObjsPtrsMap)
+			{
+				delete obj;
+				m_renderableObjsPtrsMap.at(id) = nullptr;
+			}
 		}
 
 		void OpenGLScene::OpenGLSceneImpl::AddObject(int id, OpenGLRenderableObject* object)
