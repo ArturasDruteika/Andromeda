@@ -38,6 +38,7 @@ target_include_directories(${PROJECT_NAME}
         ..//Rendering//Renderers//include//
         ..//Rendering//RenderableObjects//include//
         ..//Rendering//Scene//include//
+        ..//Rendering//OpenGLLoader//include//
         ..//imgui//imgui//
 	    ..//imgui//imgui//backends//
 )

@@ -7,11 +7,11 @@ namespace Andromeda
 	{
 		Application::ApplicationImpl::ApplicationImpl()
             : m_isInitialized{ false }
-			, m_context{ nullptr }
-			, m_window{ nullptr }
-			, m_renderer{ nullptr }
-			, m_scene{ nullptr }
-			, m_imGuiManager{ nullptr }
+			, m_pContext{ nullptr }
+			, m_pWindow{ nullptr }
+			, m_pRenderer{ nullptr }
+			, m_pScene{ nullptr }
+			, m_pImGuiManager{ nullptr }
 		{
 		}
 
@@ -24,22 +24,22 @@ namespace Andromeda
                 try
                 {
                     InitGLFW();
-                    m_context = new Context::GLFWContext();
-                    m_context->Init();
+                    m_pContext = new Context::GLFWContext();
+                    m_pContext->Init();
 
-                    if (m_context->IsInitialized())
+                    if (m_pContext->IsInitialized())
                     {
-                        m_window = new Window::GLFWWindow();
-                        m_context->MakeContextCurrent(m_window->GetWindow());
-                        InitGLAD();
-                        m_window->SetCallbackFunctions();
-                        m_imGuiManager = new ImGuiManager(m_window->GetWindow());
-                        m_imGuiManager->Init(m_window->GetWindow());
+                        m_pWindow = new Window::GLFWWindow();
+                        m_pContext->MakeContextCurrent(m_pWindow->GetWindow());
+                        m_openGLLoader.LoadGlad(reinterpret_cast<const char*>(glfwGetProcAddress));
+                        m_pWindow->SetCallbackFunctions();
+                        m_pImGuiManager = new ImGuiManager(m_pWindow->GetWindow());
+                        m_pImGuiManager->Init(m_pWindow->GetWindow());
 
                         // Create and initialize the Renderer
-                        m_renderer = new Rendering::OpenGLRenderer();
-						m_renderer->Init(m_window->GetWidth(), m_window->GetHeight());
-                        m_scene = new Rendering::OpenGLScene();
+                        m_pRenderer = new Rendering::OpenGLRenderer();
+						m_pRenderer->Init(m_pWindow->GetWidth(), m_pWindow->GetHeight());
+                        m_pScene = new Rendering::OpenGLScene();
 
                         std::vector<float> vertices = {
                             // Positions        // Colors
@@ -50,7 +50,7 @@ namespace Andromeda
 
                         Rendering::OpenGLRenderableObject* object = new Rendering::OpenGLRenderableObject(vertices);
                         // TODO: implement dynamic ID assignment
-                        m_scene->AddObject(0, object);
+                        m_pScene->AddObject(0, object);
                         m_isInitialized = true;
                     }
                 }
@@ -65,14 +65,14 @@ namespace Andromeda
 		void Application::ApplicationImpl::RunMainLoop()
 		{
             static int width{}, height{};
-			while (!glfwWindowShouldClose(m_window->GetWindow()))
+			while (!glfwWindowShouldClose(m_pWindow->GetWindow()))
 			{
                 glfwPollEvents();
-				width = m_window->GetWidth();
-				height = m_window->GetHeight();
-                m_renderer->RenderFrame(*m_scene, width, height);
-                m_imGuiManager->Render(m_renderer->GetFrameBufferObjectTexture(), width, height);
-				glfwSwapBuffers(m_window->GetWindow());
+				width = m_pWindow->GetWidth();
+				height = m_pWindow->GetHeight();
+                m_pRenderer->RenderFrame(*m_pScene, width, height);
+                m_pImGuiManager->Render(m_pRenderer->GetFrameBufferObjectTexture(), width, height);
+				glfwSwapBuffers(m_pWindow->GetWindow());
 			}
 		}
 
@@ -80,17 +80,17 @@ namespace Andromeda
         {
 			if (m_isInitialized)
 			{
-                m_imGuiManager->DeInit();
-                delete m_imGuiManager;
-                m_imGuiManager = nullptr;
-				m_renderer->DeInit();
-				delete m_renderer;
-				m_renderer = nullptr;
-				delete m_scene;
-				m_scene = nullptr;
-				m_context->TerminateGLFW();
-				delete m_context;
-				m_context = nullptr;
+                m_pImGuiManager->DeInit();
+                delete m_pImGuiManager;
+                m_pImGuiManager = nullptr;
+				m_pRenderer->DeInit();
+				delete m_pRenderer;
+				m_pRenderer = nullptr;
+				delete m_pScene;
+				m_pScene = nullptr;
+				m_pContext->TerminateGLFW();
+				delete m_pContext;
+				m_pContext = nullptr;
 				m_isInitialized = false;
 			}
         }
@@ -102,17 +102,6 @@ namespace Andromeda
                 spdlog::error("Failed to initialize GLFW.");
             }
             spdlog::info("GLFW initialized successfully.");
-        }
-
-        void Application::ApplicationImpl::InitGLAD()
-        {
-            if (!gladLoadGL(glfwGetProcAddress))
-            {
-                spdlog::error("Failed to initialize GLAD.");
-                return;
-            }
-            const char* version = reinterpret_cast<const char*>(glGetString(GL_VERSION));
-            spdlog::info("GLAD initialized successfully. OpenGL version: {}", std::string(version));
         }
 	}
 }

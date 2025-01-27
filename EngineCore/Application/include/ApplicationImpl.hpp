@@ -5,8 +5,8 @@
 #include "../include/Application.hpp"
 #include "OpenGLRenderer.hpp"
 #include "OpenGLScene.hpp"
+#include "OpenGLLoader.hpp"
 #include "../../RenderingWindows/include/ImGuiManager.hpp"
-
 #include "GLFWContext.hpp"
 #include "GLFWWindow.hpp"
 
@@ -32,14 +32,14 @@ namespace Andromeda
 
 		private:
 			void InitGLFW();
-			void InitGLAD();
 
 			bool m_isInitialized;
-			Context::GLFWContext* m_context;
-			Window::GLFWWindow* m_window;
-			Rendering::OpenGLRenderer* m_renderer;
-			Rendering::OpenGLScene* m_scene;
-			ImGuiManager* m_imGuiManager;
+			Rendering::OpenGLLoader m_openGLLoader;
+			Context::GLFWContext* m_pContext;
+			Window::GLFWWindow* m_pWindow;
+			Rendering::OpenGLRenderer* m_pRenderer;
+			Rendering::OpenGLScene* m_pScene;
+			ImGuiManager* m_pImGuiManager;
 		};
 	}
 }
