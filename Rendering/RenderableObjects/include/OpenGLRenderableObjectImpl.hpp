@@ -3,7 +3,6 @@
 
 
 #include "../include/OpenGLRenderableObject.hpp"
-#include "glad/gl.h"
 #include "glm/glm.hpp"
 
 

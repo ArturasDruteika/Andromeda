@@ -1,6 +1,5 @@
 #include "../include/OpenGLRenderer.hpp"
 #include "../include/OpenGLRendererImpl.hpp"
-#include "FileOperations.hpp"
 
 
 namespace Andromeda

@@ -36,7 +36,7 @@ namespace Andromeda
 			OpenGLLoader& operator=(OpenGLLoader&& other) noexcept = delete;	// Prevent Move Assignment
 
 			void LoadGlad(const char* name);
-			bool Initialize() const;
+			bool IsInitialized() const;
 
 		private:
 			class OpenGLLoaderImpl;

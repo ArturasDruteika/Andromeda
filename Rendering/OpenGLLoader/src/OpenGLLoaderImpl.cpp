@@ -29,7 +29,7 @@ namespace Andromeda
 			m_isInitialized = true;
 		}
 
-		bool OpenGLLoader::OpenGLLoaderImpl::Initialize() const
+		bool OpenGLLoader::OpenGLLoaderImpl::IsInitialized() const
 		{
 			return m_isInitialized;
 		}

@@ -13,7 +13,6 @@ namespace Andromeda
 
 		OpenGLLoader::~OpenGLLoader()
 		{
-			// TODO: Maybe deinit glad here?
 			delete m_pOpenGLLoaderImpl;
 		}
 
@@ -22,9 +21,9 @@ namespace Andromeda
 			m_pOpenGLLoaderImpl->LoadGlad(name);
 		}
 
-		bool OpenGLLoader::Initialize() const
+		bool OpenGLLoader::IsInitialized() const
 		{
-			return m_pOpenGLLoaderImpl->Initialize();
+			return m_pOpenGLLoaderImpl->IsInitialized();
 		}
 	}
 }
