@@ -6,6 +6,8 @@ set(CMAKE_BUILD_PARALLEL_LEVEL)
 set(CMAKE_CXX_STANDARD 23)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
+add_definitions(-DRENDERING_EXPORT)
+
 # OpenGL
 find_package(OpenGL REQUIRED)
 target_link_libraries(${EXEC_NAME} OpenGL::GL)
@@ -15,15 +17,29 @@ if (APPLE)
 endif ()
 
 add_library(${PROJECT_NAME} 
-    STATIC
+    SHARED
 	    Renderers/include/OpenGLRenderer.hpp
 		Renderers/src/OpenGLRenderer.cpp
+        Renderers/include/OpenGLRendererImpl.hpp
+		Renderers/src/OpenGLRendererImpl.cpp
+
         Shaders/include/OpenGLShader.hpp
 		Shaders/src/OpenGLShader.cpp
+
         Scene/include/OpenGLScene.hpp
 		Scene/src/OpenGLScene.cpp
+        Scene/include/OpenGLSceneImpl.hpp
+		Scene/src/OpenGLSceneImpl.cpp
+
         RenderableObjects/include/OpenGLRenderableObject.hpp
 		RenderableObjects/src/OpenGLRenderableObject.cpp
+        RenderableObjects/include/OpenGLRenderableObjectImpl.hpp
+		RenderableObjects/src/OpenGLRenderableObjectImpl.cpp
+
+        OpenGLLoader/include/OpenGLLoader.hpp
+		OpenGLLoader/src/OpenGLLoader.cpp
+        OpenGLLoader/include/OpenGLLoaderImpl.hpp
+		OpenGLLoader/src/OpenGLLoaderImpl.cpp
 )
 
 target_include_directories(${PROJECT_NAME} 
@@ -91,6 +107,8 @@ source_group(
     FILES
         Renderers/include/OpenGLRenderer.hpp
 		Renderers/src/OpenGLRenderer.cpp
+        Renderers/include/OpenGLRendererImpl.hpp
+		Renderers/src/OpenGLRendererImpl.cpp
 )
 
 source_group(
@@ -111,6 +129,8 @@ source_group(
     FILES
         Scene/include/OpenGLScene.hpp
 		Scene/src/OpenGLScene.cpp
+        Scene/include/OpenGLSceneImpl.hpp
+		Scene/src/OpenGLSceneImpl.cpp
 )
 
 source_group(
@@ -121,4 +141,18 @@ source_group(
     FILES
         RenderableObjects/include/OpenGLRenderableObject.hpp
 		RenderableObjects/src/OpenGLRenderableObject.cpp
+        RenderableObjects/include/OpenGLRenderableObjectImpl.hpp
+		RenderableObjects/src/OpenGLRenderableObjectImpl.cpp
+)
+
+source_group(
+    TREE 
+        ${CMAKE_CURRENT_SOURCE_DIR}/OpenGLLoader
+    PREFIX
+        "OpenGLLoader"
+    FILES
+        OpenGLLoader/include/OpenGLLoader.hpp
+		OpenGLLoader/src/OpenGLLoader.cpp
+        OpenGLLoader/include/OpenGLLoaderImpl.hpp
+		OpenGLLoader/src/OpenGLLoaderImpl.cpp
 )

@@ -2,7 +2,21 @@
 #define RENDERER__OPENGL_RENDERER__HPP
 
 
-#include "../../Shaders/include/OpenGLShader.hpp"
+#if defined(_WIN32)
+	#if defined(RENDERING_EXPORT)
+		#define RENDERING_API __declspec(dllexport)
+	#else
+		#define RENDERING_API __declspec(dllimport)
+	#endif /* RENDERING_API */
+	#define _sprintf sprintf_s
+#endif
+
+#if defined(__GNUC__)
+	// GCC
+	#define RENDERING_API __attribute__((visibility("default")))
+#endif
+
+
 #include "../../Scene/include/OpenGLScene.hpp"
 
 
@@ -10,7 +24,7 @@ namespace Andromeda
 {
 	namespace Rendering
 	{
-		class OpenGLRenderer
+		class RENDERING_API OpenGLRenderer
 		{
 		public:
 			OpenGLRenderer();
@@ -30,12 +44,8 @@ namespace Andromeda
 			unsigned int GetFrameBufferObjectTexture() const;
 
 		private:
-			void InitFrameBuffer(int width, int height);
-			void CreateShader();
-
-			bool m_isInitialized;
-			unsigned int m_FBO, m_FBOTexture;
-			OpenGLShader* m_shader;
+			class OpenGLRendererImpl;
+			OpenGLRendererImpl* m_pOpenGLRendererImpl;
 		};
 	}
 }
