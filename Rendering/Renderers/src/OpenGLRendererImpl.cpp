@@ -60,10 +60,6 @@ namespace Andromeda
             // Bind the framebuffer for rendering
             glBindFramebuffer(GL_FRAMEBUFFER, m_FBO);
             glViewport(0, 0, width, height);
-            glBindTexture(GL_TEXTURE_2D, m_FBOTexture);
-            glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, nullptr);
-            glBindTexture(GL_TEXTURE_2D, 0);
-            glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
             glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); // Clear the framebuffer
 
             // Use the shader program
@@ -73,7 +69,8 @@ namespace Andromeda
             for (const auto& [id, object] : scene.GetObjects())
             {
                 glBindVertexArray(object->GetVAO());
-                glDrawArrays(GL_TRIANGLES, 0, object->GetVertexCount());
+                glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, object->GetEBO()); // Bind EBO
+                glDrawElements(GL_TRIANGLES, object->GetVertexCount(), GL_UNSIGNED_INT, 0); // Use indices
             }
 
             // Unbind the framebuffer

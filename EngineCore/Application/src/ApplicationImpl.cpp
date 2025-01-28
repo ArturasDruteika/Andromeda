@@ -43,13 +43,18 @@ namespace Andromeda
 
                         std::vector<float> vertices = {
                             // Positions        // Colors
-                            0.0f,  0.5f, 0.0f,  1.0f, 0.0f, 0.0f, // Top vertex (red)
-                           -0.5f, -0.5f, 0.0f,  0.0f, 1.0f, 0.0f, // Bottom left (green)
-                            0.5f, -0.5f, 0.0f,  0.0f, 0.0f, 1.0f  // Bottom right (blue)
+                           -0.5f,  0.5f, 0.0f,  1.0f, 0.0f, 0.0f, // Top left (red)
+                            0.5f,  0.5f, 0.0f,  0.0f, 1.0f, 0.0f, // Top right (green)
+                            0.5f, -0.5f, 0.0f,  0.0f, 0.0f, 1.0f, // Bottom right (blue)
+                           -0.5f, -0.5f, 0.0f,  1.0f, 1.0f, 0.0f  // Bottom left (yellow)
                         };
 
-                        Rendering::OpenGLRenderableObject* object = new Rendering::OpenGLRenderableObject(vertices);
-                        // TODO: implement dynamic ID assignment
+                        std::vector<unsigned int> indices = {
+                            0, 1, 2, // First triangle
+                            2, 3, 0  // Second triangle
+                        };
+
+                        Rendering::OpenGLRenderableObject* object = new Rendering::OpenGLRenderableObject(vertices, indices);
                         m_pScene->AddObject(0, object);
                         m_isInitialized = true;
                     }

@@ -6,45 +6,21 @@ namespace Andromeda
 {
 	namespace Rendering
 	{
-		OpenGLRenderableObject::OpenGLRenderableObjectImpl::OpenGLRenderableObjectImpl(const std::vector<float>& vertices)
+		OpenGLRenderableObject::OpenGLRenderableObjectImpl::OpenGLRenderableObjectImpl(const std::vector<float>& vertices, const std::vector<unsigned int>& indices)
 			: m_VBO{ 0 }
 			, m_VAO{ 0 }
 			, m_position{ 0.f }
 			, m_rotation{ 0.f }
 			, m_scale{ 1.f }
-			, m_vertextCount{ static_cast<unsigned int>(vertices.size() / 6) }
+			, m_vertexCount{ static_cast<unsigned int>(indices.size()) }
 		{
-			Init(vertices);
+			Init(vertices, indices);
 		}
 
 		OpenGLRenderableObject::OpenGLRenderableObjectImpl::~OpenGLRenderableObjectImpl()
 		{
 			glDeleteVertexArrays(1, &m_VAO);
 			glDeleteBuffers(1, &m_VBO);
-		}
-
-		void OpenGLRenderableObject::OpenGLRenderableObjectImpl::Init(const std::vector<float>& vertices)
-		{
-			// Generate VAO and VBO
-			glGenVertexArrays(1, &m_VAO);
-			glGenBuffers(1, &m_VBO);
-
-			// Bind VAO
-			glBindVertexArray(m_VAO);
-
-			// Upload vertex data
-			glBindBuffer(GL_ARRAY_BUFFER, m_VBO);
-			glBufferData(GL_ARRAY_BUFFER, vertices.size() * sizeof(float), vertices.data(), GL_STATIC_DRAW);
-
-			// Vertex attribute pointers
-			glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)0); // Position
-			glEnableVertexAttribArray(0);
-			glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)(3 * sizeof(float))); // Color
-			glEnableVertexAttribArray(1);
-
-			// Unbind buffers
-			glBindBuffer(GL_ARRAY_BUFFER, 0);
-			glBindVertexArray(0);
 		}
 
 		unsigned int OpenGLRenderableObject::OpenGLRenderableObjectImpl::GetVBO() const
@@ -57,9 +33,14 @@ namespace Andromeda
 			return m_VAO;
 		}
 
+		unsigned int OpenGLRenderableObject::OpenGLRenderableObjectImpl::GetEBO() const
+		{
+			return m_EBO;
+		}
+
 		unsigned int OpenGLRenderableObject::OpenGLRenderableObjectImpl::GetVertexCount() const
 		{
-			return m_vertextCount;
+			return m_vertexCount;
 		}
 
 		std::vector<float> OpenGLRenderableObject::OpenGLRenderableObjectImpl::GetPosition() const
@@ -90,6 +71,32 @@ namespace Andromeda
 		void OpenGLRenderableObject::OpenGLRenderableObjectImpl::SetScale(float x, float y, float z)
 		{
 			m_scale = glm::vec3(x, y, z);
+		}
+
+		void OpenGLRenderableObject::OpenGLRenderableObjectImpl::Init(const std::vector<float>& vertices, const std::vector<unsigned int>& indices)
+		{
+			// Generate and bind VAO
+			glGenVertexArrays(1, &m_VAO);
+			glBindVertexArray(m_VAO);
+
+			// Generate and bind VBO
+			glGenBuffers(1, &m_VBO);
+			glBindBuffer(GL_ARRAY_BUFFER, m_VBO);
+			glBufferData(GL_ARRAY_BUFFER, vertices.size() * sizeof(float), vertices.data(), GL_STATIC_DRAW);
+
+			// Generate and bind EBO
+			glGenBuffers(1, &m_EBO);
+			glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_EBO);
+			glBufferData(GL_ELEMENT_ARRAY_BUFFER, indices.size() * sizeof(unsigned int), indices.data(), GL_STATIC_DRAW);
+
+			// Set vertex attribute pointers
+			glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)0); // Position
+			glEnableVertexAttribArray(0);
+			glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)(3 * sizeof(float))); // Color
+			glEnableVertexAttribArray(1);
+
+			// Unbind VAO
+			glBindVertexArray(0);
 		}
 	}
 }
