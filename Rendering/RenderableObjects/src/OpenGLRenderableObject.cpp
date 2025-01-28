@@ -6,8 +6,8 @@ namespace Andromeda
 {
 	namespace Rendering
 	{
-		OpenGLRenderableObject::OpenGLRenderableObject(const std::vector<float>& vertices)
-			: m_pOpenGLRenderableObjectImpl{ new OpenGLRenderableObject::OpenGLRenderableObjectImpl{ vertices } }
+		OpenGLRenderableObject::OpenGLRenderableObject(const std::vector<float>& vertices, const std::vector<unsigned int>& indices)
+			: m_pOpenGLRenderableObjectImpl{ new OpenGLRenderableObject::OpenGLRenderableObjectImpl{ vertices, indices } }
 		{
 		}
 
@@ -24,6 +24,11 @@ namespace Andromeda
 		unsigned int OpenGLRenderableObject::GetVAO() const
 		{
 			return m_pOpenGLRenderableObjectImpl->GetVAO();
+		}
+
+		unsigned int OpenGLRenderableObject::GetEBO() const
+		{
+			return m_pOpenGLRenderableObjectImpl->GetEBO();
 		}
 
 		unsigned int OpenGLRenderableObject::GetVertexCount() const

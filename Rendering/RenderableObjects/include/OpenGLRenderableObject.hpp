@@ -27,7 +27,7 @@ namespace Andromeda
 		class RENDERING_API OpenGLRenderableObject
 		{	
 		public:
-			OpenGLRenderableObject(const std::vector<float>& vertices);
+			OpenGLRenderableObject(const std::vector<float>& vertices, const std::vector<unsigned int>& indices);
 			~OpenGLRenderableObject();
 
 			OpenGLRenderableObject(const OpenGLRenderableObject& other) = delete;	// Prevent Copy Constructor
@@ -37,6 +37,7 @@ namespace Andromeda
 
 			unsigned int GetVBO() const;
 			unsigned int GetVAO() const;
+			unsigned int GetEBO() const;
 			unsigned int GetVertexCount() const;
 			std::vector<float> GetPosition() const;
 			void SetPosition(float x, float y, float z);
