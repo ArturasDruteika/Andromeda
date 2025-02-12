@@ -6,6 +6,11 @@ set(CMAKE_BUILD_PARALLEL_LEVEL)
 set(CMAKE_CXX_STANDARD 23)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
+# Apply fixes for floating-point symbols
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fno-fast-math -march=x86-64")
+set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -fno-fast-math -march=x86-64")
+
+
 add_definitions(-DENGINECORE_EXPORT)
 
 # OpenGL
@@ -34,7 +39,7 @@ target_include_directories(${PROJECT_NAME}
         ..//glfw//include//
         ..//glfw//
         ..//Window//GLFWWindow//include//
-        ..//Context//GLFWCOntext//include//
+        ..//Context//GLFWContext//include//
         ..//Rendering//Renderers//include//
         ..//Rendering//RenderableObjects//include//
         ..//Rendering//Scene//include//

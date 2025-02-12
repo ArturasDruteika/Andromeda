@@ -26,6 +26,8 @@ add_library(${PROJECT_NAME}
 		imgui/backends/imgui_impl_glfw.h
 )
 
+set_target_properties(${PROJECT_NAME} PROPERTIES POSITION_INDEPENDENT_CODE ON)
+
 include_directories(
 	imgui/
 	imgui/backends

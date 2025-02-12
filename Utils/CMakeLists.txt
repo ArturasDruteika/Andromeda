@@ -15,16 +15,13 @@ find_package(spdlog REQUIRED)
 # Create a library target
 add_library(${PROJECT_NAME} 
     STATIC
-        PrecompiledHeaders/src/pch.cpp
-)
-
-target_sources(${PROJECT_NAME}
-    PRIVATE
         PrecompiledHeaders/include/pch.hpp
         PrecompiledHeaders/src/pch.cpp
-		FileOperations/include/FileOperations.hpp
+        FileOperations/include/FileOperations.hpp
         FileOperations/src/FileOperations.cpp
 )
+
+set_target_properties(${PROJECT_NAME} PROPERTIES POSITION_INDEPENDENT_CODE ON)
 
 # Link spdlog
 target_link_libraries(${PROJECT_NAME} 
@@ -41,12 +38,25 @@ target_precompile_headers(${PROJECT_NAME}
 
 ### Post builds
 # SPDLog
-add_custom_command(
-	TARGET ${PROJECT_NAME} POST_BUILD 
-	COMMAND ${CMAKE_COMMAND} ARGS -E copy_if_different
-    ${spdlog_root_path}//bin//$<$<CONFIG:debug>:spdlogd.dll>$<$<CONFIG:release>:spdlog.dll>
-    $<TARGET_FILE_DIR:${PROJECT_NAME}>
-)
+if (CMAKE_SYSTEM_NAME STREQUAL "Windows")
+    add_custom_command(
+        TARGET 
+            ${PROJECT_NAME} POST_BUILD 
+        COMMAND 
+            ${CMAKE_COMMAND} ARGS -E copy_if_different
+            ${spdlog_root_path}//bin//$<$<CONFIG:debug>:spdlogd.dll>$<$<CONFIG:release>:spdlog.dll>
+            $<TARGET_FILE_DIR:${PROJECT_NAME}>
+    )
+elseif (CMAKE_SYSTEM_NAME STREQUAL "Linux")
+    add_custom_command(
+        TARGET 
+            ${PROJECT_NAME} POST_BUILD 
+        COMMAND 
+            ${CMAKE_COMMAND} ARGS -E copy_if_different
+            ${spdlog_root_path}/bin/$<$<CONFIG:debug>:libspdlogd.so.1.15.1>$<$<CONFIG:release>:libspdlog.so.1.15.1>
+            $<TARGET_FILE_DIR:${PROJECT_NAME}>
+    )
+endif()
 
 
 # Organize files in Solution Explorer

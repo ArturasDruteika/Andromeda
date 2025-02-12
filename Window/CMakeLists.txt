@@ -33,6 +33,8 @@ add_library(${PROJECT_NAME}
 	    MouseAndKeyCodes/include/KeyCodes.hpp
 )
 
+set_target_properties(${PROJECT_NAME} PROPERTIES POSITION_INDEPENDENT_CODE ON)
+
 target_include_directories(${PROJECT_NAME} 
     PRIVATE
         ..//Utils//PrecompiledHeaders//include//
