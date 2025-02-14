@@ -4,7 +4,6 @@
 //#include <glm/gtc/type_ptr.hpp>
 
 
-
 namespace Andromeda
 {
 	namespace Rendering
