@@ -6,16 +6,12 @@ set(CMAKE_BUILD_PARALLEL_LEVEL)
 set(CMAKE_CXX_STANDARD 23)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-# Apply fixes for floating-point symbols
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fno-fast-math -march=x86-64")
-set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -fno-fast-math -march=x86-64")
-
-
 add_definitions(-DENGINECORE_EXPORT)
 
 # OpenGL
 find_package(OpenGL REQUIRED)
 target_link_libraries(${EXEC_NAME} OpenGL::GL)
+
 if (APPLE)
     # Ignore macOS OpenGL deprecation warnings
     target_compile_definitions(${EXEC_NAME} PRIVATE GL_SILENCE_DEPRECATION)
