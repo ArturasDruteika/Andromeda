@@ -50,5 +50,6 @@ Thumbs.db
 /.vs
 out/
 
-# VS-Code .history/
+# VS-Code files
 .history/
+.vscode/
