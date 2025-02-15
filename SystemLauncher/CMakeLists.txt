@@ -24,7 +24,14 @@ find_package(OpenGL REQUIRED)
 
 # Set working directory only for Visual Studio
 if(MSVC)
-    set_target_properties(${PROJECT_NAME} PROPERTIES
+    file(TO_CMAKE_PATH $<TARGET_FILE_DIR:${PROJECT_NAME}>// exe_dir)
+    set_target_properties(${PROJECT_NAME} 
+        PROPERTIES
+            VS_DEBUGGER_WORKING_DIRECTORY ${exe_dir}
+    )
+else()
+    set_target_properties(${PROJECT_NAME} 
+    PROPERTIES
         VS_DEBUGGER_WORKING_DIRECTORY "${CMAKE_BINARY_DIR}/bin"
     )
 endif()

@@ -39,14 +39,25 @@ target_precompile_headers(${PROJECT_NAME}
 ### Post builds
 # SPDLog
 if (CMAKE_SYSTEM_NAME STREQUAL "Windows")
-    add_custom_command(
-        TARGET 
-            ${PROJECT_NAME} POST_BUILD 
-        COMMAND 
-            ${CMAKE_COMMAND} ARGS -E copy_if_different
-            ${spdlog_root_path}//bin//$<$<CONFIG:debug>:spdlogd.dll>$<$<CONFIG:release>:spdlog.dll>
-            $<TARGET_FILE_DIR:${PROJECT_NAME}>
-    )
+    if(MSVC)
+        add_custom_command(
+            TARGET 
+                ${PROJECT_NAME} POST_BUILD 
+            COMMAND 
+                ${CMAKE_COMMAND} ARGS -E copy_if_different
+                ${spdlog_root_path}//bin//$<$<CONFIG:debug>:spdlogd.dll>$<$<CONFIG:release>:spdlog.dll>
+                $<TARGET_FILE_DIR:${PROJECT_NAME}>
+        )
+    else()
+        add_custom_command(
+            TARGET 
+                ${PROJECT_NAME} POST_BUILD 
+            COMMAND 
+                ${CMAKE_COMMAND} ARGS -E copy_if_different
+                ${spdlog_root_path}//bin//$<$<CONFIG:debug>:spdlogd.dll>$<$<CONFIG:release>:spdlog.dll>
+                $<TARGET_FILE_DIR:${PROJECT_NAME}>
+        )
+    endif()
 elseif (CMAKE_SYSTEM_NAME STREQUAL "Linux")
     add_custom_command(
         TARGET 
