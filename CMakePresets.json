@@ -9,9 +9,12 @@
         {
             "name": "debug-linux",
             "generator": "Unix Makefiles",
-            "binaryDir": "${sourceDir}/../build/Debug/",
+            "binaryDir": "${sourceDir}/../build/",
             "cacheVariables": {
-                "CMAKE_BUILD_TYPE": "Debug"
+                "CMAKE_BUILD_TYPE": "Debug",
+                "CMAKE_RUNTIME_OUTPUT_DIRECTORY": "${sourceDir}/../build/Debug",
+                "CMAKE_LIBRARY_OUTPUT_DIRECTORY": "${sourceDir}/../build/Debug",
+                "CMAKE_ARCHIVE_OUTPUT_DIRECTORY": "${sourceDir}/../build/Debug"
             },
             "condition": {
                 "type": "equals",
@@ -22,9 +25,12 @@
         {
             "name": "release-linux",
             "generator": "Unix Makefiles",
-            "binaryDir": "${sourceDir}/../build/Release/",
+            "binaryDir": "${sourceDir}/../build/",
             "cacheVariables": {
-                "CMAKE_BUILD_TYPE": "Release"
+                "CMAKE_BUILD_TYPE": "Release",
+                "CMAKE_RUNTIME_OUTPUT_DIRECTORY": "${sourceDir}/../build/Release",
+                "CMAKE_LIBRARY_OUTPUT_DIRECTORY": "${sourceDir}/../build/Release",
+                "CMAKE_ARCHIVE_OUTPUT_DIRECTORY": "${sourceDir}/../build/Release"
             },
             "condition": {
                 "type": "equals",
@@ -35,10 +41,13 @@
         {
             "name": "debug-windows",
             "generator": "Visual Studio 17 2022",
-            "binaryDir": "${sourceDir}/../build/Debug/",
+            "binaryDir": "${sourceDir}/../build/",
             "cacheVariables": {
                 "CMAKE_CONFIGURATION_TYPES": "Debug",
-                "CMAKE_GENERATOR_PLATFORM": "x64"
+                "CMAKE_GENERATOR_PLATFORM": "x64",
+                "CMAKE_RUNTIME_OUTPUT_DIRECTORY": "${sourceDir}/../build/Debug",
+                "CMAKE_LIBRARY_OUTPUT_DIRECTORY": "${sourceDir}/../build/Debug",
+                "CMAKE_ARCHIVE_OUTPUT_DIRECTORY": "${sourceDir}/../build/Debug"
             },
             "condition": {
                 "type": "equals",
@@ -49,10 +58,13 @@
         {
             "name": "release-windows",
             "generator": "Visual Studio 17 2022",
-            "binaryDir": "${sourceDir}/../build/Release/",
+            "binaryDir": "${sourceDir}/../build/",
             "cacheVariables": {
                 "CMAKE_CONFIGURATION_TYPES": "Release",
-                "CMAKE_GENERATOR_PLATFORM": "x64"
+                "CMAKE_GENERATOR_PLATFORM": "x64",
+                "CMAKE_RUNTIME_OUTPUT_DIRECTORY": "${sourceDir}/../build/Release",
+                "CMAKE_LIBRARY_OUTPUT_DIRECTORY": "${sourceDir}/../build/Release",
+                "CMAKE_ARCHIVE_OUTPUT_DIRECTORY": "${sourceDir}/../build/Release"
             },
             "condition": {
                 "type": "equals",

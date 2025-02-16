@@ -8,10 +8,10 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 if(CMAKE_GENERATOR MATCHES "Visual Studio")
     set(CMAKE_ASSETS_OUTPUT_DIRECTORY  ${PROJECT_BINARY_DIR})  # All the files that are not compiled
 else()
-    set(CMAKE_RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/bin")  # Executables
-    set(CMAKE_ASSETS_OUTPUT_DIRECTORY  "${CMAKE_BINARY_DIR}/bin")  # All the files that are not compiled
-    set(CMAKE_LIBRARY_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/lib")  # Shared Libraries (.so, .dll)
-    set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/lib")  # Static Libraries (.a, .lib)
+    set(CMAKE_RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/$<CONFIG>/bin")  # Executables
+    set(CMAKE_ASSETS_OUTPUT_DIRECTORY  "${CMAKE_BINARY_DIR}/$<CONFIG>/bin")  # All the files that are not compiled
+    set(CMAKE_LIBRARY_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/$<CONFIG>/lib")  # Shared Libraries (.so, .dll)
+    set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/$<CONFIG>/lib")  # Static Libraries (.a, .lib)
 endif()
 
 set(LIBRARY_OUTPUT_PATH ${PROJECT_BINARY_DIR})
