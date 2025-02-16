@@ -32,6 +32,6 @@ if(MSVC)
 else()
     set_target_properties(${PROJECT_NAME} 
     PROPERTIES
-        VS_DEBUGGER_WORKING_DIRECTORY "${CMAKE_BINARY_DIR}/bin"
+        VS_DEBUGGER_WORKING_DIRECTORY "${CMAKE_BINARY_DIR}/$<CONFIG>/bin"
     )
 endif()
