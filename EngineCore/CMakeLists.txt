@@ -11,6 +11,7 @@ add_definitions(-DENGINECORE_EXPORT)
 # OpenGL
 find_package(OpenGL REQUIRED)
 target_link_libraries(${EXEC_NAME} OpenGL::GL)
+
 if (APPLE)
     # Ignore macOS OpenGL deprecation warnings
     target_compile_definitions(${EXEC_NAME} PRIVATE GL_SILENCE_DEPRECATION)
@@ -34,7 +35,7 @@ target_include_directories(${PROJECT_NAME}
         ..//glfw//include//
         ..//glfw//
         ..//Window//GLFWWindow//include//
-        ..//Context//GLFWCOntext//include//
+        ..//Context//GLFWContext//include//
         ..//Rendering//Renderers//include//
         ..//Rendering//RenderableObjects//include//
         ..//Rendering//Scene//include//

@@ -1,0 +1,116 @@
+{
+    "version": 3,
+    "cmakeMinimumRequired": {
+        "major": 3,
+        "minor": 20,
+        "patch": 0
+    },
+    "configurePresets": [
+        {
+            "name": "debug-linux",
+            "generator": "Unix Makefiles",
+            "binaryDir": "${sourceDir}/../build/",
+            "cacheVariables": {
+                "CMAKE_BUILD_TYPE": "Debug",
+                "CMAKE_RUNTIME_OUTPUT_DIRECTORY": "${sourceDir}/../build/Debug",
+                "CMAKE_LIBRARY_OUTPUT_DIRECTORY": "${sourceDir}/../build/Debug",
+                "CMAKE_ARCHIVE_OUTPUT_DIRECTORY": "${sourceDir}/../build/Debug"
+            },
+            "condition": {
+                "type": "equals",
+                "lhs": "${hostSystemName}",
+                "rhs": "Linux"
+            }
+        },
+        {
+            "name": "release-linux",
+            "generator": "Unix Makefiles",
+            "binaryDir": "${sourceDir}/../build/",
+            "cacheVariables": {
+                "CMAKE_BUILD_TYPE": "Release",
+                "CMAKE_RUNTIME_OUTPUT_DIRECTORY": "${sourceDir}/../build/Release",
+                "CMAKE_LIBRARY_OUTPUT_DIRECTORY": "${sourceDir}/../build/Release",
+                "CMAKE_ARCHIVE_OUTPUT_DIRECTORY": "${sourceDir}/../build/Release"
+            },
+            "condition": {
+                "type": "equals",
+                "lhs": "${hostSystemName}",
+                "rhs": "Linux"
+            }
+        },
+        {
+            "name": "debug-windows",
+            "generator": "Visual Studio 17 2022",
+            "binaryDir": "${sourceDir}/../build/",
+            "cacheVariables": {
+                "CMAKE_CONFIGURATION_TYPES": "Debug",
+                "CMAKE_GENERATOR_PLATFORM": "x64",
+                "CMAKE_RUNTIME_OUTPUT_DIRECTORY": "${sourceDir}/../build/Debug",
+                "CMAKE_LIBRARY_OUTPUT_DIRECTORY": "${sourceDir}/../build/Debug",
+                "CMAKE_ARCHIVE_OUTPUT_DIRECTORY": "${sourceDir}/../build/Debug"
+            },
+            "condition": {
+                "type": "equals",
+                "lhs": "${hostSystemName}",
+                "rhs": "Windows"
+            }
+        },
+        {
+            "name": "release-windows",
+            "generator": "Visual Studio 17 2022",
+            "binaryDir": "${sourceDir}/../build/",
+            "cacheVariables": {
+                "CMAKE_CONFIGURATION_TYPES": "Release",
+                "CMAKE_GENERATOR_PLATFORM": "x64",
+                "CMAKE_RUNTIME_OUTPUT_DIRECTORY": "${sourceDir}/../build/Release",
+                "CMAKE_LIBRARY_OUTPUT_DIRECTORY": "${sourceDir}/../build/Release",
+                "CMAKE_ARCHIVE_OUTPUT_DIRECTORY": "${sourceDir}/../build/Release"
+            },
+            "condition": {
+                "type": "equals",
+                "lhs": "${hostSystemName}",
+                "rhs": "Windows"
+            }
+        }
+    ],
+    "buildPresets": [
+        {
+            "name": "build-debug-linux",
+            "configurePreset": "debug-linux",
+            "condition": {
+                "type": "equals",
+                "lhs": "${hostSystemName}",
+                "rhs": "Linux"
+            }
+        },
+        {
+            "name": "build-release-linux",
+            "configurePreset": "release-linux",
+            "condition": {
+                "type": "equals",
+                "lhs": "${hostSystemName}",
+                "rhs": "Linux"
+            }
+        },
+        {
+            "name": "build-debug-windows",
+            "configurePreset": "debug-windows",
+            "configuration": "Debug",
+            "condition": {
+                "type": "equals",
+                "lhs": "${hostSystemName}",
+                "rhs": "Windows"
+            }
+        },
+        {
+            "name": "build-release-windows",
+            "configurePreset": "release-windows",
+            "configuration": "Release",
+            "condition": {
+                "type": "equals",
+                "lhs": "${hostSystemName}",
+                "rhs": "Windows"
+            }
+        }
+    ]
+}

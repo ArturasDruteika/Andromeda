@@ -50,5 +50,6 @@ Thumbs.db
 /.vs
 out/
 
-# TestTitan project
-TestTitan/
+# VS-Code files
+.history/
+.vscode/

@@ -79,7 +79,11 @@ set(VERTEX_SHADER_SOURCE "${CMAKE_CURRENT_SOURCE_DIR}/ShaderProgramSources/${VER
 set(FRAGMENT_SHADER_SOURCE "${CMAKE_CURRENT_SOURCE_DIR}/ShaderProgramSources/${FRAGMENT_SHADER_FILENAME}")
 
 # Define the output directory (binary directory where executables are placed)
-set(SHADER_OUTPUT_DIR "${CMAKE_BINARY_DIR}/$<CONFIG>/shader_program_sources")
+if (CMAKE_SYSTEM_NAME STREQUAL "Windows")
+    set(SHADER_OUTPUT_DIR "${CMAKE_ASSETS_OUTPUT_DIRECTORY}/$<CONFIG>/shader_program_sources")
+elseif (CMAKE_SYSTEM_NAME STREQUAL "Linux")
+    set(SHADER_OUTPUT_DIR "${CMAKE_ASSETS_OUTPUT_DIRECTORY}/shader_program_sources")
+endif()
 
 # Post-build step to copy shader files
 add_custom_command(
