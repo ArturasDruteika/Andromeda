@@ -26,9 +26,9 @@ namespace Andromeda
 			m_pOpenGLRendererImpl->DeInit();
 		}
 
-		void OpenGLRenderer::RenderFrame(const Rendering::OpenGLScene& scene, int width, int height)
+		void OpenGLRenderer::RenderFrame(const Rendering::OpenGLScene& scene)
 		{
-			m_pOpenGLRendererImpl->RenderFrame(scene, width, height);
+			m_pOpenGLRendererImpl->RenderFrame(scene);
 		}
 
 		bool OpenGLRenderer::IsInitialized() const
@@ -44,6 +44,21 @@ namespace Andromeda
 		unsigned int OpenGLRenderer::GetFrameBufferObjectTexture() const
 		{
 			return m_pOpenGLRendererImpl->GetFrameBufferObjectTexture();
+		}
+
+		int OpenGLRenderer::GetWidth() const
+		{
+			return m_pOpenGLRendererImpl->GetWidth();
+		}
+
+		int OpenGLRenderer::GetHeight() const
+		{
+			return m_pOpenGLRendererImpl->GetHeight();
+		}
+
+		void OpenGLRenderer::Resize(int width, int height)
+		{
+			m_pOpenGLRendererImpl->Resize(width, height);
 		}
 	}
 }

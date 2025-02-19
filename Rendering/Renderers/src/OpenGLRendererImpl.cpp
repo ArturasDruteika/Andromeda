@@ -12,6 +12,8 @@ namespace Andromeda
             , m_shader{ nullptr }
             , m_FBO{ 0 }
             , m_FBOTexture{ 0 }
+			, m_width{ 0 }
+			, m_height{ 0 }
         {
         }
 
@@ -49,7 +51,7 @@ namespace Andromeda
             m_isInitialized = false;
         }
 
-        void OpenGLRenderer::OpenGLRendererImpl::RenderFrame(const Rendering::OpenGLScene& scene, int width, int height)
+        void OpenGLRenderer::OpenGLRendererImpl::RenderFrame(const Rendering::OpenGLScene& scene)
         {
             if (!m_isInitialized)
             {
@@ -59,7 +61,7 @@ namespace Andromeda
 
             // Bind the framebuffer for rendering
             glBindFramebuffer(GL_FRAMEBUFFER, m_FBO);
-            glViewport(0, 0, width, height);
+            glViewport(0, 0, m_width, m_height);
             glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); // Clear the framebuffer
 
             // Use the shader program
@@ -90,6 +92,32 @@ namespace Andromeda
         unsigned int OpenGLRenderer::OpenGLRendererImpl::GetFrameBufferObjectTexture() const
         {
             return m_FBOTexture;
+        }
+
+        int OpenGLRenderer::OpenGLRendererImpl::GetWidth() const
+        {
+            return m_width;
+        }
+
+        int OpenGLRenderer::OpenGLRendererImpl::GetHeight() const
+        {
+            return m_height;
+        }
+
+        void OpenGLRenderer::OpenGLRendererImpl::Resize(int width, int height)
+        {
+            if (width == m_width && height == m_height)
+                return; // No need to resize if dimensions are the same
+
+            m_width = width;
+            m_height = height;
+
+            glViewport(0, 0, width, height); // Update OpenGL viewport
+
+            // Recreate the framebuffer to match new size
+            glDeleteFramebuffers(1, &m_FBO);
+            glDeleteTextures(1, &m_FBOTexture);
+            InitFrameBuffer(width, height);
         }
 
         void OpenGLRenderer::OpenGLRendererImpl::InitFrameBuffer(int width, int height)

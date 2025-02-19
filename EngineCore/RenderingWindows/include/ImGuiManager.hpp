@@ -2,6 +2,7 @@
 #define ENGINECORE__IMGUI_MANAGER__HPP
 
 
+#include "pch.hpp"
 #include <imgui.h>
 #include "GLFW/glfw3.h"
 
@@ -10,6 +11,8 @@ namespace Andromeda
 {
 	namespace EngineCore
 	{
+		using OnResizeCallback = std::function<void(int, int)>;  // Define a callback type
+
 		class ImGuiManager
 		{
 		public:
@@ -22,16 +25,23 @@ namespace Andromeda
 			ImGuiManager& operator=(const ImGuiManager&& other) noexcept = delete;	//Prevent Move assignment
 
 			void Init(GLFWwindow* window);
-			void Render(unsigned int texture, int width, int height);
+			void Render(unsigned int texture);
 			void DeInit();
+			void SetOnResizeCallback(OnResizeCallback callback);
 
 			bool IsInitialized() const;
+			float GetWidth() const;
+			float GetHeight() const;
 
 		private:
 			void InitImGui(GLFWwindow* window);
 
 			bool m_isInitialized;
+			ImVec2 m_windowSize;
+			ImVec2 m_prevWindowSize; // Store previous size
 			ImGuiIO* m_io;
+
+			OnResizeCallback m_onResizeCallback;
 		};
 	}
 }
