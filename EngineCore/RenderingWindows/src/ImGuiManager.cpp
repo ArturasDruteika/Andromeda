@@ -36,7 +36,7 @@ namespace Andromeda
 			}
 		}
 
-		void ImGuiManager::Render(unsigned int texture, int width, int height)
+		void ImGuiManager::Render(unsigned int texture)
 		{
 			// Start ImGui frame
 			ImGui_ImplOpenGL3_NewFrame();
@@ -47,8 +47,9 @@ namespace Andromeda
 			ImGui::DockSpaceOverViewport(ImGui::GetMainViewport()->ID);
 
 			// ImGui window
-			ImGui::Begin("Triangle Window");
-			ImGui::Image((ImTextureID)(intptr_t)texture, ImVec2(width, height), ImVec2(0, 1), ImVec2(1, 0));
+			ImGui::Begin("Triangle Window", 0, ImGuiWindowFlags_NoScrollbar);
+			m_windowSize = ImGui::GetWindowSize();
+			ImGui::Image((ImTextureID)(intptr_t)texture, ImVec2(m_windowSize.x, m_windowSize.y), ImVec2(0, 1), ImVec2(1, 0));
 			ImGui::End();
 
 			// Render ImGui
@@ -78,6 +79,16 @@ namespace Andromeda
 		bool ImGuiManager::IsInitialized() const
 		{
 			return m_isInitialized;
+		}
+
+		float ImGuiManager::GetWidth() const
+		{
+			return m_windowSize.x;
+		}
+
+		float ImGuiManager::GetHeight() const
+		{
+			return m_windowSize.y;
 		}
 
 		void ImGuiManager::InitImGui(GLFWwindow* window)

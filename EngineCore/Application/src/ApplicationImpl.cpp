@@ -69,14 +69,11 @@ namespace Andromeda
 
 		void Application::ApplicationImpl::RunMainLoop()
 		{
-            static int width{}, height{};
 			while (!glfwWindowShouldClose(m_pWindow->GetWindow()))
 			{
                 glfwPollEvents();
-				width = m_pWindow->GetWidth();
-				height = m_pWindow->GetHeight();
-                m_pRenderer->RenderFrame(*m_pScene, width, height);
-                m_pImGuiManager->Render(m_pRenderer->GetFrameBufferObjectTexture(), width, height);
+                m_pRenderer->RenderFrame(*m_pScene, m_pImGuiManager->GetWidth(), m_pImGuiManager->GetHeight());
+                m_pImGuiManager->Render(m_pRenderer->GetFrameBufferObjectTexture());
 				glfwSwapBuffers(m_pWindow->GetWindow());
 			}
 		}
