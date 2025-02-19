@@ -37,11 +37,15 @@ namespace Andromeda
 
 			void Init(int width, int height);
 			void DeInit();
-			void RenderFrame(const Rendering::OpenGLScene& scene, int width, int height);
+			void RenderFrame(const Rendering::OpenGLScene& scene);
 
 			bool IsInitialized() const;
 			unsigned int GetFrameBufferObject() const;
 			unsigned int GetFrameBufferObjectTexture() const;
+			int GetWidth() const;
+			int GetHeight() const;
+
+			void Resize(int width, int height);
 
 		private:
 			class OpenGLRendererImpl;

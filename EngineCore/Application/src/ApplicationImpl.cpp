@@ -41,6 +41,17 @@ namespace Andromeda
 						m_pRenderer->Init(m_pWindow->GetWidth(), m_pWindow->GetHeight());
                         m_pScene = new Rendering::OpenGLScene();
 
+                        // Set the resize callback in ImGuiManager
+                        m_pImGuiManager->SetOnResizeCallback(
+                            [this](int newWidth, int newHeight) 
+                            {
+                                if (m_pRenderer)
+                                {
+                                    m_pRenderer->Resize(newWidth, newHeight);
+                                }
+                            }
+                        );
+
                         std::vector<float> vertices = {
                             // Positions        // Colors
                            -0.5f,  0.5f, 0.0f,  1.0f, 0.0f, 0.0f, // Top left (red)
@@ -72,7 +83,7 @@ namespace Andromeda
 			while (!glfwWindowShouldClose(m_pWindow->GetWindow()))
 			{
                 glfwPollEvents();
-                m_pRenderer->RenderFrame(*m_pScene, m_pImGuiManager->GetWidth(), m_pImGuiManager->GetHeight());
+                m_pRenderer->RenderFrame(*m_pScene);
                 m_pImGuiManager->Render(m_pRenderer->GetFrameBufferObjectTexture());
 				glfwSwapBuffers(m_pWindow->GetWindow());
 			}
