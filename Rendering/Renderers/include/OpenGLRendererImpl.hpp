@@ -24,6 +24,7 @@ namespace Andromeda
 			void Init(int width, int height);
 			void DeInit();
 			void RenderFrame(const Rendering::OpenGLScene& scene);
+			void Resize(int width, int height);
 
 			bool IsInitialized() const;
 			unsigned int GetFrameBufferObject() const;
@@ -31,10 +32,9 @@ namespace Andromeda
 			int GetWidth() const;
 			int GetHeight() const;
 
-			void Resize(int width, int height);
 
 		private:
-			void InitFrameBuffer(int width, int height);
+			void InitFrameBuffer();
 			void CreateShader();
 
 			bool m_isInitialized;

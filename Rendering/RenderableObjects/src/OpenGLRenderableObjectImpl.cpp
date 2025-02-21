@@ -75,26 +75,47 @@ namespace Andromeda
 
 		void OpenGLRenderableObject::OpenGLRenderableObjectImpl::Init(const std::vector<float>& vertices, const std::vector<unsigned int>& indices)
 		{
+			GenerateAndBindVertexAttributes();
+			GenerateAndBindVertexBuffers(vertices, indices);
+			GenerateAndBindElementBuffer(indices);
+			SetVertexAttributePointers();
+			UnbindVertexAttributes();
+		}
+
+		void OpenGLRenderableObject::OpenGLRenderableObjectImpl::GenerateAndBindVertexAttributes()
+		{
 			// Generate and bind VAO
 			glGenVertexArrays(1, &m_VAO);
 			glBindVertexArray(m_VAO);
+		}
 
+		void OpenGLRenderableObject::OpenGLRenderableObjectImpl::GenerateAndBindVertexBuffers(const std::vector<float>& vertices, const std::vector<unsigned int>& indices)
+		{
 			// Generate and bind VBO
 			glGenBuffers(1, &m_VBO);
 			glBindBuffer(GL_ARRAY_BUFFER, m_VBO);
 			glBufferData(GL_ARRAY_BUFFER, vertices.size() * sizeof(float), vertices.data(), GL_STATIC_DRAW);
+		}
 
+		void OpenGLRenderableObject::OpenGLRenderableObjectImpl::GenerateAndBindElementBuffer(const std::vector<unsigned int>& indices)
+		{
 			// Generate and bind EBO
 			glGenBuffers(1, &m_EBO);
 			glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_EBO);
 			glBufferData(GL_ELEMENT_ARRAY_BUFFER, indices.size() * sizeof(unsigned int), indices.data(), GL_STATIC_DRAW);
+		}
 
+		void OpenGLRenderableObject::OpenGLRenderableObjectImpl::SetVertexAttributePointers()
+		{
 			// Set vertex attribute pointers
 			glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)0); // Position
 			glEnableVertexAttribArray(0);
 			glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)(3 * sizeof(float))); // Color
 			glEnableVertexAttribArray(1);
+		}
 
+		void OpenGLRenderableObject::OpenGLRenderableObjectImpl::UnbindVertexAttributes()
+		{
 			// Unbind VAO
 			glBindVertexArray(0);
 		}

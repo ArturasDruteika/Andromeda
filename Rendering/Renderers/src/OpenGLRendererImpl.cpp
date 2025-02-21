@@ -34,7 +34,9 @@ namespace Andromeda
 
             glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
             CreateShader();
-            InitFrameBuffer(width, height); // Initialize the framebuffer here
+			m_width = width;
+			m_height = height;
+            InitFrameBuffer();
             m_isInitialized = true;
         }
 
@@ -79,6 +81,24 @@ namespace Andromeda
             glBindFramebuffer(GL_FRAMEBUFFER, 0);
         }
 
+        void OpenGLRenderer::OpenGLRendererImpl::Resize(int width, int height)
+        {
+            if (width == m_width && height == m_height)
+            {
+                return; // No need to resize if dimensions are the same
+            }
+
+            m_width = width;
+            m_height = height;
+
+            glViewport(0, 0, width, height); // Update OpenGL viewport
+
+            // Recreate the framebuffer to match new size
+            glDeleteFramebuffers(1, &m_FBO);
+            glDeleteTextures(1, &m_FBOTexture);
+            InitFrameBuffer();
+        }
+
         bool OpenGLRenderer::OpenGLRendererImpl::IsInitialized() const
         {
             return m_isInitialized;
@@ -104,23 +124,7 @@ namespace Andromeda
             return m_height;
         }
 
-        void OpenGLRenderer::OpenGLRendererImpl::Resize(int width, int height)
-        {
-            if (width == m_width && height == m_height)
-                return; // No need to resize if dimensions are the same
-
-            m_width = width;
-            m_height = height;
-
-            glViewport(0, 0, width, height); // Update OpenGL viewport
-
-            // Recreate the framebuffer to match new size
-            glDeleteFramebuffers(1, &m_FBO);
-            glDeleteTextures(1, &m_FBOTexture);
-            InitFrameBuffer(width, height);
-        }
-
-        void OpenGLRenderer::OpenGLRendererImpl::InitFrameBuffer(int width, int height)
+        void OpenGLRenderer::OpenGLRendererImpl::InitFrameBuffer()
         {
             // Generate and bind the framebuffer
             glGenFramebuffers(1, &m_FBO);
@@ -129,7 +133,7 @@ namespace Andromeda
             // Generate and configure the texture for the framebuffer
             glGenTextures(1, &m_FBOTexture);
             glBindTexture(GL_TEXTURE_2D, m_FBOTexture);
-            glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, nullptr);
+            glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, m_width, m_height, 0, GL_RGBA, GL_UNSIGNED_BYTE, nullptr);
             glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
             glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
             glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, m_FBOTexture, 0);
