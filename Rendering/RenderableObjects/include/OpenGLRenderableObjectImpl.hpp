@@ -34,6 +34,11 @@ namespace Andromeda
 
 		private:
 			void Init(const std::vector<float>& vertices, const std::vector<unsigned int>& indices);
+			void GenerateAndBindVertexAttributes();
+			void GenerateAndBindVertexBuffers(const std::vector<float>& vertices, const std::vector<unsigned int>& indices);
+			void GenerateAndBindElementBuffer(const std::vector<unsigned int>& indices);
+			void SetVertexAttributePointers();
+			void UnbindVertexAttributes();
 
 			unsigned int m_VBO;
 			unsigned int m_VAO;
