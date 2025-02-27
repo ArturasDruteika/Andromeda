@@ -32,7 +32,6 @@ namespace Andromeda
 			int GetWidth() const;
 			int GetHeight() const;
 
-
 		private:
 			void InitFrameBuffer();
 			void CreateShader();
