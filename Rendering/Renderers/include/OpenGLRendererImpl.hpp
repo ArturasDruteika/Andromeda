@@ -32,10 +32,14 @@ namespace Andromeda
 			int GetWidth() const;
 			int GetHeight() const;
 
-
 		private:
 			void InitFrameBuffer();
 			void CreateShader();
+			void GenerateAndBindFrameBuffer();
+			void GenerateAndBindFrameBufferTexture();
+			void ConfigureFrameBufferTexture();
+			void UnbindFrameBuffer();
+			void RenderObject(const Rendering::OpenGLRenderableObject& object);
 
 			bool m_isInitialized;
 			unsigned int m_FBO, m_FBOTexture;

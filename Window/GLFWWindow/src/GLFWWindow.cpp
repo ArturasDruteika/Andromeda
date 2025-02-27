@@ -106,9 +106,6 @@ namespace Andromeda
                 instance->m_height = height; // Update the instance's height
                 spdlog::info("Window resized to {}x{}", width, height);
             }
-
-            // Update OpenGL viewport as well
-            glViewport(0, 0, width, height);
         }
 	}
 }

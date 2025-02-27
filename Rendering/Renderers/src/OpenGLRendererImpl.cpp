@@ -72,9 +72,7 @@ namespace Andromeda
             // Render all objects in the scene
             for (const auto& [id, object] : scene.GetObjects())
             {
-                glBindVertexArray(object->GetVAO());
-                glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, object->GetEBO()); // Bind EBO
-                glDrawElements(GL_TRIANGLES, object->GetVertexCount(), GL_UNSIGNED_INT, 0); // Use indices
+                RenderObject(*object);
             }
 
             // Unbind the framebuffer
@@ -126,13 +124,36 @@ namespace Andromeda
 
         void OpenGLRenderer::OpenGLRendererImpl::InitFrameBuffer()
         {
+			GenerateAndBindFrameBuffer();
+			GenerateAndBindFrameBufferTexture();
+			ConfigureFrameBufferTexture();
+			UnbindFrameBuffer();
+        }
+
+        void OpenGLRenderer::OpenGLRendererImpl::CreateShader()
+        {
+            std::string vertexShaderFilePath = "shader_program_sources/vertex_shader.glsl";
+			std::string fragmentShaderFilePath = "shader_program_sources/fragment_shader.glsl";
+            std::string vertexShaderSource = Utils::FileOperations::LoadFileAsString(vertexShaderFilePath);
+            std::string fragmentShaderSource = Utils::FileOperations::LoadFileAsString(fragmentShaderFilePath);
+            m_shader = new OpenGLShader(vertexShaderSource, fragmentShaderSource);
+        }
+
+        void OpenGLRenderer::OpenGLRendererImpl::GenerateAndBindFrameBuffer()
+        {
             // Generate and bind the framebuffer
             glGenFramebuffers(1, &m_FBO);
             glBindFramebuffer(GL_FRAMEBUFFER, m_FBO);
+        }
 
-            // Generate and configure the texture for the framebuffer
+        void OpenGLRenderer::OpenGLRendererImpl::GenerateAndBindFrameBufferTexture()
+        {
             glGenTextures(1, &m_FBOTexture);
             glBindTexture(GL_TEXTURE_2D, m_FBOTexture);
+        }
+
+        void OpenGLRenderer::OpenGLRendererImpl::ConfigureFrameBufferTexture()
+        {
             glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, m_width, m_height, 0, GL_RGBA, GL_UNSIGNED_BYTE, nullptr);
             glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
             glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
@@ -143,16 +164,19 @@ namespace Andromeda
             {
                 spdlog::error("Framebuffer is not complete!");
             }
+        }
 
+        void OpenGLRenderer::OpenGLRendererImpl::UnbindFrameBuffer()
+        {
             // Unbind the framebuffer
             glBindFramebuffer(GL_FRAMEBUFFER, 0);
         }
 
-        void OpenGLRenderer::OpenGLRendererImpl::CreateShader()
+        void OpenGLRenderer::OpenGLRendererImpl::RenderObject(const Rendering::OpenGLRenderableObject& object)
         {
-            std::string vertexShaderSource = Utils::FileOperations::LoadFileAsString("shader_program_sources/vertex_shader.glsl");
-            std::string fragmentShaderSource = Utils::FileOperations::LoadFileAsString("shader_program_sources/fragment_shader.glsl");
-            m_shader = new OpenGLShader(vertexShaderSource, fragmentShaderSource);
+            glBindVertexArray(object.GetVAO());
+            glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, object.GetEBO()); // Bind EBO
+            glDrawElements(GL_TRIANGLES, object.GetVertexCount(), GL_UNSIGNED_INT, 0); // Use indices
         }
 	}
 }
