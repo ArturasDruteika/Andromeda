@@ -16,7 +16,7 @@ namespace Andromeda
 			VertexLayoutImpl(const std::vector<VertexAttributes>& vertexAttributes);
 			~VertexLayoutImpl();
 
-			VertexLayoutImpl(const VertexLayoutImpl& other);	// Prevent Copy Constructor
+			VertexLayoutImpl(const VertexLayoutImpl& other);
 			VertexLayoutImpl& operator=(const VertexLayoutImpl& other) = delete;	// Prevent Copy Assignment
 			VertexLayoutImpl(VertexLayoutImpl&& other) noexcept = delete;	// Prevent Move Constructor
 			VertexLayoutImpl& operator=(VertexLayoutImpl&& other) noexcept = delete;	// Prevent Move Assignment

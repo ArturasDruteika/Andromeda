@@ -30,7 +30,7 @@ namespace Andromeda
 			VertexLayout(const std::vector<VertexAttributes>& vertexAttributes);
 			~VertexLayout();
 
-			VertexLayout(const VertexLayout& other);	// Prevent Copy Constructor
+			VertexLayout(const VertexLayout& other);
 			VertexLayout& operator=(const VertexLayout& other) = delete;	// Prevent Copy Assignment
 			VertexLayout(VertexLayout&& other) noexcept = delete;	// Prevent Move Constructor
 			VertexLayout& operator=(VertexLayout&& other) noexcept = delete;	// Prevent Move Assignment
