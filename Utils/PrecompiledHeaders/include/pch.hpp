@@ -16,6 +16,7 @@
 #include <cstdint>
 #include <stdexcept>
 #include <filesystem>
+#include <initializer_list>
 
 #include "spdlog/spdlog.h"
 

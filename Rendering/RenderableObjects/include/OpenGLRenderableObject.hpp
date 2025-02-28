@@ -1,5 +1,5 @@
-#ifndef ENVIRONMENT__RENDERABLE_OBJECT__HPP
-#define ENVIRONMENT__RENDERABLE_OBJECT__HPP
+#ifndef RENDERING__RENDERABLE_OBJECT__HPP
+#define RENDERING__RENDERABLE_OBJECT__HPP
 
 
 #if defined(_WIN32)
@@ -18,6 +18,7 @@
 
 
 #include "pch.hpp"
+#include "../include/VertexLayouts.hpp"
 
 
 namespace Andromeda
@@ -27,7 +28,7 @@ namespace Andromeda
 		class RENDERING_API OpenGLRenderableObject
 		{	
 		public:
-			OpenGLRenderableObject(const std::vector<float>& vertices, const std::vector<unsigned int>& indices);
+			OpenGLRenderableObject(const std::vector<float>& vertices, const std::vector<unsigned int>& indices, const VertexLayout& layout);
 			~OpenGLRenderableObject();
 
 			OpenGLRenderableObject(const OpenGLRenderableObject& other) = delete;	// Prevent Copy Constructor
@@ -54,4 +55,4 @@ namespace Andromeda
 }
 
 
-#endif // ENVIRONMENT__RENDERABLE_OBJECT__HPP
+#endif // RENDERING__RENDERABLE_OBJECT__HPP

@@ -6,8 +6,12 @@ namespace Andromeda
 {
 	namespace Rendering
 	{
-		OpenGLRenderableObject::OpenGLRenderableObject(const std::vector<float>& vertices, const std::vector<unsigned int>& indices)
-			: m_pOpenGLRenderableObjectImpl{ new OpenGLRenderableObject::OpenGLRenderableObjectImpl{ vertices, indices } }
+		OpenGLRenderableObject::OpenGLRenderableObject(
+			const std::vector<float>& vertices, 
+			const std::vector<unsigned int>& indices, 
+			const VertexLayout& layout
+		)
+			: m_pOpenGLRenderableObjectImpl{ new OpenGLRenderableObject::OpenGLRenderableObjectImpl{ vertices, indices, layout} }
 		{
 		}
 

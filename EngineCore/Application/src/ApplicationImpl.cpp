@@ -1,4 +1,6 @@
 #include "../include/ApplicationImpl.hpp"
+#include "VertexLayouts.hpp"
+#include "VertexAttributes.hpp"
 
 
 namespace Andromeda
@@ -65,7 +67,12 @@ namespace Andromeda
                             2, 3, 0  // Second triangle
                         };
 
-                        Rendering::OpenGLRenderableObject* object = new Rendering::OpenGLRenderableObject(vertices, indices);
+                        Rendering::VertexLayout vertexLayout = std::vector{
+                            Rendering::VertexAttributes{ 0, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), 0 }, // Position
+                            Rendering::VertexAttributes{ 1, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), 3 * sizeof(float) } // Color
+                        };
+
+                        Rendering::OpenGLRenderableObject* object = new Rendering::OpenGLRenderableObject(vertices, indices, vertexLayout);
                         m_pScene->AddObject(0, object);
                         m_isInitialized = true;
                     }
