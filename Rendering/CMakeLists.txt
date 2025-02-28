@@ -35,6 +35,11 @@ add_library(${PROJECT_NAME}
 		RenderableObjects/src/OpenGLRenderableObject.cpp
         RenderableObjects/include/OpenGLRenderableObjectImpl.hpp
 		RenderableObjects/src/OpenGLRenderableObjectImpl.cpp
+		RenderableObjects/include/VertexAttributes.hpp
+        RenderableObjects/include/VertexLayouts.hpp
+		RenderableObjects/src/VertexLayouts.cpp
+        RenderableObjects/include/VertexLayoutsImpl.hpp
+		RenderableObjects/src/VertexLayoutsImpl.cpp
 
         OpenGLLoader/include/OpenGLLoader.hpp
 		OpenGLLoader/src/OpenGLLoader.cpp
@@ -147,6 +152,11 @@ source_group(
 		RenderableObjects/src/OpenGLRenderableObject.cpp
         RenderableObjects/include/OpenGLRenderableObjectImpl.hpp
 		RenderableObjects/src/OpenGLRenderableObjectImpl.cpp
+        RenderableObjects/include/VertexAttributes.hpp
+        RenderableObjects/include/VertexLayouts.hpp
+		RenderableObjects/src/VertexLayouts.cpp
+        RenderableObjects/include/VertexLayoutsImpl.hpp
+		RenderableObjects/src/VertexLayoutsImpl.cpp
 )
 
 source_group(
