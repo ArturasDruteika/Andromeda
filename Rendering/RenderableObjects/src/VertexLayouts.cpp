@@ -14,6 +14,12 @@ namespace Andromeda
 		VertexLayout::~VertexLayout()
 		{
 			delete m_pVertexLayoutImpl;
+			m_pVertexLayoutImpl = nullptr;
+		}
+
+		VertexLayout::VertexLayout(const VertexLayout& other)
+		{
+			m_pVertexLayoutImpl = new VertexLayoutImpl(*other.m_pVertexLayoutImpl);
 		}
 
 		const std::vector<VertexAttributes>& VertexLayout::GetVerticesAttributesVec() const

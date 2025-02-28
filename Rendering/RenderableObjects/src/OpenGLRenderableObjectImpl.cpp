@@ -17,7 +17,7 @@ namespace Andromeda
 			, m_rotation{ 0.f }
 			, m_scale{ 1.f }
 			, m_vertexCount{ static_cast<unsigned int>(indices.size()) }
-			, m_vertexLayout(layout)
+			, m_vertexLayout{ layout }
 		{
 			Init(vertices, indices);
 		}

@@ -14,6 +14,11 @@ namespace Andromeda
 
 		VertexLayout::VertexLayoutImpl::~VertexLayoutImpl() = default;
 
+		VertexLayout::VertexLayoutImpl::VertexLayoutImpl(const VertexLayoutImpl& other)
+			: m_verticesAttributesVec(other.m_verticesAttributesVec), m_stride(other.m_stride)
+		{
+		}
+
 		const std::vector<VertexAttributes>& VertexLayout::VertexLayoutImpl::GetVerticesAttributesVec() const
 		{
 			return m_verticesAttributesVec;
