@@ -1,5 +1,5 @@
-#ifndef ENVIRONMENT__RENDERABLE_OBJECT_IMPL__HPP
-#define ENVIRONMENT__RENDERABLE_OBJECT_IMPL__HPP
+#ifndef RENDERING__RENDERABLE_OBJECT_IMPL__HPP
+#define RENDERING__RENDERABLE_OBJECT_IMPL__HPP
 
 
 #include "../include/OpenGLRenderableObject.hpp"
@@ -13,7 +13,7 @@ namespace Andromeda
 		class OpenGLRenderableObject::OpenGLRenderableObjectImpl
 		{
 		public:
-			OpenGLRenderableObjectImpl(const std::vector<float>& vertices, const std::vector<unsigned int>& indices);
+			OpenGLRenderableObjectImpl(const std::vector<float>& vertices, const std::vector<unsigned int>& indices, const VertexLayout& layout);
 			~OpenGLRenderableObjectImpl();
 
 			OpenGLRenderableObjectImpl(const OpenGLRenderableObjectImpl& other) = delete;	// Prevent Copy Constructor
@@ -47,9 +47,10 @@ namespace Andromeda
 			glm::vec3 m_position;
 			glm::vec3 m_rotation;
 			glm::vec3 m_scale;
+			VertexLayout m_vertexLayout;
 		};
 	}
 }
 
 
-#endif // ENVIRONMENT__RENDERABLE_OBJECT_IMPL__HPP
+#endif // RENDERING__RENDERABLE_OBJECT_IMPL__HPP

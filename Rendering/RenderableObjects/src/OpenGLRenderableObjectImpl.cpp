@@ -6,13 +6,18 @@ namespace Andromeda
 {
 	namespace Rendering
 	{
-		OpenGLRenderableObject::OpenGLRenderableObjectImpl::OpenGLRenderableObjectImpl(const std::vector<float>& vertices, const std::vector<unsigned int>& indices)
+		OpenGLRenderableObject::OpenGLRenderableObjectImpl::OpenGLRenderableObjectImpl(
+			const std::vector<float>& vertices,
+			const std::vector<unsigned int>& indices,
+			const VertexLayout& layout
+		)
 			: m_VBO{ 0 }
 			, m_VAO{ 0 }
 			, m_position{ 0.f }
 			, m_rotation{ 0.f }
 			, m_scale{ 1.f }
 			, m_vertexCount{ static_cast<unsigned int>(indices.size()) }
+			, m_vertexLayout(layout)
 		{
 			Init(vertices, indices);
 		}
@@ -107,11 +112,13 @@ namespace Andromeda
 
 		void OpenGLRenderableObject::OpenGLRenderableObjectImpl::SetVertexAttributePointers()
 		{
-			// Set vertex attribute pointers
-			glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)0); // Position
-			glEnableVertexAttribArray(0);
-			glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)(3 * sizeof(float))); // Color
-			glEnableVertexAttribArray(1);
+			const std::vector<VertexAttributes>& attributes = m_vertexLayout.GetVerticesAttributesVec();
+			size_t stride = m_vertexLayout.GetStride();
+			for (const auto& attr : attributes)
+			{
+				glVertexAttribPointer(attr.index, attr.size, attr.type, attr.normalized, stride, (void*)attr.offset);
+				glEnableVertexAttribArray(attr.index);
+			}
 		}
 
 		void OpenGLRenderableObject::OpenGLRenderableObjectImpl::UnbindVertexAttributes()
