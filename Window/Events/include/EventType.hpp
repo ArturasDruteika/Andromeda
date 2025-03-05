@@ -7,7 +7,7 @@
 
 namespace Andromeda
 {
-	namespace EngineCore
+	namespace Window
 	{
 #define BIT(x) (1 << x)
 

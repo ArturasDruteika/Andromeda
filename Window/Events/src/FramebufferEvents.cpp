@@ -3,7 +3,7 @@
 
 namespace Andromeda
 {
-	namespace EngineCore
+	namespace Window
 	{
 		WindowResizeEvent::WindowResizeEvent(unsigned int width, unsigned int height)
 			: m_width{ width }

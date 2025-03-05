@@ -8,7 +8,7 @@
 
 namespace Andromeda
 {
-	namespace EngineCore
+	namespace Window
 	{
 		class WindowResizeEvent : public Event
 		{
