@@ -9,7 +9,7 @@ namespace Andromeda
 {
 	using KeyCode = uint16_t;
 
-	namespace Key
+	namespace Window
 	{
 		enum : KeyCode
 		{
