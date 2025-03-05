@@ -32,6 +32,9 @@ namespace Andromeda
 
 		private:
 			void InitGLFW();
+			void SetupEventCallbacks();
+			bool HandleWindowResize(Window::WindowResizeEvent& event);
+			bool HandleWindowClose(Window::WindowCloseEvent& event);
 
 			bool m_isInitialized;
 			Rendering::OpenGLLoader m_openGLLoader;

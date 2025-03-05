@@ -1,4 +1,4 @@
-#include "../include/ApplicationImpl.hpp"
+﻿#include "../include/ApplicationImpl.hpp"
 #include "VertexLayouts.hpp"
 #include "VertexAttributes.hpp"
 
@@ -21,6 +21,11 @@ namespace Andromeda
 
         void Application::ApplicationImpl::Init()
         {
+#ifdef _DEBUG
+            // Enable debug logging
+            spdlog::set_level(spdlog::level::debug);
+#endif
+
             if (!m_isInitialized)
             {
                 try
@@ -38,14 +43,17 @@ namespace Andromeda
                         m_pImGuiManager = new ImGuiManager(m_pWindow->GetWindow());
                         m_pImGuiManager->Init(m_pWindow->GetWindow());
 
+                        // 🔹 Call the function to set up event callbacks
+                        SetupEventCallbacks();
+
                         // Create and initialize the Renderer
                         m_pRenderer = new Rendering::OpenGLRenderer();
-						m_pRenderer->Init(m_pWindow->GetWidth(), m_pWindow->GetHeight());
+                        m_pRenderer->Init(m_pWindow->GetWidth(), m_pWindow->GetHeight());
                         m_pScene = new Rendering::OpenGLScene();
 
                         // Set the resize callback in ImGuiManager
                         m_pImGuiManager->SetOnResizeCallback(
-                            [this](int newWidth, int newHeight) 
+                            [this](int newWidth, int newHeight)
                             {
                                 if (m_pRenderer)
                                 {
@@ -122,6 +130,47 @@ namespace Andromeda
                 spdlog::error("Failed to initialize GLFW.");
             }
             spdlog::info("GLFW initialized successfully.");
+        }
+
+        void Application::ApplicationImpl::SetupEventCallbacks()
+        {
+            if (!m_pWindow) return;
+
+            m_pWindow->SetEventCallback(
+                [this](Window::Event& event)
+                {
+                    spdlog::debug("Event received: {}", event.ToString());
+
+                    Window::EventDispatcher dispatcher(event);
+
+                    // Handle window resize
+                    dispatcher.Dispatch<Window::WindowResizeEvent>(
+                        [this](Window::WindowResizeEvent& e) { return HandleWindowResize(e); });
+
+                    // Handle window close
+                    dispatcher.Dispatch<Window::WindowCloseEvent>(
+                        [this](Window::WindowCloseEvent& e) { return HandleWindowClose(e); });
+                }
+            );
+        }
+
+        bool Application::ApplicationImpl::HandleWindowResize(Window::WindowResizeEvent& event)
+        {
+            spdlog::info("Resizing renderer to {}x{}", event.GetWidth(), event.GetHeight());
+
+            if (m_pRenderer)
+            {
+                m_pRenderer->Resize(event.GetWidth(), event.GetHeight());
+            }
+
+            return false; // Indicate that the event is not fully handled
+        }
+
+        bool Application::ApplicationImpl::HandleWindowClose(Window::WindowCloseEvent& event)
+        {
+            spdlog::debug("Window close event received. Exiting...");
+            glfwSetWindowShouldClose(m_pWindow->GetWindow(), true);
+            return true; // Indicate that the event has been handled
         }
 	}
 }
