@@ -2,7 +2,6 @@
 #include "VertexLayouts.hpp"
 #include "VertexAttributes.hpp"
 
-
 namespace Andromeda
 {
 	namespace EngineCore
@@ -50,18 +49,7 @@ namespace Andromeda
                         m_pRenderer = new Rendering::OpenGLRenderer();
                         m_pRenderer->Init(m_pWindow->GetWidth(), m_pWindow->GetHeight());
                         m_pScene = new Rendering::OpenGLScene();
-
-                        // Set the resize callback in ImGuiManager
-                        m_pImGuiManager->SetOnResizeCallback(
-                            [this](int newWidth, int newHeight)
-                            {
-                                if (m_pRenderer)
-                                {
-                                    m_pRenderer->Resize(newWidth, newHeight);
-                                }
-                            }
-                        );
-
+                        
                         std::vector<float> vertices = {
                             // Positions        // Colors
                            -0.5f,  0.5f, 0.0f,  1.0f, 0.0f, 0.0f, // Top left (red)
@@ -136,41 +124,35 @@ namespace Andromeda
         {
             if (!m_pWindow) return;
 
-            m_pWindow->SetEventCallback(
-                [this](Window::Event& event)
-                {
-                    spdlog::debug("Event received: {}", event.ToString());
+            // 🔹 Pass a function pointer instead of a lambda
+            m_pWindow->SetEventCallback(EventCallback);
+        }
 
-                    Window::EventDispatcher dispatcher(event);
+        void Application::ApplicationImpl::EventCallback(Window::Event& event)
+        {
+            spdlog::debug("Event received: {}", event.ToString());
 
-                    // Handle window resize
-                    dispatcher.Dispatch<Window::WindowResizeEvent>(
-                        [this](Window::WindowResizeEvent& e) { return HandleWindowResize(e); });
+            Window::EventDispatcher dispatcher(event);
 
-                    // Handle window close
-                    dispatcher.Dispatch<Window::WindowCloseEvent>(
-                        [this](Window::WindowCloseEvent& e) { return HandleWindowClose(e); });
-                }
-            );
+            // Handle window resize
+            dispatcher.Dispatch<Window::WindowResizeEvent>(HandleWindowResize);
+
+            // Handle window close
+            dispatcher.Dispatch<Window::WindowCloseEvent>(HandleWindowClose);
         }
 
         bool Application::ApplicationImpl::HandleWindowResize(Window::WindowResizeEvent& event)
         {
             spdlog::info("Resizing renderer to {}x{}", event.GetWidth(), event.GetHeight());
-
-            if (m_pRenderer)
-            {
-                m_pRenderer->Resize(event.GetWidth(), event.GetHeight());
-            }
-
             return false; // Indicate that the event is not fully handled
         }
 
         bool Application::ApplicationImpl::HandleWindowClose(Window::WindowCloseEvent& event)
         {
             spdlog::debug("Window close event received. Exiting...");
-            glfwSetWindowShouldClose(m_pWindow->GetWindow(), true);
+            //glfwSetWindowShouldClose(instance->GetWindow(), true);
             return true; // Indicate that the event has been handled
+            
         }
 	}
 }
