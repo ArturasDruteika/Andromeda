@@ -136,9 +136,6 @@ namespace Andromeda
 
             // Handle window resize
             dispatcher.Dispatch<Window::WindowResizeEvent>(HandleWindowResize);
-
-            // Handle window close
-            dispatcher.Dispatch<Window::WindowCloseEvent>(HandleWindowClose);
         }
 
         bool Application::ApplicationImpl::HandleWindowResize(Window::WindowResizeEvent& event)
@@ -147,12 +144,6 @@ namespace Andromeda
             return false; // Indicate that the event is not fully handled
         }
 
-        bool Application::ApplicationImpl::HandleWindowClose(Window::WindowCloseEvent& event)
-        {
-            spdlog::debug("Window close event received. Exiting...");
-            //glfwSetWindowShouldClose(instance->GetWindow(), true);
-            return true; // Indicate that the event has been handled
-            
-        }
+
 	}
 }

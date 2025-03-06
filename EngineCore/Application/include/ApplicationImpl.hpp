@@ -35,7 +35,6 @@ namespace Andromeda
 			// Static event handlers
 			static void EventCallback(Window::Event& event);
 			static bool HandleWindowResize(Window::WindowResizeEvent& event);
-			static bool HandleWindowClose(Window::WindowCloseEvent& event);
 
 			bool m_isInitialized;
 			Rendering::OpenGLLoader m_openGLLoader;
