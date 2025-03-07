@@ -133,17 +133,6 @@ namespace Andromeda
             spdlog::debug("Event received: {}", event.ToString());
 
             Window::EventDispatcher dispatcher(event);
-
-            // Handle window resize
-            dispatcher.Dispatch<Window::WindowResizeEvent>(HandleWindowResize);
         }
-
-        bool Application::ApplicationImpl::HandleWindowResize(Window::WindowResizeEvent& event)
-        {
-            spdlog::info("Resizing renderer to {}x{}", event.GetWidth(), event.GetHeight());
-            return false; // Indicate that the event is not fully handled
-        }
-
-
 	}
 }

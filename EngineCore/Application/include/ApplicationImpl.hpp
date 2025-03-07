@@ -32,9 +32,8 @@ namespace Andromeda
 			void InitGLFW();
 			void SetupEventCallbacks();
 
-			// Static event handlers
+			//// Static event handlers
 			static void EventCallback(Window::Event& event);
-			static bool HandleWindowResize(Window::WindowResizeEvent& event);
 
 			bool m_isInitialized;
 			Rendering::OpenGLLoader m_openGLLoader;
