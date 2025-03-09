@@ -1,7 +1,6 @@
-#include "../include/ApplicationImpl.hpp"
+﻿#include "../include/ApplicationImpl.hpp"
 #include "VertexLayouts.hpp"
 #include "VertexAttributes.hpp"
-
 
 namespace Andromeda
 {
@@ -21,6 +20,11 @@ namespace Andromeda
 
         void Application::ApplicationImpl::Init()
         {
+#ifdef _DEBUG
+            // Enable debug logging
+            spdlog::set_level(spdlog::level::debug);
+#endif
+
             if (!m_isInitialized)
             {
                 try
@@ -38,22 +42,14 @@ namespace Andromeda
                         m_pImGuiManager = new ImGuiManager(m_pWindow->GetWindow());
                         m_pImGuiManager->Init(m_pWindow->GetWindow());
 
+                        // 🔹 Call the function to set up event callbacks
+                        SetupEventCallbacks();
+
                         // Create and initialize the Renderer
                         m_pRenderer = new Rendering::OpenGLRenderer();
-						m_pRenderer->Init(m_pWindow->GetWidth(), m_pWindow->GetHeight());
+                        m_pRenderer->Init(m_pWindow->GetWidth(), m_pWindow->GetHeight());
                         m_pScene = new Rendering::OpenGLScene();
-
-                        // Set the resize callback in ImGuiManager
-                        m_pImGuiManager->SetOnResizeCallback(
-                            [this](int newWidth, int newHeight) 
-                            {
-                                if (m_pRenderer)
-                                {
-                                    m_pRenderer->Resize(newWidth, newHeight);
-                                }
-                            }
-                        );
-
+                        
                         std::vector<float> vertices = {
                             // Positions        // Colors
                            -0.5f,  0.5f, 0.0f,  1.0f, 0.0f, 0.0f, // Top left (red)
@@ -122,6 +118,21 @@ namespace Andromeda
                 spdlog::error("Failed to initialize GLFW.");
             }
             spdlog::info("GLFW initialized successfully.");
+        }
+
+        void Application::ApplicationImpl::SetupEventCallbacks()
+        {
+            if (!m_pWindow) return;
+
+            // 🔹 Pass a function pointer instead of a lambda
+            m_pWindow->SetEventCallback(EventCallback);
+        }
+
+        void Application::ApplicationImpl::EventCallback(Window::Event& event)
+        {
+            spdlog::debug("Event received: {}", event.ToString());
+
+            Window::EventDispatcher dispatcher(event);
         }
 	}
 }

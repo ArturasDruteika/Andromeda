@@ -4,7 +4,7 @@
 
 namespace Andromeda
 {
-	namespace EngineCore
+	namespace Window
 	{
 		KeyCode KeyEvent::GetKeyCode() const
 		{

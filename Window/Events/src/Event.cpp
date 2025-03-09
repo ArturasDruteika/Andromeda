@@ -3,7 +3,7 @@
 
 namespace Andromeda
 {
-	namespace EngineCore
+	namespace Window
 	{
 		Event::Event()
 		{

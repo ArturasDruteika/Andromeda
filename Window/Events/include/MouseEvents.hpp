@@ -9,7 +9,7 @@
 
 namespace Andromeda
 {
-	namespace EngineCore
+	namespace Window
 	{
 		class MouseMovedEvent : public Event
 		{

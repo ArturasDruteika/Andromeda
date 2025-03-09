@@ -4,7 +4,7 @@
 
 namespace Andromeda
 {
-	namespace EngineCore
+	namespace Window
 	{
 		EventDispatcher::EventDispatcher(Event& event)
 			: m_event{ event }

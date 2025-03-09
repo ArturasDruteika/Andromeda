@@ -7,7 +7,7 @@
 
 namespace Andromeda
 {
-	namespace EngineCore
+	namespace Window
 	{
 		class EventDispatcher
 		{

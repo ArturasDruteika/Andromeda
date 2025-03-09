@@ -1,7 +1,6 @@
 #ifndef ENGINECORE__APPLICATION_IMPL__HPP
 #define ENGINECORE__APPLICATION_IMPL__HPP
 
-
 #include "../include/Application.hpp"
 #include "OpenGLRenderer.hpp"
 #include "OpenGLScene.hpp"
@@ -9,7 +8,6 @@
 #include "../../RenderingWindows/include/ImGuiManager.hpp"
 #include "GLFWContext.hpp"
 #include "GLFWWindow.hpp"
-
 
 namespace Andromeda
 {
@@ -32,6 +30,10 @@ namespace Andromeda
 
 		private:
 			void InitGLFW();
+			void SetupEventCallbacks();
+
+			//// Static event handlers
+			static void EventCallback(Window::Event& event);
 
 			bool m_isInitialized;
 			Rendering::OpenGLLoader m_openGLLoader;
@@ -43,6 +45,5 @@ namespace Andromeda
 		};
 	}
 }
-
 
 #endif // ENGINECORE__APPLICATION_IMPL__HPP

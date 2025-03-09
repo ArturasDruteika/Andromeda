@@ -9,7 +9,7 @@ namespace Andromeda
 {
 	using MouseCode = uint16_t;
 
-	namespace EngineCore
+	namespace Window
 	{
 		enum : MouseCode
 		{

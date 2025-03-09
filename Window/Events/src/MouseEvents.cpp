@@ -4,7 +4,7 @@
 
 namespace Andromeda
 {
-	namespace EngineCore 
+	namespace Window
 	{
 		MouseMovedEvent::MouseMovedEvent(const float x, const float y)
 			: m_x{ x }
