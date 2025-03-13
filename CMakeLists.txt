@@ -27,3 +27,17 @@ add_subdirectory(Window)
 add_subdirectory(Context)
 add_subdirectory(glfw)
 add_subdirectory(imgui)
+
+# --- Install Rules ---
+set(CMAKE_INSTALL_PREFIX "${CMAKE_BINARY_DIR}/INSTALL" CACHE PATH "Installation directory" FORCE)
+
+# Install compiled binaries, excluding certain files
+install(
+    DIRECTORY "${CMAKE_BINARY_DIR}/$<CONFIG>/" 
+    DESTINATION "${CMAKE_INSTALL_PREFIX}/$<CONFIG>/"
+    FILES_MATCHING
+    PATTERN "*"
+    PATTERN "*.lib" EXCLUDE
+    PATTERN "*.exp" EXCLUDE
+    PATTERN "*.pdb" EXCLUDE
+)
