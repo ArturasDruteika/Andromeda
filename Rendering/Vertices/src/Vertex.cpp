@@ -6,8 +6,8 @@ namespace Andromeda
 {
 	namespace Rendering
 	{
-		Vertex::Vertex(float x, float y, float z, float r, float g, float b)
-			: m_pVertexImpl{ new VertexImpl(x, y, z, r, g, b) }
+		Vertex::Vertex(const Point3D& point3D, const Color& color)
+			: m_pVertexImpl{ new VertexImpl(point3D, color) }
 		{
 		}
 
@@ -16,24 +16,29 @@ namespace Andromeda
 			delete m_pVertexImpl;
 		}
 
-		std::array<float, 3> Vertex::GetPosition() const
+		Vertex::Vertex(const Vertex& other)
+		{
+			m_pVertexImpl = new VertexImpl(*other.m_pVertexImpl);
+		}
+
+		Point3D Vertex::GetPosition() const
 		{
 			return m_pVertexImpl->GetPosition();
 		}
 
-		void Vertex::SetPosition(float x, float y, float z)
+		void Vertex::SetPosition(const Point3D& point3D)
 		{
-			m_pVertexImpl->SetPosition(x, y, z);
+			m_pVertexImpl->SetPosition(point3D);
 		}
 
-		std::array<float, 3> Vertex::GetColor() const
+		Color Vertex::GetColor() const
 		{
 			return m_pVertexImpl->GetColor();
 		}
 
-		void Vertex::SetColor(float r, float g, float b)
+		void Vertex::SetColor(const Color& color)
 		{
-			m_pVertexImpl->SetColor(r, g, b);
+			m_pVertexImpl->SetColor(color);
 		}
 	}
 }

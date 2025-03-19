@@ -12,22 +12,22 @@ namespace Andromeda
 		class Vertex::VertexImpl
 		{
 		public:
-			VertexImpl(float x, float y, float z, float r, float g, float b);
+			VertexImpl(const Point3D& point3D, const Color& color);
 			~VertexImpl();
 
-			VertexImpl(const VertexImpl& other) = delete;	// Prevent Copy Constructor
+			VertexImpl(const VertexImpl& other);
 			VertexImpl& operator=(const VertexImpl& other) = delete;	// Prevent Copy Assignment
 			VertexImpl(VertexImpl&& other) noexcept = delete;	// Prevent Move Constructor
 			VertexImpl& operator=(VertexImpl&& other) noexcept = delete;	// Prevent Move Assignment
 
-			std::array<float, 3> GetPosition() const;
-			void SetPosition(float x, float y, float z);
-			std::array<float, 3> GetColor() const;
-			void SetColor(float r, float g, float b);
+			Point3D GetPosition() const;
+			void SetPosition(const Point3D& color);
+			Color GetColor() const;
+			void SetColor(const Color& color);
 
 		private:
-			std::array<float, 3> m_position;
-			std::array<float, 3> m_color;
+			Point3D m_position;
+			Color m_color;
 		};
 	}
 }

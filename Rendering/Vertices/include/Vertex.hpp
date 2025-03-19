@@ -17,6 +17,8 @@
 #endif
 
 #include "pch.hpp"
+#include "../../Attributes/include/Colors.hpp"
+#include "../../Attributes/include/Points.hpp"
 
 
 namespace Andromeda
@@ -26,18 +28,18 @@ namespace Andromeda
 		class RENDERING_API Vertex
 		{
 		public:
-			Vertex(float x, float y, float z, float r, float g, float b);
+			Vertex(const Point3D& point3D, const Color& color);
 			~Vertex();
 
-			Vertex(const Vertex& other) = delete;	// Prevent Copy Constructor
+			Vertex(const Vertex& other);
 			Vertex& operator=(const Vertex& other) = delete;	// Prevent Copy Assignment
 			Vertex(Vertex&& other) noexcept = delete;	// Prevent Move Constructor
 			Vertex& operator=(Vertex&& other) noexcept = delete;	// Prevent Move Assignment
 
-			std::array<float, 3> GetPosition() const;
-			void SetPosition(float x, float y, float z);
-			std::array<float, 3> GetColor() const;
-			void SetColor(float r, float g, float b);
+			Point3D GetPosition() const;
+			void SetPosition(const Point3D& color);
+			Color GetColor() const;
+			void SetColor(const Color& color);
 
 		private:
 			class VertexImpl;
