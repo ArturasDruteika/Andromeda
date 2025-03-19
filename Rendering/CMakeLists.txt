@@ -50,6 +50,9 @@ add_library(${PROJECT_NAME}
 		OpenGLLoader/src/OpenGLLoader.cpp
         OpenGLLoader/include/OpenGLLoaderImpl.hpp
 		OpenGLLoader/src/OpenGLLoaderImpl.cpp
+
+        Attributes/include/Points.hpp
+        Attributes/include/Colors.hpp
 )
 
 target_include_directories(${PROJECT_NAME} 
@@ -186,4 +189,14 @@ source_group(
 		OpenGLLoader/src/OpenGLLoader.cpp
         OpenGLLoader/include/OpenGLLoaderImpl.hpp
 		OpenGLLoader/src/OpenGLLoaderImpl.cpp
+)
+
+source_group(
+    TREE 
+        ${CMAKE_CURRENT_SOURCE_DIR}/Attributes
+    PREFIX
+        "Attributes"
+    FILES
+        Attributes/include/Points.hpp
+        Attributes/include/Colors.hpp
 )
