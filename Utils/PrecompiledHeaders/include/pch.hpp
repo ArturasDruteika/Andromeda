@@ -17,6 +17,7 @@
 #include <stdexcept>
 #include <filesystem>
 #include <initializer_list>
+#include <array>
 
 #include "spdlog/spdlog.h"
 
