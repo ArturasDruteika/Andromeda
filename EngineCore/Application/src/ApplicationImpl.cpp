@@ -52,6 +52,8 @@ namespace Andromeda
                         m_pRenderer = new Rendering::OpenGLRenderer();
                         m_pRenderer->Init(m_pWindow->GetWidth(), m_pWindow->GetHeight());
                         m_pScene = new Rendering::OpenGLScene();
+
+						SetupImGuiCallbacks();
                         
                         std::vector<Rendering::Vertex> vertices = {
 							{ Rendering::Point3D{ -0.5f,  0.5f, 0.0f }, Rendering::Color{ 1.0f, 0.0f, 0.0f, 1.0f} }, // Top Left
@@ -128,6 +130,18 @@ namespace Andromeda
 
             // 🔹 Pass a function pointer instead of a lambda
             m_pWindow->SetEventCallback(EventCallback);
+        }
+
+        void Application::ApplicationImpl::SetupImGuiCallbacks()
+        {
+            m_pImGuiManager->SetOnResizeCallback(
+                std::bind(
+                    &Rendering::OpenGLRenderer::Resize, 
+                    m_pRenderer, 
+                    std::placeholders::_1, 
+                    std::placeholders::_2
+                )
+            );
         }
 
         void Application::ApplicationImpl::EventCallback(Window::Event& event)

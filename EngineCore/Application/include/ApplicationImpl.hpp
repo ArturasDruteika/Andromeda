@@ -31,6 +31,7 @@ namespace Andromeda
 		private:
 			void InitGLFW();
 			void SetupEventCallbacks();
+			void SetupImGuiCallbacks();
 
 			//// Static event handlers
 			static void EventCallback(Window::Event& event);
