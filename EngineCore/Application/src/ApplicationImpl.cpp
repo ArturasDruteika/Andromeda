@@ -1,6 +1,9 @@
 ﻿#include "../include/ApplicationImpl.hpp"
 #include "VertexLayouts.hpp"
 #include "VertexAttributes.hpp"
+#include "Vertex.hpp"
+#include "Points.hpp"
+#include "Colors.hpp"
 
 namespace Andromeda
 {
@@ -50,12 +53,11 @@ namespace Andromeda
                         m_pRenderer->Init(m_pWindow->GetWidth(), m_pWindow->GetHeight());
                         m_pScene = new Rendering::OpenGLScene();
                         
-                        std::vector<float> vertices = {
-                            // Positions        // Colors
-                           -0.5f,  0.5f, 0.0f,  1.0f, 0.0f, 0.0f, // Top left (red)
-                            0.5f,  0.5f, 0.0f,  0.0f, 1.0f, 0.0f, // Top right (green)
-                            0.5f, -0.5f, 0.0f,  0.0f, 0.0f, 1.0f, // Bottom right (blue)
-                           -0.5f, -0.5f, 0.0f,  1.0f, 1.0f, 0.0f  // Bottom left (yellow)
+                        std::vector<Rendering::Vertex> vertices = {
+							{ Rendering::Point3D{ -0.5f,  0.5f, 0.0f }, Rendering::Color{ 1.0f, 0.0f, 0.0f, 1.0f} }, // Top Left
+							{ Rendering::Point3D{ 0.5f,  0.5f, 0.0f }, Rendering::Color{ 0.0f, 1.0f, 0.0f, 1.0f} }, // Top Right
+							{ Rendering::Point3D{ 0.5f, -0.5f, 0.0f }, Rendering::Color{ 0.0f, 0.0f, 1.0f, 1.0f} }, // Bottom Right
+							{ Rendering::Point3D{ -0.5f, -0.5f, 0.0f }, Rendering::Color{ 1.0f, 1.0f, 0.0f, 1.0f} } // Bottom Left
                         };
 
                         std::vector<unsigned int> indices = {
@@ -64,8 +66,8 @@ namespace Andromeda
                         };
 
                         Rendering::VertexLayout vertexLayout = std::vector{
-                            Rendering::VertexAttributes{ 0, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), 0 }, // Position
-                            Rendering::VertexAttributes{ 1, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), 3 * sizeof(float) } // Color
+                            Rendering::VertexAttributes{ 0, Rendering::Point3D::Size(), GL_FLOAT, GL_FALSE, sizeof(Rendering::Vertex), 0}, // Position
+                            Rendering::VertexAttributes{ 1, Rendering::Color::Size(), GL_FLOAT, GL_FALSE, sizeof(Rendering::Vertex), sizeof(Rendering::Point3D)} // Color
                         };
 
                         Rendering::OpenGLRenderableObject* object = new Rendering::OpenGLRenderableObject(vertices, indices, vertexLayout);
