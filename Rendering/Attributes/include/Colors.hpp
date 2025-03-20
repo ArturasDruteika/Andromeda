@@ -12,6 +12,11 @@ namespace Andromeda
 			float g;
 			float b;
 			float a;
+
+			static constexpr int Size()
+			{ 
+				return sizeof(Color) / sizeof(float);
+			}
 		};
 	}
 }

@@ -11,6 +11,11 @@ namespace Andromeda
 			float x;
 			float y;
 			float z;
+
+			static constexpr int Size()
+			{
+				return sizeof(Point3D) / sizeof(float);
+			}
 		};
 	}
 }
