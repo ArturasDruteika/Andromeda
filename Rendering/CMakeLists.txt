@@ -42,9 +42,6 @@ add_library(${PROJECT_NAME}
         Vertices/include/VertexLayoutsImpl.hpp
 		Vertices/src/VertexLayoutsImpl.cpp
         Vertices/include/Vertex.hpp
-		Vertices/src/Vertex.cpp
-        Vertices/include/VertexImpl.hpp
-		Vertices/src/VertexImpl.cpp
 
         OpenGLLoader/include/OpenGLLoader.hpp
 		OpenGLLoader/src/OpenGLLoader.cpp
@@ -174,9 +171,6 @@ source_group(
         Vertices/include/VertexLayoutsImpl.hpp
 		Vertices/src/VertexLayoutsImpl.cpp
         Vertices/include/Vertex.hpp
-		Vertices/src/Vertex.cpp
-        Vertices/include/VertexImpl.hpp
-		Vertices/src/VertexImpl.cpp
 )
 
 source_group(
