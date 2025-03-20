@@ -7,15 +7,13 @@ namespace Andromeda
 	namespace Rendering
 	{
 		OpenGLRenderableObject::OpenGLRenderableObjectImpl::OpenGLRenderableObjectImpl(
-			const std::vector<float>& vertices,
+			const std::vector<Vertex>& vertices,
 			const std::vector<unsigned int>& indices,
 			const VertexLayout& layout
 		)
 			: m_VBO{ 0 }
 			, m_VAO{ 0 }
-			, m_position{ 0.f }
-			, m_rotation{ 0.f }
-			, m_scale{ 1.f }
+			, m_vertices{ vertices }
 			, m_vertexCount{ static_cast<unsigned int>(indices.size()) }
 			, m_vertexLayout{ layout }
 		{
@@ -48,37 +46,12 @@ namespace Andromeda
 			return m_vertexCount;
 		}
 
-		std::vector<float> OpenGLRenderableObject::OpenGLRenderableObjectImpl::GetPosition() const
+		std::vector<Vertex> OpenGLRenderableObject::OpenGLRenderableObjectImpl::GetVertices() const
 		{
-			return { m_position.x, m_position.y, m_position.z };
+			return m_vertices;
 		}
 
-		void OpenGLRenderableObject::OpenGLRenderableObjectImpl::SetPosition(float x, float y, float z)
-		{
-			m_position = glm::vec3(x, y, z);
-		}
-
-		std::vector<float> OpenGLRenderableObject::OpenGLRenderableObjectImpl::GetRotation() const
-		{
-			return { m_rotation.x, m_rotation.y, m_rotation.z };
-		}
-
-		void OpenGLRenderableObject::OpenGLRenderableObjectImpl::SetRotation(float pitch, float yaw, float roll)
-		{
-			m_rotation = glm::vec3(pitch, yaw, roll);
-		}
-
-		std::vector<float> OpenGLRenderableObject::OpenGLRenderableObjectImpl::GetScale() const
-		{
-			return { m_scale.x, m_scale.y, m_scale.z };
-		}
-
-		void OpenGLRenderableObject::OpenGLRenderableObjectImpl::SetScale(float x, float y, float z)
-		{
-			m_scale = glm::vec3(x, y, z);
-		}
-
-		void OpenGLRenderableObject::OpenGLRenderableObjectImpl::Init(const std::vector<float>& vertices, const std::vector<unsigned int>& indices)
+		void OpenGLRenderableObject::OpenGLRenderableObjectImpl::Init(const std::vector<Vertex>& vertices, const std::vector<unsigned int>& indices)
 		{
 			GenerateAndBindVertexAttributes();
 			GenerateAndBindVertexBuffers(vertices, indices);
@@ -94,12 +67,12 @@ namespace Andromeda
 			glBindVertexArray(m_VAO);
 		}
 
-		void OpenGLRenderableObject::OpenGLRenderableObjectImpl::GenerateAndBindVertexBuffers(const std::vector<float>& vertices, const std::vector<unsigned int>& indices)
+		void OpenGLRenderableObject::OpenGLRenderableObjectImpl::GenerateAndBindVertexBuffers(const std::vector<Vertex>& vertices, const std::vector<unsigned int>& indices)
 		{
 			// Generate and bind VBO
 			glGenBuffers(1, &m_VBO);
 			glBindBuffer(GL_ARRAY_BUFFER, m_VBO);
-			glBufferData(GL_ARRAY_BUFFER, vertices.size() * sizeof(float), vertices.data(), GL_STATIC_DRAW);
+			glBufferData(GL_ARRAY_BUFFER, vertices.size() * sizeof(Vertex), vertices.data(), GL_STATIC_DRAW);
 		}
 
 		void OpenGLRenderableObject::OpenGLRenderableObjectImpl::GenerateAndBindElementBuffer(const std::vector<unsigned int>& indices)
