@@ -3,6 +3,7 @@
 
 
 #include "../include/OpenGLRenderableObject.hpp"
+#include "../../Vertices/include/Vertex.hpp"
 #include "glm/glm.hpp"
 
 
@@ -13,7 +14,7 @@ namespace Andromeda
 		class OpenGLRenderableObject::OpenGLRenderableObjectImpl
 		{
 		public:
-			OpenGLRenderableObjectImpl(const std::vector<float>& vertices, const std::vector<unsigned int>& indices, const VertexLayout& layout);
+			OpenGLRenderableObjectImpl(const std::vector<Vertex>& vertices, const std::vector<unsigned int>& indices, const VertexLayout& layout);
 			~OpenGLRenderableObjectImpl();
 
 			OpenGLRenderableObjectImpl(const OpenGLRenderableObjectImpl& other) = delete;	// Prevent Copy Constructor
@@ -25,17 +26,12 @@ namespace Andromeda
 			unsigned int GetVAO() const;
 			unsigned int GetEBO() const;
 			unsigned int GetVertexCount() const;
-			std::vector<float> GetPosition() const;
-			void SetPosition(float x, float y, float z);
-			std::vector<float> GetRotation() const;
-			void SetRotation(float pitch, float yaw, float roll);
-			std::vector<float> GetScale() const;
-			void SetScale(float x, float y, float z);
+			std::vector<Vertex> GetVertices() const;
 
 		private:
-			void Init(const std::vector<float>& vertices, const std::vector<unsigned int>& indices);
+			void Init(const std::vector<Vertex>& vertices, const std::vector<unsigned int>& indices);
 			void GenerateAndBindVertexAttributes();
-			void GenerateAndBindVertexBuffers(const std::vector<float>& vertices, const std::vector<unsigned int>& indices);
+			void GenerateAndBindVertexBuffers(const std::vector<Vertex>& vertices, const std::vector<unsigned int>& indices);
 			void GenerateAndBindElementBuffer(const std::vector<unsigned int>& indices);
 			void SetVertexAttributePointers();
 			void UnbindVertexAttributes();
@@ -44,9 +40,7 @@ namespace Andromeda
 			unsigned int m_VAO;
 			unsigned int m_EBO;
 			unsigned int m_vertexCount;
-			glm::vec3 m_position;
-			glm::vec3 m_rotation;
-			glm::vec3 m_scale;
+			std::vector<Vertex> m_vertices;
 			VertexLayout m_vertexLayout;
 		};
 	}

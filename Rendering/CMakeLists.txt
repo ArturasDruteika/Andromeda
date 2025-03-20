@@ -35,16 +35,21 @@ add_library(${PROJECT_NAME}
 		RenderableObjects/src/OpenGLRenderableObject.cpp
         RenderableObjects/include/OpenGLRenderableObjectImpl.hpp
 		RenderableObjects/src/OpenGLRenderableObjectImpl.cpp
-		RenderableObjects/include/VertexAttributes.hpp
-        RenderableObjects/include/VertexLayouts.hpp
-		RenderableObjects/src/VertexLayouts.cpp
-        RenderableObjects/include/VertexLayoutsImpl.hpp
-		RenderableObjects/src/VertexLayoutsImpl.cpp
+
+		Vertices/include/VertexAttributes.hpp
+        Vertices/include/VertexLayouts.hpp
+		Vertices/src/VertexLayouts.cpp
+        Vertices/include/VertexLayoutsImpl.hpp
+		Vertices/src/VertexLayoutsImpl.cpp
+        Vertices/include/Vertex.hpp
 
         OpenGLLoader/include/OpenGLLoader.hpp
 		OpenGLLoader/src/OpenGLLoader.cpp
         OpenGLLoader/include/OpenGLLoaderImpl.hpp
 		OpenGLLoader/src/OpenGLLoaderImpl.cpp
+
+        Attributes/include/Points.hpp
+        Attributes/include/Colors.hpp
 )
 
 target_include_directories(${PROJECT_NAME} 
@@ -152,11 +157,20 @@ source_group(
 		RenderableObjects/src/OpenGLRenderableObject.cpp
         RenderableObjects/include/OpenGLRenderableObjectImpl.hpp
 		RenderableObjects/src/OpenGLRenderableObjectImpl.cpp
-        RenderableObjects/include/VertexAttributes.hpp
-        RenderableObjects/include/VertexLayouts.hpp
-		RenderableObjects/src/VertexLayouts.cpp
-        RenderableObjects/include/VertexLayoutsImpl.hpp
-		RenderableObjects/src/VertexLayoutsImpl.cpp
+)
+
+source_group(
+    TREE 
+        ${CMAKE_CURRENT_SOURCE_DIR}/Vertices
+    PREFIX
+        "Vertices"
+    FILES
+		Vertices/include/VertexAttributes.hpp
+        Vertices/include/VertexLayouts.hpp
+		Vertices/src/VertexLayouts.cpp
+        Vertices/include/VertexLayoutsImpl.hpp
+		Vertices/src/VertexLayoutsImpl.cpp
+        Vertices/include/Vertex.hpp
 )
 
 source_group(
@@ -169,4 +183,14 @@ source_group(
 		OpenGLLoader/src/OpenGLLoader.cpp
         OpenGLLoader/include/OpenGLLoaderImpl.hpp
 		OpenGLLoader/src/OpenGLLoaderImpl.cpp
+)
+
+source_group(
+    TREE 
+        ${CMAKE_CURRENT_SOURCE_DIR}/Attributes
+    PREFIX
+        "Attributes"
+    FILES
+        Attributes/include/Points.hpp
+        Attributes/include/Colors.hpp
 )

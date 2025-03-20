@@ -18,7 +18,8 @@
 
 
 #include "pch.hpp"
-#include "../include/VertexLayouts.hpp"
+#include "../../Vertices/include/VertexLayouts.hpp"
+#include "../../Vertices/include/Vertex.hpp"
 
 
 namespace Andromeda
@@ -28,7 +29,7 @@ namespace Andromeda
 		class RENDERING_API OpenGLRenderableObject
 		{	
 		public:
-			OpenGLRenderableObject(const std::vector<float>& vertices, const std::vector<unsigned int>& indices, const VertexLayout& layout);
+			OpenGLRenderableObject(const std::vector<Vertex>& vertices, const std::vector<unsigned int>& indices, const VertexLayout& layout);
 			~OpenGLRenderableObject();
 
 			OpenGLRenderableObject(const OpenGLRenderableObject& other) = delete;	// Prevent Copy Constructor
@@ -40,12 +41,7 @@ namespace Andromeda
 			unsigned int GetVAO() const;
 			unsigned int GetEBO() const;
 			unsigned int GetVertexCount() const;
-			std::vector<float> GetPosition() const;
-			void SetPosition(float x, float y, float z);
-			std::vector<float> GetRotation() const;
-			void SetRotation(float pitch, float yaw, float roll);
-			std::vector<float> GetScale() const;
-			void SetScale(float x, float y, float z);
+			std::vector<Vertex> GetVertices() const;
 
 		private:
 			class OpenGLRenderableObjectImpl;

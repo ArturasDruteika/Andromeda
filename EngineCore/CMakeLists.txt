@@ -38,8 +38,10 @@ target_include_directories(${PROJECT_NAME}
         ..//Context//GLFWContext//include//
         ..//Rendering//Renderers//include//
         ..//Rendering//RenderableObjects//include//
+        ..//Rendering//Vertices//include//
         ..//Rendering//Scene//include//
         ..//Rendering//OpenGLLoader//include//
+        ..//Rendering//Attributes//include//
         ..//imgui//imgui//
 	    ..//imgui//imgui//backends//
 )

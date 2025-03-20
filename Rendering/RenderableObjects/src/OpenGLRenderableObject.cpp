@@ -7,7 +7,7 @@ namespace Andromeda
 	namespace Rendering
 	{
 		OpenGLRenderableObject::OpenGLRenderableObject(
-			const std::vector<float>& vertices, 
+			const std::vector<Vertex>& vertices,
 			const std::vector<unsigned int>& indices, 
 			const VertexLayout& layout
 		)
@@ -40,34 +40,9 @@ namespace Andromeda
 			return m_pOpenGLRenderableObjectImpl->GetVertexCount();
 		}
 
-		std::vector<float> OpenGLRenderableObject::GetPosition() const
+		std::vector<Vertex> OpenGLRenderableObject::GetVertices() const
 		{
-			return m_pOpenGLRenderableObjectImpl->GetPosition();
-		}
-
-		void OpenGLRenderableObject::SetPosition(float x, float y, float z)
-		{
-			m_pOpenGLRenderableObjectImpl->SetPosition(x, y, z);
-		}
-
-		std::vector<float> OpenGLRenderableObject::GetRotation() const
-		{
-			return m_pOpenGLRenderableObjectImpl->GetRotation();
-		}
-
-		void OpenGLRenderableObject::SetRotation(float pitch, float yaw, float roll)
-		{
-			m_pOpenGLRenderableObjectImpl->SetRotation(pitch, yaw, roll);
-		}
-
-		std::vector<float> OpenGLRenderableObject::GetScale() const
-		{
-			return m_pOpenGLRenderableObjectImpl->GetScale();
-		}
-
-		void OpenGLRenderableObject::SetScale(float x, float y, float z)
-		{
-			m_pOpenGLRenderableObjectImpl->SetScale(x, y, z);
+			return m_pOpenGLRenderableObjectImpl->GetVertices();
 		}
 	}
 }
