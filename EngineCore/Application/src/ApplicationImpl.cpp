@@ -23,7 +23,7 @@ namespace Andromeda
 
         void Application::ApplicationImpl::Init()
         {
-#ifdef _DEBUG
+#if !defined(NDEBUG) || defined(_DEBUG)
             // Enable debug logging
             spdlog::set_level(spdlog::level::debug);
 #endif
