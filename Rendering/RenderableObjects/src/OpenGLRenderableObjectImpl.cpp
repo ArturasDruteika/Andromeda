@@ -23,8 +23,18 @@ namespace Andromeda
 
         OpenGLRenderableObject::OpenGLRenderableObjectImpl::~OpenGLRenderableObjectImpl()
         {
-            glDeleteVertexArrays(1, &m_VAO);
-            glDeleteBuffers(1, &m_VBO);
+            if (m_VAO != 0)
+            {
+                glDeleteVertexArrays(1, &m_VAO);
+            }
+            if (m_VBO != 0)
+            {
+                glDeleteBuffers(1, &m_VBO);
+            }
+            if (m_EBO != 0)
+            {
+                glDeleteBuffers(1, &m_EBO);
+            }
         }
 
         unsigned int OpenGLRenderableObject::OpenGLRenderableObjectImpl::GetVBO() const

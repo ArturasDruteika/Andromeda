@@ -47,8 +47,7 @@ namespace Andromeda
 
 			glm::mat4 ConstructTranslationMatrix() const;
 			glm::mat4 ConstructRotationMatrix() const;
-			glm::mat4 ConstructScaleMatrix() const;
-
+		    glm::mat4 ConstructScaleMatrix() const;
 
             unsigned int m_VBO;
             unsigned int m_VAO;
