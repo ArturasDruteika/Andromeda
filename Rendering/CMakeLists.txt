@@ -50,6 +50,8 @@ add_library(${PROJECT_NAME}
 
         Attributes/include/Points.hpp
         Attributes/include/Colors.hpp
+
+        Math/include/MathTypes.hpp
 )
 
 target_include_directories(${PROJECT_NAME} 
@@ -193,4 +195,13 @@ source_group(
     FILES
         Attributes/include/Points.hpp
         Attributes/include/Colors.hpp
+)
+
+source_group(
+    TREE 
+        ${CMAKE_CURRENT_SOURCE_DIR}/Math
+    PREFIX
+        "Math"
+    FILES
+        Math/include/MathTypes.hpp
 )
