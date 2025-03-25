@@ -1,4 +1,5 @@
 #include "../include/OpenGLRenderableObjectImpl.hpp"
+#include "../../Utils/include/MathUtils.hpp"
 #include "glad/gl.h"
 
 namespace Andromeda
@@ -62,37 +63,37 @@ namespace Andromeda
             return m_vertices;
         }
 
-        glm::mat4 OpenGLRenderableObject::OpenGLRenderableObjectImpl::GetModelMatrix() const
+        Mat4 OpenGLRenderableObject::OpenGLRenderableObjectImpl::GetModelMatrix() const
         {
-            return m_modelMatrix;
+            return MathUtils::FromGLM(m_modelMatrix);
         }
 
-        void OpenGLRenderableObject::OpenGLRenderableObjectImpl::SetModelMatrix(const glm::mat4& modelMatrix)
+        void OpenGLRenderableObject::OpenGLRenderableObjectImpl::SetModelMatrix(const Mat4& modelMatrix)
         {
-            m_modelMatrix = modelMatrix;
+            m_modelMatrix = MathUtils::ToGLM(modelMatrix);
         }
 
-        void OpenGLRenderableObject::OpenGLRenderableObjectImpl::SetPosition(const glm::vec3& position, bool updateModelMatrix)
+        void OpenGLRenderableObject::OpenGLRenderableObjectImpl::SetPosition(const Vec3& position, bool updateModelMatrix)
         {
-            m_position = position;
+            m_position = MathUtils::ToGLM(position);
             if (updateModelMatrix)
             {
                 UpdateModelMatrix();
             }
         }
 
-        void OpenGLRenderableObject::OpenGLRenderableObjectImpl::SetRotation(const glm::vec3& rotation, bool updateModelMatrix)
+        void OpenGLRenderableObject::OpenGLRenderableObjectImpl::SetRotation(const Vec3& rotation, bool updateModelMatrix)
         {
-            m_rotation = rotation;
+            m_rotation = MathUtils::ToGLM(rotation);
             if (updateModelMatrix)
             {
                 UpdateModelMatrix();
             }
         }
 
-        void OpenGLRenderableObject::OpenGLRenderableObjectImpl::SetScale(const glm::vec3& scale, bool updateModelMatrix)
+        void OpenGLRenderableObject::OpenGLRenderableObjectImpl::SetScale(const Vec3& scale, bool updateModelMatrix)
         {
-            m_scale = scale;
+            m_scale = MathUtils::ToGLM(scale);
             if (updateModelMatrix)
             {
                 UpdateModelMatrix();

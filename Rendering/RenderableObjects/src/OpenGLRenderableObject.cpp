@@ -44,5 +44,35 @@ namespace Andromeda
 		{
 			return m_pOpenGLRenderableObjectImpl->GetVertices();
 		}
+
+		Mat4 OpenGLRenderableObject::GetModelMatrix() const
+		{
+			return m_pOpenGLRenderableObjectImpl->GetModelMatrix();
+		}
+
+		void OpenGLRenderableObject::SetModelMatrix(const Mat4& modelMatrix)
+		{
+			m_pOpenGLRenderableObjectImpl->SetModelMatrix(modelMatrix);
+		}
+
+		void OpenGLRenderableObject::UpdateModelMatrix()
+		{
+			m_pOpenGLRenderableObjectImpl->UpdateModelMatrix();
+		}
+
+		void OpenGLRenderableObject::SetPosition(const Vec3& position, bool updateModelMatrix)
+		{
+			m_pOpenGLRenderableObjectImpl->SetPosition(position, updateModelMatrix);
+		}
+
+		void OpenGLRenderableObject::SetRotation(const Vec3& rotation, bool updateModelMatrix)
+		{
+			m_pOpenGLRenderableObjectImpl->SetRotation(rotation, updateModelMatrix);
+		}
+
+		void OpenGLRenderableObject::SetScale(const Vec3& scale, bool updateModelMatrix)
+		{
+			m_pOpenGLRenderableObjectImpl->SetScale(scale, updateModelMatrix);
+		}
 	}
 }
