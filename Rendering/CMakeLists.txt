@@ -52,6 +52,9 @@ add_library(${PROJECT_NAME}
         Attributes/include/Colors.hpp
 
         Math/include/MathTypes.hpp
+
+        Utils/include/MathUtils.hpp
+		Utils/src/MathUtils.cpp
 )
 
 target_include_directories(${PROJECT_NAME} 
@@ -204,4 +207,14 @@ source_group(
         "Math"
     FILES
         Math/include/MathTypes.hpp
+)
+
+source_group(
+    TREE 
+        ${CMAKE_CURRENT_SOURCE_DIR}/Utils
+    PREFIX
+        "Utils"
+    FILES
+        Utils/include/MathUtils.hpp
+		Utils/src/MathUtils.cpp
 )
