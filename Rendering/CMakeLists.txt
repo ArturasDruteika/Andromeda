@@ -55,6 +55,12 @@ add_library(${PROJECT_NAME}
 
         Utils/include/MathUtils.hpp
 		Utils/src/MathUtils.cpp
+
+        Utils/include/MathUtils.hpp
+		Utils/src/MathUtils.cpp
+
+        Camera/include/Camera.hpp
+		Camera/src/Camera.cpp
 )
 
 target_include_directories(${PROJECT_NAME} 
@@ -217,4 +223,14 @@ source_group(
     FILES
         Utils/include/MathUtils.hpp
 		Utils/src/MathUtils.cpp
+)
+
+source_group(
+    TREE 
+        ${CMAKE_CURRENT_SOURCE_DIR}/Camera
+    PREFIX
+        "Camera"
+    FILES
+        Camera/include/Camera.hpp
+		Camera/src/Camera.cpp
 )
