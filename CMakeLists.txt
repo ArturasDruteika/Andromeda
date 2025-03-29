@@ -27,6 +27,8 @@ add_subdirectory(Window)
 add_subdirectory(Context)
 add_subdirectory(glfw)
 add_subdirectory(imgui)
+add_subdirectory(Space)
+add_subdirectory(Math)
 
 # --- Install Rules ---
 set(CMAKE_INSTALL_PREFIX "${CMAKE_BINARY_DIR}/INSTALL" CACHE PATH "Installation directory" FORCE)
