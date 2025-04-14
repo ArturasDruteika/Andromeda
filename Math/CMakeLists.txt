@@ -13,6 +13,8 @@ add_library(${PROJECT_NAME}
         LinearAlgebra/include/LinearAlgebraDataTypes.hpp
         LinearAlgebra/include/LinearAlgebraOperations.hpp
         LinearAlgebra/src/LinearAlgebraOperations.cpp
+
+        Utils/include/Points.hpp
 )
 
 target_include_directories(${PROJECT_NAME} 
@@ -47,4 +49,13 @@ source_group(
         LinearAlgebra/include/LinearAlgebraDataTypes.hpp
         LinearAlgebra/include/LinearAlgebraOperations.hpp
         LinearAlgebra/src/LinearAlgebraOperations.cpp
+)
+
+source_group(
+    TREE 
+        ${CMAKE_CURRENT_SOURCE_DIR}/Utils 
+    PREFIX 
+        "Utils" 
+    FILES
+        Utils/include/Points.hpp
 )

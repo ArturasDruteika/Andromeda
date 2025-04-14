@@ -39,7 +39,6 @@ namespace Andromeda
 			static Mat2 Multiply(const Mat2& a, const Mat2& b);
 			static Mat3 Multiply(const Mat3& a, const Mat3& b);
 			static Mat4 Multiply(const Mat4& a, const Mat4& b);
-
 		};
 	}
 }
