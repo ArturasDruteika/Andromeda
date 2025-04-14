@@ -28,14 +28,14 @@ namespace Andromeda
             std::vector<Vertex> GetVertices() const;
 
             // Model matrix management
-            Mat4 GetModelMatrix() const;
-            void SetModelMatrix(const Mat4& modelMatrix); // Uncommented and will be implemented
+            Math::Mat4 GetModelMatrix() const;
+            void SetModelMatrix(const Math::Mat4& modelMatrix); // Uncommented and will be implemented
             void UpdateModelMatrix(); // New method to compute the model matrix from position, rotation, scale
 
             // Transform properties (optional: you can set these directly and recompute the model matrix)
-            void SetPosition(const Vec3& position, bool updateModelMatrix = false);
-            void SetRotation(const Vec3& rotation, bool updateModelMatrix = false); // Euler angles in radians (X, Y, Z)
-            void SetScale(const Vec3& scale, bool updateModelMatrix = false);
+            void SetPosition(const Math::Vec3& position, bool updateModelMatrix = false);
+            void SetRotation(const Math::Vec3& rotation, bool updateModelMatrix = false); // Euler angles in radians (X, Y, Z)
+            void SetScale(const Math::Vec3& scale, bool updateModelMatrix = false);
 
         private:
             void Init(const std::vector<Vertex>& vertices, const std::vector<unsigned int>& indices);

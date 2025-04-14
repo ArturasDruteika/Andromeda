@@ -45,12 +45,12 @@ namespace Andromeda
 			return m_pOpenGLRenderableObjectImpl->GetVertices();
 		}
 
-		Mat4 OpenGLRenderableObject::GetModelMatrix() const
+		Math::Mat4 OpenGLRenderableObject::GetModelMatrix() const
 		{
 			return m_pOpenGLRenderableObjectImpl->GetModelMatrix();
 		}
 
-		void OpenGLRenderableObject::SetModelMatrix(const Mat4& modelMatrix)
+		void OpenGLRenderableObject::SetModelMatrix(const Math::Mat4& modelMatrix)
 		{
 			m_pOpenGLRenderableObjectImpl->SetModelMatrix(modelMatrix);
 		}
@@ -60,17 +60,17 @@ namespace Andromeda
 			m_pOpenGLRenderableObjectImpl->UpdateModelMatrix();
 		}
 
-		void OpenGLRenderableObject::SetPosition(const Vec3& position, bool updateModelMatrix)
+		void OpenGLRenderableObject::SetPosition(const Math::Vec3& position, bool updateModelMatrix)
 		{
 			m_pOpenGLRenderableObjectImpl->SetPosition(position, updateModelMatrix);
 		}
 
-		void OpenGLRenderableObject::SetRotation(const Vec3& rotation, bool updateModelMatrix)
+		void OpenGLRenderableObject::SetRotation(const Math::Vec3& rotation, bool updateModelMatrix)
 		{
 			m_pOpenGLRenderableObjectImpl->SetRotation(rotation, updateModelMatrix);
 		}
 
-		void OpenGLRenderableObject::SetScale(const Vec3& scale, bool updateModelMatrix)
+		void OpenGLRenderableObject::SetScale(const Math::Vec3& scale, bool updateModelMatrix)
 		{
 			m_pOpenGLRenderableObjectImpl->SetScale(scale, updateModelMatrix);
 		}

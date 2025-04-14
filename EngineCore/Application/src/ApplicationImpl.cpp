@@ -4,6 +4,8 @@
 #include "Vertex.hpp"
 #include "Points.hpp"
 #include "Colors.hpp"
+//#include "LinearAlgebraDataTypes.hpp"
+
 
 namespace Andromeda
 {
@@ -56,10 +58,10 @@ namespace Andromeda
 						SetupImGuiCallbacks();
                         
                         std::vector<Rendering::Vertex> vertices = {
-							{ Rendering::Point3D{ -0.5f,  0.5f, 0.0f }, Rendering::Color{ 1.0f, 0.0f, 0.0f, 1.0f} }, // Top Left
-							{ Rendering::Point3D{ 0.5f,  0.5f, 0.0f }, Rendering::Color{ 0.0f, 1.0f, 0.0f, 1.0f} }, // Top Right
-							{ Rendering::Point3D{ 0.5f, -0.5f, 0.0f }, Rendering::Color{ 0.0f, 0.0f, 1.0f, 1.0f} }, // Bottom Right
-							{ Rendering::Point3D{ -0.5f, -0.5f, 0.0f }, Rendering::Color{ 1.0f, 1.0f, 0.0f, 1.0f} } // Bottom Left
+							{ Math::Point3D{ -0.5f,  0.5f, 0.0f }, Rendering::Color{ 1.0f, 0.0f, 0.0f, 1.0f} }, // Top Left
+							{ Math::Point3D{ 0.5f,  0.5f, 0.0f }, Rendering::Color{ 0.0f, 1.0f, 0.0f, 1.0f} }, // Top Right
+							{ Math::Point3D{ 0.5f, -0.5f, 0.0f }, Rendering::Color{ 0.0f, 0.0f, 1.0f, 1.0f} }, // Bottom Right
+							{ Math::Point3D{ -0.5f, -0.5f, 0.0f }, Rendering::Color{ 1.0f, 1.0f, 0.0f, 1.0f} } // Bottom Left
                         };
 
                         std::vector<unsigned int> indices = {
@@ -68,8 +70,8 @@ namespace Andromeda
                         };
 
                         Rendering::VertexLayout vertexLayout = std::vector{
-                            Rendering::VertexAttributes{ 0, Rendering::Point3D::Size(), GL_FLOAT, GL_FALSE, sizeof(Rendering::Vertex), 0}, // Position
-                            Rendering::VertexAttributes{ 1, Rendering::Color::Size(), GL_FLOAT, GL_FALSE, sizeof(Rendering::Vertex), sizeof(Rendering::Point3D)} // Color
+                            Rendering::VertexAttributes{ 0, Math::Point3D::Size(), GL_FLOAT, GL_FALSE, sizeof(Rendering::Vertex), 0}, // Position
+                            Rendering::VertexAttributes{ 1, Rendering::Color::Size(), GL_FLOAT, GL_FALSE, sizeof(Rendering::Vertex), sizeof(Math::Point3D)} // Color
                         };
 
                         Rendering::OpenGLRenderableObject* object = new Rendering::OpenGLRenderableObject(vertices, indices, vertexLayout);

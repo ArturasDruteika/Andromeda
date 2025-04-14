@@ -63,17 +63,17 @@ namespace Andromeda
             return m_vertices;
         }
 
-        Mat4 OpenGLRenderableObject::OpenGLRenderableObjectImpl::GetModelMatrix() const
+        Math::Mat4 OpenGLRenderableObject::OpenGLRenderableObjectImpl::GetModelMatrix() const
         {
             return MathUtils::FromGLM(m_modelMatrix);
         }
 
-        void OpenGLRenderableObject::OpenGLRenderableObjectImpl::SetModelMatrix(const Mat4& modelMatrix)
+        void OpenGLRenderableObject::OpenGLRenderableObjectImpl::SetModelMatrix(const Math::Mat4& modelMatrix)
         {
             m_modelMatrix = MathUtils::ToGLM(modelMatrix);
         }
 
-        void OpenGLRenderableObject::OpenGLRenderableObjectImpl::SetPosition(const Vec3& position, bool updateModelMatrix)
+        void OpenGLRenderableObject::OpenGLRenderableObjectImpl::SetPosition(const Math::Vec3& position, bool updateModelMatrix)
         {
             m_position = MathUtils::ToGLM(position);
             if (updateModelMatrix)
@@ -82,7 +82,7 @@ namespace Andromeda
             }
         }
 
-        void OpenGLRenderableObject::OpenGLRenderableObjectImpl::SetRotation(const Vec3& rotation, bool updateModelMatrix)
+        void OpenGLRenderableObject::OpenGLRenderableObjectImpl::SetRotation(const Math::Vec3& rotation, bool updateModelMatrix)
         {
             m_rotation = MathUtils::ToGLM(rotation);
             if (updateModelMatrix)
@@ -91,7 +91,7 @@ namespace Andromeda
             }
         }
 
-        void OpenGLRenderableObject::OpenGLRenderableObjectImpl::SetScale(const Vec3& scale, bool updateModelMatrix)
+        void OpenGLRenderableObject::OpenGLRenderableObjectImpl::SetScale(const Math::Vec3& scale, bool updateModelMatrix)
         {
             m_scale = MathUtils::ToGLM(scale);
             if (updateModelMatrix)

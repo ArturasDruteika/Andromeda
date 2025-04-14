@@ -4,109 +4,109 @@ namespace Andromeda
 {
 	namespace Rendering
 	{
-		glm::vec2 MathUtils::ToGLM(const Vec2& vec)
+		glm::vec2 MathUtils::ToGLM(const Math::Vec2& vec)
 		{
-			return glm::vec2(vec.x, vec.y);
+			return glm::vec2(vec[0], vec[1]);
 		}
 
-		Vec2 MathUtils::FromGLM(const glm::vec2& glmVec)
+		Math::Vec2 MathUtils::FromGLM(const glm::vec2& glmVec)
 		{
-			return Vec2{ glmVec.x, glmVec.y };
+			return Math::Vec2{ glmVec.x, glmVec.y };
 		}
 
-		glm::vec3 MathUtils::ToGLM(const Vec3& vec)
+		glm::vec3 MathUtils::ToGLM(const Math::Vec3& vec)
 		{
-			return glm::vec3(vec.x, vec.y, vec.z);
+			return glm::vec3(vec[0], vec[1], vec[2]);
 		}
 
-		Vec3 MathUtils::FromGLM(const glm::vec3& glmVec)
+		Math::Vec3 MathUtils::FromGLM(const glm::vec3& glmVec)
 		{
-			return Vec3{ glmVec.x, glmVec.y, glmVec.z };
+			return Math::Vec3{ glmVec.x, glmVec.y, glmVec.z };
 		}
 
-		glm::vec4 MathUtils::ToGLM(const Vec4& vec)
+		glm::vec4 MathUtils::ToGLM(const Math::Vec4& vec)
 		{
-			return glm::vec4(vec.x, vec.y, vec.z, vec.w);
+			return glm::vec4(vec[0], vec[1], vec[2], vec[3]);
 		}
 
-		Vec4 MathUtils::FromGLM(const glm::vec4& glmVec)
+		Math::Vec4 MathUtils::FromGLM(const glm::vec4& glmVec)
 		{
-			return Vec4{ glmVec.x, glmVec.y, glmVec.z, glmVec.w };
+			return Math::Vec4{ glmVec.x, glmVec.y, glmVec.z, glmVec.w };
 		}
 
-		glm::mat2 MathUtils::ToGLM(const Mat2& mat)
+		glm::mat2 MathUtils::ToGLM(const Math::Mat2& mat)
 		{
 			glm::mat2 glmMat;
 			for (int col = 0; col < 2; ++col)
 			{
 				for (int row = 0; row < 2; ++row)
 				{
-					glmMat[col][row] = mat.data[col][row];
+					glmMat[col][row] = mat[col][row];
 				}
 			}
 			return glmMat;
 		}
 
-		Mat2 MathUtils::FromGLM(const glm::mat2& glmMat)
+		Math::Mat2 MathUtils::FromGLM(const glm::mat2& glmMat)
 		{
-			Mat2 mat;
+			Math::Mat2 mat;
 			for (int col = 0; col < 2; ++col)
 			{
 				for (int row = 0; row < 2; ++row)
 				{
-					mat.data[col][row] = glmMat[col][row];
+					mat[col][row] = glmMat[col][row];
 				}
 			}
 			return mat;
 		}
 
-		glm::mat3 MathUtils::ToGLM(const Mat3& mat)
+		glm::mat3 MathUtils::ToGLM(const Math::Mat3& mat)
 		{
-			glm::mat3 glmMat;
+			glm::mat3 glmMat{};
 			for (int col = 0; col < 3; ++col)
 			{
 				for (int row = 0; row < 3; ++row)
 				{
-					glmMat[col][row] = mat.data[col][row];
+					glmMat[col][row] = mat[col][row];
 				}
 			}
 			return glmMat;
 		}
 
-		Mat3 MathUtils::FromGLM(const glm::mat3& glmMat)
+		Math::Mat3 MathUtils::FromGLM(const glm::mat3& glmMat)
 		{
-			Mat3 mat;
+			Math::Mat3 mat;
 			for (int col = 0; col < 3; ++col)
 			{
 				for (int row = 0; row < 3; ++row)
 				{
-					mat.data[col][row] = glmMat[col][row];
+					mat[col][row] = glmMat[col][row];
 				}
 			}
 			return mat;
 		}
 
-		glm::mat4 MathUtils::ToGLM(const Mat4& mat)
+		glm::mat4 MathUtils::ToGLM(const Math::Mat4& mat)
 		{
 			glm::mat4 glmMat;
 			for (int col = 0; col < 4; ++col)
 			{
 				for (int row = 0; row < 4; ++row)
 				{
-					glmMat[col][row] = mat.data[col][row];
+					glmMat[col][row] = mat[col][row];
 				}
 			}
 			return glmMat;
 		}
 
-		Mat4 MathUtils::FromGLM(const glm::mat4& glmMat)
+		Math::Mat4 MathUtils::FromGLM(const glm::mat4& glmMat)
 		{
-			Mat4 mat;
+			Math::Mat4 mat;
 			for (int col = 0; col < 4; ++col)
 			{
 				for (int row = 0; row < 4; ++row)
 				{
-					mat.data[col][row] = glmMat[col][row];
+					mat[col][row] = glmMat[col][row];
 				}
 			}
 			return mat;

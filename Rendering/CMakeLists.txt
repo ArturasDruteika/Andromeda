@@ -48,13 +48,10 @@ add_library(${PROJECT_NAME}
         OpenGLLoader/include/OpenGLLoaderImpl.hpp
 		OpenGLLoader/src/OpenGLLoaderImpl.cpp
 
-        Attributes/include/Points.hpp
+        # Attributes/include/Points.hpp
         Attributes/include/Colors.hpp
 
-        Math/include/MathTypes.hpp
-
-        Utils/include/MathUtils.hpp
-		Utils/src/MathUtils.cpp
+        # Math/include/MathTypes.hpp
 
         Utils/include/MathUtils.hpp
 		Utils/src/MathUtils.cpp
@@ -69,6 +66,9 @@ target_include_directories(${PROJECT_NAME}
         ..//Utils//FileOperations//include//
         ..//ExternalGraphicsLibs//glad//include//
 	    ..//ExternalGraphicsLibs//glm//
+    PUBLIC
+        ..//Math//LinearAlgebra//include//
+        ..//Math//Utils//include//
 )
 
 # Link GLFW and OpenGL to the executable
@@ -76,11 +76,13 @@ target_link_libraries(${PROJECT_NAME}
     PRIVATE
         Utils
         ExternalGraphicsLibs
+        Math
 )
 
 add_dependencies(${PROJECT_NAME} 
     Utils
     ExternalGraphicsLibs
+    Math
 )
 
 # Enable precompiled headers
@@ -206,14 +208,14 @@ source_group(
         Attributes/include/Colors.hpp
 )
 
-source_group(
-    TREE 
-        ${CMAKE_CURRENT_SOURCE_DIR}/Math
-    PREFIX
-        "Math"
-    FILES
-        Math/include/MathTypes.hpp
-)
+# source_group(
+#     TREE 
+#         ${CMAKE_CURRENT_SOURCE_DIR}/Math
+#     PREFIX
+#         "Math"
+#     FILES
+#         Math/include/MathTypes.hpp
+# )
 
 source_group(
     TREE 

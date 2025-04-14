@@ -4,12 +4,12 @@ layout(location = 1) in vec4 aColor;
 
 out vec4 ourColor;
 
-uniform mat4 u_model_matrix;
-uniform mat4 u_view_matrix;
-uniform mat4 u_projection_matrix;
+uniform mat4 u_modelMatrix;
+uniform mat4 u_viewMatrix;
+uniform mat4 u_projectionMatrix;
 
 void main()
 {
-    gl_Position = u_projection_matrix * u_view_matrix * u_model_matrix * vec4(aPos, 1.0);
+    gl_Position = u_projectionMatrix * u_viewMatrix * u_modelMatrix * vec4(aPos, 1.0);
     ourColor = aColor;
 }
