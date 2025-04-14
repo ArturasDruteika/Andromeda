@@ -1,6 +1,10 @@
 #include "../include/OpenGLRendererImpl.hpp"
 #include "FileOperations.hpp"
+#include "../../Utils/include/MathUtils.hpp"
 #include "glad/gl.h"
+#include "glm/glm.hpp"
+#include <glm/gtc/type_ptr.hpp>
+#include <glm/gtc/matrix_transform.hpp>
 
 
 namespace Andromeda
@@ -174,9 +178,40 @@ namespace Andromeda
 
         void OpenGLRenderer::OpenGLRendererImpl::RenderObject(const Rendering::OpenGLRenderableObject& object)
         {
+            glm::mat4 dummyViewMatrix = glm::mat4(1.0f);
+            glm::mat4 dummyProjectionMatrix = glm::mat4(1.0f);
+            glm::mat4 modelMatrix = MathUtils::ToGLM(object.GetModelMatrix());
             glBindVertexArray(object.GetVAO());
             glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, object.GetEBO()); // Bind EBO
             glDrawElements(GL_TRIANGLES, object.GetVertexCount(), GL_UNSIGNED_INT, 0); // Use indices
+
+            glUniformMatrix4fv(
+                glGetUniformLocation(
+                    m_shader->GetProgram(),
+                    "u_modelMatrix"
+                ),
+                1,
+                GL_FALSE,
+                glm::value_ptr(modelMatrix)
+            );
+            glUniformMatrix4fv(
+                glGetUniformLocation(
+                    m_shader->GetProgram(),
+                    "u_viewMatrix"
+                ),
+                1,
+                GL_FALSE,
+                glm::value_ptr(MathUtils::ToGLM(object.GetModelMatrix()))
+            );
+            glUniformMatrix4fv(
+                glGetUniformLocation(
+                    m_shader->GetProgram(),
+                    "u_projectionMatrix"
+                ),
+                1,
+                GL_FALSE,
+                glm::value_ptr(modelMatrix)
+            );
         }
 	}
 }
