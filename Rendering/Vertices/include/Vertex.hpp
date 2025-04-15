@@ -2,7 +2,6 @@
 #define RENDERING__VERTEX__HPP
 
 
-//#include "../../Attributes/include/Points.hpp"
 #include "../../Attributes/include/Colors.hpp"
 #include "Points.hpp"
 
@@ -13,7 +12,7 @@ namespace Andromeda
 	{
 		struct Vertex
 		{
-			Math::Point3D position;
+			Space::Point3D position;
 			Color color;
 		};
 	}

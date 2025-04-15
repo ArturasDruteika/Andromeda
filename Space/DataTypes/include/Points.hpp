@@ -7,7 +7,7 @@
 
 namespace Andromeda
 {
-	namespace Math
+	namespace Space
 	{
 		struct Point2D
 		{

@@ -47,11 +47,8 @@ add_library(${PROJECT_NAME}
 		OpenGLLoader/src/OpenGLLoader.cpp
         OpenGLLoader/include/OpenGLLoaderImpl.hpp
 		OpenGLLoader/src/OpenGLLoaderImpl.cpp
-
-        # Attributes/include/Points.hpp
+        
         Attributes/include/Colors.hpp
-
-        # Math/include/MathTypes.hpp
 
         Utils/include/MathUtils.hpp
 		Utils/src/MathUtils.cpp
@@ -68,7 +65,7 @@ target_include_directories(${PROJECT_NAME}
 	    ..//ExternalGraphicsLibs//glm//
     PUBLIC
         ..//Math//LinearAlgebra//include//
-        ..//Math//Utils//include//
+        ..//Space//DataTypes//include//
 )
 
 # Link GLFW and OpenGL to the executable

@@ -19,6 +19,8 @@ add_library(${PROJECT_NAME}
         Scene/src/Scene.cpp
         Scene/include/SceneImpl.hpp
         Scene/src/SceneImpl.cpp
+
+        DataTypes/include/Points.hpp
 )
 
 target_include_directories(${PROJECT_NAME} 
@@ -54,4 +56,13 @@ source_group(
         Scene/src/Scene.cpp
         Scene/include/SceneImpl.hpp
         Scene/src/SceneImpl.cpp
+)
+
+source_group(
+    TREE 
+        ${CMAKE_CURRENT_SOURCE_DIR}/DataTypes 
+    PREFIX 
+        "DataTypes" 
+    FILES
+        DataTypes/include/Points.hpp
 )
