@@ -2,7 +2,7 @@
 #define RENDERING__CAMERA__HPP
 
 
-#include "../../Math/include/MathTypes.hpp"
+//#include "../../Math/include/MathTypes.hpp"
 #include "glm/glm.hpp"
 
 

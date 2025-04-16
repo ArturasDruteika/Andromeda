@@ -21,6 +21,13 @@ add_library(${PROJECT_NAME}
         Scene/src/SceneImpl.cpp
 
         DataTypes/include/Points.hpp
+
+        Objects/include/ObjectBase.hpp
+        Objects/src/ObjectBase.cpp
+
+        Vertices/include/Vertex.hpp
+
+        Attributes/include/Colors.hpp
 )
 
 target_include_directories(${PROJECT_NAME} 
@@ -65,4 +72,32 @@ source_group(
         "DataTypes" 
     FILES
         DataTypes/include/Points.hpp
+)
+
+source_group(
+    TREE 
+        ${CMAKE_CURRENT_SOURCE_DIR}/Objects 
+    PREFIX 
+        "Objects" 
+    FILES
+        Objects/include/ObjectBase.hpp
+        Objects/src/ObjectBase.cpp
+)
+
+source_group(
+    TREE 
+        ${CMAKE_CURRENT_SOURCE_DIR}/Vertices 
+    PREFIX 
+        "Vertices" 
+    FILES
+        Vertices/include/Vertex.hpp
+)
+
+source_group(
+    TREE 
+        ${CMAKE_CURRENT_SOURCE_DIR}/Attributes 
+    PREFIX 
+        "Attributes" 
+    FILES
+        Attributes/include/Colors.hpp
 )

@@ -41,15 +41,12 @@ add_library(${PROJECT_NAME}
 		Vertices/src/VertexLayouts.cpp
         Vertices/include/VertexLayoutsImpl.hpp
 		Vertices/src/VertexLayoutsImpl.cpp
-        Vertices/include/Vertex.hpp
 
         OpenGLLoader/include/OpenGLLoader.hpp
 		OpenGLLoader/src/OpenGLLoader.cpp
         OpenGLLoader/include/OpenGLLoaderImpl.hpp
 		OpenGLLoader/src/OpenGLLoaderImpl.cpp
         
-        Attributes/include/Colors.hpp
-
         Utils/include/MathUtils.hpp
 		Utils/src/MathUtils.cpp
 
@@ -180,7 +177,6 @@ source_group(
 		Vertices/src/VertexLayouts.cpp
         Vertices/include/VertexLayoutsImpl.hpp
 		Vertices/src/VertexLayoutsImpl.cpp
-        Vertices/include/Vertex.hpp
 )
 
 source_group(
@@ -194,25 +190,6 @@ source_group(
         OpenGLLoader/include/OpenGLLoaderImpl.hpp
 		OpenGLLoader/src/OpenGLLoaderImpl.cpp
 )
-
-source_group(
-    TREE 
-        ${CMAKE_CURRENT_SOURCE_DIR}/Attributes
-    PREFIX
-        "Attributes"
-    FILES
-        Attributes/include/Points.hpp
-        Attributes/include/Colors.hpp
-)
-
-# source_group(
-#     TREE 
-#         ${CMAKE_CURRENT_SOURCE_DIR}/Math
-#     PREFIX
-#         "Math"
-#     FILES
-#         Math/include/MathTypes.hpp
-# )
 
 source_group(
     TREE 
