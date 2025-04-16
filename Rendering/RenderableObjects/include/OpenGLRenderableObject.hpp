@@ -19,9 +19,8 @@
 
 #include "pch.hpp"
 #include "../../Vertices/include/VertexLayouts.hpp"
-#include "../../Vertices/include/Vertex.hpp"
-//#include "../../Math/include/MathTypes.hpp"
 #include "LinearAlgebraDataTypes.hpp"
+#include "Vertex.hpp"
 
 
 namespace Andromeda
@@ -31,7 +30,7 @@ namespace Andromeda
 		class RENDERING_API OpenGLRenderableObject
 		{	
 		public:
-			OpenGLRenderableObject(const std::vector<Vertex>& vertices, const std::vector<unsigned int>& indices, const VertexLayout& layout);
+			OpenGLRenderableObject(const std::vector<Space::Vertex>& vertices, const std::vector<unsigned int>& indices, const VertexLayout& layout);
 			~OpenGLRenderableObject();
 
 			OpenGLRenderableObject(const OpenGLRenderableObject& other) = delete;	// Prevent Copy Constructor
@@ -43,7 +42,7 @@ namespace Andromeda
 			unsigned int GetVAO() const;
 			unsigned int GetEBO() const;
 			unsigned int GetVertexCount() const;
-			std::vector<Vertex> GetVertices() const;
+			std::vector<Space::Vertex> GetVertices() const;
 
 			// Model matrix management
 			Math::Mat4 GetModelMatrix() const;

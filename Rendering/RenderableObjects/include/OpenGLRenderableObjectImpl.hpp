@@ -2,7 +2,6 @@
 #define RENDERING__RENDERABLE_OBJECT_IMPL__HPP
 
 #include "../include/OpenGLRenderableObject.hpp"
-#include "../../Vertices/include/Vertex.hpp"
 #include "glm/glm.hpp"
 #include "glm/gtc/matrix_transform.hpp" // For glm::translate, glm::rotate, glm::scale
 
@@ -13,7 +12,7 @@ namespace Andromeda
         class OpenGLRenderableObject::OpenGLRenderableObjectImpl
         {
         public:
-            OpenGLRenderableObjectImpl(const std::vector<Vertex>& vertices, const std::vector<unsigned int>& indices, const VertexLayout& layout);
+            OpenGLRenderableObjectImpl(const std::vector<Space::Vertex>& vertices, const std::vector<unsigned int>& indices, const VertexLayout& layout);
             ~OpenGLRenderableObjectImpl();
 
             OpenGLRenderableObjectImpl(const OpenGLRenderableObjectImpl& other) = delete;    // Prevent Copy Constructor
@@ -25,7 +24,7 @@ namespace Andromeda
             unsigned int GetVAO() const;
             unsigned int GetEBO() const;
             unsigned int GetVertexCount() const;
-            std::vector<Vertex> GetVertices() const;
+            std::vector<Space::Vertex> GetVertices() const;
 
             // Model matrix management
             Math::Mat4 GetModelMatrix() const;
@@ -38,9 +37,9 @@ namespace Andromeda
             void SetScale(const Math::Vec3& scale, bool updateModelMatrix = false);
 
         private:
-            void Init(const std::vector<Vertex>& vertices, const std::vector<unsigned int>& indices);
+            void Init(const std::vector<Space::Vertex>& vertices, const std::vector<unsigned int>& indices);
             void GenerateAndBindVertexAttributes();
-            void GenerateAndBindVertexBuffers(const std::vector<Vertex>& vertices, const std::vector<unsigned int>& indices);
+            void GenerateAndBindVertexBuffers(const std::vector<Space::Vertex>& vertices, const std::vector<unsigned int>& indices);
             void GenerateAndBindElementBuffer(const std::vector<unsigned int>& indices);
             void SetVertexAttributePointers();
             void UnbindVertexAttributes();
@@ -53,7 +52,7 @@ namespace Andromeda
             unsigned int m_VAO;
             unsigned int m_EBO;
             unsigned int m_vertexCount;
-            std::vector<Vertex> m_vertices;
+            std::vector<Space::Vertex> m_vertices;
             glm::mat4 m_modelMatrix;
             VertexLayout m_vertexLayout;
 

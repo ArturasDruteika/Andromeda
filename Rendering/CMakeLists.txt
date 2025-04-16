@@ -63,6 +63,8 @@ target_include_directories(${PROJECT_NAME}
     PUBLIC
         ..//Math//LinearAlgebra//include//
         ..//Space//DataTypes//include//
+        ..//Space//Attributes//include//
+        ..//Space//Vertices//include//
 )
 
 # Link GLFW and OpenGL to the executable

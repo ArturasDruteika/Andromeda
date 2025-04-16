@@ -7,7 +7,7 @@ namespace Andromeda
 	namespace Rendering
 	{
 		OpenGLRenderableObject::OpenGLRenderableObject(
-			const std::vector<Vertex>& vertices,
+			const std::vector<Space::Vertex>& vertices,
 			const std::vector<unsigned int>& indices, 
 			const VertexLayout& layout
 		)
@@ -40,7 +40,7 @@ namespace Andromeda
 			return m_pOpenGLRenderableObjectImpl->GetVertexCount();
 		}
 
-		std::vector<Vertex> OpenGLRenderableObject::GetVertices() const
+		std::vector<Space::Vertex> OpenGLRenderableObject::GetVertices() const
 		{
 			return m_pOpenGLRenderableObjectImpl->GetVertices();
 		}

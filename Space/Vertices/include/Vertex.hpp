@@ -1,9 +1,9 @@
-#ifndef RENDERING__VERTEX__HPP
-#define RENDERING__VERTEX__HPP
+#ifndef SPACE__VERTEX__HPP
+#define SPACE__VERTEX__HPP
 
 
 #include "../../Attributes/include/Colors.hpp"
-#include "Points.hpp"
+#include "../../DataTypes/include/Points.hpp"
 
 
 namespace Andromeda
@@ -12,11 +12,23 @@ namespace Andromeda
 	{
 		struct Vertex
 		{
-			Space::Point3D position;
+			Point3D position;
 			Color color;
+
+			Vertex() = default;
+
+			Vertex(const Point3D& pos, const Color& col)
+				: position(pos), color(col)
+			{
+			}
+
+			bool operator==(const Vertex& other) const
+			{
+				return position == other.position && color == other.color;
+			}
 		};
 	}
 }
 
 
-#endif // RENDERING__VERTEX__HPP
+#endif // SPACE__VERTEX__HPP

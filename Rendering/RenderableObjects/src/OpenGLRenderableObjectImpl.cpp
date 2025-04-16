@@ -7,7 +7,7 @@ namespace Andromeda
     namespace Rendering
     {
         OpenGLRenderableObject::OpenGLRenderableObjectImpl::OpenGLRenderableObjectImpl(
-            const std::vector<Vertex>& vertices,
+            const std::vector<Space::Vertex>& vertices,
             const std::vector<unsigned int>& indices,
             const VertexLayout& layout
         )
@@ -58,7 +58,7 @@ namespace Andromeda
             return m_vertexCount;
         }
 
-        std::vector<Vertex> OpenGLRenderableObject::OpenGLRenderableObjectImpl::GetVertices() const
+        std::vector<Space::Vertex> OpenGLRenderableObject::OpenGLRenderableObjectImpl::GetVertices() const
         {
             return m_vertices;
         }
@@ -109,7 +109,7 @@ namespace Andromeda
             m_modelMatrix = ConstructTranslationMatrix() * ConstructRotationMatrix() * ConstructScaleMatrix();
         }
 
-        void OpenGLRenderableObject::OpenGLRenderableObjectImpl::Init(const std::vector<Vertex>& vertices, const std::vector<unsigned int>& indices)
+        void OpenGLRenderableObject::OpenGLRenderableObjectImpl::Init(const std::vector<Space::Vertex>& vertices, const std::vector<unsigned int>& indices)
         {
             GenerateAndBindVertexAttributes();
             GenerateAndBindVertexBuffers(vertices, indices);
@@ -125,12 +125,12 @@ namespace Andromeda
             glBindVertexArray(m_VAO);
         }
 
-        void OpenGLRenderableObject::OpenGLRenderableObjectImpl::GenerateAndBindVertexBuffers(const std::vector<Vertex>& vertices, const std::vector<unsigned int>& indices)
+        void OpenGLRenderableObject::OpenGLRenderableObjectImpl::GenerateAndBindVertexBuffers(const std::vector<Space::Vertex>& vertices, const std::vector<unsigned int>& indices)
         {
             // Generate and bind VBO
             glGenBuffers(1, &m_VBO);
             glBindBuffer(GL_ARRAY_BUFFER, m_VBO);
-            glBufferData(GL_ARRAY_BUFFER, vertices.size() * sizeof(Vertex), vertices.data(), GL_STATIC_DRAW);
+            glBufferData(GL_ARRAY_BUFFER, vertices.size() * sizeof(Space::Vertex), vertices.data(), GL_STATIC_DRAW);
         }
 
         void OpenGLRenderableObject::OpenGLRenderableObjectImpl::GenerateAndBindElementBuffer(const std::vector<unsigned int>& indices)
