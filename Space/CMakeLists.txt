@@ -24,6 +24,7 @@ add_library(${PROJECT_NAME}
 
         Objects/include/ObjectBase.hpp
         Objects/src/ObjectBase.cpp
+        Objects/include/ObjectTypes.hpp
 
         Vertices/include/Vertex.hpp
 
@@ -82,6 +83,7 @@ source_group(
     FILES
         Objects/include/ObjectBase.hpp
         Objects/src/ObjectBase.cpp
+        Objects/include/ObjectTypes.hpp
 )
 
 source_group(
