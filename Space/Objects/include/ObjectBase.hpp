@@ -2,7 +2,8 @@
 #define SPACE__OBJECT_BASE__HPP
 
 
-#include "../include/ObjectTypes.hpp"
+#include "ObjectTypes.hpp"
+#include "../../Attributes/include/Colors.hpp"
 
 
 namespace Andromeda
@@ -20,6 +21,7 @@ namespace Andromeda
 
 		private:
 			ObjectType m_type;
+
 		};
 	}
 }

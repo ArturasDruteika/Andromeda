@@ -25,6 +25,8 @@ add_library(${PROJECT_NAME}
         Objects/include/ObjectBase.hpp
         Objects/src/ObjectBase.cpp
         Objects/include/ObjectTypes.hpp
+        Objects/include/Sphere.hpp
+        Objects/src/Sphere.cpp
 
         Vertices/include/Vertex.hpp
 
@@ -84,6 +86,8 @@ source_group(
         Objects/include/ObjectBase.hpp
         Objects/src/ObjectBase.cpp
         Objects/include/ObjectTypes.hpp
+        Objects/include/Sphere.hpp
+        Objects/src/Sphere.cpp
 )
 
 source_group(
