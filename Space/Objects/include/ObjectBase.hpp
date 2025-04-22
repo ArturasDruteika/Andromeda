@@ -18,9 +18,13 @@ namespace Andromeda
 
 			// Getters
 			ObjectType GetType() const;
+			Color GetColor() const;
+			//Setters
+			void SetColor(const Color& color);
 
 		private:
 			ObjectType m_type;
+			Color m_color;
 
 		};
 	}

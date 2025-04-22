@@ -16,5 +16,15 @@ namespace Andromeda
 		{
 			return m_type;
 		}
+
+		Color ObjectBase::GetColor() const
+		{
+			return m_color;
+		}
+
+		void ObjectBase::SetColor(const Color& color)
+		{
+			m_color = color;
+		}
 	}
 }
