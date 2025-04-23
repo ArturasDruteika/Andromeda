@@ -9,11 +9,11 @@ namespace Andromeda
 		enum class ObjectType
 		{
 			None = 0,
-			Sphere,
-			Cube,
-			Cylinder,
-			Capsule,
-			Pyramid
+			SPHERE,
+			CUBE,
+			CYLINDER,
+			CAPSUELE,
+			PYRAMID
 		};
 	}
 }

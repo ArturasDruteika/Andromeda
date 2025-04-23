@@ -15,22 +15,21 @@ namespace Andromeda
 		class ObjectBase
 		{
 		public:
-			ObjectBase(const ObjectType& objType);
+			ObjectBase();
 			~ObjectBase();
 
 			// Getters
-			ObjectType GetType() const;
-			Math::Vec3 GetPosition() const;
-			Color GetColor() const;
+			virtual ObjectType GetType() const = 0;
+			virtual Math::Vec3 GetPosition() const = 0;
+			virtual Color GetColor() const = 0;
 			//Setters
-			void SetColor(const Color& color);
-			void SetPosition(const Math::Vec3& position);
+			virtual void SetColor(const Color& color) = 0;
+			virtual void SetPosition(const Math::Vec3& position) = 0;
 
-		private:
-			ObjectType m_type;
-			Math::Vec3 m_position;
-			Color m_color;
-
+			// TODO: implement these methods
+			//void Move(const Math::Vec3& postion);
+			//void Rotate(const Math::Vec3& rotation);
+			//void Scale(const Math::Vec3& scale);
 		};
 	}
 }

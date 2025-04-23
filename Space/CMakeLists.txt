@@ -27,6 +27,8 @@ add_library(${PROJECT_NAME}
         Objects/include/ObjectTypes.hpp
         Objects/include/Sphere.hpp
         Objects/src/Sphere.cpp
+        Objects/include/SphereImpl.hpp
+        Objects/src/SphereImpl.cpp
 
         Vertices/include/Vertex.hpp
 
@@ -91,6 +93,8 @@ source_group(
         Objects/include/ObjectTypes.hpp
         Objects/include/Sphere.hpp
         Objects/src/Sphere.cpp
+        Objects/include/SphereImpl.hpp
+        Objects/src/SphereImpl.cpp
 )
 
 source_group(

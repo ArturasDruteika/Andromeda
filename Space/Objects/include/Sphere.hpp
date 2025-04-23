@@ -33,12 +33,21 @@ namespace Andromeda
 			Sphere(const Math::Vec3& position, const Color& color);
 			~Sphere();
 
+			/// Overrides from ObjectBase
+			// Getters
+			ObjectType GetType() const override;
+			Math::Vec3 GetPosition() const override;
+			Color GetColor() const override;
+			//Setters
+			void SetColor(const Color& color) override;
+			void SetPosition(const Math::Vec3& position) override;
+
 			// Getters
 			double GetRadius() const;
 
 		private:
-			float m_radius;
-
+			class SphereImpl;
+			SphereImpl* m_pSphereImpl;
 		};
 	}
 }

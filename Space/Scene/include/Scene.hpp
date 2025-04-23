@@ -18,6 +18,7 @@
 
 
 #include "pch.hpp"
+#include "../../Objects/include/ObjectBase.hpp"
 
 
 namespace Andromeda
@@ -34,6 +35,8 @@ namespace Andromeda
 			Scene& operator=(const Scene& other) = delete;	// Prevent Copy Assignment
 			Scene(Scene&& other) noexcept = delete;	// Prevent Move Constructor
 			Scene& operator=(Scene&& other) noexcept = delete;	// Prevent Move Assignment
+
+			void AddObject(const ObjectBase& objBase);
 
 		private:
 			class SceneImpl;
