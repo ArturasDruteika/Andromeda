@@ -4,6 +4,8 @@
 
 #include "ObjectTypes.hpp"
 #include "../../Attributes/include/Colors.hpp"
+#include "LinearAlgebraDataTypes.hpp"
+
 
 
 namespace Andromeda
@@ -18,12 +20,15 @@ namespace Andromeda
 
 			// Getters
 			ObjectType GetType() const;
+			Math::Vec3 GetPosition() const;
 			Color GetColor() const;
 			//Setters
 			void SetColor(const Color& color);
+			void SetPosition(const Math::Vec3& position);
 
 		private:
 			ObjectType m_type;
+			Math::Vec3 m_position;
 			Color m_color;
 
 		};

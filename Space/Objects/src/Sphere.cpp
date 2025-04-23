@@ -5,7 +5,7 @@ namespace Andromeda
 {
 	namespace Space
 	{
-		Sphere::Sphere()
+		Sphere::Sphere(const Math::Vec3& position, const Color& color)
 			: ObjectBase(ObjectType::Sphere)
 			, m_radius(0.0f)
 		{

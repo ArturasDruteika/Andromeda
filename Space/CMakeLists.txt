@@ -36,16 +36,19 @@ add_library(${PROJECT_NAME}
 target_include_directories(${PROJECT_NAME} 
     PRIVATE
         ..//Utils//PrecompiledHeaders//include//
+        ..//Math//LinearAlgebra//include//
 )
 
 # Link GLFW and OpenGL to the executable
 target_link_libraries(${PROJECT_NAME} 
     PRIVATE
         Utils
+        Math
 )
 
 add_dependencies(${PROJECT_NAME} 
     Utils
+    Math
 )
 
 # Enable precompiled headers

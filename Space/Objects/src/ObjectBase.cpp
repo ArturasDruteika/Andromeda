@@ -7,6 +7,8 @@ namespace Andromeda
 	{
 		ObjectBase::ObjectBase(const ObjectType& objType)
 			: m_type(objType)
+			, m_position{ 0.0f, 0.0f, 0.0f}
+			, m_color{ 1.0f, 1.0f, 1.0f, 1.0f } // Default color is white
 		{
 		}
 
@@ -17,6 +19,11 @@ namespace Andromeda
 			return m_type;
 		}
 
+		Math::Vec3 ObjectBase::GetPosition() const
+		{
+			return m_position;
+		}
+
 		Color ObjectBase::GetColor() const
 		{
 			return m_color;
@@ -25,6 +32,11 @@ namespace Andromeda
 		void ObjectBase::SetColor(const Color& color)
 		{
 			m_color = color;
+		}
+
+		void ObjectBase::SetPosition(const Math::Vec3& position)
+		{
+			m_position = position;
 		}
 	}
 }
