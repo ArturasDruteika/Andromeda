@@ -23,6 +23,30 @@ namespace Andromeda
 
 			float& operator[](int index) { return data[index]; }
 			const float& operator[](int index) const { return data[index]; }
+
+			Vec2& operator+=(const Vec2& other)
+			{
+				data[0] += other[0];
+				data[1] += other[1];
+				return *this;
+			}
+
+			Vec2& operator-=(const Vec2& other)
+			{
+				data[0] -= other[0];
+				data[1] -= other[1];
+				return *this;
+			}
+
+			friend Vec2 operator+(Vec2 lhs, const Vec2& rhs)
+			{
+				return lhs += rhs;
+			}
+
+			friend Vec2 operator-(Vec2 lhs, const Vec2& rhs)
+			{
+				return lhs -= rhs;
+			}
 		};
 
 		struct Vec3
@@ -35,6 +59,32 @@ namespace Andromeda
 
 			float& operator[](int index) { return data[index]; }
 			const float& operator[](int index) const { return data[index]; }
+
+			Vec3& operator+=(const Vec3& other)
+			{
+				data[0] += other[0];
+				data[1] += other[1];
+				data[2] += other[2];
+				return *this;
+			}
+
+			Vec3& operator-=(const Vec3& other)
+			{
+				data[0] -= other[0];
+				data[1] -= other[1];
+				data[2] -= other[2];
+				return *this;
+			}
+
+			friend Vec3 operator+(Vec3 lhs, const Vec3& rhs)
+			{
+				return lhs += rhs;
+			}
+
+			friend Vec3 operator-(Vec3 lhs, const Vec3& rhs)
+			{
+				return lhs -= rhs;
+			}
 		};
 
 		struct Vec4
@@ -47,6 +97,34 @@ namespace Andromeda
 
 			float& operator[](int index) { return data[index]; }
 			const float& operator[](int index) const { return data[index]; }
+
+			Vec4& operator+=(const Vec4& other)
+			{
+				data[0] += other[0];
+				data[1] += other[1];
+				data[2] += other[2];
+				data[3] += other[3];
+				return *this;
+			}
+
+			Vec4& operator-=(const Vec4& other)
+			{
+				data[0] -= other[0];
+				data[1] -= other[1];
+				data[2] -= other[2];
+				data[3] -= other[3];
+				return *this;
+			}
+
+			friend Vec4 operator+(Vec4 lhs, const Vec4& rhs)
+			{
+				return lhs += rhs;
+			}
+
+			friend Vec4 operator-(Vec4 lhs, const Vec4& rhs)
+			{
+				return lhs -= rhs;
+			}
 		};
 
 		struct Mat2
