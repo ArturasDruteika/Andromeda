@@ -24,6 +24,11 @@ namespace Andromeda
 			void SetColor(const Color& color);
 			void SetPosition(const Math::Vec3& position);
 
+			void RelativeMove(const Math::Vec3& position);
+			void AbsoluteMove(const Math::Vec3& position);
+			void Rotate(const Math::Vec3& rotation);
+			void Scale(const Math::Vec3& scale);
+
 			// Getters
 			double GetRadius() const;
 

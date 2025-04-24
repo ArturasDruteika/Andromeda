@@ -40,6 +40,26 @@ namespace Andromeda
 			m_position = position;
 		}
 
+		void Sphere::SphereImpl::RelativeMove(const Math::Vec3& position)
+		{
+			m_position += position;
+		}
+
+		void Sphere::SphereImpl::AbsoluteMove(const Math::Vec3& position)
+		{
+			m_position = position;
+		}
+
+		void Sphere::SphereImpl::Rotate(const Math::Vec3& rotation)
+		{
+			// Implement rotation logic here
+		}
+
+		void Sphere::SphereImpl::Scale(const Math::Vec3& scale)
+		{
+			// Implement scaling logic here
+		}
+
 		double Sphere::SphereImpl::GetRadius() const
 		{
 			return m_radius;

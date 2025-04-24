@@ -8,10 +8,6 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 add_definitions(-DSPACE_EXPORT)
 
-if (APPLE)
-    # Ignore macOS OpenGL deprecation warnings
-    target_compile_definitions(${EXEC_NAME} PRIVATE GL_SILENCE_DEPRECATION)
-endif ()
 
 add_library(${PROJECT_NAME} 
     SHARED

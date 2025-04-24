@@ -26,10 +26,10 @@ namespace Andromeda
 			virtual void SetColor(const Color& color) = 0;
 			virtual void SetPosition(const Math::Vec3& position) = 0;
 
-			// TODO: implement these methods
-			//void Move(const Math::Vec3& postion);
-			//void Rotate(const Math::Vec3& rotation);
-			//void Scale(const Math::Vec3& scale);
+			virtual void RelativeMove(const Math::Vec3& postion) = 0;
+			virtual void AbsoluteMove(const Math::Vec3& postion) = 0;
+			virtual void Rotate(const Math::Vec3& rotation) = 0;
+			virtual void Scale(const Math::Vec3& scale) = 0;
 		};
 	}
 }

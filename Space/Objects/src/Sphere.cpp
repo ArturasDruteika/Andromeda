@@ -38,6 +38,22 @@ namespace Andromeda
 			m_pSphereImpl->SetPosition(position);
 		}
 
+		void Sphere::RelativeMove(const Math::Vec3& position)
+		{
+		}
+
+		void Sphere::AbsoluteMove(const Math::Vec3& position)
+		{
+		}
+
+		void Sphere::Rotate(const Math::Vec3& rotation)
+		{
+		}
+
+		void Sphere::Scale(const Math::Vec3& scale)
+		{
+		}
+
 		double Sphere::GetRadius() const
 		{
 			return m_pSphereImpl->GetRadius();
