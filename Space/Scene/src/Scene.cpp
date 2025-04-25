@@ -15,5 +15,15 @@ namespace Andromeda
 		{
 			delete m_pSceneImpl;
 		}
+
+		void Scene::AddObject(int id, ObjectBase* pObj)
+		{
+			m_pSceneImpl->AddObject(id, pObj);
+		}
+
+		void Scene::RemoveObject(int id)
+		{
+			m_pSceneImpl->RemoveObject(id);
+		}
 	}
 }

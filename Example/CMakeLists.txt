@@ -13,6 +13,7 @@ include_directories(
     ..//Utils//PrecompiledHeaders//include//
     ../Math/LinearAlgebra/include/
     ../Space/Objects/include/
+    ../Space/Scene/include/
     ../EngineCore/Application/include/
 )
 

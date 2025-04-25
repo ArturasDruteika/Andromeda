@@ -36,7 +36,8 @@ namespace Andromeda
 			Scene(Scene&& other) noexcept = delete;	// Prevent Move Constructor
 			Scene& operator=(Scene&& other) noexcept = delete;	// Prevent Move Assignment
 
-			void AddObject(const ObjectBase& objBase);
+			void AddObject(int id, ObjectBase* pObj);
+			void RemoveObject(int id);
 
 		private:
 			class SceneImpl;
