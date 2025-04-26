@@ -35,6 +35,10 @@ add_library(${PROJECT_NAME}
 		RenderableObjects/src/OpenGLRenderableObject.cpp
         RenderableObjects/include/OpenGLRenderableObjectImpl.hpp
 		RenderableObjects/src/OpenGLRenderableObjectImpl.cpp
+        RenderableObjects/include/SphereObjectOpenGL.hpp
+		RenderableObjects/src/SphereObjectOpenGL.cpp
+		RenderableObjects/include/IRenderableObjectOpenGL.hpp
+		RenderableObjects/src/IRenderableObjectOpenGL.cpp
 
 		Vertices/include/VertexAttributes.hpp
         Vertices/include/VertexLayouts.hpp
@@ -166,6 +170,10 @@ source_group(
 		RenderableObjects/src/OpenGLRenderableObject.cpp
         RenderableObjects/include/OpenGLRenderableObjectImpl.hpp
 		RenderableObjects/src/OpenGLRenderableObjectImpl.cpp
+        RenderableObjects/include/SphereObjectOpenGL.hpp
+		RenderableObjects/src/SphereObjectOpenGL.cpp
+		RenderableObjects/include/IRenderableObjectOpenGL.hpp
+        RenderableObjects/src/IRenderableObjectOpenGL.cpp
 )
 
 source_group(
