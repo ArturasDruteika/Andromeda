@@ -13,6 +13,8 @@ add_library(${PROJECT_NAME}
         LinearAlgebra/include/LinearAlgebraDataTypes.hpp
         LinearAlgebra/include/LinearAlgebraOperations.hpp
         LinearAlgebra/src/LinearAlgebraOperations.cpp
+
+        Constants/include/Constants.hpp
 )
 
 target_include_directories(${PROJECT_NAME} 
@@ -48,3 +50,13 @@ source_group(
         LinearAlgebra/include/LinearAlgebraOperations.hpp
         LinearAlgebra/src/LinearAlgebraOperations.cpp
 )
+
+source_group(
+    TREE 
+        ${CMAKE_CURRENT_SOURCE_DIR}/Constants 
+    PREFIX 
+        "Constants" 
+    FILES
+        Constants/include/Constants.hpp
+)
+
