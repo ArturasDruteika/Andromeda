@@ -8,10 +8,10 @@ namespace Andromeda
 	{
         struct Color
         {
-            float r;
-            float g;
-            float b;
-            float a;
+            float r = 1.0f;
+            float g = 1.0f;
+            float b = 1.0f;
+            float a = 1.0f;
 
             static constexpr int Size()
             {
