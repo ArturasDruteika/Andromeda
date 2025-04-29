@@ -1,5 +1,4 @@
 #include "../include/VertexLayouts.hpp"
-#include "../include/VertexLayoutsImpl.hpp"
 
 
 namespace Andromeda
@@ -7,29 +6,35 @@ namespace Andromeda
 	namespace Rendering
 	{
 		VertexLayout::VertexLayout(const std::vector<VertexAttributes>& vertexAttributes)
-			: m_pVertexLayoutImpl{ new VertexLayout::VertexLayoutImpl{ vertexAttributes } }
+			: m_verticesAttributesVec{ vertexAttributes }
+			, m_stride{ 0 }
 		{
+			CalculateStride(vertexAttributes);
 		}
 
-		VertexLayout::~VertexLayout()
-		{
-			delete m_pVertexLayoutImpl;
-			m_pVertexLayoutImpl = nullptr;
-		}
+		VertexLayout::~VertexLayout() = default;
 
 		VertexLayout::VertexLayout(const VertexLayout& other)
+			: m_verticesAttributesVec(other.m_verticesAttributesVec), m_stride(other.m_stride)
 		{
-			m_pVertexLayoutImpl = new VertexLayoutImpl(*other.m_pVertexLayoutImpl);
 		}
 
 		const std::vector<VertexAttributes>& VertexLayout::GetVerticesAttributesVec() const
 		{
-			return m_pVertexLayoutImpl->GetVerticesAttributesVec();
+			return m_verticesAttributesVec;
 		}
 
 		size_t VertexLayout::GetStride() const
 		{
-			return m_pVertexLayoutImpl->GetStride();
+			return m_stride;
+		}
+
+		void VertexLayout::CalculateStride(const std::vector<VertexAttributes>& vertexAttributes)
+		{
+			for (const VertexAttributes& attr : vertexAttributes)
+			{
+				m_stride += attr.size * sizeof(float); // Assuming float-based attributes
+			}
 		}
 	}
 }

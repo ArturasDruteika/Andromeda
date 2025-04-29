@@ -1,22 +1,7 @@
-#ifndef RENDERING__VERTEX_LAYOUTS__HPP
-#define RENDERING__VERTEX_LAYOUTS__HPP
+#ifndef RENDERING__VERTEX_LAYOUTS_IMPL__HPP
+#define RENDERING__VERTEX_LAYOUTS_IMPL__HPP
 
 
-#if defined(_WIN32)
-	#if defined(RENDERING_EXPORT)
-		#define RENDERING_API __declspec(dllexport)
-	#else
-		#define RENDERING_API __declspec(dllimport)
-	#endif /* RENDERING_API */
-	#define _sprintf sprintf_s
-#endif
-
-#if defined(__GNUC__)
-	// GCC
-	#define RENDERING_API __attribute__((visibility("default")))
-#endif
-
-#include "pch.hpp"
 #include "../include/VertexAttributes.hpp"
 
 
@@ -24,7 +9,7 @@ namespace Andromeda
 {
 	namespace Rendering
 	{
-		class RENDERING_API VertexLayout
+		class VertexLayout
 		{
 		public:
 			VertexLayout(const std::vector<VertexAttributes>& vertexAttributes);
@@ -39,11 +24,14 @@ namespace Andromeda
 			size_t GetStride() const;
 
 		private:
-			class VertexLayoutImpl;
-			VertexLayoutImpl* m_pVertexLayoutImpl;
+			void CalculateStride(const std::vector<VertexAttributes>& vertexAttributes);
+
+			std::vector<VertexAttributes> m_verticesAttributesVec;
+			size_t m_stride;
 		};
+
 	}
 }
 
 
-#endif // RENDERING__VERTEX_LAYOUTS__HPP
+#endif // RENDERING__VERTEX_LAYOUTS_IMPL__HPP

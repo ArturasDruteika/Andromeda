@@ -26,8 +26,6 @@ add_library(${PROJECT_NAME}
         Objects/include/SphereImpl.hpp
         Objects/src/SphereImpl.cpp
 
-        Vertices/include/Vertex.hpp
-
         Attributes/include/Colors.hpp
 )
 
@@ -91,15 +89,6 @@ source_group(
         Objects/src/Sphere.cpp
         Objects/include/SphereImpl.hpp
         Objects/src/SphereImpl.cpp
-)
-
-source_group(
-    TREE 
-        ${CMAKE_CURRENT_SOURCE_DIR}/Vertices 
-    PREFIX 
-        "Vertices" 
-    FILES
-        Vertices/include/Vertex.hpp
 )
 
 source_group(

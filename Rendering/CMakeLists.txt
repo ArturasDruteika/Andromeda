@@ -31,20 +31,19 @@ add_library(${PROJECT_NAME}
         Scene/include/OpenGLSceneImpl.hpp
 		Scene/src/OpenGLSceneImpl.cpp
 
-        RenderableObjects/include/OpenGLRenderableObject.hpp
-		RenderableObjects/src/OpenGLRenderableObject.cpp
-        RenderableObjects/include/OpenGLRenderableObjectImpl.hpp
-		RenderableObjects/src/OpenGLRenderableObjectImpl.cpp
+        RenderableObjects/include/RenderableObjectBaseOpenGL.hpp
+		RenderableObjects/src/RenderableObjectBaseOpenGL.cpp
         RenderableObjects/include/SphereObjectOpenGL.hpp
 		RenderableObjects/src/SphereObjectOpenGL.cpp
+        RenderableObjects/include/SphereObjectOpenGLImpl.hpp
+		RenderableObjects/src/SphereObjectOpenGLImpl.cpp
 		RenderableObjects/include/IRenderableObjectOpenGL.hpp
 		RenderableObjects/src/IRenderableObjectOpenGL.cpp
 
 		Vertices/include/VertexAttributes.hpp
         Vertices/include/VertexLayouts.hpp
 		Vertices/src/VertexLayouts.cpp
-        Vertices/include/VertexLayoutsImpl.hpp
-		Vertices/src/VertexLayoutsImpl.cpp
+		Vertices/include/Vertex.hpp
 
         OpenGLLoader/include/OpenGLLoader.hpp
 		OpenGLLoader/src/OpenGLLoader.cpp
@@ -66,6 +65,7 @@ target_include_directories(${PROJECT_NAME}
 	    ..//ExternalGraphicsLibs//glm//
     PUBLIC
         ..//Math//LinearAlgebra//include//
+        ..//Math//Constants//include//
         ..//Space//DataTypes//include//
         ..//Space//Attributes//include//
         ..//Space//Vertices//include//
@@ -166,12 +166,12 @@ source_group(
     PREFIX
         "RenderableObjects"
     FILES
-        RenderableObjects/include/OpenGLRenderableObject.hpp
-		RenderableObjects/src/OpenGLRenderableObject.cpp
-        RenderableObjects/include/OpenGLRenderableObjectImpl.hpp
-		RenderableObjects/src/OpenGLRenderableObjectImpl.cpp
+        RenderableObjects/include/RenderableObjectBaseOpenGL.hpp
+		RenderableObjects/src/RenderableObjectBaseOpenGL.cpp
         RenderableObjects/include/SphereObjectOpenGL.hpp
 		RenderableObjects/src/SphereObjectOpenGL.cpp
+        RenderableObjects/include/SphereObjectOpenGLImpl.hpp
+		RenderableObjects/src/SphereObjectOpenGLImpl.cpp
 		RenderableObjects/include/IRenderableObjectOpenGL.hpp
         RenderableObjects/src/IRenderableObjectOpenGL.cpp
 )
@@ -187,6 +187,7 @@ source_group(
 		Vertices/src/VertexLayouts.cpp
         Vertices/include/VertexLayoutsImpl.hpp
 		Vertices/src/VertexLayoutsImpl.cpp
+        Vertices/include/Vertex.hpp
 )
 
 source_group(
