@@ -176,7 +176,7 @@ namespace Andromeda
             glBindFramebuffer(GL_FRAMEBUFFER, 0);
         }
 
-        void OpenGLRenderer::OpenGLRendererImpl::RenderObject(const Rendering::OpenGLRenderableObject& object)
+        void OpenGLRenderer::OpenGLRendererImpl::RenderObject(const Rendering::IRenderableObjectOpenGL& object)
         {
             glm::mat4 dummyViewMatrix = glm::mat4(1.0f);
             glm::mat4 dummyProjectionMatrix = glm::mat4(1.0f);

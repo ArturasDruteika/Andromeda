@@ -4,6 +4,7 @@
 
 #include "../include/OpenGLRenderer.hpp"
 #include "../../Shaders/include/OpenGLShader.hpp"
+#include "../../RenderableObjects/include/IRenderableObjectOpenGL.hpp"
 
 
 namespace Andromeda
@@ -23,7 +24,7 @@ namespace Andromeda
 
 			void Init(int width, int height);
 			void DeInit();
-			void RenderFrame(const Rendering::OpenGLScene& scene);
+			void RenderFrame(const OpenGLScene& scene);
 			void Resize(int width, int height);
 
 			bool IsInitialized() const;
@@ -39,7 +40,7 @@ namespace Andromeda
 			void GenerateAndBindFrameBufferTexture();
 			void ConfigureFrameBufferTexture();
 			void UnbindFrameBuffer();
-			void RenderObject(const Rendering::OpenGLRenderableObject& object);
+			void RenderObject(const IRenderableObjectOpenGL& object);
 
 			bool m_isInitialized;
 			unsigned int m_FBO, m_FBOTexture;
