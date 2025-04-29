@@ -18,7 +18,7 @@
 
 
 #include "pch.hpp"
-#include "../../RenderableObjects/include/OpenGLRenderableObject.hpp"
+#include "../../RenderableObjects/include/IRenderableObjectOpenGL.hpp"
 
 
 namespace Andromeda
@@ -36,9 +36,9 @@ namespace Andromeda
 			OpenGLScene(OpenGLScene&& other) noexcept = delete;	// Prevent Move Constructor
 			OpenGLScene& operator=(OpenGLScene&& other) noexcept = delete;	// Prevent Move Assignment
 
-			void AddObject(int id, OpenGLRenderableObject* object);
+			void AddObject(int id, IRenderableObjectOpenGL* object);
 			void RemoveObject(int id);
-			const std::unordered_map<int, OpenGLRenderableObject*> GetObjects() const;
+			const std::unordered_map<int, IRenderableObjectOpenGL*> GetObjects() const;
 
 		private:
 			class OpenGLSceneImpl;

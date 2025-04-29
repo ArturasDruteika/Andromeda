@@ -20,12 +20,12 @@ namespace Andromeda
 			OpenGLSceneImpl(OpenGLSceneImpl&& other) noexcept = delete;	// Prevent Move Constructor
 			OpenGLSceneImpl& operator=(OpenGLSceneImpl&& other) noexcept = delete;	// Prevent Move Assignment
 
-			void AddObject(int id, OpenGLRenderableObject* object);
+			void AddObject(int id, IRenderableObjectOpenGL* object);
 			void RemoveObject(int id);
-			const std::unordered_map<int, OpenGLRenderableObject*> GetObjects() const;
+			const std::unordered_map<int, IRenderableObjectOpenGL*> GetObjects() const;
 
 		private:
-			std::unordered_map<int, OpenGLRenderableObject*> m_renderableObjsPtrsMap;
+			std::unordered_map<int, IRenderableObjectOpenGL*> m_renderableObjsPtrsMap;
 		};
 	}
 }

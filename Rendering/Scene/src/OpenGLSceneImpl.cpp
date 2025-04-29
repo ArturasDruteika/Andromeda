@@ -19,7 +19,7 @@ namespace Andromeda
 			m_renderableObjsPtrsMap.clear();
 		}
 
-		void OpenGLScene::OpenGLSceneImpl::AddObject(int id, OpenGLRenderableObject* object)
+		void OpenGLScene::OpenGLSceneImpl::AddObject(int id, IRenderableObjectOpenGL* object)
 		{
 			m_renderableObjsPtrsMap.insert({ id, object });
 		}
@@ -30,7 +30,7 @@ namespace Andromeda
 			m_renderableObjsPtrsMap.erase(id);
 		}
 
-		const std::unordered_map<int, OpenGLRenderableObject*> OpenGLScene::OpenGLSceneImpl::GetObjects() const
+		const std::unordered_map<int, IRenderableObjectOpenGL*> OpenGLScene::OpenGLSceneImpl::GetObjects() const
 		{
 			return m_renderableObjsPtrsMap;
 		}

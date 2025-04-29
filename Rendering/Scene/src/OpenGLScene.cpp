@@ -16,7 +16,7 @@ namespace Andromeda
 			delete m_pOpenGLSceneImpl;
 		}
 
-		void OpenGLScene::AddObject(int id, OpenGLRenderableObject* object)
+		void OpenGLScene::AddObject(int id, IRenderableObjectOpenGL* object)
 		{
 			m_pOpenGLSceneImpl->AddObject(id, object);
 		}
@@ -26,7 +26,7 @@ namespace Andromeda
 			m_pOpenGLSceneImpl->RemoveObject(id);
 		}
 
-		const std::unordered_map<int, OpenGLRenderableObject*> OpenGLScene::GetObjects() const
+		const std::unordered_map<int, IRenderableObjectOpenGL*> OpenGLScene::GetObjects() const
 		{
 			return m_pOpenGLSceneImpl->GetObjects();
 		}
