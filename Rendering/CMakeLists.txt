@@ -31,8 +31,6 @@ add_library(${PROJECT_NAME}
         Scene/include/OpenGLSceneImpl.hpp
 		Scene/src/OpenGLSceneImpl.cpp
 
-        RenderableObjects/include/RenderableObjectBaseOpenGL.hpp
-		RenderableObjects/src/RenderableObjectBaseOpenGL.cpp
         RenderableObjects/include/SphereObjectOpenGL.hpp
 		RenderableObjects/src/SphereObjectOpenGL.cpp
         RenderableObjects/include/SphereObjectOpenGLImpl.hpp
@@ -166,8 +164,6 @@ source_group(
     PREFIX
         "RenderableObjects"
     FILES
-        RenderableObjects/include/RenderableObjectBaseOpenGL.hpp
-		RenderableObjects/src/RenderableObjectBaseOpenGL.cpp
         RenderableObjects/include/SphereObjectOpenGL.hpp
 		RenderableObjects/src/SphereObjectOpenGL.cpp
         RenderableObjects/include/SphereObjectOpenGLImpl.hpp

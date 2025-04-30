@@ -57,7 +57,7 @@ namespace Andromeda
             m_isInitialized = false;
         }
 
-        void OpenGLRenderer::OpenGLRendererImpl::RenderFrame(const Rendering::OpenGLScene& scene)
+        void OpenGLRenderer::OpenGLRendererImpl::RenderFrame(const OpenGLScene& scene)
         {
             if (!m_isInitialized)
             {

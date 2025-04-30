@@ -1,69 +1,74 @@
 #include "../include/SphereObjectOpenGL.hpp"
+#include "../include/SphereObjectOpenGLImpl.hpp"
+
 
 namespace Andromeda
 {
 	namespace Rendering
 	{
-		SphereObjectOpenGL::SphereObjectOpenGL()
+		SphereObjectOpenGL::SphereObjectOpenGL(float radius, const Space::Color& color)
+			: m_pSphereObjectOpenGLImpl{ new SphereObjectOpenGL::SphereObjectOpenGLImpl(radius, color) }
 		{
 		}
 
 		SphereObjectOpenGL::~SphereObjectOpenGL()
 		{
+			delete m_pSphereObjectOpenGLImpl;
 		}
 
 		unsigned int SphereObjectOpenGL::GetVBO() const
 		{
-			return 0;
+			return m_pSphereObjectOpenGLImpl->GetVBO();
 		}
 
 		unsigned int SphereObjectOpenGL::GetVAO() const
 		{
-			return 0;
+			return m_pSphereObjectOpenGLImpl->GetVAO();
 		}
 
 		unsigned int SphereObjectOpenGL::GetEBO() const
 		{
-			return 0;
+			return m_pSphereObjectOpenGLImpl->GetEBO();
 		}
 
 		unsigned int SphereObjectOpenGL::GetVertexCount() const
 		{
-			return 0;
+			return m_pSphereObjectOpenGLImpl->GetVertexCount();
 		}
 
-		std::vector<Space::Vertex> SphereObjectOpenGL::GetVertices() const
+		std::vector<Vertex> SphereObjectOpenGL::GetVertices() const
 		{
-			return std::vector<Space::Vertex>();
+			return m_pSphereObjectOpenGLImpl->GetVertices();
 		}
 
 		Math::Mat4 SphereObjectOpenGL::GetModelMatrix() const
 		{
-			return Math::Mat4();
+			return m_pSphereObjectOpenGLImpl->GetModelMatrix();
 		}
 
 		void SphereObjectOpenGL::SetModelMatrix(const Math::Mat4& modelMatrix)
 		{
+			m_pSphereObjectOpenGLImpl->SetModelMatrix(modelMatrix);
 		}
 
 		void SphereObjectOpenGL::UpdateModelMatrix()
 		{
+			m_pSphereObjectOpenGLImpl->UpdateModelMatrix();
 		}
 
 		void SphereObjectOpenGL::SetPosition(const Math::Vec3& position, bool updateModelMatrix)
 		{
+			m_pSphereObjectOpenGLImpl->SetPosition(position, updateModelMatrix);
 		}
 
 		void SphereObjectOpenGL::SetRotation(const Math::Vec3& rotation, bool updateModelMatrix)
 		{
+			m_pSphereObjectOpenGLImpl->SetRotation(rotation, updateModelMatrix);
 		}
 
 		void SphereObjectOpenGL::SetScale(const Math::Vec3& scale, bool updateModelMatrix)
 		{
-		}
-
-		void SphereObjectOpenGL::ConstructSphere(float radius)
-		{
+			m_pSphereObjectOpenGLImpl->SetScale(scale, updateModelMatrix);
 		}
 	}
 }

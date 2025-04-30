@@ -5,7 +5,7 @@
 #include "pch.hpp"
 #include "../../Vertices/include/VertexLayouts.hpp"
 #include "LinearAlgebraDataTypes.hpp"
-#include "Vertex.hpp"
+#include "../../Vertices/include/Vertex.hpp"
 
 
 namespace Andromeda
@@ -23,7 +23,7 @@ namespace Andromeda
 			virtual unsigned int GetVAO() const = 0;
 			virtual unsigned int GetEBO() const = 0;
 			virtual unsigned int GetVertexCount() const = 0;
-			virtual std::vector<Space::Vertex> GetVertices() const = 0;
+			virtual std::vector<Vertex> GetVertices() const = 0;
 			virtual Math::Mat4 GetModelMatrix() const = 0;
 
 			// Setters
