@@ -1,5 +1,5 @@
-#ifndef SPACE__POINTS__HPP
-#define SPACE__POINTS__HPP
+#ifndef SPACE__COLORS__HPP
+#define SPACE__COLORS__HPP
 
 
 namespace Andromeda
@@ -28,4 +28,4 @@ namespace Andromeda
 }
 
 
-#endif // SPACE__SPACE__HPP
+#endif // SPACE__COLORS__HPP
