@@ -27,5 +27,15 @@ namespace Andromeda
 		{
 			m_pApplicationImpl->DeInit();
 		}
+
+		void Application::AddToScene(int id, Rendering::IRenderableObjectOpenGL* object)
+		{
+			m_pApplicationImpl->AddToScene(id, object);
+		}
+
+		void Application::RemoveFromScene(int id)
+		{
+			m_pApplicationImpl->RemoveFromScene(id);
+		}
 	}
 }

@@ -17,6 +17,9 @@
 #endif
 
 
+#include "IRenderableObjectOpenGL.hpp"
+
+
 namespace Andromeda
 {
 	namespace EngineCore
@@ -35,6 +38,8 @@ namespace Andromeda
 			void Init();
 			void RunMainLoop();
 			void DeInit();
+			void AddToScene(int id, Rendering::IRenderableObjectOpenGL* object);
+			void RemoveFromScene(int id);
 
 		private:
 			class ApplicationImpl;
