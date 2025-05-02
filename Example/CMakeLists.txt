@@ -14,6 +14,10 @@ include_directories(
     ../Math/LinearAlgebra/include/
     ../Space/Objects/include/
     ../Space/Scene/include/
+    ../Space/Attributes/include/
+    ../Space/DataTypes/include/
+    ../Rendering/Scene/include/
+    ../Rendering/RenderableObjects/include/
     ../EngineCore/Application/include/
 )
 
@@ -23,6 +27,7 @@ target_link_libraries(${PROJECT_NAME}
         Utils
         Math
         Space
+        Rendering
         EngineCore
 )
 
@@ -31,6 +36,7 @@ add_dependencies(${PROJECT_NAME}
     Utils
     Math
     Space
+    Rendering
     EngineCore
 )
 
