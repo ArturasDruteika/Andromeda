@@ -10,7 +10,7 @@ namespace Andromeda
 	{
 		SphereObjectOpenGL::SphereObjectOpenGLImpl::SphereObjectOpenGLImpl(float radius, const Space::Color& color)
 			: m_vertexLayout{ std::vector {
-							Rendering::VertexAttributes{ 0, Space::Point3D::Size(), GL_FLOAT, GL_FALSE, sizeof(Rendering::Vertex), 0}, // Position
+							Rendering::VertexAttributes{ 0, Space::Point3D::Size(), GL_FLOAT, GL_FALSE, sizeof(Rendering::Vertex), 0 }, // Position
 							Rendering::VertexAttributes{ 1, Space::Color::Size(), GL_FLOAT, GL_FALSE, sizeof(Rendering::Vertex), sizeof(Space::Point3D)} } } // Color
 		{
 			ConstructSphere(radius, 36, 18, color);
@@ -68,47 +68,6 @@ namespace Andromeda
 
 		void SphereObjectOpenGL::SphereObjectOpenGLImpl::SetScale(const Math::Vec3& scale, bool updateModelMatrix)
 		{
-		}
-
-		void SphereObjectOpenGL::SphereObjectOpenGLImpl::ConstructSphere(float radius, int sectorCount, int stackCount, const Space::Color& color)
-		{
-			for (int i = 0; i <= stackCount; ++i)
-			{
-				float stackAngle = Math::PI / 2 - i * Math::PI / stackCount;
-				float xy = radius * cosf(stackAngle);
-				float z = radius * sinf(stackAngle);
-
-				for (int j = 0; j <= sectorCount; ++j)
-				{
-					float sectorAngle = j * 2 * Math::PI / sectorCount;
-					float x = xy * cosf(sectorAngle);
-					float y = xy * sinf(sectorAngle);
-					m_vertices.push_back(Vertex(Space::Point3D(x, y, z), color));
-				}
-			}
-
-			for (int i = 0; i < stackCount; ++i)
-			{
-				int k1 = i * (sectorCount + 1);
-				int k2 = k1 + sectorCount + 1;
-
-				for (int j = 0; j < sectorCount; ++j, ++k1, ++k2)
-				{
-					if (i != 0)
-					{
-						m_indices.push_back(k1);
-						m_indices.push_back(k2);
-						m_indices.push_back(k1 + 1);
-					}
-
-					if (i != (stackCount - 1))
-					{
-						m_indices.push_back(k1 + 1);
-						m_indices.push_back(k2);
-						m_indices.push_back(k2 + 1);
-					}
-				}
-			}
 		}
 
 		void SphereObjectOpenGL::SphereObjectOpenGLImpl::Init(const std::vector<Vertex>& vertices, const std::vector<unsigned int>& indices)
@@ -175,6 +134,47 @@ namespace Andromeda
 		glm::mat4 SphereObjectOpenGL::SphereObjectOpenGLImpl::ConstructScaleMatrix() const
 		{
 			return glm::scale(glm::mat4(1.0f), m_scale);
+		}
+
+		void SphereObjectOpenGL::SphereObjectOpenGLImpl::ConstructSphere(float radius, int sectorCount, int stackCount, const Space::Color& color)
+		{
+			for (int i = 0; i <= stackCount; ++i)
+			{
+				float stackAngle = Math::PI / 2 - i * Math::PI / stackCount;
+				float xy = radius * cosf(stackAngle);
+				float z = radius * sinf(stackAngle);
+
+				for (int j = 0; j <= sectorCount; ++j)
+				{
+					float sectorAngle = j * 2 * Math::PI / sectorCount;
+					float x = xy * cosf(sectorAngle);
+					float y = xy * sinf(sectorAngle);
+					m_vertices.push_back(Vertex(Space::Point3D(x, y, z), color));
+				}
+			}
+
+			for (int i = 0; i < stackCount; ++i)
+			{
+				int k1 = i * (sectorCount + 1);
+				int k2 = k1 + sectorCount + 1;
+
+				for (int j = 0; j < sectorCount; ++j, ++k1, ++k2)
+				{
+					if (i != 0)
+					{
+						m_indices.push_back(k1);
+						m_indices.push_back(k2);
+						m_indices.push_back(k1 + 1);
+					}
+
+					if (i != (stackCount - 1))
+					{
+						m_indices.push_back(k1 + 1);
+						m_indices.push_back(k2);
+						m_indices.push_back(k2 + 1);
+					}
+				}
+			}
 		}
 	}
 }
