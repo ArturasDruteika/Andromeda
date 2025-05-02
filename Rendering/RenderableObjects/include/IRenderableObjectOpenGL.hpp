@@ -32,7 +32,7 @@ namespace Andromeda
 		{	
 		public:
 			IRenderableObjectOpenGL();
-			~IRenderableObjectOpenGL();
+			virtual ~IRenderableObjectOpenGL();
 
 			// Getters
 			virtual unsigned int GetVBO() const = 0;
