@@ -12,7 +12,8 @@ namespace Andromeda
 			: m_VBO{ 0 }
 			, m_VAO{ 0 }
 			, m_EBO{ 0 }
-			, m_vertexLayout{ std::vector {
+			, m_vertexLayout{ 
+				std::vector {
 					Rendering::VertexAttributes{ 0, Space::Point3D::Size(), GL_FLOAT, GL_FALSE, sizeof(Rendering::Vertex), 0 }, // Position
 					Rendering::VertexAttributes{ 1, Space::Color::Size(), GL_FLOAT, GL_FALSE, sizeof(Rendering::Vertex), sizeof(Space::Point3D)} // Color
 				} 
@@ -79,7 +80,7 @@ namespace Andromeda
 		void SphereObjectOpenGL::SphereObjectOpenGLImpl::Init(const std::vector<Vertex>& vertices, const std::vector<unsigned int>& indices)
 		{
 			CreateAndBindVertexAttributes();
-			CreateAndBindVertexBuffers(vertices, indices);
+			CreateAndBindVertexBuffers(vertices);
 			GenerateAndBindElementBuffer(indices);
 			SetVertexAttributePointers();
 			UnbindVertexAttributes();
@@ -92,7 +93,7 @@ namespace Andromeda
 			glBindVertexArray(m_VAO);
 		}
 
-		void SphereObjectOpenGL::SphereObjectOpenGLImpl::CreateAndBindVertexBuffers(const std::vector<Vertex>& vertices, const std::vector<unsigned int>& indices)
+		void SphereObjectOpenGL::SphereObjectOpenGLImpl::CreateAndBindVertexBuffers(const std::vector<Vertex>& vertices)
 		{
 			// Generate and bind VBO
 			glCreateBuffers(1, &m_VBO);
