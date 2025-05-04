@@ -180,7 +180,7 @@ namespace Andromeda
         {
             glm::mat4 dummyViewMatrix = glm::mat4(1.0f);
             glm::mat4 dummyProjectionMatrix = glm::mat4(1.0f);
-            glm::mat4 modelMatrix = MathUtils::ToGLM(object.GetModelMatrix());
+            glm::mat4 modelMatrix = glm::mat4(1.0f);
             glBindVertexArray(object.GetVAO());
             glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, object.GetEBO()); // Bind EBO
             glDrawElements(GL_TRIANGLES, object.GetVertexCount(), GL_UNSIGNED_INT, 0); // Use indices
@@ -201,7 +201,7 @@ namespace Andromeda
                 ),
                 1,
                 GL_FALSE,
-                glm::value_ptr(MathUtils::ToGLM(object.GetModelMatrix()))
+                glm::value_ptr(dummyViewMatrix)
             );
             glUniformMatrix4fv(
                 glGetUniformLocation(
@@ -210,8 +210,9 @@ namespace Andromeda
                 ),
                 1,
                 GL_FALSE,
-                glm::value_ptr(modelMatrix)
+                glm::value_ptr(dummyProjectionMatrix)
             );
         }
+
 	}
 }

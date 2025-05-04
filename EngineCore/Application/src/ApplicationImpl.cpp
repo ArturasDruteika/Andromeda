@@ -56,26 +56,7 @@ namespace Andromeda
                         m_pScene = new Rendering::OpenGLScene();
 
 						SetupImGuiCallbacks();
-                        
-       //                 std::vector<Rendering::Vertex> vertices = {
-							//{ Space::Point3D{ -0.5f,  0.5f, 0.0f }, Space::Color{ 1.0f, 0.0f, 0.0f, 1.0f} }, // Top Left
-							//{ Space::Point3D{ 0.5f,  0.5f, 0.0f }, Space::Color{ 0.0f, 1.0f, 0.0f, 1.0f} }, // Top Right
-							//{ Space::Point3D{ 0.5f, -0.5f, 0.0f }, Space::Color{ 0.0f, 0.0f, 1.0f, 1.0f} }, // Bottom Right
-							//{ Space::Point3D{ -0.5f, -0.5f, 0.0f }, Space::Color{ 1.0f, 1.0f, 0.0f, 1.0f} } // Bottom Left
-       //                 };
-
-       //                 std::vector<unsigned int> indices = {
-       //                     0, 1, 2, // First triangle
-       //                     2, 3, 0  // Second triangle
-       //                 };
-
-       //                 Rendering::VertexLayout vertexLayout = std::vector{
-       //                     Rendering::VertexAttributes{ 0, Space::Point3D::Size(), GL_FLOAT, GL_FALSE, sizeof(Rendering::Vertex), 0}, // Position
-       //                     Rendering::VertexAttributes{ 1, Space::Color::Size(), GL_FLOAT, GL_FALSE, sizeof(Rendering::Vertex), sizeof(Space::Point3D)} // Color
-       //                 };
-
-       //                 Rendering::OpenGLRenderableObject* object = new Rendering::OpenGLRenderableObject(vertices, indices, vertexLayout);
-       //                 m_pScene->AddObject(0, object);
+                       
                         m_isInitialized = true;
                     }
                 }

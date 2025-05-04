@@ -84,6 +84,8 @@ namespace Andromeda
 			GenerateAndBindElementBuffer(indices);
 			SetVertexAttributePointers();
 			UnbindVertexAttributes();
+
+			m_vertexCount = static_cast<unsigned int>(indices.size());
 		}
 
 		void SphereObjectOpenGL::SphereObjectOpenGLImpl::CreateAndBindVertexAttributes()
