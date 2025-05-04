@@ -9,11 +9,17 @@ namespace Andromeda
 	namespace Rendering
 	{
 		SphereObjectOpenGL::SphereObjectOpenGLImpl::SphereObjectOpenGLImpl(float radius, const Space::Color& color)
-			: m_vertexLayout{ std::vector {
-							Rendering::VertexAttributes{ 0, Space::Point3D::Size(), GL_FLOAT, GL_FALSE, sizeof(Rendering::Vertex), 0 }, // Position
-							Rendering::VertexAttributes{ 1, Space::Color::Size(), GL_FLOAT, GL_FALSE, sizeof(Rendering::Vertex), sizeof(Space::Point3D)} } } // Color
+			: m_VBO{ 0 }
+			, m_VAO{ 0 }
+			, m_EBO{ 0 }
+			, m_vertexLayout{ std::vector {
+					Rendering::VertexAttributes{ 0, Space::Point3D::Size(), GL_FLOAT, GL_FALSE, sizeof(Rendering::Vertex), 0 }, // Position
+					Rendering::VertexAttributes{ 1, Space::Color::Size(), GL_FLOAT, GL_FALSE, sizeof(Rendering::Vertex), sizeof(Space::Point3D)} // Color
+				} 
+			}
 		{
 			ConstructSphere(radius, 36, 18, color);
+			Init(m_vertices, m_indices);
 		}
 
 		SphereObjectOpenGL::SphereObjectOpenGLImpl::~SphereObjectOpenGLImpl()
@@ -72,24 +78,24 @@ namespace Andromeda
 
 		void SphereObjectOpenGL::SphereObjectOpenGLImpl::Init(const std::vector<Vertex>& vertices, const std::vector<unsigned int>& indices)
 		{
-			GenerateAndBindVertexAttributes();
-			GenerateAndBindVertexBuffers(vertices, indices);
+			CreateAndBindVertexAttributes();
+			CreateAndBindVertexBuffers(vertices, indices);
 			GenerateAndBindElementBuffer(indices);
 			SetVertexAttributePointers();
 			UnbindVertexAttributes();
 		}
 
-		void SphereObjectOpenGL::SphereObjectOpenGLImpl::GenerateAndBindVertexAttributes()
+		void SphereObjectOpenGL::SphereObjectOpenGLImpl::CreateAndBindVertexAttributes()
 		{
 			// Generate and bind VAO
 			glGenVertexArrays(1, &m_VAO);
 			glBindVertexArray(m_VAO);
 		}
 
-		void SphereObjectOpenGL::SphereObjectOpenGLImpl::GenerateAndBindVertexBuffers(const std::vector<Vertex>& vertices, const std::vector<unsigned int>& indices)
+		void SphereObjectOpenGL::SphereObjectOpenGLImpl::CreateAndBindVertexBuffers(const std::vector<Vertex>& vertices, const std::vector<unsigned int>& indices)
 		{
 			// Generate and bind VBO
-			glGenBuffers(1, &m_VBO);
+			glCreateBuffers(1, &m_VBO);
 			glBindBuffer(GL_ARRAY_BUFFER, m_VBO);
 			glBufferData(GL_ARRAY_BUFFER, vertices.size() * sizeof(Vertex), vertices.data(), GL_STATIC_DRAW);
 		}
@@ -97,7 +103,7 @@ namespace Andromeda
 		void SphereObjectOpenGL::SphereObjectOpenGLImpl::GenerateAndBindElementBuffer(const std::vector<unsigned int>& indices)
 		{
 			// Generate and bind EBO
-			glGenBuffers(1, &m_EBO);
+			glCreateBuffers(1, &m_EBO);
 			glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_EBO);
 			glBufferData(GL_ELEMENT_ARRAY_BUFFER, indices.size() * sizeof(unsigned int), indices.data(), GL_STATIC_DRAW);
 		}
