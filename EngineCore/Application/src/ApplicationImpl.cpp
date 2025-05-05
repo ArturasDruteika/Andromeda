@@ -52,7 +52,7 @@ namespace Andromeda
 
                         // Create and initialize the Renderer
                         m_pRenderer = new Rendering::OpenGLRenderer();
-                        m_pRenderer->Init(m_pWindow->GetWidth(), m_pWindow->GetHeight());
+                        m_pRenderer->Init(m_pImGuiManager->GetAvailableWindowWidth(), m_pImGuiManager->GetAvailableWindowHeight());
                         m_pScene = new Rendering::OpenGLScene();
 
 						SetupImGuiCallbacks();

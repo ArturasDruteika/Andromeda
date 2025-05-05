@@ -50,19 +50,19 @@ namespace Andromeda
 			ImGui::Begin("Triangle Window", 0, ImGuiWindowFlags_NoScrollbar);
 
 			m_windowSize = ImGui::GetWindowSize();
-
+			m_availableWindowSize = ImGui::GetContentRegionAvail();
 
 			// Check if the size has changed
-			if (m_windowSize.x != m_prevWindowSize.x || m_windowSize.y != m_prevWindowSize.y)
+			if (m_availableWindowSize.x != m_prevAvailableWindowSize.x || m_availableWindowSize.y != m_prevAvailableWindowSize.y)
 			{
-				m_prevWindowSize = m_windowSize;
+				m_prevAvailableWindowSize = m_availableWindowSize;
 				if (m_onResizeCallback)
 				{
-					m_onResizeCallback(static_cast<int>(m_windowSize.x), static_cast<int>(m_windowSize.y));
+					m_onResizeCallback(static_cast<int>(m_availableWindowSize.x), static_cast<int>(m_availableWindowSize.y));
 				}
 			}
 
-			ImGui::Image((ImTextureID)(intptr_t)texture, ImVec2(m_windowSize.x, m_windowSize.y), ImVec2(0, 1), ImVec2(1, 0));
+			ImGui::Image((ImTextureID)(intptr_t)texture, ImVec2(m_availableWindowSize.x, m_availableWindowSize.y), ImVec2(0, 1), ImVec2(1, 0));
 			ImGui::End();
 
 			// Render ImGui
@@ -99,14 +99,24 @@ namespace Andromeda
 			return m_isInitialized;
 		}
 
-		float ImGuiManager::GetWidth() const
+		float ImGuiManager::GetWindowWidth() const
 		{
 			return m_windowSize.x;
 		}
 
-		float ImGuiManager::GetHeight() const
+		float ImGuiManager::GetWindowHeight() const
 		{
 			return m_windowSize.y;
+		}
+
+		float ImGuiManager::GetAvailableWindowWidth() const
+		{
+			return m_availableWindowSize.x;
+		}
+
+		float ImGuiManager::GetAvailableWindowHeight() const
+		{
+			return m_availableWindowSize.y;
 		}
 
 		void ImGuiManager::InitImGui(GLFWwindow* window)

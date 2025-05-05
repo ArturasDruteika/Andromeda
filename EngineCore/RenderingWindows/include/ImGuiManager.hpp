@@ -30,15 +30,19 @@ namespace Andromeda
 			void SetOnResizeCallback(OnResizeCallback callback);
 
 			bool IsInitialized() const;
-			float GetWidth() const;
-			float GetHeight() const;
+			float GetWindowWidth() const;
+			float GetWindowHeight() const;
+			float GetAvailableWindowWidth() const;
+			float GetAvailableWindowHeight() const;
 
 		private:
 			void InitImGui(GLFWwindow* window);
 
 			bool m_isInitialized;
 			ImVec2 m_windowSize;
+			ImVec2 m_availableWindowSize;
 			ImVec2 m_prevWindowSize; // Store previous size
+			ImVec2 m_prevAvailableWindowSize; // Store previous size
 			ImGuiIO* m_io;
 
 			OnResizeCallback m_onResizeCallback;
