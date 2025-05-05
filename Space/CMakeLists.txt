@@ -25,6 +25,10 @@ add_library(${PROJECT_NAME}
         Objects/src/Sphere.cpp
         Objects/include/SphereImpl.hpp
         Objects/src/SphereImpl.cpp
+        Objects/include/Cube.hpp
+        Objects/src/Cube.cpp
+        Objects/include/CubeImpl.hpp
+        Objects/src/CubeImpl.cpp
 
         Attributes/include/Colors.hpp
 )
@@ -89,6 +93,10 @@ source_group(
         Objects/src/Sphere.cpp
         Objects/include/SphereImpl.hpp
         Objects/src/SphereImpl.cpp
+        Objects/include/Cube.hpp
+        Objects/src/Cube.cpp
+        Objects/include/CubeImpl.hpp
+        Objects/src/CubeImpl.cpp
 )
 
 source_group(

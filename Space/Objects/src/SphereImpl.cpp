@@ -5,11 +5,11 @@ namespace Andromeda
 {
 	namespace Space
 	{
-		Sphere::SphereImpl::SphereImpl(const Math::Vec3& position, const Color& color)
+		Sphere::SphereImpl::SphereImpl(const Math::Vec3& centerPosition, float radius, const Color& color)
 			: m_type{ ObjectType::SPHERE }
-			, m_position{ position }
+			, m_centerPosition{ centerPosition }
 			, m_color{ color }
-			, m_radius{ 0.0f }
+			, m_radius{ radius }
 		{
 		}
 
@@ -20,9 +20,9 @@ namespace Andromeda
 			return m_type;
 		}
 
-		Math::Vec3 Sphere::SphereImpl::GetPosition() const
+		Math::Vec3 Sphere::SphereImpl::GetCenterPosition() const
 		{
-			return m_position;
+			return m_centerPosition;
 		}
 
 		Color Sphere::SphereImpl::GetColor() const
@@ -35,19 +35,19 @@ namespace Andromeda
 			m_color = color;
 		}
 
-		void Sphere::SphereImpl::SetPosition(const Math::Vec3& position)
+		void Sphere::SphereImpl::SetCenterPosition(const Math::Vec3& position)
 		{
-			m_position = position;
+			m_centerPosition = position;
 		}
 
 		void Sphere::SphereImpl::RelativeMove(const Math::Vec3& position)
 		{
-			m_position += position;
+			m_centerPosition += position;
 		}
 
 		void Sphere::SphereImpl::AbsoluteMove(const Math::Vec3& position)
 		{
-			m_position = position;
+			m_centerPosition = position;
 		}
 
 		void Sphere::SphereImpl::Rotate(const Math::Vec3& rotation)

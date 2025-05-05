@@ -20,11 +20,11 @@ namespace Andromeda
 
 			// Getters
 			virtual ObjectType GetType() const = 0;
-			virtual Math::Vec3 GetPosition() const = 0;
+			virtual Math::Vec3 GetCenterPosition() const = 0;
 			virtual Color GetColor() const = 0;
 			//Setters
 			virtual void SetColor(const Color& color) = 0;
-			virtual void SetPosition(const Math::Vec3& position) = 0;
+			virtual void SetCenterPosition(const Math::Vec3& position) = 0;
 
 			virtual void RelativeMove(const Math::Vec3& postion) = 0;
 			virtual void AbsoluteMove(const Math::Vec3& postion) = 0;

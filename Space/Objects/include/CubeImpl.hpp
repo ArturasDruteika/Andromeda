@@ -1,19 +1,19 @@
-#ifndef SPACE__SPHERE_IMPL__HPP
-#define SPACE__SPHERE_IMPL__HPP
+#ifndef SPACE__CUBE_IMPL__HPP
+#define SPACE__CUBE_IMPL__HPP
 
 
-#include "../include/Sphere.hpp"
+#include "../include/Cube.hpp"
 
 
 namespace Andromeda
 {
 	namespace Space
 	{
-		class Sphere::SphereImpl
+		class Cube::CubeImpl
 		{
 		public:
-			SphereImpl(const Math::Vec3& centerPosition, float radius, const Color& color);
-			~SphereImpl();
+			CubeImpl(const Math::Vec3& centerPosition, float halfExtent, const Color& color);
+			~CubeImpl();
 
 			/// Overrides from ObjectBase
 			// Getters
@@ -30,10 +30,10 @@ namespace Andromeda
 			void Scale(const Math::Vec3& scale);
 
 			// Getters
-			double GetRadius() const;
+			double GetHalfExtent() const;
 
 		private:
-			float m_radius;
+			float m_halfExtent;
 			Math::Vec3 m_centerPosition;
 			Color m_color;
 			ObjectType m_type;
@@ -42,4 +42,4 @@ namespace Andromeda
 }
 
 
-#endif // SPACE__SPHERE_IMPL__HPP
+#endif // SPACE__CUBE_IMPL__HPP

@@ -1,5 +1,5 @@
-#ifndef SPACE__SPHERE__HPP
-#define SPACE__SPHERE__HPP
+#ifndef SPACE__CUBE__HPP
+#define SPACE__CUBE__HPP
 
 
 #if defined(_WIN32)
@@ -27,11 +27,11 @@ namespace Andromeda
 {
 	namespace Space
 	{
-		class SPACE_API Sphere : public ObjectBase
+		class SPACE_API Cube : public ObjectBase
 		{
 		public:
-			Sphere(const Math::Vec3& centerPosition, float radius, const Color& color);
-			~Sphere();
+			Cube(const Math::Vec3& centerPosition, float halfExtent, const Color& color);
+			~Cube();
 
 			/// Overrides from ObjectBase
 			// Getters
@@ -48,14 +48,14 @@ namespace Andromeda
 			void Scale(const Math::Vec3& scale) override;
 
 			// Getters
-			double GetRadius() const;
+			double GetHalfExtent() const;
 
 		private:
-			class SphereImpl;
-			SphereImpl* m_pSphereImpl;
+			class CubeImpl;
+			CubeImpl* m_pCubeImpl;
 		};
 	}
 }
 
 
-#endif // SPACE__SPHERE__HPP
+#endif // SPACE__CUBE__HPP
