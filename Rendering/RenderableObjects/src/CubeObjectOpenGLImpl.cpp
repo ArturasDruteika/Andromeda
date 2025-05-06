@@ -15,6 +15,8 @@ namespace Andromeda
 			, m_VBO{ 0 }
 			, m_VAO{ 0 }
 			, m_EBO{ 0 }
+			, m_rotation{ 0.0f, 0.0f, 0.0f }
+			, m_scale{ 1.0f, 1.0f, 1.0f }
 			, m_vertexLayout{ 
 				std::vector {
 					Rendering::VertexAttributes{ 0, Space::Point3D::Size(), GL_FLOAT, GL_FALSE, sizeof(Rendering::Vertex), 0 }, // Position
@@ -62,10 +64,15 @@ namespace Andromeda
 
 		void CubeObjectOpenGL::CubeObjectOpenGLImpl::SetModelMatrix(const Math::Mat4& modelMatrix)
 		{
+			m_modelMatrix = MathUtils::ToGLM(modelMatrix);
 		}
 
 		void CubeObjectOpenGL::CubeObjectOpenGLImpl::UpdateModelMatrix()
 		{
+			glm::mat4 translationMatrix = ConstructTranslationMatrix();
+			glm::mat4 rotationMatrix = ConstructRotationMatrix();
+			glm::mat4 scaleMatrix = ConstructScaleMatrix();
+			m_modelMatrix = translationMatrix * rotationMatrix * scaleMatrix;
 		}
 
 		void CubeObjectOpenGL::CubeObjectOpenGLImpl::SetCenterPosition(const Math::Vec3& position, bool updateModelMatrix)
@@ -75,10 +82,32 @@ namespace Andromeda
 
 		void CubeObjectOpenGL::CubeObjectOpenGLImpl::SetRotation(const Math::Vec3& rotation, bool updateModelMatrix)
 		{
+			m_rotation = MathUtils::ToGLM(rotation);
 		}
 
 		void CubeObjectOpenGL::CubeObjectOpenGLImpl::SetScale(const Math::Vec3& scale, bool updateModelMatrix)
 		{
+			m_scale = MathUtils::ToGLM(scale);
+		}
+
+		float CubeObjectOpenGL::CubeObjectOpenGLImpl::GetHalfExtent() const
+		{
+			return m_halfExtent;
+		}
+
+		Math::Vec3 CubeObjectOpenGL::CubeObjectOpenGLImpl::GetCenterPosition() const
+		{
+			return MathUtils::FromGLM(m_centerPosition);
+		}
+
+		Math::Vec3 CubeObjectOpenGL::CubeObjectOpenGLImpl::GetRotation() const
+		{
+			return MathUtils::FromGLM(m_rotation);
+		}
+
+		Math::Vec3 CubeObjectOpenGL::CubeObjectOpenGLImpl::GetScale() const
+		{
+			return MathUtils::FromGLM(m_scale);
 		}
 
 		void CubeObjectOpenGL::CubeObjectOpenGLImpl::Init(const std::vector<Vertex>& vertices, const std::vector<unsigned int>& indices)

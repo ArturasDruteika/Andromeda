@@ -37,16 +37,14 @@ namespace Andromeda
 			SphereObjectOpenGL(SphereObjectOpenGL&& other) noexcept = delete;	// Prevent Move Constructor
 			SphereObjectOpenGL& operator=(SphereObjectOpenGL&& other) noexcept = delete;	// Prevent Move Assignment
 
+			/// Overrides from IRenderableObjectOpenGL
 			// Getters
-			float GetRadius() const;
-			Math::Vec3 GetCenterPosition() const;
 			unsigned int GetVBO() const override;
 			unsigned int GetVAO() const override;
 			unsigned int GetEBO() const override;
 			unsigned int GetVertexCount() const override;
 			std::vector<Vertex> GetVertices() const override;
 			Math::Mat4 GetModelMatrix() const override;
-
 			// Setters
 			void SetRadius(float radius);
 			void SetModelMatrix(const Math::Mat4& modelMatrix) override;
@@ -54,6 +52,12 @@ namespace Andromeda
 			void SetCenterPosition(const Math::Vec3& position, bool updateModelMatrix = false) override;
 			void SetRotation(const Math::Vec3& rotation, bool updateModelMatrix = false) override; // Euler angles in radians (X, Y, Z)
 			void SetScale(const Math::Vec3& scale, bool updateModelMatrix = false) override;
+
+			// Getters
+			float GetRadius() const;
+			Math::Vec3 GetCenterPosition() const;
+			Math::Vec3 GetRotation() const;
+			Math::Vec3 GetScale() const;
 
 		private:
 			class SphereObjectOpenGLImpl;

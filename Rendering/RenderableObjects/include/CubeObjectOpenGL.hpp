@@ -37,6 +37,7 @@ namespace Andromeda
 			CubeObjectOpenGL(CubeObjectOpenGL&& other) noexcept = delete;	// Prevent Move Constructor
 			CubeObjectOpenGL& operator=(CubeObjectOpenGL&& other) noexcept = delete;	// Prevent Move Assignment
 
+			/// Overrides from IRenderableObjectOpenGL
 			// Getters
 			unsigned int GetVBO() const override;
 			unsigned int GetVAO() const override;
@@ -44,13 +45,18 @@ namespace Andromeda
 			unsigned int GetVertexCount() const override;
 			std::vector<Vertex> GetVertices() const override;
 			Math::Mat4 GetModelMatrix() const override;
-
 			// Setters
 			void SetModelMatrix(const Math::Mat4& modelMatrix) override;
 			void UpdateModelMatrix() override;
 			void SetCenterPosition(const Math::Vec3& position, bool updateModelMatrix = false) override;
 			void SetRotation(const Math::Vec3& rotation, bool updateModelMatrix = false) override; // Euler angles in radians (X, Y, Z)
 			void SetScale(const Math::Vec3& scale, bool updateModelMatrix = false) override;
+
+			// Getters
+			float GetHalfExtent() const;
+			Math::Vec3 GetCenterPosition() const;
+			Math::Vec3 GetRotation() const;
+			Math::Vec3 GetScale() const;
 
 		private:
 			class CubeObjectOpenGLImpl;

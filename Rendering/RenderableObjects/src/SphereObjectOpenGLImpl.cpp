@@ -15,6 +15,8 @@ namespace Andromeda
 			, m_VBO{ 0 }
 			, m_VAO{ 0 }
 			, m_EBO{ 0 }
+			, m_rotation{ 0.0f, 0.0f, 0.0f }
+			, m_scale{ 1.0f, 1.0f, 1.0f }
 			, m_vertexLayout{ 
 				std::vector {
 					Rendering::VertexAttributes{ 0, Space::Point3D::Size(), GL_FLOAT, GL_FALSE, sizeof(Rendering::Vertex), 0 }, // Position
@@ -28,16 +30,6 @@ namespace Andromeda
 
 		SphereObjectOpenGL::SphereObjectOpenGLImpl::~SphereObjectOpenGLImpl()
 		{
-		}
-
-		float SphereObjectOpenGL::SphereObjectOpenGLImpl::GetRadius() const
-		{
-			return m_radius;
-		}
-
-		Math::Vec3 SphereObjectOpenGL::SphereObjectOpenGLImpl::GetCenterPosition() const
-		{
-			return MathUtils::FromGLM(m_centerPosition);
 		}
 
 		unsigned int SphereObjectOpenGL::SphereObjectOpenGLImpl::GetVBO() const
@@ -77,10 +69,15 @@ namespace Andromeda
 
 		void SphereObjectOpenGL::SphereObjectOpenGLImpl::SetModelMatrix(const Math::Mat4& modelMatrix)
 		{
+			m_modelMatrix = MathUtils::ToGLM(modelMatrix);
 		}
 
 		void SphereObjectOpenGL::SphereObjectOpenGLImpl::UpdateModelMatrix()
 		{
+			glm::mat4 translationMatrix = ConstructTranslationMatrix();
+			glm::mat4 rotationMatrix = ConstructRotationMatrix();
+			glm::mat4 scaleMatrix = ConstructScaleMatrix();
+			m_modelMatrix = translationMatrix * rotationMatrix * scaleMatrix;
 		}
 
 		void SphereObjectOpenGL::SphereObjectOpenGLImpl::SetCenterPosition(const Math::Vec3& position, bool updateModelMatrix)
@@ -90,10 +87,32 @@ namespace Andromeda
 
 		void SphereObjectOpenGL::SphereObjectOpenGLImpl::SetRotation(const Math::Vec3& rotation, bool updateModelMatrix)
 		{
+			m_rotation = MathUtils::ToGLM(rotation);
 		}
 
 		void SphereObjectOpenGL::SphereObjectOpenGLImpl::SetScale(const Math::Vec3& scale, bool updateModelMatrix)
 		{
+			m_scale = MathUtils::ToGLM(scale);
+		}
+
+		float SphereObjectOpenGL::SphereObjectOpenGLImpl::GetRadius() const
+		{
+			return m_radius;
+		}
+
+		Math::Vec3 SphereObjectOpenGL::SphereObjectOpenGLImpl::GetCenterPosition() const
+		{
+			return MathUtils::FromGLM(m_centerPosition);
+		}
+
+		Math::Vec3 SphereObjectOpenGL::SphereObjectOpenGLImpl::GetRotation() const
+		{
+			return MathUtils::FromGLM(m_rotation);
+		}
+
+		Math::Vec3 SphereObjectOpenGL::SphereObjectOpenGLImpl::GetScale() const
+		{
+			return MathUtils::FromGLM(m_scale);
 		}
 
 		void SphereObjectOpenGL::SphereObjectOpenGLImpl::Init(const std::vector<Vertex>& vertices, const std::vector<unsigned int>& indices)

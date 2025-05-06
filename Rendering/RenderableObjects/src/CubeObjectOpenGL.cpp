@@ -70,5 +70,25 @@ namespace Andromeda
 		{
 			m_pCubeObjectOpenGLImpl->SetScale(scale, updateModelMatrix);
 		}
+
+		float CubeObjectOpenGL::GetHalfExtent() const
+		{
+			return m_pCubeObjectOpenGLImpl->GetHalfExtent();
+		}
+
+		Math::Vec3 CubeObjectOpenGL::GetCenterPosition() const
+		{
+			return m_pCubeObjectOpenGLImpl->GetCenterPosition();
+		}
+
+		Math::Vec3 CubeObjectOpenGL::GetRotation() const
+		{
+			return m_pCubeObjectOpenGLImpl->GetRotation();
+		}
+
+		Math::Vec3 CubeObjectOpenGL::GetScale() const
+		{
+			return m_pCubeObjectOpenGLImpl->GetScale();
+		}
 	}
 }

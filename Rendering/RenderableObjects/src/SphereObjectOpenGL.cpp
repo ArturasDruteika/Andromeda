@@ -16,16 +16,6 @@ namespace Andromeda
 			delete m_pSphereObjectOpenGLImpl;
 		}
 
-		float SphereObjectOpenGL::GetRadius() const
-		{
-			return m_pSphereObjectOpenGLImpl->GetRadius();
-		}
-
-		Math::Vec3 SphereObjectOpenGL::GetCenterPosition() const
-		{
-			return m_pSphereObjectOpenGLImpl->GetCenterPosition();
-		}
-
 		unsigned int SphereObjectOpenGL::GetVBO() const
 		{
 			return m_pSphereObjectOpenGLImpl->GetVBO();
@@ -84,6 +74,26 @@ namespace Andromeda
 		void SphereObjectOpenGL::SetScale(const Math::Vec3& scale, bool updateModelMatrix)
 		{
 			m_pSphereObjectOpenGLImpl->SetScale(scale, updateModelMatrix);
+		}
+
+		float SphereObjectOpenGL::GetRadius() const
+		{
+			return m_pSphereObjectOpenGLImpl->GetRadius();
+		}
+
+		Math::Vec3 SphereObjectOpenGL::GetCenterPosition() const
+		{
+			return m_pSphereObjectOpenGLImpl->GetCenterPosition();
+		}
+
+		Math::Vec3 SphereObjectOpenGL::GetRotation() const
+		{
+			return m_pSphereObjectOpenGLImpl->GetRotation();
+		}
+
+		Math::Vec3 SphereObjectOpenGL::GetScale() const
+		{
+			return m_pSphereObjectOpenGLImpl->GetScale();
 		}
 	}
 }
