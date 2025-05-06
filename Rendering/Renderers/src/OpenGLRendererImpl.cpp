@@ -1,6 +1,7 @@
 #include "../include/OpenGLRendererImpl.hpp"
-#include "FileOperations.hpp"
 #include "../../Utils/include/MathUtils.hpp"
+#include "FileOperations.hpp"
+#include "Colors.hpp"
 #include "glad/gl.h"
 #include "glm/glm.hpp"
 #include <glm/gtc/type_ptr.hpp>
@@ -9,6 +10,8 @@
 
 namespace Andromeda
 {
+    constexpr Space::Color BACKGROUND_COLOR_DEFAULT{ 0.0f, 0.0f, 0.1f, 1.0f };
+
 	namespace Rendering
 	{
         OpenGLRenderer::OpenGLRendererImpl::OpenGLRendererImpl()
@@ -36,7 +39,12 @@ namespace Andromeda
             // Initialize OpenGL-specific states
             glEnable(GL_DEPTH_TEST); // Enable depth testing for 3D rendering
 
-            glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
+            glClearColor(
+                BACKGROUND_COLOR_DEFAULT.r, 
+                BACKGROUND_COLOR_DEFAULT.g, 
+                BACKGROUND_COLOR_DEFAULT.b, 
+                BACKGROUND_COLOR_DEFAULT.a
+            );
             CreateShader();
 			m_width = width;
 			m_height = height;
