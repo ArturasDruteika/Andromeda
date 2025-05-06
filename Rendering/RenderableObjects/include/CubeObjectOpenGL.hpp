@@ -1,5 +1,5 @@
-#ifndef RENDERING__SPHERE_OBJECT_OPENGL__HPP
-#define RENDERING__SPHERE_OBJECT_OPENGL__HPP
+#ifndef RENDERING__CUBE_OBJECT_OPENGL__HPP
+#define RENDERING__CUBE_OBJECT_OPENGL__HPP
 
 
 #if defined(_WIN32)
@@ -25,21 +25,19 @@ namespace Andromeda
 {
 	namespace Rendering
 	{
-		class RENDERING_API SphereObjectOpenGL
+		class RENDERING_API CubeObjectOpenGL
 			: public IRenderableObjectOpenGL
 		{	
 		public:
-			SphereObjectOpenGL(const Math::Vec3& centerPosition, float radius, const Space::Color& color);
-			~SphereObjectOpenGL();
+			CubeObjectOpenGL(const Math::Vec3& centerPosition, float radius, const Space::Color& color);
+			~CubeObjectOpenGL();
 
-			SphereObjectOpenGL(const SphereObjectOpenGL& other) = delete;	// Prevent Copy Constructor
-			SphereObjectOpenGL& operator=(const SphereObjectOpenGL& other) = delete;	// Prevent Copy Assignment
-			SphereObjectOpenGL(SphereObjectOpenGL&& other) noexcept = delete;	// Prevent Move Constructor
-			SphereObjectOpenGL& operator=(SphereObjectOpenGL&& other) noexcept = delete;	// Prevent Move Assignment
+			CubeObjectOpenGL(const CubeObjectOpenGL& other) = delete;	// Prevent Copy Constructor
+			CubeObjectOpenGL& operator=(const CubeObjectOpenGL& other) = delete;	// Prevent Copy Assignment
+			CubeObjectOpenGL(CubeObjectOpenGL&& other) noexcept = delete;	// Prevent Move Constructor
+			CubeObjectOpenGL& operator=(CubeObjectOpenGL&& other) noexcept = delete;	// Prevent Move Assignment
 
 			// Getters
-			float GetRadius() const;
-			Math::Vec3 GetCenterPosition() const;
 			unsigned int GetVBO() const override;
 			unsigned int GetVAO() const override;
 			unsigned int GetEBO() const override;
@@ -48,7 +46,6 @@ namespace Andromeda
 			Math::Mat4 GetModelMatrix() const override;
 
 			// Setters
-			void SetRadius(float radius);
 			void SetModelMatrix(const Math::Mat4& modelMatrix) override;
 			void UpdateModelMatrix() override;
 			void SetCenterPosition(const Math::Vec3& position, bool updateModelMatrix = false) override;
@@ -56,11 +53,11 @@ namespace Andromeda
 			void SetScale(const Math::Vec3& scale, bool updateModelMatrix = false) override;
 
 		private:
-			class SphereObjectOpenGLImpl;
-			SphereObjectOpenGLImpl* m_pSphereObjectOpenGLImpl;
+			class CubeObjectOpenGLImpl;
+			CubeObjectOpenGLImpl* m_pCubeObjectOpenGLImpl;
 		};
 	}
 }
 
 
-#endif // RENDERING__SPHERE_OBJECT_OPENGL__HPP
+#endif // RENDERING__CUBE_OBJECT_OPENGL__HPP

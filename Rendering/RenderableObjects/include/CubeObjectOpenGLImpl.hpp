@@ -1,8 +1,8 @@
-#ifndef RENDERING__SPHERE_OBJECT_OPENGL_IMPL__HPP
-#define RENDERING__SPHERE_OBJECT_OPENGL_IMPL__HPP
+#ifndef RENDERING__CUBE_OBJECT_OPENGL_IMPL__HPP
+#define RENDERING__CUBE_OBJECT_OPENGL_IMPL__HPP
 
 
-#include "SphereObjectOpenGL.hpp"
+#include "CubeObjectOpenGL.hpp"
 #include "glm/glm.hpp"
 #include "glm/gtc/matrix_transform.hpp"
 
@@ -11,20 +11,18 @@ namespace Andromeda
 {
 	namespace Rendering
 	{
-		class SphereObjectOpenGL::SphereObjectOpenGLImpl
+		class CubeObjectOpenGL::CubeObjectOpenGLImpl
 		{	
 		public:
-			SphereObjectOpenGLImpl(const Math::Vec3& centerPosition, float radius, const Space::Color& color);
-			~SphereObjectOpenGLImpl();
+			CubeObjectOpenGLImpl(const Math::Vec3& centerPosition, float radius, const Space::Color& color);
+			~CubeObjectOpenGLImpl();
 
-			SphereObjectOpenGLImpl(const SphereObjectOpenGLImpl& other) = delete;	// Prevent Copy Constructor
-			SphereObjectOpenGLImpl& operator=(const SphereObjectOpenGLImpl& other) = delete;	// Prevent Copy Assignment
-			SphereObjectOpenGLImpl(SphereObjectOpenGLImpl&& other) noexcept = delete;	// Prevent Move Constructor
-			SphereObjectOpenGLImpl& operator=(SphereObjectOpenGLImpl&& other) noexcept = delete;	// Prevent Move Assignment
+			CubeObjectOpenGLImpl(const CubeObjectOpenGLImpl& other) = delete;	// Prevent Copy Constructor
+			CubeObjectOpenGLImpl& operator=(const CubeObjectOpenGLImpl& other) = delete;	// Prevent Copy Assignment
+			CubeObjectOpenGLImpl(CubeObjectOpenGLImpl&& other) noexcept = delete;	// Prevent Move Constructor
+			CubeObjectOpenGLImpl& operator=(CubeObjectOpenGLImpl&& other) noexcept = delete;	// Prevent Move Assignment
 
 			// Getters
-			float GetRadius() const;
-			Math::Vec3 GetCenterPosition() const;
 			unsigned int GetVBO() const;
 			unsigned int GetVAO() const;
 			unsigned int GetEBO() const;
@@ -33,7 +31,6 @@ namespace Andromeda
 			Math::Mat4 GetModelMatrix() const;
 
 			// Setters
-			void SetRadius(float radius);
 			void SetModelMatrix(const Math::Mat4& modelMatrix);
 			void UpdateModelMatrix();
 			void SetCenterPosition(const Math::Vec3& position, bool updateModelMatrix = false);
@@ -52,9 +49,9 @@ namespace Andromeda
 			glm::mat4 ConstructRotationMatrix() const;
 			glm::mat4 ConstructScaleMatrix() const;
 
-			void ConstructSphere(float radius, int sectorCount, int stackCount, const Space::Color& color);
+			void ConstructCube(float halfExtent, const Space::Color& color);
 
-			float m_radius;
+			float m_halfExtent;
 			unsigned int m_VBO;
 			unsigned int m_VAO;
 			unsigned int m_EBO;
@@ -74,4 +71,4 @@ namespace Andromeda
 }
 
 
-#endif // RENDERING__SPHERE_OBJECT_OPENGL_IMPL__HPP
+#endif // RENDERING__CUBE_OBJECT_OPENGL_IMPL__HPP

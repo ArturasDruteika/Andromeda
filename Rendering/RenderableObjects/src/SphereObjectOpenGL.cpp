@@ -6,14 +6,24 @@ namespace Andromeda
 {
 	namespace Rendering
 	{
-		SphereObjectOpenGL::SphereObjectOpenGL(float radius, const Space::Color& color)
-			: m_pSphereObjectOpenGLImpl{ new SphereObjectOpenGL::SphereObjectOpenGLImpl(radius, color) }
+		SphereObjectOpenGL::SphereObjectOpenGL(const Math::Vec3& centerPosition, float radius, const Space::Color& color)
+			: m_pSphereObjectOpenGLImpl{ new SphereObjectOpenGL::SphereObjectOpenGLImpl(centerPosition, radius, color) }
 		{
 		}
 
 		SphereObjectOpenGL::~SphereObjectOpenGL()
 		{
 			delete m_pSphereObjectOpenGLImpl;
+		}
+
+		float SphereObjectOpenGL::GetRadius() const
+		{
+			return m_pSphereObjectOpenGLImpl->GetRadius();
+		}
+
+		Math::Vec3 SphereObjectOpenGL::GetCenterPosition() const
+		{
+			return m_pSphereObjectOpenGLImpl->GetCenterPosition();
 		}
 
 		unsigned int SphereObjectOpenGL::GetVBO() const
@@ -46,6 +56,11 @@ namespace Andromeda
 			return m_pSphereObjectOpenGLImpl->GetModelMatrix();
 		}
 
+		void SphereObjectOpenGL::SetRadius(float radius)
+		{
+			m_pSphereObjectOpenGLImpl->SetRadius(radius);
+		}
+
 		void SphereObjectOpenGL::SetModelMatrix(const Math::Mat4& modelMatrix)
 		{
 			m_pSphereObjectOpenGLImpl->SetModelMatrix(modelMatrix);
@@ -56,9 +71,9 @@ namespace Andromeda
 			m_pSphereObjectOpenGLImpl->UpdateModelMatrix();
 		}
 
-		void SphereObjectOpenGL::SetPosition(const Math::Vec3& position, bool updateModelMatrix)
+		void SphereObjectOpenGL::SetCenterPosition(const Math::Vec3& position, bool updateModelMatrix)
 		{
-			m_pSphereObjectOpenGLImpl->SetPosition(position, updateModelMatrix);
+			m_pSphereObjectOpenGLImpl->SetCenterPosition(position, updateModelMatrix);
 		}
 
 		void SphereObjectOpenGL::SetRotation(const Math::Vec3& rotation, bool updateModelMatrix)

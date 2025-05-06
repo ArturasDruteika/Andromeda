@@ -1,4 +1,5 @@
 #include "../include/SphereObjectOpenGLImpl.hpp"
+#include "../../Utils/include/MathUtils.hpp"
 #include "Constants.hpp"
 #include "Points.hpp"
 #include "glad/gl.h"
@@ -8,8 +9,10 @@ namespace Andromeda
 {
 	namespace Rendering
 	{
-		SphereObjectOpenGL::SphereObjectOpenGLImpl::SphereObjectOpenGLImpl(float radius, const Space::Color& color)
-			: m_VBO{ 0 }
+		SphereObjectOpenGL::SphereObjectOpenGLImpl::SphereObjectOpenGLImpl(const Math::Vec3& centerPosition, float radius, const Space::Color& color)
+			: m_centerPosition{ MathUtils::ToGLM(centerPosition) }
+			, m_radius{ radius }
+			, m_VBO{ 0 }
 			, m_VAO{ 0 }
 			, m_EBO{ 0 }
 			, m_vertexLayout{ 
@@ -19,12 +22,22 @@ namespace Andromeda
 				} 
 			}
 		{
-			ConstructSphere(radius, 36, 18, color);
+			ConstructSphere(radius, 200, 200, color);
 			Init(m_vertices, m_indices);
 		}
 
 		SphereObjectOpenGL::SphereObjectOpenGLImpl::~SphereObjectOpenGLImpl()
 		{
+		}
+
+		float SphereObjectOpenGL::SphereObjectOpenGLImpl::GetRadius() const
+		{
+			return m_radius;
+		}
+
+		Math::Vec3 SphereObjectOpenGL::SphereObjectOpenGLImpl::GetCenterPosition() const
+		{
+			return MathUtils::FromGLM(m_centerPosition);
 		}
 
 		unsigned int SphereObjectOpenGL::SphereObjectOpenGLImpl::GetVBO() const
@@ -57,6 +70,11 @@ namespace Andromeda
 			return Math::Mat4();
 		}
 
+		void SphereObjectOpenGL::SphereObjectOpenGLImpl::SetRadius(float radius)
+		{
+			m_radius = radius;
+		}
+
 		void SphereObjectOpenGL::SphereObjectOpenGLImpl::SetModelMatrix(const Math::Mat4& modelMatrix)
 		{
 		}
@@ -65,8 +83,9 @@ namespace Andromeda
 		{
 		}
 
-		void SphereObjectOpenGL::SphereObjectOpenGLImpl::SetPosition(const Math::Vec3& position, bool updateModelMatrix)
+		void SphereObjectOpenGL::SphereObjectOpenGLImpl::SetCenterPosition(const Math::Vec3& position, bool updateModelMatrix)
 		{
+			m_centerPosition = MathUtils::ToGLM(position);
 		}
 
 		void SphereObjectOpenGL::SphereObjectOpenGLImpl::SetRotation(const Math::Vec3& rotation, bool updateModelMatrix)
@@ -130,7 +149,7 @@ namespace Andromeda
 
 		glm::mat4 SphereObjectOpenGL::SphereObjectOpenGLImpl::ConstructTranslationMatrix() const
 		{
-			return glm::translate(glm::mat4(1.0f), m_position);
+			return glm::translate(glm::mat4(1.0f), m_centerPosition);
 		}
 
 		glm::mat4 SphereObjectOpenGL::SphereObjectOpenGLImpl::ConstructRotationMatrix() const
