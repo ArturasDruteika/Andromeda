@@ -31,12 +31,16 @@ add_library(${PROJECT_NAME}
         Scene/include/OpenGLSceneImpl.hpp
 		Scene/src/OpenGLSceneImpl.cpp
 
+		RenderableObjects/include/IRenderableObjectOpenGL.hpp
+		RenderableObjects/src/IRenderableObjectOpenGL.cpp
         RenderableObjects/include/SphereObjectOpenGL.hpp
 		RenderableObjects/src/SphereObjectOpenGL.cpp
         RenderableObjects/include/SphereObjectOpenGLImpl.hpp
 		RenderableObjects/src/SphereObjectOpenGLImpl.cpp
-		RenderableObjects/include/IRenderableObjectOpenGL.hpp
-		RenderableObjects/src/IRenderableObjectOpenGL.cpp
+        RenderableObjects/include/CubeObjectOpenGL.hpp
+		RenderableObjects/src/CubeObjectOpenGL.cpp
+        RenderableObjects/include/CubeObjectOpenGLImpl.hpp
+		RenderableObjects/src/CubeObjectOpenGLImpl.cpp
 
 		Vertices/include/VertexAttributes.hpp
         Vertices/include/VertexLayouts.hpp
@@ -170,6 +174,10 @@ source_group(
 		RenderableObjects/src/SphereObjectOpenGLImpl.cpp
 		RenderableObjects/include/IRenderableObjectOpenGL.hpp
         RenderableObjects/src/IRenderableObjectOpenGL.cpp
+        RenderableObjects/include/CubeObjectOpenGL.hpp
+		RenderableObjects/src/CubeObjectOpenGL.cpp
+        RenderableObjects/include/CubeObjectOpenGLImpl.hpp
+		RenderableObjects/src/CubeObjectOpenGLImpl.cpp
 )
 
 source_group(
