@@ -5,6 +5,7 @@
 #include "../include/OpenGLRenderer.hpp"
 #include "../../Shaders/include/OpenGLShader.hpp"
 #include "../../RenderableObjects/include/IRenderableObjectOpenGL.hpp"
+#include "glm/glm.hpp"
 
 
 namespace Andromeda
@@ -27,6 +28,7 @@ namespace Andromeda
 			void RenderFrame(const OpenGLScene& scene);
 			void Resize(int width, int height);
 
+			// Getters
 			bool IsInitialized() const;
 			unsigned int GetFrameBufferObject() const;
 			unsigned int GetFrameBufferObjectTexture() const;
@@ -47,6 +49,7 @@ namespace Andromeda
 			int m_width;
 			int m_height;
 			OpenGLShader* m_shader;
+			glm::mat4 m_projectionMatrix;
 		};
 	}
 }
