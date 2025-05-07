@@ -57,6 +57,8 @@ add_library(${PROJECT_NAME}
 
         Camera/include/Camera.hpp
 		Camera/src/Camera.cpp
+        Camera/include/CameraImpl.hpp
+		Camera/src/CameraImpl.cpp
 )
 
 target_include_directories(${PROJECT_NAME} 
@@ -224,4 +226,6 @@ source_group(
     FILES
         Camera/include/Camera.hpp
 		Camera/src/Camera.cpp
+        Camera/include/CameraImpl.hpp
+		Camera/src/CameraImpl.cpp
 )
