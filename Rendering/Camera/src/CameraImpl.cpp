@@ -15,14 +15,20 @@ namespace Andromeda
         }
 
         Camera::CameraImpl::CameraImpl(const Math::Vec3& position, float yawRadians, float pitchRadians)
-            : m_position{ MathUtils::ToGLM(position) }
-            , m_yaw{ yawRadians }
-            , m_pitch{ pitchRadians }
-			, m_roll{ 0.0f }
+            : m_position{ MathUtils::ToGLM(position) }                      // Camera world position
+            , m_yaw{ yawRadians }                                           // -pi/2 to look toward -Z
+            , m_pitch{ pitchRadians }                                       // 0 to stay level
+            , m_roll{ 0.0f }
             , m_worldUp{ 0.0f, 1.0f, 0.0f }
+            , m_target{ glm::vec3(0.0f) }                                   // Look-at center/orbit point
+            , m_distance{ glm::length(MathUtils::ToGLM(position)) }         // Distance from target to camera
+            , m_forward{ 0.0f, 0.0f, -1.0f }
+            , m_right{ 1.0f, 0.0f, 0.0f }
+            , m_up{ 0.0f, 1.0f, 0.0f }
         {
             UpdateDirection();
         }
+
 
         Camera::CameraImpl::~CameraImpl() = default;
 
@@ -41,8 +47,14 @@ namespace Andromeda
             return m_roll;
         }
 
+        float Camera::CameraImpl::GetDistance() const
+        {
+            return m_distance;
+        }
+
         Math::Mat4 Camera::CameraImpl::GetViewMatrix() const
         {
+            //return MathUtils::FromGLM(glm::lookAt(m_position, m_position + m_forward, m_up));
             return MathUtils::FromGLM(glm::lookAt(m_position, m_position + m_forward, m_up));
         }
 
@@ -64,6 +76,11 @@ namespace Andromeda
         Math::Vec3 Camera::CameraImpl::GetUp() const
         {
             return MathUtils::FromGLM(m_up);
+        }
+
+        Math::Vec3 Camera::CameraImpl::GetTarget() const
+        {
+            return MathUtils::FromGLM(m_target);
         }
 
         void Camera::CameraImpl::SetPosition(const Math::Vec3& position)
@@ -92,12 +109,14 @@ namespace Andromeda
 
         void Camera::CameraImpl::UpdateDirection()
         {
-            glm::vec3 forward{};
-            forward.x = cos(m_pitch) * cos(m_yaw);
-            forward.y = sin(m_pitch);
-            forward.z = cos(m_pitch) * sin(m_yaw);
-            m_forward = glm::normalize(forward);
+            // Spherical to Cartesian conversion
+            glm::vec3 offset{};
+            offset.x = m_distance * cos(m_pitch) * sin(m_yaw);
+            offset.y = m_distance * sin(m_pitch);
+            offset.z = m_distance * cos(m_pitch) * cos(m_yaw);
 
+            m_position = m_target + offset;
+            m_forward = glm::normalize(m_target - m_position); // Look at target
             m_right = glm::normalize(glm::cross(m_forward, m_worldUp));
             m_up = glm::normalize(glm::cross(m_right, m_forward));
         }

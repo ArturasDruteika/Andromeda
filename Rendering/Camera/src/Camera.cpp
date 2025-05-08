@@ -21,6 +21,38 @@ namespace Andromeda
 			delete m_pCameraImpl;
         }
 
+        Camera::Camera(const Camera& other)
+        {
+            m_pCameraImpl = new CameraImpl(*other.m_pCameraImpl);
+        }
+
+        Camera& Camera::operator=(const Camera& other)
+        {
+            if (this != &other)
+            {
+                delete m_pCameraImpl;
+                m_pCameraImpl = new CameraImpl(*other.m_pCameraImpl);
+            }
+            return *this;
+        }
+
+        Camera::Camera(Camera&& other)
+            : m_pCameraImpl(other.m_pCameraImpl)
+        {
+            other.m_pCameraImpl = nullptr;
+        }
+
+        Camera& Camera::operator=(Camera&& other)
+        {
+            if (this != &other)
+            {
+                delete m_pCameraImpl;
+                m_pCameraImpl = other.m_pCameraImpl;
+                other.m_pCameraImpl = nullptr;
+            }
+            return *this;
+        }
+
         float Camera::GetYaw() const
         {
 			return m_pCameraImpl->GetYaw();
