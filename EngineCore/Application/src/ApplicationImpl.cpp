@@ -47,7 +47,7 @@ namespace Andromeda
                         m_pImGuiManager = new ImGuiManager(m_pWindow->GetWindow());
                         m_pImGuiManager->Init(m_pWindow->GetWindow());
 
-                        // 🔹 Call the function to set up event callbacks
+                        // Call the function to set up event callbacks
                         SetupEventCallbacks();
 
                         // Create and initialize the Renderer
@@ -135,6 +135,36 @@ namespace Andromeda
                     std::placeholders::_2
                 )
             );
+
+			m_pImGuiManager->SetOnMouseMoveCallback(
+				std::bind(
+					&Application::ApplicationImpl::OnMouseDragged,
+					this,
+					std::placeholders::_1,
+					std::placeholders::_2
+				)
+			);
+        }
+
+        void Application::ApplicationImpl::OnMouseDragged(float x, float y)
+        {
+            if (m_LastMouseDragPos[0] < 0.0f || m_LastMouseDragPos[1] < 0.0f)
+            {
+                // First drag event
+                m_LastMouseDragPos = { x, y };
+                return;
+            }
+
+            float dx = x - m_LastMouseDragPos[0];
+            float dy = y - m_LastMouseDragPos[1];
+
+            m_LastMouseDragPos = { x, y };
+
+            float sensitivity = 0.3f;
+            float yawOffset = dx * sensitivity;
+            float pitchOffset = dy * sensitivity;
+
+            m_camera.Rotate(yawOffset, pitchOffset);
         }
 
         void Application::ApplicationImpl::EventCallback(Window::Event& event)

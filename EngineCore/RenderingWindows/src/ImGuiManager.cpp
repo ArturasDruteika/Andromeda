@@ -9,9 +9,15 @@ namespace Andromeda
 {
 	namespace EngineCore
 	{
+		ImVec2 SubtractImVec2(ImVec2 a, ImVec2 b)
+		{
+			return ImVec2(a.x - b.x, a.y - b.y);
+		}
+
 		ImGuiManager::ImGuiManager(GLFWwindow* window, bool initialize)
 			: m_io{ nullptr } // Initialize m_io as nullptr
 			, m_isInitialized{ initialize }
+			, m_prevMousePos{ ImVec2(-1.0f, -1.0f) }
 		{
 			if (initialize)
 			{
@@ -47,10 +53,41 @@ namespace Andromeda
 			ImGui::DockSpaceOverViewport(ImGui::GetMainViewport()->ID);
 
 			// ImGui window
-			ImGui::Begin("Triangle Window", 0, ImGuiWindowFlags_NoScrollbar);
+			ImGui::Begin("Renderer", 0, ImGuiWindowFlags_NoScrollbar);
 
 			m_windowSize = ImGui::GetWindowSize();
 			m_availableWindowSize = ImGui::GetContentRegionAvail();
+
+			if (ImGui::IsWindowHovered(ImGuiHoveredFlags_AllowWhenBlockedByActiveItem) &&
+				ImGui::IsMouseDown(ImGuiMouseButton_Left))
+			{
+				ImVec2 localMousePos = ImVec2(
+					ImGui::GetMousePos().x - ImGui::GetCursorScreenPos().x,
+					ImGui::GetMousePos().y - ImGui::GetCursorScreenPos().y
+				);
+
+				// Clamp to content area
+				ImVec2 contentSize = ImGui::GetContentRegionAvail();
+				localMousePos.x = std::clamp(localMousePos.x, 0.0f, contentSize.x);
+				localMousePos.y = std::clamp(localMousePos.y, 0.0f, contentSize.y);
+
+				// Fire callback only if mouse actually moved
+				if (localMousePos.x != m_prevMousePos.x || localMousePos.y != m_prevMousePos.y)
+				{
+					spdlog::debug("Mouse Dragging in Window: X = {}, Y = {}", localMousePos.x, localMousePos.y);
+					if (m_onMouseMoveCallback)
+					{
+						m_onMouseMoveCallback(localMousePos.x, localMousePos.y);
+					}
+					m_prevMousePos = localMousePos;
+				}
+			}
+			else
+			{
+				// Reset tracking when mouse is released or not hovered
+				m_prevMousePos = ImVec2(-1.0f, -1.0f);
+			}
+
 
 			// Check if the size has changed
 			if (m_availableWindowSize.x != m_prevAvailableWindowSize.x || m_availableWindowSize.y != m_prevAvailableWindowSize.y)
@@ -92,6 +129,11 @@ namespace Andromeda
 		void ImGuiManager::SetOnResizeCallback(OnResizeCallback callback)
 		{
 			m_onResizeCallback = std::move(callback);
+		}
+
+		void ImGuiManager::SetOnMouseMoveCallback(OnMouseMoveCallback callback)
+		{
+			m_onMouseMoveCallback = std::move(callback);
 		}
 
 		bool ImGuiManager::IsInitialized() const
