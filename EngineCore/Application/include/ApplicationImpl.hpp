@@ -49,7 +49,7 @@ namespace Andromeda
 			Rendering::OpenGLRenderer* m_pRenderer;
 			Rendering::OpenGLScene* m_pScene;
 			ImGuiManager* m_pImGuiManager;
-			Rendering::Camera m_camera;
+			Rendering::Camera* m_pCamera;
 		};
 	}
 }

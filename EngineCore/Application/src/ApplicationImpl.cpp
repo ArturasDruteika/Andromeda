@@ -18,6 +18,7 @@ namespace Andromeda
 			, m_pRenderer{ nullptr }
 			, m_pScene{ nullptr }
 			, m_pImGuiManager{ nullptr }
+			, m_pCamera{ nullptr }
 		{
 		}
 
@@ -46,6 +47,7 @@ namespace Andromeda
                         m_pWindow->SetCallbackFunctions();
                         m_pImGuiManager = new ImGuiManager(m_pWindow->GetWindow());
                         m_pImGuiManager->Init(m_pWindow->GetWindow());
+                        m_pCamera = new Rendering::Camera();
 
                         // Call the function to set up event callbacks
                         SetupEventCallbacks();
@@ -54,6 +56,8 @@ namespace Andromeda
                         m_pRenderer = new Rendering::OpenGLRenderer();
                         m_pRenderer->Init(m_pImGuiManager->GetAvailableWindowWidth(), m_pImGuiManager->GetAvailableWindowHeight());
                         m_pScene = new Rendering::OpenGLScene();
+
+						m_pRenderer->SetCamera(m_pCamera);
 
 						SetupImGuiCallbacks();
                        
@@ -95,6 +99,8 @@ namespace Andromeda
 				delete m_pContext;
 				m_pContext = nullptr;
 				m_isInitialized = false;
+                delete m_pCamera;
+				m_pCamera = nullptr;
 			}
         }
 
@@ -121,7 +127,7 @@ namespace Andromeda
         {
             if (!m_pWindow) return;
 
-            // 🔹 Pass a function pointer instead of a lambda
+            // Pass a function pointer instead of a lambda
             m_pWindow->SetEventCallback(EventCallback);
         }
 
@@ -160,11 +166,11 @@ namespace Andromeda
 
             m_LastMouseDragPos = { x, y };
 
-            float sensitivity = 0.3f;
+            float sensitivity = 0.003f;
             float yawOffset = dx * sensitivity;
             float pitchOffset = dy * sensitivity;
 
-            m_camera.Rotate(yawOffset, pitchOffset);
+            m_pCamera->Rotate(yawOffset, pitchOffset);
         }
 
         void Application::ApplicationImpl::EventCallback(Window::Event& event)
