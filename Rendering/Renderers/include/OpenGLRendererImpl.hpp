@@ -35,6 +35,8 @@ namespace Andromeda
 			int GetWidth() const;
 			int GetHeight() const;
 
+			void SetCamera(Camera* camera);
+
 		private:
 			void InitFrameBuffer();
 			void CreateShader();
@@ -50,6 +52,7 @@ namespace Andromeda
 			int m_height;
 			OpenGLShader* m_shader;
 			glm::mat4 m_projectionMatrix;
+			Camera* m_pCamera;
 		};
 	}
 }

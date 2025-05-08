@@ -22,6 +22,7 @@ namespace Andromeda
 			, m_width{ 0 }
 			, m_height{ 0 }
 			, m_projectionMatrix{ glm::mat4(1.0f) }
+			, m_pCamera{ nullptr }
         {
         }
 
@@ -135,6 +136,16 @@ namespace Andromeda
             return m_height;
         }
 
+        void OpenGLRenderer::OpenGLRendererImpl::SetCamera(Camera* camera)
+        {
+			if (camera == nullptr)
+			{
+				spdlog::error("Camera is nullptr.");
+				return;
+			}
+			m_pCamera = camera;
+        }
+
         void OpenGLRenderer::OpenGLRendererImpl::InitFrameBuffer()
         {
 			GenerateAndBindFrameBuffer();
@@ -187,9 +198,13 @@ namespace Andromeda
 
         void OpenGLRenderer::OpenGLRendererImpl::RenderObject(const Rendering::IRenderableObjectOpenGL& object)
         {
-            glm::mat4 dummyViewMatrix = glm::mat4(1.0f);
-            glm::mat4 dummyProjectionMatrix = glm::mat4(1.0f);
+            glm::mat4 viewMatrix = MathUtils::ToGLM(m_pCamera->GetViewMatrix());
+            float aspect = static_cast<float>(620) / static_cast<float>(620);
+            glm::mat4 projectionMatrix = glm::perspective(glm::radians(45.0f), aspect, 0.1f, 100.0f);
             glm::mat4 modelMatrix = glm::mat4(1.0f);
+
+            // then pass them to the shader
+
             glBindVertexArray(object.GetVAO());
             glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, object.GetEBO()); // Bind EBO
             glDrawElements(GL_TRIANGLES, object.GetVertexCount(), GL_UNSIGNED_INT, 0); // Use indices
@@ -210,7 +225,7 @@ namespace Andromeda
                 ),
                 1,
                 GL_FALSE,
-                glm::value_ptr(dummyViewMatrix)
+                glm::value_ptr(viewMatrix)
             );
             glUniformMatrix4fv(
                 glGetUniformLocation(
@@ -219,7 +234,7 @@ namespace Andromeda
                 ),
                 1,
                 GL_FALSE,
-                glm::value_ptr(dummyProjectionMatrix)
+                glm::value_ptr(projectionMatrix)
             );
         }
 
