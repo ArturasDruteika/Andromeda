@@ -47,6 +47,7 @@ target_include_directories(${PROJECT_NAME}
 	    ..//imgui//imgui//backends//
         ..//Space//DataTypes//include//
         ..//Space//Attributes//include//
+        ..//Math//Constants//include//
 )
 
 # Link GLFW and OpenGL to the executable

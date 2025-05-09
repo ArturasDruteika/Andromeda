@@ -4,6 +4,7 @@
 #include "Vertex.hpp"
 #include "Points.hpp"
 #include "Colors.hpp"
+#include "Constants.hpp"
 //#include "LinearAlgebraDataTypes.hpp"
 
 
@@ -19,6 +20,7 @@ namespace Andromeda
 			, m_pScene{ nullptr }
 			, m_pImGuiManager{ nullptr }
 			, m_pCamera{ nullptr }
+            , m_LastMouseDragPos{ -1.0f, -1.0f }
 		{
 		}
 
@@ -166,12 +168,17 @@ namespace Andromeda
 
             m_LastMouseDragPos = { x, y };
 
-            float sensitivity = 0.003f;
-            float yawOffset = dx * sensitivity;
-            float pitchOffset = dy * sensitivity;
+            float sensitivity = 0.3f;
+            float yawOffsetDeg = dx * sensitivity;
+            float pitchOffsetDeg = dy * sensitivity; // Invert Y for natural orbit feel
 
-            m_pCamera->Rotate(yawOffset, pitchOffset);
+            // Convert to radians
+            float yawOffsetRad = yawOffsetDeg * (Math::PI / 180.0f);
+            float pitchOffsetRad = pitchOffsetDeg * (Math::PI / 180.0f);
+
+            m_pCamera->Rotate(yawOffsetRad, pitchOffsetRad);
         }
+
 
         void Application::ApplicationImpl::EventCallback(Window::Event& event)
         {
