@@ -59,7 +59,7 @@ namespace Andromeda
 			m_availableWindowSize = ImGui::GetContentRegionAvail();
 
 			if (ImGui::IsWindowHovered(ImGuiHoveredFlags_AllowWhenBlockedByActiveItem) &&
-				ImGui::IsMouseDown(ImGuiMouseButton_Left))
+				ImGui::IsMouseDragging(ImGuiMouseButton_Left))
 			{
 				ImVec2 localMousePos = ImVec2(
 					ImGui::GetMousePos().x - ImGui::GetCursorScreenPos().x,
@@ -75,17 +75,12 @@ namespace Andromeda
 				if (localMousePos.x != m_prevMousePos.x || localMousePos.y != m_prevMousePos.y)
 				{
 					spdlog::debug("Mouse Dragging in Window: X = {}, Y = {}", localMousePos.x, localMousePos.y);
-					if (m_onMouseMoveCallback)
+					if (m_onMouseDragCallback)
 					{
-						m_onMouseMoveCallback(localMousePos.x, localMousePos.y);
+						m_onMouseDragCallback(localMousePos.x, localMousePos.y);
 					}
 					m_prevMousePos = localMousePos;
 				}
-			}
-			else
-			{
-				// Reset tracking when mouse is released or not hovered
-				m_prevMousePos = ImVec2(-1.0f, -1.0f);
 			}
 
 
@@ -133,7 +128,7 @@ namespace Andromeda
 
 		void ImGuiManager::SetOnMouseMoveCallback(OnMouseMoveCallback callback)
 		{
-			m_onMouseMoveCallback = std::move(callback);
+			m_onMouseDragCallback = std::move(callback);
 		}
 
 		bool ImGuiManager::IsInitialized() const

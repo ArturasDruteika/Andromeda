@@ -49,7 +49,7 @@ namespace Andromeda
 			ImGuiIO* m_io;
 
 			OnResizeCallback m_onResizeCallback;
-			OnMouseMoveCallback m_onMouseMoveCallback;
+			OnMouseMoveCallback m_onMouseDragCallback;
 		};
 	}
 }
