@@ -54,7 +54,6 @@ namespace Andromeda
 
         Math::Mat4 Camera::CameraImpl::GetViewMatrix() const
         {
-            //return MathUtils::FromGLM(glm::lookAt(m_position, m_position + m_forward, m_up));
             return MathUtils::FromGLM(glm::lookAt(m_position, m_position + m_forward, m_up));
         }
 
