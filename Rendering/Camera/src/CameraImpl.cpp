@@ -102,8 +102,16 @@ namespace Andromeda
 
         void Camera::CameraImpl::Rotate(float deltaYawRad, float deltaPitchRad)
         {
-            m_yaw += deltaYawRad;
-            m_pitch = glm::clamp(m_pitch + deltaPitchRad, -glm::half_pi<float>() + 0.01f, glm::half_pi<float>() - 0.01f);
+            m_yaw -= deltaYawRad;
+            m_pitch += deltaPitchRad; // Apply directly
+
+            // Clamp pitch to avoid flipping
+            m_pitch = glm::clamp(
+                m_pitch,
+                -glm::half_pi<float>() + 0.01f,
+                glm::half_pi<float>() - 0.01f
+            );
+
             UpdateDirection();
         }
 
