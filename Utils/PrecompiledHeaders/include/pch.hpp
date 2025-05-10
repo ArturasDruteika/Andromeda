@@ -18,6 +18,7 @@
 #include <filesystem>
 #include <initializer_list>
 #include <array>
+#include <limits>
 
 #include "spdlog/spdlog.h"
 

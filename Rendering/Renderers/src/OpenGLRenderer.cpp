@@ -60,5 +60,10 @@ namespace Andromeda
 		{
 			m_pOpenGLRendererImpl->Resize(width, height);
 		}
+
+		void OpenGLRenderer::SetCamera(Camera* camera)
+		{
+			m_pOpenGLRendererImpl->SetCamera(camera);
+		}
 	}
 }

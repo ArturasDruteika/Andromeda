@@ -4,6 +4,9 @@
 #include "Vertex.hpp"
 #include "Points.hpp"
 #include "Colors.hpp"
+#include "Constants.hpp"
+//#include "LinearAlgebraDataTypes.hpp"
+
 
 namespace Andromeda
 {
@@ -16,6 +19,8 @@ namespace Andromeda
 			, m_pRenderer{ nullptr }
 			, m_pScene{ nullptr }
 			, m_pImGuiManager{ nullptr }
+			, m_pCamera{ nullptr }
+            , m_LastMouseDragPos{ -1.0f, -1.0f }
 		{
 		}
 
@@ -23,7 +28,7 @@ namespace Andromeda
 
         void Application::ApplicationImpl::Init()
         {
-#ifdef _DEBUG
+#if !defined(NDEBUG) || defined(_DEBUG)
             // Enable debug logging
             spdlog::set_level(spdlog::level::debug);
 #endif
@@ -44,36 +49,20 @@ namespace Andromeda
                         m_pWindow->SetCallbackFunctions();
                         m_pImGuiManager = new ImGuiManager(m_pWindow->GetWindow());
                         m_pImGuiManager->Init(m_pWindow->GetWindow());
+                        m_pCamera = new Rendering::Camera();
 
-                        // 🔹 Call the function to set up event callbacks
+                        // Call the function to set up event callbacks
                         SetupEventCallbacks();
 
                         // Create and initialize the Renderer
                         m_pRenderer = new Rendering::OpenGLRenderer();
-                        m_pRenderer->Init(m_pWindow->GetWidth(), m_pWindow->GetHeight());
+                        m_pRenderer->Init(m_pImGuiManager->GetAvailableWindowWidth(), m_pImGuiManager->GetAvailableWindowHeight());
                         m_pScene = new Rendering::OpenGLScene();
 
+						m_pRenderer->SetCamera(m_pCamera);
+
 						SetupImGuiCallbacks();
-                        
-                        std::vector<Rendering::Vertex> vertices = {
-							{ Rendering::Point3D{ -0.5f,  0.5f, 0.0f }, Rendering::Color{ 1.0f, 0.0f, 0.0f, 1.0f} }, // Top Left
-							{ Rendering::Point3D{ 0.5f,  0.5f, 0.0f }, Rendering::Color{ 0.0f, 1.0f, 0.0f, 1.0f} }, // Top Right
-							{ Rendering::Point3D{ 0.5f, -0.5f, 0.0f }, Rendering::Color{ 0.0f, 0.0f, 1.0f, 1.0f} }, // Bottom Right
-							{ Rendering::Point3D{ -0.5f, -0.5f, 0.0f }, Rendering::Color{ 1.0f, 1.0f, 0.0f, 1.0f} } // Bottom Left
-                        };
-
-                        std::vector<unsigned int> indices = {
-                            0, 1, 2, // First triangle
-                            2, 3, 0  // Second triangle
-                        };
-
-                        Rendering::VertexLayout vertexLayout = std::vector{
-                            Rendering::VertexAttributes{ 0, Rendering::Point3D::Size(), GL_FLOAT, GL_FALSE, sizeof(Rendering::Vertex), 0}, // Position
-                            Rendering::VertexAttributes{ 1, Rendering::Color::Size(), GL_FLOAT, GL_FALSE, sizeof(Rendering::Vertex), sizeof(Rendering::Point3D)} // Color
-                        };
-
-                        Rendering::OpenGLRenderableObject* object = new Rendering::OpenGLRenderableObject(vertices, indices, vertexLayout);
-                        m_pScene->AddObject(0, object);
+                       
                         m_isInitialized = true;
                     }
                 }
@@ -112,7 +101,19 @@ namespace Andromeda
 				delete m_pContext;
 				m_pContext = nullptr;
 				m_isInitialized = false;
+                delete m_pCamera;
+				m_pCamera = nullptr;
 			}
+        }
+
+        void Application::ApplicationImpl::AddToScene(int id, Rendering::IRenderableObjectOpenGL* object)
+        {
+			m_pScene->AddObject(id, object);
+        }
+
+        void Application::ApplicationImpl::RemoveFromScene(int id)
+        {
+            m_pScene->RemoveObject(id);
         }
 
         void Application::ApplicationImpl::InitGLFW()
@@ -128,7 +129,7 @@ namespace Andromeda
         {
             if (!m_pWindow) return;
 
-            // 🔹 Pass a function pointer instead of a lambda
+            // Pass a function pointer instead of a lambda
             m_pWindow->SetEventCallback(EventCallback);
         }
 
@@ -142,7 +143,48 @@ namespace Andromeda
                     std::placeholders::_2
                 )
             );
+
+			m_pImGuiManager->SetOnMouseMoveCallback(
+				std::bind(
+					&Application::ApplicationImpl::OnMouseDragged,
+					this,
+					std::placeholders::_1,
+					std::placeholders::_2
+				)
+			);
         }
+
+        void Application::ApplicationImpl::OnMouseDragged(float x, float y)
+        {
+            if (m_LastMouseDragPos[0] < 0.0f || m_LastMouseDragPos[1] < 0.0f)
+            {
+                // First drag event
+                m_LastMouseDragPos = { x, y };
+                return;
+            }
+
+            float dx = x - m_LastMouseDragPos[0];
+            float dy = y - m_LastMouseDragPos[1];
+
+            m_LastMouseDragPos = { x, y };
+
+            // Ignore if the movement is too large (e.g. sudden jump)
+            if (std::abs(dx) > 100.0f || std::abs(dy) > 100.0f)
+            {
+                return;
+            }
+
+            float sensitivity = 0.3f;
+            float yawOffsetDeg = dx * sensitivity;
+            float pitchOffsetDeg = dy * sensitivity; // Invert Y for natural orbit feel
+
+            // Convert to radians
+            float yawOffsetRad = yawOffsetDeg * (Math::PI / 180.0f);
+            float pitchOffsetRad = pitchOffsetDeg * (Math::PI / 180.0f);
+
+            m_pCamera->Rotate(yawOffsetRad, pitchOffsetRad);
+        }
+
 
         void Application::ApplicationImpl::EventCallback(Window::Event& event)
         {

@@ -12,6 +12,7 @@ namespace Andromeda
 	namespace EngineCore
 	{
 		using OnResizeCallback = std::function<void(int, int)>;  // Define a callback type
+		using OnMouseMoveCallback = std::function<void(float, float)>; // X, Y relative to content area
 
 		class ImGuiManager
 		{
@@ -28,20 +29,27 @@ namespace Andromeda
 			void Render(unsigned int texture);
 			void DeInit();
 			void SetOnResizeCallback(OnResizeCallback callback);
+			void SetOnMouseMoveCallback(OnMouseMoveCallback callback);
 
 			bool IsInitialized() const;
-			float GetWidth() const;
-			float GetHeight() const;
+			float GetWindowWidth() const;
+			float GetWindowHeight() const;
+			float GetAvailableWindowWidth() const;
+			float GetAvailableWindowHeight() const;
 
 		private:
 			void InitImGui(GLFWwindow* window);
 
 			bool m_isInitialized;
 			ImVec2 m_windowSize;
+			ImVec2 m_availableWindowSize;
 			ImVec2 m_prevWindowSize; // Store previous size
+			ImVec2 m_prevAvailableWindowSize; // Store previous size
+			ImVec2 m_prevMousePos; // Sentinel to force initial trigger
 			ImGuiIO* m_io;
 
 			OnResizeCallback m_onResizeCallback;
+			OnMouseMoveCallback m_onMouseDragCallback;
 		};
 	}
 }

@@ -1,10 +1,17 @@
 #include "../include/OpenGLRendererImpl.hpp"
+#include "../../Utils/include/MathUtils.hpp"
 #include "FileOperations.hpp"
+#include "Colors.hpp"
 #include "glad/gl.h"
+#include "glm/glm.hpp"
+#include <glm/gtc/type_ptr.hpp>
+#include <glm/gtc/matrix_transform.hpp>
 
 
 namespace Andromeda
 {
+    constexpr Space::Color BACKGROUND_COLOR_DEFAULT{ 0.0f, 0.0f, 0.1f, 1.0f };
+
 	namespace Rendering
 	{
         OpenGLRenderer::OpenGLRendererImpl::OpenGLRendererImpl()
@@ -14,6 +21,8 @@ namespace Andromeda
             , m_FBOTexture{ 0 }
 			, m_width{ 0 }
 			, m_height{ 0 }
+			, m_projectionMatrix{ glm::mat4(1.0f) }
+			, m_pCamera{ nullptr }
         {
         }
 
@@ -32,7 +41,12 @@ namespace Andromeda
             // Initialize OpenGL-specific states
             glEnable(GL_DEPTH_TEST); // Enable depth testing for 3D rendering
 
-            glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
+            glClearColor(
+                BACKGROUND_COLOR_DEFAULT.r, 
+                BACKGROUND_COLOR_DEFAULT.g, 
+                BACKGROUND_COLOR_DEFAULT.b, 
+                BACKGROUND_COLOR_DEFAULT.a
+            );
             CreateShader();
 			m_width = width;
 			m_height = height;
@@ -53,7 +67,7 @@ namespace Andromeda
             m_isInitialized = false;
         }
 
-        void OpenGLRenderer::OpenGLRendererImpl::RenderFrame(const Rendering::OpenGLScene& scene)
+        void OpenGLRenderer::OpenGLRendererImpl::RenderFrame(const OpenGLScene& scene)
         {
             if (!m_isInitialized)
             {
@@ -122,6 +136,16 @@ namespace Andromeda
             return m_height;
         }
 
+        void OpenGLRenderer::OpenGLRendererImpl::SetCamera(Camera* camera)
+        {
+			if (camera == nullptr)
+			{
+				spdlog::error("Camera is nullptr.");
+				return;
+			}
+			m_pCamera = camera;
+        }
+
         void OpenGLRenderer::OpenGLRendererImpl::InitFrameBuffer()
         {
 			GenerateAndBindFrameBuffer();
@@ -172,11 +196,47 @@ namespace Andromeda
             glBindFramebuffer(GL_FRAMEBUFFER, 0);
         }
 
-        void OpenGLRenderer::OpenGLRendererImpl::RenderObject(const Rendering::OpenGLRenderableObject& object)
+        void OpenGLRenderer::OpenGLRendererImpl::RenderObject(const Rendering::IRenderableObjectOpenGL& object)
         {
+            glm::mat4 viewMatrix = MathUtils::ToGLM(m_pCamera->GetViewMatrix());
+            float aspect = static_cast<float>(620) / static_cast<float>(620);
+            glm::mat4 projectionMatrix = glm::perspective(glm::radians(45.0f), aspect, 0.1f, 100.0f);
+            glm::mat4 modelMatrix = glm::mat4(1.0f);
+
+            // then pass them to the shader
+
             glBindVertexArray(object.GetVAO());
             glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, object.GetEBO()); // Bind EBO
             glDrawElements(GL_TRIANGLES, object.GetVertexCount(), GL_UNSIGNED_INT, 0); // Use indices
+
+            glUniformMatrix4fv(
+                glGetUniformLocation(
+                    m_shader->GetProgram(),
+                    "u_modelMatrix"
+                ),
+                1,
+                GL_FALSE,
+                glm::value_ptr(modelMatrix)
+            );
+            glUniformMatrix4fv(
+                glGetUniformLocation(
+                    m_shader->GetProgram(),
+                    "u_viewMatrix"
+                ),
+                1,
+                GL_FALSE,
+                glm::value_ptr(viewMatrix)
+            );
+            glUniformMatrix4fv(
+                glGetUniformLocation(
+                    m_shader->GetProgram(),
+                    "u_projectionMatrix"
+                ),
+                1,
+                GL_FALSE,
+                glm::value_ptr(projectionMatrix)
+            );
         }
+
 	}
 }

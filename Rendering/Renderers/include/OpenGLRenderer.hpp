@@ -18,6 +18,7 @@
 
 
 #include "../../Scene/include/OpenGLScene.hpp"
+#include "../../Camera/include/Camera.hpp"
 
 
 namespace Andromeda
@@ -46,6 +47,8 @@ namespace Andromeda
 			int GetHeight() const;
 
 			void Resize(int width, int height);
+
+			void SetCamera(Camera* camera);
 
 		private:
 			class OpenGLRendererImpl;

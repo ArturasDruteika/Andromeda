@@ -31,25 +31,34 @@ add_library(${PROJECT_NAME}
         Scene/include/OpenGLSceneImpl.hpp
 		Scene/src/OpenGLSceneImpl.cpp
 
-        RenderableObjects/include/OpenGLRenderableObject.hpp
-		RenderableObjects/src/OpenGLRenderableObject.cpp
-        RenderableObjects/include/OpenGLRenderableObjectImpl.hpp
-		RenderableObjects/src/OpenGLRenderableObjectImpl.cpp
+		RenderableObjects/include/IRenderableObjectOpenGL.hpp
+		RenderableObjects/src/IRenderableObjectOpenGL.cpp
+        RenderableObjects/include/SphereObjectOpenGL.hpp
+		RenderableObjects/src/SphereObjectOpenGL.cpp
+        RenderableObjects/include/SphereObjectOpenGLImpl.hpp
+		RenderableObjects/src/SphereObjectOpenGLImpl.cpp
+        RenderableObjects/include/CubeObjectOpenGL.hpp
+		RenderableObjects/src/CubeObjectOpenGL.cpp
+        RenderableObjects/include/CubeObjectOpenGLImpl.hpp
+		RenderableObjects/src/CubeObjectOpenGLImpl.cpp
 
 		Vertices/include/VertexAttributes.hpp
         Vertices/include/VertexLayouts.hpp
 		Vertices/src/VertexLayouts.cpp
-        Vertices/include/VertexLayoutsImpl.hpp
-		Vertices/src/VertexLayoutsImpl.cpp
-        Vertices/include/Vertex.hpp
+		Vertices/include/Vertex.hpp
 
         OpenGLLoader/include/OpenGLLoader.hpp
 		OpenGLLoader/src/OpenGLLoader.cpp
         OpenGLLoader/include/OpenGLLoaderImpl.hpp
 		OpenGLLoader/src/OpenGLLoaderImpl.cpp
+        
+        Utils/include/MathUtils.hpp
+		Utils/src/MathUtils.cpp
 
-        Attributes/include/Points.hpp
-        Attributes/include/Colors.hpp
+        Camera/include/Camera.hpp
+		Camera/src/Camera.cpp
+        Camera/include/CameraImpl.hpp
+		Camera/src/CameraImpl.cpp
 )
 
 target_include_directories(${PROJECT_NAME} 
@@ -58,6 +67,12 @@ target_include_directories(${PROJECT_NAME}
         ..//Utils//FileOperations//include//
         ..//ExternalGraphicsLibs//glad//include//
 	    ..//ExternalGraphicsLibs//glm//
+    PUBLIC
+        ..//Math//LinearAlgebra//include//
+        ..//Math//Constants//include//
+        ..//Space//DataTypes//include//
+        ..//Space//Attributes//include//
+        ..//Space//Vertices//include//
 )
 
 # Link GLFW and OpenGL to the executable
@@ -65,11 +80,13 @@ target_link_libraries(${PROJECT_NAME}
     PRIVATE
         Utils
         ExternalGraphicsLibs
+        Math
 )
 
 add_dependencies(${PROJECT_NAME} 
     Utils
     ExternalGraphicsLibs
+    Math
 )
 
 # Enable precompiled headers
@@ -153,10 +170,16 @@ source_group(
     PREFIX
         "RenderableObjects"
     FILES
-        RenderableObjects/include/OpenGLRenderableObject.hpp
-		RenderableObjects/src/OpenGLRenderableObject.cpp
-        RenderableObjects/include/OpenGLRenderableObjectImpl.hpp
-		RenderableObjects/src/OpenGLRenderableObjectImpl.cpp
+        RenderableObjects/include/SphereObjectOpenGL.hpp
+		RenderableObjects/src/SphereObjectOpenGL.cpp
+        RenderableObjects/include/SphereObjectOpenGLImpl.hpp
+		RenderableObjects/src/SphereObjectOpenGLImpl.cpp
+		RenderableObjects/include/IRenderableObjectOpenGL.hpp
+        RenderableObjects/src/IRenderableObjectOpenGL.cpp
+        RenderableObjects/include/CubeObjectOpenGL.hpp
+		RenderableObjects/src/CubeObjectOpenGL.cpp
+        RenderableObjects/include/CubeObjectOpenGLImpl.hpp
+		RenderableObjects/src/CubeObjectOpenGLImpl.cpp
 )
 
 source_group(
@@ -187,10 +210,22 @@ source_group(
 
 source_group(
     TREE 
-        ${CMAKE_CURRENT_SOURCE_DIR}/Attributes
+        ${CMAKE_CURRENT_SOURCE_DIR}/Utils
     PREFIX
-        "Attributes"
+        "Utils"
     FILES
-        Attributes/include/Points.hpp
-        Attributes/include/Colors.hpp
+        Utils/include/MathUtils.hpp
+		Utils/src/MathUtils.cpp
+)
+
+source_group(
+    TREE 
+        ${CMAKE_CURRENT_SOURCE_DIR}/Camera
+    PREFIX
+        "Camera"
+    FILES
+        Camera/include/Camera.hpp
+		Camera/src/Camera.cpp
+        Camera/include/CameraImpl.hpp
+		Camera/src/CameraImpl.cpp
 )

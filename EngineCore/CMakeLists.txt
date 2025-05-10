@@ -42,8 +42,12 @@ target_include_directories(${PROJECT_NAME}
         ..//Rendering//Scene//include//
         ..//Rendering//OpenGLLoader//include//
         ..//Rendering//Attributes//include//
+        ..//Rendering//Camera//include//
         ..//imgui//imgui//
 	    ..//imgui//imgui//backends//
+        ..//Space//DataTypes//include//
+        ..//Space//Attributes//include//
+        ..//Math//Constants//include//
 )
 
 # Link GLFW and OpenGL to the executable
@@ -57,6 +61,7 @@ target_link_libraries(${PROJECT_NAME}
         Context
         Rendering
         imgui
+        Math
 )
 
 add_dependencies(${PROJECT_NAME} 
@@ -67,6 +72,7 @@ add_dependencies(${PROJECT_NAME}
     Context
     Rendering
     imgui
+    Math
 )
 
 # Enable precompiled headers
