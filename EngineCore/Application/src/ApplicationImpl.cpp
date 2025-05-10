@@ -166,14 +166,13 @@ namespace Andromeda
             float dx = x - m_LastMouseDragPos[0];
             float dy = y - m_LastMouseDragPos[1];
 
+            m_LastMouseDragPos = { x, y };
+
             // Ignore if the movement is too large (e.g. sudden jump)
             if (std::abs(dx) > 100.0f || std::abs(dy) > 100.0f)
             {
-                m_LastMouseDragPos = { x, y };
                 return;
             }
-
-            m_LastMouseDragPos = { x, y };
 
             float sensitivity = 0.3f;
             float yawOffsetDeg = dx * sensitivity;
