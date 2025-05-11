@@ -1,9 +1,10 @@
 #include "../include/CameraImpl.hpp"
 #include "../../Utils/include/MathUtils.hpp"
+#include "Constants.hpp"
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/constants.hpp>
+#include <glm/gtx/quaternion.hpp>
 #include <glm/common.hpp>
-
 
 namespace Andromeda
 {
@@ -15,46 +16,44 @@ namespace Andromeda
         }
 
         Camera::CameraImpl::CameraImpl(const Math::Vec3& position, float yawRadians, float pitchRadians)
-            : m_position{ MathUtils::ToGLM(position) }                      // Camera world position
-            , m_yaw{ yawRadians }                                           // -pi/2 to look toward -Z
-            , m_pitch{ pitchRadians }                                       // 0 to stay level
-            , m_roll{ 0.0f }
+            : m_position{ MathUtils::ToGLM(position) }
+            , m_orientation{ glm::normalize(glm::quat(glm::vec3(0.0f, -glm::half_pi<float>(), 0.0f))) }
             , m_worldUp{ 0.0f, 1.0f, 0.0f }
-            , m_target{ glm::vec3(0.0f) }                                   // Look-at center/orbit point
-            , m_distance{ glm::length(MathUtils::ToGLM(position)) }         // Distance from target to camera
-            , m_forward{ 0.0f, 0.0f, -1.0f }
-            , m_right{ 1.0f, 0.0f, 0.0f }
-            , m_up{ 0.0f, 1.0f, 0.0f }
+            , m_target{ glm::vec3(0.0f) }
+            , m_distance{ glm::length(MathUtils::ToGLM(position)) }
         {
             UpdateDirection();
         }
 
-
         Camera::CameraImpl::~CameraImpl() = default;
-
-        float Camera::CameraImpl::GetYaw() const
-        {
-            return m_yaw;
-        }
-
-        float Camera::CameraImpl::GetPitch() const
-        {
-            return m_pitch;
-        }
-
-        float Camera::CameraImpl::GetRoll() const
-        {
-            return m_roll;
-        }
 
         float Camera::CameraImpl::GetDistance() const
         {
             return m_distance;
         }
 
+        float Camera::CameraImpl::GetYaw() const
+        {
+            return 0.0f;
+        }
+
+        float Camera::CameraImpl::GetPitch() const
+        {
+            return 0.0f;
+        }
+
+        float Camera::CameraImpl::GetRoll() const
+        {
+            return 0.0f;
+        }
+
+        void Camera::CameraImpl::SetRotation(float yawRadians, float pitchRadians)
+        {
+        }
+
         Math::Mat4 Camera::CameraImpl::GetViewMatrix() const
         {
-            return MathUtils::FromGLM(glm::lookAt(m_position, m_position + m_forward, m_up));
+            return MathUtils::FromGLM(m_viewMatrix);
         }
 
         Math::Vec3 Camera::CameraImpl::GetPosition() const
@@ -87,10 +86,9 @@ namespace Andromeda
             m_position = MathUtils::ToGLM(position);
         }
 
-        void Camera::CameraImpl::SetRotation(float yawRadians, float pitchRadians)
+        void Camera::CameraImpl::SetOrientation(const glm::quat& orientation)
         {
-            m_yaw = yawRadians;
-            m_pitch = glm::clamp(pitchRadians, -glm::half_pi<float>() + 0.01f, glm::half_pi<float>() - 0.01f); // avoid gimbal lock
+            m_orientation = glm::normalize(orientation);
             UpdateDirection();
         }
 
@@ -101,31 +99,28 @@ namespace Andromeda
 
         void Camera::CameraImpl::Rotate(float deltaYawRad, float deltaPitchRad)
         {
-            m_yaw -= deltaYawRad;
-            m_pitch += deltaPitchRad; // Apply directly
+            glm::vec3 right = glm::normalize(glm::cross(m_forward, m_worldUp));
+            glm::quat yaw = glm::angleAxis(deltaYawRad, m_worldUp);
+            glm::quat pitch = glm::angleAxis(deltaPitchRad, right);
 
-            // Clamp pitch to avoid flipping
-            m_pitch = glm::clamp(
-                m_pitch,
-                -glm::half_pi<float>() + 0.01f,
-                glm::half_pi<float>() - 0.01f
-            );
-
+			spdlog::info("Yaw: {}, Pitch: {}", deltaYawRad, deltaPitchRad);
+            m_orientation = glm::normalize(yaw * pitch * m_orientation);
             UpdateDirection();
         }
 
         void Camera::CameraImpl::UpdateDirection()
         {
-            // Spherical to Cartesian conversion
-            glm::vec3 offset{};
-            offset.x = m_distance * cos(m_pitch) * sin(m_yaw);
-            offset.y = m_distance * sin(m_pitch);
-            offset.z = m_distance * cos(m_pitch) * cos(m_yaw);
-
+            glm::vec3 offset = m_orientation * glm::vec3(0.0f, 0.0f, -m_distance);
             m_position = m_target + offset;
-            m_forward = glm::normalize(m_target - m_position); // Look at target
+            m_forward = glm::normalize(m_target - m_position);
             m_right = glm::normalize(glm::cross(m_forward, m_worldUp));
             m_up = glm::normalize(glm::cross(m_right, m_forward));
+			CalculateViewMatrix();
         }
-	}
+
+        void Camera::CameraImpl::CalculateViewMatrix()
+        {
+            m_viewMatrix = glm::lookAt(m_position, m_position + m_forward, m_up);
+        }
+    }
 }

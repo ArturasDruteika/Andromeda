@@ -1,15 +1,16 @@
 #ifndef RENDERING__CAMERA_IMPL__HPP
 #define RENDERING__CAMERA_IMPL__HPP
 
+#define GLM_ENABLE_EXPERIMENTAL
 
 #include "Camera.hpp"
 #include "glm/glm.hpp"
-
+#include "glm/gtc/quaternion.hpp"
 
 namespace Andromeda
 {
-	namespace Rendering
-	{
+    namespace Rendering
+    {
         class Camera::CameraImpl
         {
         public:
@@ -17,30 +18,30 @@ namespace Andromeda
             CameraImpl(const Math::Vec3& position, float yawRadians, float pitchRadians);
             ~CameraImpl();
 
-            // Getters
+            // Getters (yaw/pitch/roll now deprecated)
+            float GetDistance() const;
             float GetYaw() const;
             float GetPitch() const;
             float GetRoll() const;
-            float GetDistance() const;
+            void SetRotation(float yawRadians, float pitchRadians);
             Math::Mat4 GetViewMatrix() const;
             Math::Vec3 GetPosition() const;
             Math::Vec3 GetForward() const;
             Math::Vec3 GetRight() const;
             Math::Vec3 GetUp() const;
-			Math::Vec3 GetTarget() const;
+            Math::Vec3 GetTarget() const;
+
             // Setters
             void SetPosition(const Math::Vec3& position);
-            void SetRotation(float yawRadians, float pitchRadians);
+            void SetOrientation(const glm::quat& orientation);
 
             void Move(const Math::Vec3& delta);
             void Rotate(float deltaYawRad, float deltaPitchRad);
 
         private:
             void UpdateDirection();
+			void CalculateViewMatrix();
 
-            float m_yaw;    // In radians
-            float m_pitch;  // In radians
-			float m_roll;   // In radians
             float m_distance;
 
             glm::vec3 m_position;
@@ -48,10 +49,12 @@ namespace Andromeda
             glm::vec3 m_right;
             glm::vec3 m_up;
             glm::vec3 m_worldUp;
-			glm::vec3 m_target;
-        };
-	}
-}
+            glm::vec3 m_target;
+            glm::mat4 m_viewMatrix;
 
+            glm::quat m_orientation;
+        };
+    }
+}
 
 #endif // RENDERING__CAMERA_IMPL__HPP
