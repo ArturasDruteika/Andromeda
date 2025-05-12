@@ -18,11 +18,9 @@ namespace Andromeda
             CameraImpl(const Math::Vec3& position, float yawRadians, float pitchRadians);
             ~CameraImpl();
 
-            // Getters (yaw/pitch/roll now deprecated)
             float GetDistance() const;
             float GetYaw() const;
             float GetPitch() const;
-            float GetRoll() const;
             void SetRotation(float yawRadians, float pitchRadians);
             Math::Mat4 GetViewMatrix() const;
             Math::Vec3 GetPosition() const;
@@ -31,7 +29,6 @@ namespace Andromeda
             Math::Vec3 GetUp() const;
             Math::Vec3 GetTarget() const;
 
-            // Setters
             void SetPosition(const Math::Vec3& position);
             void SetOrientation(const glm::quat& orientation);
 
@@ -40,16 +37,21 @@ namespace Andromeda
 
         private:
             void UpdateDirection();
-			void CalculateViewMatrix();
+            void CalculateViewMatrix();
 
             float m_distance;
+            float m_yaw;
+            float m_pitch;
 
+            glm::vec3 m_xAxis;
+            glm::vec3 m_yAxis;
+            glm::vec3 m_zAxis;
             glm::vec3 m_position;
             glm::vec3 m_forward;
             glm::vec3 m_right;
             glm::vec3 m_up;
             glm::vec3 m_worldUp;
-            glm::vec3 m_target;
+            glm::vec3 m_targetCoords;
             glm::mat4 m_viewMatrix;
 
             glm::quat m_orientation;

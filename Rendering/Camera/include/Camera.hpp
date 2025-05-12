@@ -39,7 +39,6 @@ namespace Andromeda
             // Getters
             float GetYaw() const;
 			float GetPitch() const;
-			float GetRoll() const;
             Math::Mat4 GetViewMatrix() const;
             Math::Vec3 GetPosition() const;
             Math::Vec3 GetForward() const;

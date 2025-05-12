@@ -63,11 +63,6 @@ namespace Andromeda
 			return m_pCameraImpl->GetPitch();
         }
 
-        float Camera::GetRoll() const
-        {
-			return m_pCameraImpl->GetRoll();
-        }
-
         Math::Mat4 Camera::GetViewMatrix() const
         {
 			return m_pCameraImpl->GetViewMatrix();
