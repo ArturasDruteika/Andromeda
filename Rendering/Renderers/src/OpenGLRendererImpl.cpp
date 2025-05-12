@@ -198,8 +198,12 @@ namespace Andromeda
 
         void OpenGLRenderer::OpenGLRendererImpl::RenderObject(const Rendering::IRenderableObjectOpenGL& object)
         {
+            if (m_width == 0 || m_height == 0)
+            {
+                return;
+            }
             glm::mat4 viewMatrix = MathUtils::ToGLM(m_pCamera->GetViewMatrix());
-            float aspect = static_cast<float>(620) / static_cast<float>(620);
+            float aspect = static_cast<float>(m_width) / static_cast<float>(m_height);
             glm::mat4 projectionMatrix = glm::perspective(glm::radians(45.0f), aspect, 0.1f, 100.0f);
             glm::mat4 modelMatrix = glm::mat4(1.0f);
 
