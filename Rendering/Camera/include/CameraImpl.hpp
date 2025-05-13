@@ -35,6 +35,8 @@ namespace Andromeda
             void Move(const Math::Vec3& delta);
             void Rotate(float deltaYawRad, float deltaPitchRad);
 
+            bool IsUpsideDown() const;
+
         private:
             void UpdateDirection();
             void CalculateViewMatrix();
@@ -53,7 +55,6 @@ namespace Andromeda
             glm::vec3 m_worldUp;
             glm::vec3 m_targetCoords;
             glm::mat4 m_viewMatrix;
-
             glm::quat m_orientation;
         };
     }

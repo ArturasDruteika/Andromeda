@@ -74,7 +74,7 @@ namespace Andromeda
 				// Fire callback only if mouse actually moved
 				if (localMousePos.x != m_prevMousePos.x || localMousePos.y != m_prevMousePos.y)
 				{
-					spdlog::debug("Mouse Dragging in Window: X = {}, Y = {}", localMousePos.x, localMousePos.y);
+					//spdlog::debug("Mouse Dragging in Window: X = {}, Y = {}", localMousePos.x, localMousePos.y);
 					if (m_onMouseDragCallback)
 					{
 						m_onMouseDragCallback(localMousePos.x, localMousePos.y);

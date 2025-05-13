@@ -107,5 +107,10 @@ namespace Andromeda
         {
 			m_pCameraImpl->Rotate(deltaYawRad, deltaPitchRad);
         }
+
+        bool Camera::IsUpsideDown() const
+        {
+            return m_pCameraImpl->IsUpsideDown();
+        }
 	}
 }

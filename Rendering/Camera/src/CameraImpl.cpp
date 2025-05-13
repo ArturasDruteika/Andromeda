@@ -120,6 +120,12 @@ namespace Andromeda
             UpdateDirection();
         }
 
+        bool Camera::CameraImpl::IsUpsideDown() const
+        {
+            // Compare camera's up with world up in Z-up system
+            return glm::dot(m_up, glm::vec3(0.0f, 0.0f, 1.0f)) < 0.0f;
+        }
+
         void Camera::CameraImpl::UpdateDirection()
         {
             // In Z-up world, forward is Y — we orbit backward along it

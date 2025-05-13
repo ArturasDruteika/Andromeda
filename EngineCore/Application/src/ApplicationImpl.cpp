@@ -154,6 +154,7 @@ namespace Andromeda
 			);
         }
 
+		// TODO: Conside moving this to a separate or Camera class
         void Application::ApplicationImpl::OnMouseDragged(float x, float y)
         {
             if (m_LastMouseDragPos[0] < 0.0f || m_LastMouseDragPos[1] < 0.0f)
@@ -174,8 +175,16 @@ namespace Andromeda
                 return;
             }
 
+            if (m_pCamera->IsUpsideDown())
+            {
+                dx = -dx; // flip only yaw
+                // leave dy as-is to maintain consistent pitch direction
+            }
+
+			// TODO: Make sensitivity adjustable or configurable
             float sensitivity = 0.3f;
-            float yawOffsetDeg = dx * sensitivity;
+
+            float yawOffsetDeg = -dx * sensitivity;
             float pitchOffsetDeg = dy * sensitivity; // Invert Y for natural orbit feel
 
             // Convert to radians
@@ -185,10 +194,9 @@ namespace Andromeda
             m_pCamera->Rotate(yawOffsetRad, pitchOffsetRad);
         }
 
-
         void Application::ApplicationImpl::EventCallback(Window::Event& event)
         {
-            spdlog::debug("Event received: {}", event.ToString());
+            //spdlog::debug("Event received: {}", event.ToString());
 
             Window::EventDispatcher dispatcher(event);
         }

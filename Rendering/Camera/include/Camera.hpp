@@ -51,6 +51,8 @@ namespace Andromeda
             void Move(const Math::Vec3& delta);
             void Rotate(float deltaYawRad, float deltaPitchRad);
 
+            bool IsUpsideDown() const;
+
         private:
             class CameraImpl;
 			CameraImpl* m_pCameraImpl;
