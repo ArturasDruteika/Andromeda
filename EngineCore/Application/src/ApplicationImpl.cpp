@@ -149,13 +149,14 @@ namespace Andromeda
 					&Application::ApplicationImpl::OnMouseDragged,
 					this,
 					std::placeholders::_1,
-					std::placeholders::_2
+					std::placeholders::_2,
+                    std::placeholders::_3
 				)
 			);
         }
 
 		// TODO: Conside moving this to a separate or Camera class
-        void Application::ApplicationImpl::OnMouseDragged(float x, float y)
+        void Application::ApplicationImpl::OnMouseDragged(float x, float y, bool ctrlHeld)
         {
             if (m_LastMouseDragPos[0] < 0.0f || m_LastMouseDragPos[1] < 0.0f)
             {
@@ -175,23 +176,23 @@ namespace Andromeda
                 return;
             }
 
-            if (m_pCamera->IsUpsideDown())
-            {
-                dx = -dx; // flip only yaw
-                // leave dy as-is to maintain consistent pitch direction
-            }
+   //         if (m_pCamera->IsUpsideDown())
+   //         {
+   //             dx = -dx; // flip only yaw
+   //             // leave dy as-is to maintain consistent pitch direction
+   //         }
 
-			// TODO: Make sensitivity adjustable or configurable
-            float sensitivity = 0.3f;
+			//// TODO: Make sensitivity adjustable or configurable
+   //         float sensitivity = 0.3f;
 
-            float yawOffsetDeg = -dx * sensitivity;
-            float pitchOffsetDeg = dy * sensitivity; // Invert Y for natural orbit feel
+   //         float yawOffsetDeg = -dx * sensitivity;
+   //         float pitchOffsetDeg = dy * sensitivity; // Invert Y for natural orbit feel
 
-            // Convert to radians
-            float yawOffsetRad = yawOffsetDeg * (Math::PI / 180.0f);
-            float pitchOffsetRad = pitchOffsetDeg * (Math::PI / 180.0f);
+   //         // Convert to radians
+   //         float yawOffsetRad = yawOffsetDeg * (Math::PI / 360.0f);
+   //         float pitchOffsetRad = pitchOffsetDeg * (Math::PI / 360.0f);
 
-            m_pCamera->Rotate(yawOffsetRad, pitchOffsetRad);
+   //         m_pCamera->Rotate(yawOffsetRad, pitchOffsetRad);
         }
 
         void Application::ApplicationImpl::EventCallback(Window::Event& event)

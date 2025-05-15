@@ -66,6 +66,8 @@ namespace Andromeda
 					ImGui::GetMousePos().y - ImGui::GetCursorScreenPos().y
 				);
 
+				bool ctrlHeld = ImGui::GetIO().KeyCtrl;
+
 				// Clamp to content area
 				ImVec2 contentSize = ImGui::GetContentRegionAvail();
 				localMousePos.x = std::clamp(localMousePos.x, 0.0f, contentSize.x);
@@ -74,15 +76,13 @@ namespace Andromeda
 				// Fire callback only if mouse actually moved
 				if (localMousePos.x != m_prevMousePos.x || localMousePos.y != m_prevMousePos.y)
 				{
-					//spdlog::debug("Mouse Dragging in Window: X = {}, Y = {}", localMousePos.x, localMousePos.y);
 					if (m_onMouseDragCallback)
 					{
-						m_onMouseDragCallback(localMousePos.x, localMousePos.y);
+						m_onMouseDragCallback(localMousePos.x, localMousePos.y, ctrlHeld);
 					}
 					m_prevMousePos = localMousePos;
 				}
 			}
-
 
 			// Check if the size has changed
 			if (m_availableWindowSize.x != m_prevAvailableWindowSize.x || m_availableWindowSize.y != m_prevAvailableWindowSize.y)
