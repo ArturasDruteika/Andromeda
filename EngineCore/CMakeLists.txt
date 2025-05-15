@@ -23,6 +23,8 @@ add_library(${PROJECT_NAME}
         Application/src/Application.cpp
         Application/include/ApplicationImpl.hpp
         Application/src/ApplicationImpl.cpp
+        Application/include/CameraInputMapper.hpp
+        Application/src/CameraInputMapper.cpp
         RenderingWindows/include/GraphicalModalWindow.hpp
         RenderingWindows/src/GraphicalModalWindow.cpp
         RenderingWindows/include/ImGuiManager.hpp
@@ -48,6 +50,7 @@ target_include_directories(${PROJECT_NAME}
         ..//Space//DataTypes//include//
         ..//Space//Attributes//include//
         ..//Math//Constants//include//
+        ..//Math//Trigonometry//include//
 )
 
 # Link GLFW and OpenGL to the executable
@@ -93,6 +96,8 @@ source_group(
         Application/src/Application.cpp
         Application/include/ApplicationImpl.hpp
         Application/src/ApplicationImpl.cpp
+        Application/include/CameraInputMapper.hpp
+        Application/src/CameraInputMapper.cpp
 )
 
 source_group(
