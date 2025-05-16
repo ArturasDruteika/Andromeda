@@ -9,6 +9,7 @@
 #include "GLFWContext.hpp"
 #include "GLFWWindow.hpp"
 #include "Camera.hpp"
+#include "CameraInputMapper.hpp"
 
 
 namespace Andromeda
@@ -50,6 +51,7 @@ namespace Andromeda
 			Rendering::OpenGLScene* m_pScene;
 			ImGuiManager* m_pImGuiManager;
 			Rendering::Camera* m_pCamera;
+			CameraInputMapper* m_pCameraInputMapper;
 		};
 	}
 }

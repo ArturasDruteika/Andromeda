@@ -52,7 +52,22 @@ namespace Andromeda
             return m_pitch;
         }
 
-        void Camera::CameraImpl::SetRotation(float yawRadians, float pitchRadians)
+        void Camera::CameraImpl::SetYaw(float yaw)
+        {
+            m_yaw = yaw;
+        }
+
+        void Camera::CameraImpl::SetPitch(float pitch)
+        {
+            m_pitch = pitch;
+        }
+
+        void Camera::CameraImpl::SetRoll(float roll)
+        {
+            m_roll = roll;
+        }
+
+        void Camera::CameraImpl::SetRotation(float yaw, float pitch, float roll)
         {
         }
 
@@ -91,58 +106,52 @@ namespace Andromeda
             m_position = MathUtils::ToGLM(position);
         }
 
-        void Camera::CameraImpl::SetOrientation(const glm::quat& orientation)
-        {
-            m_orientation = glm::normalize(orientation);
-            UpdateDirection();
-        }
-
         void Camera::CameraImpl::Move(const Math::Vec3& delta)
         {
             m_position += MathUtils::ToGLM(delta);
         }
 
-        void Camera::CameraImpl::Rotate(float deltaYawRad, float deltaPitchRad)
+        void Camera::CameraImpl::Rotate(float yaw, float pitch, float roll)
         {
-            m_yaw += deltaYawRad;
-            m_pitch += deltaPitchRad;
+            m_yaw += yaw;
+            m_pitch += pitch;
+            m_roll += roll;
 
-            // Get local right axis (X) from current orientation
-            glm::vec3 localRight = m_orientation * m_xAxis; // camera's X
+            // Get camera local axis
+            glm::vec3 right = glm::rotate(m_orientation, glm::vec3(1, 0, 0));
+            glm::vec3 up = glm::rotate(m_orientation, glm::vec3(0, 1, 0));
+            glm::vec3 forward = glm::rotate(m_orientation, glm::vec3(0, 0, -1));
 
-            // Apply yaw around world Z, pitch around local right
-            glm::quat yawQuat = glm::angleAxis(deltaYawRad, m_zAxis); // world Z-up
-            glm::quat pitchQuat = glm::angleAxis(deltaPitchRad, localRight);
-
-            // Combine with current orientation
-            m_orientation = glm::normalize(yawQuat * pitchQuat * m_orientation);
+            if (roll > 0.0f)
+            {
+                // Roll: rotate around forward
+                glm::quat qRoll = glm::angleAxis(roll, forward);
+                m_orientation = glm::normalize(qRoll * m_orientation);
+            }
+            else
+            {
+                // Yaw: rotate around up
+                glm::quat qYaw = glm::angleAxis(-yaw, up);
+                // Pitch: rotate around right
+                glm::quat qPitch = glm::angleAxis(-pitch, right);
+                m_orientation = glm::normalize(qYaw * qPitch * m_orientation);
+            }
 
             UpdateDirection();
-        }
-
-        bool Camera::CameraImpl::IsUpsideDown() const
-        {
-            // Compare camera's up with world up in Z-up system
-            return glm::dot(m_up, glm::vec3(0.0f, 0.0f, 1.0f)) < 0.0f;
         }
 
         void Camera::CameraImpl::UpdateDirection()
         {
             // In Z-up world, forward is Y — we orbit backward along it
-            glm::vec3 offset = m_orientation * m_yAxis * -m_distance;
+            glm::vec3 offset = glm::rotate(m_orientation, glm::vec3(0.0f, 0.0f, m_distance));
             m_position = m_targetCoords + offset;
-
-            // Recalculate axes based on orientation
-            m_forward = glm::normalize(m_targetCoords - m_position);               // camera forward
-            m_right = glm::normalize(m_orientation * m_xAxis); // local X
-            m_up = glm::normalize(m_orientation * m_zAxis); // local Z
-
+            m_up = glm::rotate(m_orientation, glm::vec3(0, 1, 0));
             CalculateViewMatrix();
         }
 
         void Camera::CameraImpl::CalculateViewMatrix()
         {
-            m_viewMatrix = glm::lookAt(m_position, m_position + m_forward, m_up);
+            m_viewMatrix = glm::lookAt(m_position, m_targetCoords, m_up);
         }
 
     }

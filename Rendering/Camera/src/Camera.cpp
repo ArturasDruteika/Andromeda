@@ -63,6 +63,26 @@ namespace Andromeda
 			return m_pCameraImpl->GetPitch();
         }
 
+        void Camera::SetYaw(float yaw)
+        {
+            m_pCameraImpl->SetYaw(yaw);
+        }
+
+        void Camera::SetPitch(float pitch)
+        {
+            m_pCameraImpl->SetPitch(pitch);
+        }
+
+        void Camera::SetRoll(float roll)
+        {
+            m_pCameraImpl->SetRoll(roll);
+        }
+
+        void Camera::SetRotation(float yaw, float pitch, float roll)
+        {
+            m_pCameraImpl->SetRotation(yaw, pitch, roll);
+        }
+
         Math::Mat4 Camera::GetViewMatrix() const
         {
 			return m_pCameraImpl->GetViewMatrix();
@@ -93,24 +113,14 @@ namespace Andromeda
 			m_pCameraImpl->SetPosition(position);
         }
 
-        void Camera::SetRotation(float yawRadians, float pitchRadians)
-        {
-			m_pCameraImpl->SetRotation(yawRadians, pitchRadians);
-        }
-
         void Camera::Move(const Math::Vec3& delta)
         {
 			m_pCameraImpl->Move(delta);
         }
 
-        void Camera::Rotate(float deltaYawRad, float deltaPitchRad)
+        void Camera::Rotate(float yaw, float pitch, float roll)
         {
-			m_pCameraImpl->Rotate(deltaYawRad, deltaPitchRad);
-        }
-
-        bool Camera::IsUpsideDown() const
-        {
-            return m_pCameraImpl->IsUpsideDown();
+			m_pCameraImpl->Rotate(yaw, pitch, roll);
         }
 	}
 }

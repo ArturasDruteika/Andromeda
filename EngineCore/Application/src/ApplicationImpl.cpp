@@ -21,6 +21,7 @@ namespace Andromeda
 			, m_pImGuiManager{ nullptr }
 			, m_pCamera{ nullptr }
             , m_LastMouseDragPos{ -1.0f, -1.0f }
+            , m_pCameraInputMapper{ nullptr }
 		{
 		}
 
@@ -50,6 +51,7 @@ namespace Andromeda
                         m_pImGuiManager = new ImGuiManager(m_pWindow->GetWindow());
                         m_pImGuiManager->Init(m_pWindow->GetWindow());
                         m_pCamera = new Rendering::Camera();
+                        m_pCameraInputMapper = new CameraInputMapper(m_pCamera);
 
                         // Call the function to set up event callbacks
                         SetupEventCallbacks();
@@ -164,35 +166,7 @@ namespace Andromeda
                 m_LastMouseDragPos = { x, y };
                 return;
             }
-
-            float dx = x - m_LastMouseDragPos[0];
-            float dy = y - m_LastMouseDragPos[1];
-
-            m_LastMouseDragPos = { x, y };
-
-            // Ignore if the movement is too large (e.g. sudden jump)
-            if (std::abs(dx) > 100.0f || std::abs(dy) > 100.0f)
-            {
-                return;
-            }
-
-   //         if (m_pCamera->IsUpsideDown())
-   //         {
-   //             dx = -dx; // flip only yaw
-   //             // leave dy as-is to maintain consistent pitch direction
-   //         }
-
-			//// TODO: Make sensitivity adjustable or configurable
-   //         float sensitivity = 0.3f;
-
-   //         float yawOffsetDeg = -dx * sensitivity;
-   //         float pitchOffsetDeg = dy * sensitivity; // Invert Y for natural orbit feel
-
-   //         // Convert to radians
-   //         float yawOffsetRad = yawOffsetDeg * (Math::PI / 360.0f);
-   //         float pitchOffsetRad = pitchOffsetDeg * (Math::PI / 360.0f);
-
-   //         m_pCamera->Rotate(yawOffsetRad, pitchOffsetRad);
+            m_pCameraInputMapper->MouseMovementToRotation(x, y, ctrlHeld);
         }
 
         void Application::ApplicationImpl::EventCallback(Window::Event& event)

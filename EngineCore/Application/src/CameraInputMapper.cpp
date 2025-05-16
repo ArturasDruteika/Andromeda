@@ -8,7 +8,7 @@ namespace Andromeda
 	namespace EngineCore
 	{
         CameraInputMapper::CameraInputMapper(Rendering::Camera* pCamera)
-            : m_cameraRef{ pCamera }
+            : m_pCamera{ pCamera }
             , m_sensitivity{ 0.3f }
             , m_firstInput{ true }
             , m_lastX{ 0.0 }
@@ -60,7 +60,7 @@ namespace Andromeda
 
         void CameraInputMapper::MouseMovementToRotation(double xPos, double yPos, bool ctrlHeld)
         {
-            if (!m_rotating || !m_cameraRef)
+            if (m_pCamera == nullptr)
                 return;
 
             if (m_firstInput)
@@ -76,6 +76,12 @@ namespace Andromeda
             m_lastX = xPos;
             m_lastY = yPos;
 
+            // Ignore if the movement is too large (e.g. sudden jump)
+            if (std::abs(dx) > 100.0f || std::abs(dy) > 100.0f)
+            {
+                return;
+            }
+
             float angleX = dx * m_sensitivity;
             float angleY = dy * m_sensitivity;
 
@@ -84,7 +90,7 @@ namespace Andromeda
                 // Only roll, from horizontal drag
                 float deltaRoll = -angleX; // In radians
                 float deltaRollRad = Math::Trigonometry::Deg2Rad(deltaRoll);
-                m_cameraRef->SetRoll(deltaRoll);
+                m_pCamera->Rotate(angleX, 0.0f, deltaRollRad);
             }
             else
             {
@@ -92,8 +98,7 @@ namespace Andromeda
                 float deltaPitch = -angleY;
                 float deltaYawRad = Math::Trigonometry::Deg2Rad(deltaYaw);
                 float deltaPitchlRad = Math::Trigonometry::Deg2Rad(deltaPitch);
-                m_cameraRef->SetYaw(deltaYawRad);
-                m_cameraRef->SetPitch(deltaPitchlRad);
+                m_pCamera->Rotate(deltaYawRad, deltaPitchlRad, 0.0f);
             }
         }
 	}

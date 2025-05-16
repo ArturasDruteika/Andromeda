@@ -21,7 +21,10 @@ namespace Andromeda
             float GetDistance() const;
             float GetYaw() const;
             float GetPitch() const;
-            void SetRotation(float yawRadians, float pitchRadians);
+            void SetYaw(float yaw);
+            void SetPitch(float pitch);
+            void SetRoll(float roll);
+            void SetRotation(float yaw, float pitch, float roll);
             Math::Mat4 GetViewMatrix() const;
             Math::Vec3 GetPosition() const;
             Math::Vec3 GetForward() const;
@@ -30,12 +33,9 @@ namespace Andromeda
             Math::Vec3 GetTarget() const;
 
             void SetPosition(const Math::Vec3& position);
-            void SetOrientation(const glm::quat& orientation);
 
             void Move(const Math::Vec3& delta);
-            void Rotate(float deltaYawRad, float deltaPitchRad);
-
-            bool IsUpsideDown() const;
+            void Rotate(float deltaYawRad, float deltaPitchRad, float roll);
 
         private:
             void UpdateDirection();
@@ -44,6 +44,7 @@ namespace Andromeda
             float m_distance;
             float m_yaw;
             float m_pitch;
+            float m_roll;
 
             glm::vec3 m_xAxis;
             glm::vec3 m_yAxis;

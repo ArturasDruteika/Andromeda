@@ -35,7 +35,7 @@ namespace Andromeda
             double m_lastY;
             bool m_rotating;
 
-            Rendering::Camera* m_cameraRef;
+            Rendering::Camera* m_pCamera;
         };
 	}
 }
