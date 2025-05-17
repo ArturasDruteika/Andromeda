@@ -92,7 +92,7 @@ namespace Andromeda
 
         void Camera::CameraImpl::UpdateDirection()
         {
-            // In Z-up world, forward is Y — we orbit backward along it
+            // In Z-up world, forward is Y - we orbit backward along it
             glm::vec3 offset = glm::rotate(m_orientation, glm::vec3(0.0f, 0.0f, m_distance));
             m_position = m_targetCoords + offset;
             m_up = glm::rotate(m_orientation, glm::vec3(0, 1, 0));
