@@ -12,7 +12,7 @@ namespace Andromeda
 	namespace EngineCore
 	{
 		using OnResizeCallback = std::function<void(int, int)>;  // Define a callback type
-		using OnMouseMoveCallback = std::function<void(float, float)>; // X, Y relative to content area
+		using OnMouseMoveCallback = std::function<void(float, float, bool)>; // X, Y relative to content area
 
 		class ImGuiManager
 		{

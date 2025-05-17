@@ -31,26 +31,19 @@ namespace Andromeda
             Camera(const Math::Vec3& position, float yawRadians, float pitchRadians);
 			~Camera();
 
-            Camera(const Camera& other);	// Prevent Copy Constructor
-            Camera& operator=(const Camera& other);	// Prevent Copy Assignment
-            Camera(Camera&& other);	// Prevent Move Constructor
-            Camera& operator=(Camera&& other);	// Prevent Move Assignment
+            Camera(const Camera& other);
+            Camera& operator=(const Camera& other);
+            Camera(Camera&& other) noexcept;
+            Camera& operator=(Camera&& other) noexcept;
 
             // Getters
-            float GetYaw() const;
-			float GetPitch() const;
-			float GetRoll() const;
             Math::Mat4 GetViewMatrix() const;
             Math::Vec3 GetPosition() const;
             Math::Vec3 GetForward() const;
             Math::Vec3 GetRight() const;
             Math::Vec3 GetUp() const;
-            // Setters
-            void SetPosition(const Math::Vec3& position);
-            void SetRotation(float yawRadians, float pitchRadians);
 
-            void Move(const Math::Vec3& delta);
-            void Rotate(float deltaYawRad, float deltaPitchRad);
+            void Rotate(float yaw, float pitch, float roll);
 
         private:
             class CameraImpl;

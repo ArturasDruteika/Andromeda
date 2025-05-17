@@ -111,7 +111,7 @@ namespace Andromeda
 			{
 				instance->m_width = width;
 				instance->m_height = height;
-				spdlog::debug("Window resized to {}x{}", width, height);
+				// spdlog::debug("Window resized to {}x{}", width, height);
 
 				if (instance->m_EventCallback)
 				{
@@ -126,7 +126,7 @@ namespace Andromeda
 			GLFWWindow* instance = static_cast<GLFWWindow*>(glfwGetWindowUserPointer(window));
 			if (instance)
 			{
-				spdlog::debug("Window close event triggered.");
+				// spdlog::debug("Window close event triggered.");
 				if (instance->m_EventCallback)
 				{
 					WindowCloseEvent event;
@@ -145,13 +145,13 @@ namespace Andromeda
 					if (action == GLFW_PRESS || action == GLFW_REPEAT)
 					{
 						KeyPressedEvent event(static_cast<KeyCode>(key), action == GLFW_REPEAT);
-						spdlog::debug("Key Pressed: {} (Repeat: {})", key, action == GLFW_REPEAT);
+						// spdlog::debug("Key Pressed: {} (Repeat: {})", key, action == GLFW_REPEAT);
 						instance->m_EventCallback(event);
 					}
 					else if (action == GLFW_RELEASE)
 					{
 						KeyReleasedEvent event(static_cast<KeyCode>(key));
-						spdlog::debug("Key Released: {}", key);
+						// spdlog::debug("Key Released: {}", key);
 						instance->m_EventCallback(event);
 					}
 				}
@@ -168,13 +168,13 @@ namespace Andromeda
 					if (action == GLFW_PRESS)
 					{
 						MouseButtonPressedEvent event(static_cast<MouseCode>(button));
-						spdlog::debug("Mouse Button Pressed: {}", button);
+						// spdlog::debug("Mouse Button Pressed: {}", button);
 						instance->m_EventCallback(event);
 					}
 					else if (action == GLFW_RELEASE)
 					{
 						MouseButtonReleasedEvent event(static_cast<MouseCode>(button));
-						spdlog::debug("Mouse Button Released: {}", button);
+						// spdlog::debug("Mouse Button Released: {}", button);
 						instance->m_EventCallback(event);
 					}
 				}
@@ -189,7 +189,7 @@ namespace Andromeda
 				if (instance->m_EventCallback)
 				{
 					MouseScrolledEvent event(static_cast<float>(xOffset), static_cast<float>(yOffset));
-					spdlog::debug("Mouse Scrolled: X Offset = {}, Y Offset = {}", xOffset, yOffset);
+					// spdlog::debug("Mouse Scrolled: X Offset = {}, Y Offset = {}", xOffset, yOffset);
 					instance->m_EventCallback(event);
 				}
 			}
@@ -203,7 +203,7 @@ namespace Andromeda
 				if (instance->m_EventCallback)
 				{
 					MouseMovedEvent event(static_cast<float>(xPos), static_cast<float>(yPos));
-					spdlog::debug("Mouse Moved: X = {}, Y = {}", xPos, yPos);
+					// spdlog::debug("Mouse Moved: X = {}, Y = {}", xPos, yPos);
 					instance->m_EventCallback(event);
 				}
 			}

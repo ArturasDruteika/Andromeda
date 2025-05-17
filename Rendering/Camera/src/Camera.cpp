@@ -36,13 +36,13 @@ namespace Andromeda
             return *this;
         }
 
-        Camera::Camera(Camera&& other)
+        Camera::Camera(Camera&& other) noexcept
             : m_pCameraImpl(other.m_pCameraImpl)
         {
             other.m_pCameraImpl = nullptr;
         }
 
-        Camera& Camera::operator=(Camera&& other)
+        Camera& Camera::operator=(Camera&& other) noexcept
         {
             if (this != &other)
             {
@@ -51,21 +51,6 @@ namespace Andromeda
                 other.m_pCameraImpl = nullptr;
             }
             return *this;
-        }
-
-        float Camera::GetYaw() const
-        {
-			return m_pCameraImpl->GetYaw();
-        }
-
-        float Camera::GetPitch() const
-        {
-			return m_pCameraImpl->GetPitch();
-        }
-
-        float Camera::GetRoll() const
-        {
-			return m_pCameraImpl->GetRoll();
         }
 
         Math::Mat4 Camera::GetViewMatrix() const
@@ -93,24 +78,9 @@ namespace Andromeda
 			return m_pCameraImpl->GetUp();
         }
 
-        void Camera::SetPosition(const Math::Vec3& position)
+        void Camera::Rotate(float yaw, float pitch, float roll)
         {
-			m_pCameraImpl->SetPosition(position);
-        }
-
-        void Camera::SetRotation(float yawRadians, float pitchRadians)
-        {
-			m_pCameraImpl->SetRotation(yawRadians, pitchRadians);
-        }
-
-        void Camera::Move(const Math::Vec3& delta)
-        {
-			m_pCameraImpl->Move(delta);
-        }
-
-        void Camera::Rotate(float deltaYawRad, float deltaPitchRad)
-        {
-			m_pCameraImpl->Rotate(deltaYawRad, deltaPitchRad);
+			m_pCameraImpl->Rotate(yaw, pitch, roll);
         }
 	}
 }

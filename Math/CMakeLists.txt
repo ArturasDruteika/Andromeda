@@ -15,6 +15,9 @@ add_library(${PROJECT_NAME}
         LinearAlgebra/src/LinearAlgebraOperations.cpp
 
         Constants/include/Constants.hpp
+
+        Trigonometry/include/Trigonometry.hpp
+        Trigonometry/src/Trigonometry.cpp
 )
 
 target_include_directories(${PROJECT_NAME} 
@@ -58,5 +61,15 @@ source_group(
         "Constants" 
     FILES
         Constants/include/Constants.hpp
+)
+
+source_group(
+    TREE 
+        ${CMAKE_CURRENT_SOURCE_DIR}/Trigonometry 
+    PREFIX 
+        "Trigonometry" 
+    FILES
+        Trigonometry/include/Trigonometry.hpp
+        Trigonometry/src/Trigonometry.cpp
 )
 

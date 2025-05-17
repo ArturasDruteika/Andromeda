@@ -1,15 +1,16 @@
 #ifndef RENDERING__CAMERA_IMPL__HPP
 #define RENDERING__CAMERA_IMPL__HPP
 
+#define GLM_ENABLE_EXPERIMENTAL
 
 #include "Camera.hpp"
 #include "glm/glm.hpp"
-
+#include "glm/gtc/quaternion.hpp"
 
 namespace Andromeda
 {
-	namespace Rendering
-	{
+    namespace Rendering
+    {
         class Camera::CameraImpl
         {
         public:
@@ -18,40 +19,35 @@ namespace Andromeda
             ~CameraImpl();
 
             // Getters
-            float GetYaw() const;
-            float GetPitch() const;
-            float GetRoll() const;
             float GetDistance() const;
             Math::Mat4 GetViewMatrix() const;
             Math::Vec3 GetPosition() const;
             Math::Vec3 GetForward() const;
             Math::Vec3 GetRight() const;
             Math::Vec3 GetUp() const;
-			Math::Vec3 GetTarget() const;
-            // Setters
-            void SetPosition(const Math::Vec3& position);
-            void SetRotation(float yawRadians, float pitchRadians);
+            Math::Vec3 GetTarget() const;
 
-            void Move(const Math::Vec3& delta);
-            void Rotate(float deltaYawRad, float deltaPitchRad);
+            void Rotate(float deltaYawRad = 0.0f, float deltaPitchRad = 0.0f, float roll = 0.0f);
 
         private:
             void UpdateDirection();
+            void CalculateViewMatrix();
 
-            float m_yaw;    // In radians
-            float m_pitch;  // In radians
-			float m_roll;   // In radians
             float m_distance;
 
+            glm::vec3 m_xAxis;
+            glm::vec3 m_yAxis;
+            glm::vec3 m_zAxis;
             glm::vec3 m_position;
             glm::vec3 m_forward;
             glm::vec3 m_right;
             glm::vec3 m_up;
             glm::vec3 m_worldUp;
-			glm::vec3 m_target;
+            glm::vec3 m_targetCoords;
+            glm::mat4 m_viewMatrix;
+            glm::quat m_orientation;
         };
-	}
+    }
 }
-
 
 #endif // RENDERING__CAMERA_IMPL__HPP

@@ -9,6 +9,7 @@
 #include "GLFWContext.hpp"
 #include "GLFWWindow.hpp"
 #include "Camera.hpp"
+#include "CameraInputMapper.hpp"
 
 
 namespace Andromeda
@@ -36,7 +37,7 @@ namespace Andromeda
 			void InitGLFW();
 			void SetupEventCallbacks();
 			void SetupImGuiCallbacks();
-			void OnMouseDragged(float x, float y);
+			void OnMouseDragged(float x, float y, bool ctrlHeld);
 
 			//// Static event handlers
 			static void EventCallback(Window::Event& event);
@@ -50,6 +51,7 @@ namespace Andromeda
 			Rendering::OpenGLScene* m_pScene;
 			ImGuiManager* m_pImGuiManager;
 			Rendering::Camera* m_pCamera;
+			CameraInputMapper* m_pCameraInputMapper;
 		};
 	}
 }
