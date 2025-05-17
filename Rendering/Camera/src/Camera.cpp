@@ -36,13 +36,13 @@ namespace Andromeda
             return *this;
         }
 
-        Camera::Camera(Camera&& other)
+        Camera::Camera(Camera&& other) noexcept
             : m_pCameraImpl(other.m_pCameraImpl)
         {
             other.m_pCameraImpl = nullptr;
         }
 
-        Camera& Camera::operator=(Camera&& other)
+        Camera& Camera::operator=(Camera&& other) noexcept
         {
             if (this != &other)
             {
@@ -51,36 +51,6 @@ namespace Andromeda
                 other.m_pCameraImpl = nullptr;
             }
             return *this;
-        }
-
-        float Camera::GetYaw() const
-        {
-			return m_pCameraImpl->GetYaw();
-        }
-
-        float Camera::GetPitch() const
-        {
-			return m_pCameraImpl->GetPitch();
-        }
-
-        void Camera::SetYaw(float yaw)
-        {
-            m_pCameraImpl->SetYaw(yaw);
-        }
-
-        void Camera::SetPitch(float pitch)
-        {
-            m_pCameraImpl->SetPitch(pitch);
-        }
-
-        void Camera::SetRoll(float roll)
-        {
-            m_pCameraImpl->SetRoll(roll);
-        }
-
-        void Camera::SetRotation(float yaw, float pitch, float roll)
-        {
-            m_pCameraImpl->SetRotation(yaw, pitch, roll);
         }
 
         Math::Mat4 Camera::GetViewMatrix() const
@@ -106,16 +76,6 @@ namespace Andromeda
         Math::Vec3 Camera::GetUp() const
         {
 			return m_pCameraImpl->GetUp();
-        }
-
-        void Camera::SetPosition(const Math::Vec3& position)
-        {
-			m_pCameraImpl->SetPosition(position);
-        }
-
-        void Camera::Move(const Math::Vec3& delta)
-        {
-			m_pCameraImpl->Move(delta);
         }
 
         void Camera::Rotate(float yaw, float pitch, float roll)

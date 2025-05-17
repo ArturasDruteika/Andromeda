@@ -33,25 +33,16 @@ namespace Andromeda
 
             Camera(const Camera& other);
             Camera& operator=(const Camera& other);
-            Camera(Camera&& other);
-            Camera& operator=(Camera&& other);
+            Camera(Camera&& other) noexcept;
+            Camera& operator=(Camera&& other) noexcept;
 
             // Getters
-            float GetYaw() const;
-			float GetPitch() const;
-            void SetYaw(float yaw);
-            void SetPitch(float pitch);
-            void SetRoll(float roll);
-            void SetRotation(float yaw, float pitch, float roll);
             Math::Mat4 GetViewMatrix() const;
             Math::Vec3 GetPosition() const;
             Math::Vec3 GetForward() const;
             Math::Vec3 GetRight() const;
             Math::Vec3 GetUp() const;
-            // Setters
-            void SetPosition(const Math::Vec3& position);
 
-            void Move(const Math::Vec3& delta);
             void Rotate(float yaw, float pitch, float roll);
 
         private:

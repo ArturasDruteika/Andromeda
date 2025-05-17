@@ -20,18 +20,11 @@ namespace Andromeda
             , m_worldUp{ 0.0f, 0.0f, 1.0f }
             , m_targetCoords{ glm::vec3(0.0f) }
             , m_distance{ glm::length(MathUtils::ToGLM(position)) }
-            , m_yaw{ yawRadians }
-            , m_pitch{ pitchRadians }
             , m_orientation{ glm::quat(1.0f, 0.0f, 0.0f, 0.0f) }
             , m_xAxis{ 1.0f, 0.0f, 0.0f }
             , m_yAxis{ 0.0f, 1.0f, 0.0f }
             , m_zAxis{ 0.0f, 0.0f, 1.0f }
         {
-            // Build initial orientation
-            glm::quat yawQuat = glm::angleAxis(m_yaw, glm::vec3(0.0f, 0.0f, 1.0f));  // world Z
-            glm::quat pitchQuat = glm::angleAxis(m_pitch, glm::vec3(1.0f, 0.0f, 0.0f)); // local right
-            m_orientation = glm::normalize(yawQuat * pitchQuat);
-
             UpdateDirection();
         }
 
@@ -40,35 +33,6 @@ namespace Andromeda
         float Camera::CameraImpl::GetDistance() const
         {
             return m_distance;
-        }
-
-        float Camera::CameraImpl::GetYaw() const
-        {
-            return m_yaw;
-        }
-
-        float Camera::CameraImpl::GetPitch() const
-        {
-            return m_pitch;
-        }
-
-        void Camera::CameraImpl::SetYaw(float yaw)
-        {
-            m_yaw = yaw;
-        }
-
-        void Camera::CameraImpl::SetPitch(float pitch)
-        {
-            m_pitch = pitch;
-        }
-
-        void Camera::CameraImpl::SetRoll(float roll)
-        {
-            m_roll = roll;
-        }
-
-        void Camera::CameraImpl::SetRotation(float yaw, float pitch, float roll)
-        {
         }
 
         Math::Mat4 Camera::CameraImpl::GetViewMatrix() const
@@ -101,28 +65,14 @@ namespace Andromeda
             return MathUtils::FromGLM(m_targetCoords);
         }
 
-        void Camera::CameraImpl::SetPosition(const Math::Vec3& position)
-        {
-            m_position = MathUtils::ToGLM(position);
-        }
-
-        void Camera::CameraImpl::Move(const Math::Vec3& delta)
-        {
-            m_position += MathUtils::ToGLM(delta);
-        }
-
         void Camera::CameraImpl::Rotate(float yaw, float pitch, float roll)
         {
-            m_yaw += yaw;
-            m_pitch += pitch;
-            m_roll += roll;
-
             // Get camera local axis
             glm::vec3 right = glm::rotate(m_orientation, glm::vec3(1, 0, 0));
             glm::vec3 up = glm::rotate(m_orientation, glm::vec3(0, 1, 0));
             glm::vec3 forward = glm::rotate(m_orientation, glm::vec3(0, 0, -1));
 
-            if (roll > 0.0f)
+            if (roll != 0.0f)
             {
                 // Roll: rotate around forward
                 glm::quat qRoll = glm::angleAxis(roll, forward);

@@ -172,7 +172,6 @@ namespace Andromeda
         void Application::ApplicationImpl::EventCallback(Window::Event& event)
         {
             //spdlog::debug("Event received: {}", event.ToString());
-
             Window::EventDispatcher dispatcher(event);
         }
 	}

@@ -77,7 +77,7 @@ namespace Andromeda
             m_lastY = yPos;
 
             // Ignore if the movement is too large (e.g. sudden jump)
-            if (std::abs(dx) > 100.0f || std::abs(dy) > 100.0f)
+            if (std::abs(dx) > 50.0f || std::abs(dy) > 50.0f)
             {
                 return;
             }
@@ -90,12 +90,12 @@ namespace Andromeda
                 // Only roll, from horizontal drag
                 float deltaRoll = -angleX; // In radians
                 float deltaRollRad = Math::Trigonometry::Deg2Rad(deltaRoll);
-                m_pCamera->Rotate(angleX, 0.0f, deltaRollRad);
+                m_pCamera->Rotate(0.0, 0.0f, deltaRollRad);
             }
             else
             {
-                float deltaYaw = -angleX;
-                float deltaPitch = -angleY;
+                float deltaYaw = angleX;
+                float deltaPitch = angleY;
                 float deltaYawRad = Math::Trigonometry::Deg2Rad(deltaYaw);
                 float deltaPitchlRad = Math::Trigonometry::Deg2Rad(deltaPitch);
                 m_pCamera->Rotate(deltaYawRad, deltaPitchlRad, 0.0f);
