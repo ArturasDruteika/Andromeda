@@ -92,7 +92,11 @@ namespace Andromeda
 
         void Camera::CameraImpl::Zoom(float deltaDistance)
         {
-            m_distance -= deltaDistance;
+            // Use exponential scaling for zoom
+            float zoomFactor = std::exp(deltaDistance * 0.1f); // 0.1f is sensitivity factor
+            m_distance *= zoomFactor;
+            // Optional: Clamp to avoid going through the target or infinitely far
+            m_distance = glm::clamp(m_distance, 0.01f, 1e6f);
             UpdateDirection();
         }
 
