@@ -28,6 +28,7 @@ namespace Andromeda
             Math::Vec3 GetTarget() const;
 
             void Rotate(float deltaYawRad = 0.0f, float deltaPitchRad = 0.0f, float roll = 0.0f);
+            void Zoom(float deltaDistance);
 
         private:
             void UpdateDirection();

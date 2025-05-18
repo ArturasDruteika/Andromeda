@@ -11,8 +11,10 @@ namespace Andromeda
 {
 	namespace EngineCore
 	{
-		using OnResizeCallback = std::function<void(int, int)>;  // Define a callback type
+		using OnResizeCallback = std::function<void(int, int)>;
 		using OnMouseMoveCallback = std::function<void(float, float, bool)>; // X, Y relative to content area
+		using OnMouseScrollCallback = std::function<void(float)>;
+
 
 		class ImGuiManager
 		{
@@ -30,6 +32,7 @@ namespace Andromeda
 			void DeInit();
 			void SetOnResizeCallback(OnResizeCallback callback);
 			void SetOnMouseMoveCallback(OnMouseMoveCallback callback);
+			void SetOnMouseScrollCallback(OnMouseScrollCallback callback);
 
 			bool IsInitialized() const;
 			float GetWindowWidth() const;
@@ -50,6 +53,7 @@ namespace Andromeda
 
 			OnResizeCallback m_onResizeCallback;
 			OnMouseMoveCallback m_onMouseDragCallback;
+			OnMouseScrollCallback m_onMouseScrollCallback;
 		};
 	}
 }

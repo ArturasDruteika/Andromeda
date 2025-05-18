@@ -101,5 +101,16 @@ namespace Andromeda
                 m_pCamera->Rotate(deltaYawRad, deltaPitchlRad, 0.0f);
             }
         }
+
+        void CameraInputMapper::MouseScrollToZoom(float yOffset)
+        {
+            if (m_pCamera == nullptr)
+                return;
+
+            float zoomAmount = yOffset * m_sensitivity;
+
+            // Clamp or process as needed
+            m_pCamera->Zoom(zoomAmount);
+        }
 	}
 }

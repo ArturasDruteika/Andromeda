@@ -44,6 +44,7 @@ namespace Andromeda
             Math::Vec3 GetUp() const;
 
             void Rotate(float yaw, float pitch, float roll);
+            void Zoom(float deltaDistance);
 
         private:
             class CameraImpl;

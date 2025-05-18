@@ -90,6 +90,12 @@ namespace Andromeda
             UpdateDirection();
         }
 
+        void Camera::CameraImpl::Zoom(float deltaDistance)
+        {
+            m_distance -= deltaDistance;
+            UpdateDirection();
+        }
+
         void Camera::CameraImpl::UpdateDirection()
         {
             // In Z-up world, forward is Y - we orbit backward along it

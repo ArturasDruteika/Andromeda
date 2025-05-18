@@ -25,6 +25,7 @@ namespace Andromeda
             void SetSensitivity(float sensitivity);
 
             void MouseMovementToRotation(double xPos, double yPos, bool ctrlHeld);
+			void MouseScrollToZoom(float yOffset);
             void StartRotating();
             void StopRotating();
 

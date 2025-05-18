@@ -38,6 +38,7 @@ namespace Andromeda
 			void SetupEventCallbacks();
 			void SetupImGuiCallbacks();
 			void OnMouseDragged(float x, float y, bool ctrlHeld);
+			void OnMouseScroll(float scrollY);
 
 			//// Static event handlers
 			static void EventCallback(Window::Event& event);

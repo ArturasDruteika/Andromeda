@@ -9,7 +9,7 @@ namespace Andromeda
 {
 	namespace EngineCore
 	{
-		ImVec2 SubtractImVec2(ImVec2 a, ImVec2 b)
+		static ImVec2 SubtractImVec2(ImVec2 a, ImVec2 b)
 		{
 			return ImVec2(a.x - b.x, a.y - b.y);
 		}
@@ -84,6 +84,15 @@ namespace Andromeda
 				}
 			}
 
+			if (ImGui::IsWindowHovered(ImGuiHoveredFlags_AllowWhenBlockedByActiveItem))
+			{
+				float scrollY = ImGui::GetIO().MouseWheel;
+				if (scrollY != 0.0f && m_onMouseScrollCallback)
+				{
+					m_onMouseScrollCallback(scrollY);
+				}
+			}
+
 			// Check if the size has changed
 			if (m_availableWindowSize.x != m_prevAvailableWindowSize.x || m_availableWindowSize.y != m_prevAvailableWindowSize.y)
 			{
@@ -129,6 +138,11 @@ namespace Andromeda
 		void ImGuiManager::SetOnMouseMoveCallback(OnMouseMoveCallback callback)
 		{
 			m_onMouseDragCallback = std::move(callback);
+		}
+
+		void ImGuiManager::SetOnMouseScrollCallback(OnMouseScrollCallback callback)
+		{
+			m_onMouseScrollCallback = std::move(callback);
 		}
 
 		bool ImGuiManager::IsInitialized() const
