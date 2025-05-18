@@ -90,6 +90,16 @@ namespace Andromeda
             UpdateDirection();
         }
 
+        void Camera::CameraImpl::Zoom(float deltaDistance)
+        {
+            // Use exponential scaling for zoom
+            float zoomFactor = std::exp(deltaDistance * 0.1f); // 0.1f is sensitivity factor
+            m_distance *= zoomFactor;
+            // Optional: Clamp to avoid going through the target or infinitely far
+            m_distance = glm::clamp(m_distance, 0.01f, 1e6f);
+            UpdateDirection();
+        }
+
         void Camera::CameraImpl::UpdateDirection()
         {
             // In Z-up world, forward is Y - we orbit backward along it

@@ -82,5 +82,10 @@ namespace Andromeda
         {
 			m_pCameraImpl->Rotate(yaw, pitch, roll);
         }
+
+        void Camera::Zoom(float deltaDistance)
+        {
+            m_pCameraImpl->Zoom(deltaDistance);
+        }
 	}
 }

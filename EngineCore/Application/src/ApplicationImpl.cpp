@@ -131,7 +131,6 @@ namespace Andromeda
         {
             if (!m_pWindow) return;
 
-            // Pass a function pointer instead of a lambda
             m_pWindow->SetEventCallback(EventCallback);
         }
 
@@ -155,6 +154,14 @@ namespace Andromeda
                     std::placeholders::_3
 				)
 			);
+
+			m_pImGuiManager->SetOnMouseScrollCallback(
+				std::bind(
+					&Application::ApplicationImpl::OnMouseScroll,
+					this,
+					std::placeholders::_1
+				)
+			);
         }
 
 		// TODO: Conside moving this to a separate or Camera class
@@ -169,9 +176,13 @@ namespace Andromeda
             m_pCameraInputMapper->MouseMovementToRotation(x, y, ctrlHeld);
         }
 
+        void Application::ApplicationImpl::OnMouseScroll(float scrollY)
+        {
+			m_pCameraInputMapper->MouseScrollToZoom(scrollY);
+        }
+
         void Application::ApplicationImpl::EventCallback(Window::Event& event)
         {
-            //spdlog::debug("Event received: {}", event.ToString());
             Window::EventDispatcher dispatcher(event);
         }
 	}
