@@ -207,38 +207,54 @@ namespace Andromeda
             glm::mat4 projectionMatrix = glm::perspective(glm::radians(45.0f), aspect, 0.1f, 100.0f);
             glm::mat4 modelMatrix = MathUtils::ToGLM(object.GetModelMatrix());
 
-            // then pass them to the shader
+			// Set the uniform variables in the shader
+            SetMatrix4("u_modelMatrix", modelMatrix);
+			SetMatrix4("u_viewMatrix", viewMatrix);
+			SetMatrix4("u_projectionMatrix", projectionMatrix);
+
+            //glUniformMatrix4fv(
+            //    glGetUniformLocation(
+            //        m_shader->GetProgram(),
+            //        "u_modelMatrix"
+            //    ),
+            //    1,
+            //    GL_FALSE,
+            //    glm::value_ptr(modelMatrix)
+            //);
+            //glUniformMatrix4fv(
+            //    glGetUniformLocation(
+            //        m_shader->GetProgram(),
+            //        "u_viewMatrix"
+            //    ),
+            //    1,
+            //    GL_FALSE,
+            //    glm::value_ptr(viewMatrix)
+            //);
+            //glUniformMatrix4fv(
+            //    glGetUniformLocation(
+            //        m_shader->GetProgram(),
+            //        "u_projectionMatrix"
+            //    ),
+            //    1,
+            //    GL_FALSE,
+            //    glm::value_ptr(projectionMatrix)
+            //);
 
             glBindVertexArray(object.GetVAO());
             glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, object.GetEBO()); // Bind EBO
             glDrawElements(GL_TRIANGLES, object.GetVertexCount(), GL_UNSIGNED_INT, 0); // Use indices
+        }
 
+        void OpenGLRenderer::OpenGLRendererImpl::SetMatrix4(const std::string& name, const glm::mat4& matrix)
+        {
             glUniformMatrix4fv(
                 glGetUniformLocation(
                     m_shader->GetProgram(),
-                    "u_modelMatrix"
+					name.c_str()
                 ),
                 1,
                 GL_FALSE,
-                glm::value_ptr(modelMatrix)
-            );
-            glUniformMatrix4fv(
-                glGetUniformLocation(
-                    m_shader->GetProgram(),
-                    "u_viewMatrix"
-                ),
-                1,
-                GL_FALSE,
-                glm::value_ptr(viewMatrix)
-            );
-            glUniformMatrix4fv(
-                glGetUniformLocation(
-                    m_shader->GetProgram(),
-                    "u_projectionMatrix"
-                ),
-                1,
-                GL_FALSE,
-                glm::value_ptr(projectionMatrix)
+                glm::value_ptr(matrix)
             );
         }
 
