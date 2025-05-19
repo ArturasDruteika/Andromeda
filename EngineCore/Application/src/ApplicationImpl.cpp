@@ -105,6 +105,8 @@ namespace Andromeda
 				m_isInitialized = false;
                 delete m_pCamera;
 				m_pCamera = nullptr;
+				delete m_pCameraInputMapper;
+				m_pCameraInputMapper = nullptr;
 			}
         }
 

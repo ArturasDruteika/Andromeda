@@ -23,9 +23,11 @@ namespace Andromeda
 					Rendering::VertexAttributes{ 1, Space::Color::Size(), GL_FLOAT, GL_FALSE, sizeof(Rendering::Vertex), sizeof(Space::Point3D)} // Color
 				} 
 			}
+			, m_modelMatrix{ glm::mat4(1.0f) }
 		{
 			ConstructCube(halfExtent, color);
 			Init(m_vertices, m_indices);
+			UpdateModelMatrix();
 		}
 
 		CubeObjectOpenGL::CubeObjectOpenGLImpl::~CubeObjectOpenGLImpl()
@@ -59,7 +61,7 @@ namespace Andromeda
 
 		Math::Mat4 CubeObjectOpenGL::CubeObjectOpenGLImpl::GetModelMatrix() const
 		{
-			return Math::Mat4();
+			return MathUtils::FromGLM(m_modelMatrix);
 		}
 
 		void CubeObjectOpenGL::CubeObjectOpenGLImpl::SetModelMatrix(const Math::Mat4& modelMatrix)
@@ -78,16 +80,28 @@ namespace Andromeda
 		void CubeObjectOpenGL::CubeObjectOpenGLImpl::SetCenterPosition(const Math::Vec3& position, bool updateModelMatrix)
 		{
 			m_centerPosition = MathUtils::ToGLM(position);
+			if (updateModelMatrix)
+			{
+				UpdateModelMatrix();
+			}
 		}
 
 		void CubeObjectOpenGL::CubeObjectOpenGLImpl::SetRotation(const Math::Vec3& rotation, bool updateModelMatrix)
 		{
 			m_rotation = MathUtils::ToGLM(rotation);
+			if (updateModelMatrix)
+			{
+				UpdateModelMatrix();
+			}
 		}
 
 		void CubeObjectOpenGL::CubeObjectOpenGLImpl::SetScale(const Math::Vec3& scale, bool updateModelMatrix)
 		{
 			m_scale = MathUtils::ToGLM(scale);
+			if (updateModelMatrix)
+			{
+				UpdateModelMatrix();
+			}
 		}
 
 		float CubeObjectOpenGL::CubeObjectOpenGLImpl::GetHalfExtent() const

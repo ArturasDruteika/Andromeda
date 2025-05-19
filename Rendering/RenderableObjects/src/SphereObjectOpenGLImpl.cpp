@@ -23,9 +23,11 @@ namespace Andromeda
 					Rendering::VertexAttributes{ 1, Space::Color::Size(), GL_FLOAT, GL_FALSE, sizeof(Rendering::Vertex), sizeof(Space::Point3D)} // Color
 				} 
 			}
+			, m_modelMatrix{ glm::mat4(1.0f) }
 		{
 			ConstructSphere(radius, 200, 200, color);
 			Init(m_vertices, m_indices);
+			UpdateModelMatrix();
 		}
 
 		SphereObjectOpenGL::SphereObjectOpenGLImpl::~SphereObjectOpenGLImpl()
@@ -59,7 +61,7 @@ namespace Andromeda
 
 		Math::Mat4 SphereObjectOpenGL::SphereObjectOpenGLImpl::GetModelMatrix() const
 		{
-			return Math::Mat4();
+			return MathUtils::FromGLM(m_modelMatrix);
 		}
 
 		void SphereObjectOpenGL::SphereObjectOpenGLImpl::SetRadius(float radius)
@@ -83,16 +85,28 @@ namespace Andromeda
 		void SphereObjectOpenGL::SphereObjectOpenGLImpl::SetCenterPosition(const Math::Vec3& position, bool updateModelMatrix)
 		{
 			m_centerPosition = MathUtils::ToGLM(position);
+			if (updateModelMatrix)
+			{
+				UpdateModelMatrix();
+			}
 		}
 
 		void SphereObjectOpenGL::SphereObjectOpenGLImpl::SetRotation(const Math::Vec3& rotation, bool updateModelMatrix)
 		{
 			m_rotation = MathUtils::ToGLM(rotation);
+			if (updateModelMatrix)
+			{
+				UpdateModelMatrix();
+			}
 		}
 
 		void SphereObjectOpenGL::SphereObjectOpenGLImpl::SetScale(const Math::Vec3& scale, bool updateModelMatrix)
 		{
 			m_scale = MathUtils::ToGLM(scale);
+			if (updateModelMatrix)
+			{
+				UpdateModelMatrix();
+			}
 		}
 
 		float SphereObjectOpenGL::SphereObjectOpenGLImpl::GetRadius() const
