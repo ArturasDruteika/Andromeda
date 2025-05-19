@@ -205,7 +205,7 @@ namespace Andromeda
             glm::mat4 viewMatrix = MathUtils::ToGLM(m_pCamera->GetViewMatrix());
             float aspect = static_cast<float>(m_width) / static_cast<float>(m_height);
             glm::mat4 projectionMatrix = glm::perspective(glm::radians(45.0f), aspect, 0.1f, 100.0f);
-            glm::mat4 modelMatrix = glm::mat4(1.0f);
+            glm::mat4 modelMatrix = MathUtils::ToGLM(object.GetModelMatrix());
 
             // then pass them to the shader
 

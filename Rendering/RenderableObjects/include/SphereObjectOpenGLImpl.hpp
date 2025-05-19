@@ -33,9 +33,9 @@ namespace Andromeda
 			void SetRadius(float radius);
 			void SetModelMatrix(const Math::Mat4& modelMatrix);
 			void UpdateModelMatrix();
-			void SetCenterPosition(const Math::Vec3& position, bool updateModelMatrix = false);
-			void SetRotation(const Math::Vec3& rotation, bool updateModelMatrix = false); // Euler angles in radians (X, Y, Z)
-			void SetScale(const Math::Vec3& scale, bool updateModelMatrix = false);
+			void SetCenterPosition(const Math::Vec3& position, bool updateModelMatrix = true);
+			void SetRotation(const Math::Vec3& rotation, bool updateModelMatrix = true); // Euler angles in radians (X, Y, Z)
+			void SetScale(const Math::Vec3& scale, bool updateModelMatrix = true);
 
 			// Getters
 			float GetRadius() const;
