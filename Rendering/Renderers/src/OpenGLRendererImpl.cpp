@@ -25,19 +25,6 @@ namespace Andromeda
 			, m_pCamera{ nullptr }
 			, m_depthBuffer{ 0 }
         {
-            // Initialize OpenGL-specific states
-            glEnable(GL_DEPTH_TEST);
-            glDepthFunc(GL_LESS);
-            glDepthMask(GL_TRUE);
-            glEnable(GL_BLEND);
-            glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-            GLint depthTest, depthMask = 0, blendEnabled;
-            glGetIntegerv(GL_DEPTH_TEST, &depthTest);
-            glGetBooleanv(GL_DEPTH_WRITEMASK, (GLboolean*)&depthMask);
-            glGetIntegerv(GL_BLEND, &blendEnabled);
-            spdlog::info("DepthTest: {}, DepthWrite: {}, Blend: {}", depthTest, depthMask, blendEnabled);
-
-
             glClearColor(
                 BACKGROUND_COLOR_DEFAULT.r,
                 BACKGROUND_COLOR_DEFAULT.g,
