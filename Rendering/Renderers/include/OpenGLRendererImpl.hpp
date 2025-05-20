@@ -32,6 +32,7 @@ namespace Andromeda
 			bool IsInitialized() const;
 			unsigned int GetFrameBufferObject() const;
 			unsigned int GetFrameBufferObjectTexture() const;
+			unsigned int GetDepthBuffer() const;
 			int GetWidth() const;
 			int GetHeight() const;
 
@@ -43,12 +44,14 @@ namespace Andromeda
 			void GenerateAndBindFrameBuffer();
 			void GenerateAndBindFrameBufferTexture();
 			void ConfigureFrameBufferTexture();
-			void UnbindFrameBuffer();
+			void UnbindFrameBuffer() const;
 			void RenderObject(const IRenderableObjectOpenGL& object);
 			void SetMatrix4(const std::string& name, const glm::mat4& matrix);
 
 			bool m_isInitialized;
-			unsigned int m_FBO, m_FBOTexture;
+			unsigned int m_FBO;
+			unsigned int m_FBOTexture;
+			unsigned int m_depthBuffer;
 			int m_width;
 			int m_height;
 			OpenGLShader* m_shader;

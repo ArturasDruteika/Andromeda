@@ -23,7 +23,28 @@ namespace Andromeda
 			, m_height{ 0 }
 			, m_projectionMatrix{ glm::mat4(1.0f) }
 			, m_pCamera{ nullptr }
+			, m_depthBuffer{ 0 }
         {
+            // Initialize OpenGL-specific states
+            glEnable(GL_DEPTH_TEST);
+            glDepthFunc(GL_LESS);
+            glDepthMask(GL_TRUE);
+            glEnable(GL_BLEND);
+            glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+            GLint depthTest, depthMask = 0, blendEnabled;
+            glGetIntegerv(GL_DEPTH_TEST, &depthTest);
+            glGetBooleanv(GL_DEPTH_WRITEMASK, (GLboolean*)&depthMask);
+            glGetIntegerv(GL_BLEND, &blendEnabled);
+            spdlog::info("DepthTest: {}, DepthWrite: {}, Blend: {}", depthTest, depthMask, blendEnabled);
+
+
+            glClearColor(
+                BACKGROUND_COLOR_DEFAULT.r,
+                BACKGROUND_COLOR_DEFAULT.g,
+                BACKGROUND_COLOR_DEFAULT.b,
+                BACKGROUND_COLOR_DEFAULT.a
+            );
+            CreateShader();
         }
 
         OpenGLRenderer::OpenGLRendererImpl::~OpenGLRendererImpl()
@@ -38,16 +59,11 @@ namespace Andromeda
 
         void OpenGLRenderer::OpenGLRendererImpl::Init(int width, int height)
         {
-            // Initialize OpenGL-specific states
-            glEnable(GL_DEPTH_TEST); // Enable depth testing for 3D rendering
+            if (width <= 0 or height <= 0)
+            {
+                return;
+            }
 
-            glClearColor(
-                BACKGROUND_COLOR_DEFAULT.r, 
-                BACKGROUND_COLOR_DEFAULT.g, 
-                BACKGROUND_COLOR_DEFAULT.b, 
-                BACKGROUND_COLOR_DEFAULT.a
-            );
-            CreateShader();
 			m_width = width;
 			m_height = height;
             InitFrameBuffer();
@@ -64,6 +80,7 @@ namespace Andromeda
             }
             glDeleteFramebuffers(1, &m_FBO);
             glDeleteTextures(1, &m_FBOTexture);
+            glDeleteRenderbuffers(1, &m_depthBuffer);
             m_isInitialized = false;
         }
 
@@ -75,39 +92,47 @@ namespace Andromeda
                 return;
             }
 
-            // Bind the framebuffer for rendering
+            // Bind the framebuffer
             glBindFramebuffer(GL_FRAMEBUFFER, m_FBO);
             glViewport(0, 0, m_width, m_height);
-            glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); // Clear the framebuffer
+
+            // Clear both color and depth
+            glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+            // Make sure depth test/write are enabled
+            glEnable(GL_DEPTH_TEST);
+            glDepthFunc(GL_LESS);
+            glDepthMask(GL_TRUE);
+
+            // Disable blending for opaque objects
+            glDisable(GL_BLEND);
 
             // Use the shader program
             glUseProgram(m_shader->GetProgram());
 
-            // Render all objects in the scene
+            // Render all scene objects
             for (const auto& [id, object] : scene.GetObjects())
             {
                 RenderObject(*object);
             }
 
-            // Unbind the framebuffer
             glBindFramebuffer(GL_FRAMEBUFFER, 0);
         }
+
 
         void OpenGLRenderer::OpenGLRendererImpl::Resize(int width, int height)
         {
             if (width == m_width && height == m_height)
-            {
-                return; // No need to resize if dimensions are the same
-            }
+                return;
 
             m_width = width;
             m_height = height;
 
-            glViewport(0, 0, width, height); // Update OpenGL viewport
-
-            // Recreate the framebuffer to match new size
+            glViewport(0, 0, width, height);
             glDeleteFramebuffers(1, &m_FBO);
             glDeleteTextures(1, &m_FBOTexture);
+            glDeleteRenderbuffers(1, &m_depthBuffer); // Critical missing line
+
             InitFrameBuffer();
         }
 
@@ -124,6 +149,11 @@ namespace Andromeda
         unsigned int OpenGLRenderer::OpenGLRendererImpl::GetFrameBufferObjectTexture() const
         {
             return m_FBOTexture;
+        }
+
+        unsigned int OpenGLRenderer::OpenGLRendererImpl::GetDepthBuffer() const
+        {
+            return m_depthBuffer;
         }
 
         int OpenGLRenderer::OpenGLRendererImpl::GetWidth() const
@@ -148,10 +178,16 @@ namespace Andromeda
 
         void OpenGLRenderer::OpenGLRendererImpl::InitFrameBuffer()
         {
+            if (m_width <= 0 or m_height <= 0)
+            {
+                spdlog::warn("Cannot initialize framebuffer with dimensions: {}x{}", m_width, m_height);
+                return;
+            }
 			GenerateAndBindFrameBuffer();
 			GenerateAndBindFrameBufferTexture();
 			ConfigureFrameBufferTexture();
 			UnbindFrameBuffer();
+            m_isInitialized = true;
         }
 
         void OpenGLRenderer::OpenGLRendererImpl::CreateShader()
@@ -178,19 +214,42 @@ namespace Andromeda
 
         void OpenGLRenderer::OpenGLRendererImpl::ConfigureFrameBufferTexture()
         {
+            // 1. Generate FBO
+            glGenFramebuffers(1, &m_FBO);
+            glBindFramebuffer(GL_FRAMEBUFFER, m_FBO);
+
+            // 2. Create color texture
+            glGenTextures(1, &m_FBOTexture);
+            glBindTexture(GL_TEXTURE_2D, m_FBOTexture);
             glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, m_width, m_height, 0, GL_RGBA, GL_UNSIGNED_BYTE, nullptr);
             glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
             glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
             glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, m_FBOTexture, 0);
 
-            // Check if the framebuffer is complete
-            if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE)
+            // 3. Create depth renderbuffer
+            glGenRenderbuffers(1, &m_depthBuffer);
+            glBindRenderbuffer(GL_RENDERBUFFER, m_depthBuffer);
+            glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH_COMPONENT24, m_width, m_height);
+            glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_RENDERBUFFER, m_depthBuffer);
+
+            // 4. Set draw buffer
+            GLenum drawBuffers[1] = { GL_COLOR_ATTACHMENT0 };
+            glDrawBuffers(1, drawBuffers);
+
+            // 5. Check FBO status
+            GLenum status = glCheckFramebufferStatus(GL_FRAMEBUFFER);
+            if (status != GL_FRAMEBUFFER_COMPLETE)
             {
-                spdlog::error("Framebuffer is not complete!");
+                spdlog::error("Framebuffer incomplete! Status: 0x{:X}", status); // hex
+            }
+            else
+            {
+                spdlog::info("Framebuffer is complete.");
             }
         }
 
-        void OpenGLRenderer::OpenGLRendererImpl::UnbindFrameBuffer()
+
+        void OpenGLRenderer::OpenGLRendererImpl::UnbindFrameBuffer() const
         {
             // Unbind the framebuffer
             glBindFramebuffer(GL_FRAMEBUFFER, 0);
@@ -212,34 +271,6 @@ namespace Andromeda
 			SetMatrix4("u_viewMatrix", viewMatrix);
 			SetMatrix4("u_projectionMatrix", projectionMatrix);
 
-            //glUniformMatrix4fv(
-            //    glGetUniformLocation(
-            //        m_shader->GetProgram(),
-            //        "u_modelMatrix"
-            //    ),
-            //    1,
-            //    GL_FALSE,
-            //    glm::value_ptr(modelMatrix)
-            //);
-            //glUniformMatrix4fv(
-            //    glGetUniformLocation(
-            //        m_shader->GetProgram(),
-            //        "u_viewMatrix"
-            //    ),
-            //    1,
-            //    GL_FALSE,
-            //    glm::value_ptr(viewMatrix)
-            //);
-            //glUniformMatrix4fv(
-            //    glGetUniformLocation(
-            //        m_shader->GetProgram(),
-            //        "u_projectionMatrix"
-            //    ),
-            //    1,
-            //    GL_FALSE,
-            //    glm::value_ptr(projectionMatrix)
-            //);
-
             glBindVertexArray(object.GetVAO());
             glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, object.GetEBO()); // Bind EBO
             glDrawElements(GL_TRIANGLES, object.GetVertexCount(), GL_UNSIGNED_INT, 0); // Use indices
@@ -257,6 +288,5 @@ namespace Andromeda
                 glm::value_ptr(matrix)
             );
         }
-
 	}
 }
