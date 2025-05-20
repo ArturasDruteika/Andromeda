@@ -10,10 +10,11 @@
 
 namespace Andromeda
 {
-    constexpr Space::Color BACKGROUND_COLOR_DEFAULT{ 0.0f, 0.0f, 0.1f, 1.0f };
-
 	namespace Rendering
 	{
+        constexpr Space::Color BACKGROUND_COLOR_DEFAULT{ 0.0f, 0.0f, 0.1f, 1.0f };
+
+
         OpenGLRenderer::OpenGLRendererImpl::OpenGLRendererImpl()
             : m_isInitialized{ false }
             , m_shader{ nullptr }
@@ -48,6 +49,7 @@ namespace Andromeda
         {
             if (width <= 0 or height <= 0)
             {
+				spdlog::error("Invalid dimensions for initialization: {}x{}", width, height);
                 return;
             }
 
@@ -106,11 +108,18 @@ namespace Andromeda
             glBindFramebuffer(GL_FRAMEBUFFER, 0);
         }
 
-
         void OpenGLRenderer::OpenGLRendererImpl::Resize(int width, int height)
         {
-            if (width == m_width && height == m_height)
-                return;
+			if (width <= 0 || height <= 0)
+			{
+				spdlog::error("Invalid dimensions for resizing: {}x{}", width, height);
+				return;
+			}
+            else if (width == m_width && height == m_height)
+            {
+				spdlog::warn("Resize called with same dimensions: {}x{}", width, height);
+				return;
+            }
 
             m_width = width;
             m_height = height;
@@ -229,12 +238,7 @@ namespace Andromeda
             {
                 spdlog::error("Framebuffer incomplete! Status: 0x{:X}", status); // hex
             }
-            else
-            {
-                spdlog::info("Framebuffer is complete.");
-            }
         }
-
 
         void OpenGLRenderer::OpenGLRendererImpl::UnbindFrameBuffer() const
         {
@@ -246,8 +250,10 @@ namespace Andromeda
         {
             if (m_width == 0 || m_height == 0)
             {
+				spdlog::error("Framebuffer dimensions are zero. Cannot render object.");
                 return;
             }
+
             glm::mat4 viewMatrix = MathUtils::ToGLM(m_pCamera->GetViewMatrix());
             float aspect = static_cast<float>(m_width) / static_cast<float>(m_height);
             glm::mat4 projectionMatrix = glm::perspective(glm::radians(45.0f), aspect, 0.1f, 100.0f);
