@@ -12,17 +12,5 @@ namespace Andromeda
 		GraphicalModalWindow::~GraphicalModalWindow()
 		{
 		}
-
-		void GraphicalModalWindow::Init()
-		{
-		}
-
-		void GraphicalModalWindow::Render()
-		{
-		}
-
-		void GraphicalModalWindow::DeInit()
-		{
-		}
 	}
 }
