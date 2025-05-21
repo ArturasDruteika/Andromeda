@@ -33,7 +33,7 @@ namespace Andromeda
 			Sphere(const Math::Vec3& centerPosition, float radius, const Color& color);
 			~Sphere();
 
-			/// Overrides from ObjectBase
+			// Overrides from ObjectBase
 			// Getters
 			ObjectType GetType() const override;
 			Math::Vec3 GetCenterPosition() const override;

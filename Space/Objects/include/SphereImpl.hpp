@@ -15,7 +15,6 @@ namespace Andromeda
 			SphereImpl(const Math::Vec3& centerPosition, float radius, const Color& color);
 			~SphereImpl();
 
-			/// Overrides from ObjectBase
 			// Getters
 			ObjectType GetType() const;
 			Math::Vec3 GetCenterPosition() const;

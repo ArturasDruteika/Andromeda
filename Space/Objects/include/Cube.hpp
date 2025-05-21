@@ -33,7 +33,7 @@ namespace Andromeda
 			Cube(const Math::Vec3& centerPosition, float halfExtent, const Color& color);
 			~Cube();
 
-			/// Overrides from ObjectBase
+			// Overrides from ObjectBase
 			// Getters
 			ObjectType GetType() const override;
 			Math::Vec3 GetCenterPosition() const override;
