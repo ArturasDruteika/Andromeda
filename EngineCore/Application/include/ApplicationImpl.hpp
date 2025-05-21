@@ -2,7 +2,8 @@
 #define ENGINECORE__APPLICATION_IMPL__HPP
 
 #include "../include/Application.hpp"
-#include "../../RenderingWindows/include/ImGuiManager.hpp"
+#include "../../RenderingWindows/include/RendererWindowOpenGL.hpp"
+#include "../../RenderingWindows/include/ImGuiDockspaceManager.hpp"
 #include "OpenGLRenderer.hpp"
 #include "OpenGLScene.hpp"
 #include "OpenGLLoader.hpp"
@@ -39,10 +40,10 @@ namespace Andromeda
 			void SetupImGuiCallbacks();
 			void OnMouseDragged(float x, float y, bool ctrlHeld);
 			void OnMouseScroll(float scrollY);
-
-			//// Static event handlers
+			// Static event handlers
 			static void EventCallback(Window::Event& event);
 
+		private:
 			bool m_isInitialized;
 			Math::Vec2 m_LastMouseDragPos;
 			Rendering::OpenGLLoader m_openGLLoader;
@@ -50,9 +51,10 @@ namespace Andromeda
 			Window::GLFWWindow* m_pWindow;
 			Rendering::OpenGLRenderer* m_pRenderer;
 			Rendering::OpenGLScene* m_pScene;
-			ImGuiManager* m_pImGuiManager;
+			RendererWindowOpenGL* m_pRendererWindowOpenGL;
 			Rendering::Camera* m_pCamera;
 			CameraInputMapper* m_pCameraInputMapper;
+			ImGuiDockspaceManager* m_pImGuiDockspaceManager;
 		};
 	}
 }
