@@ -27,8 +27,10 @@ add_library(${PROJECT_NAME}
         Application/src/CameraInputMapper.cpp
         RenderingWindows/include/GraphicalModalWindow.hpp
         RenderingWindows/src/GraphicalModalWindow.cpp
-        RenderingWindows/include/ImGuiManager.hpp
-        RenderingWindows/src/ImGuiManager.cpp
+        RenderingWindows/include/RendererWindowOpenGL.hpp
+        RenderingWindows/src/RendererWindowOpenGL.cpp
+        RenderingWindows/include/ImGuiDockspaceManager.hpp
+        RenderingWindows/src/ImGuiDockspaceManager.cpp
 )
 
 target_include_directories(${PROJECT_NAME} 
@@ -108,6 +110,8 @@ source_group(
     FILES
         RenderingWindows/include/GraphicalModalWindow.hpp
         RenderingWindows/src/GraphicalModalWindow.cpp
-        RenderingWindows/include/ImGuiManager.hpp
-        RenderingWindows/src/ImGuiManager.cpp
+        RenderingWindows/include/RendererWindowOpenGL.hpp
+        RenderingWindows/src/RendererWindowOpenGL.cpp
+        RenderingWindows/include/ImGuiDockspaceManager.hpp
+        RenderingWindows/src/ImGuiDockspaceManager.cpp
 )

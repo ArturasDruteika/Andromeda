@@ -15,7 +15,6 @@ namespace Andromeda
 			CubeImpl(const Math::Vec3& centerPosition, float halfExtent, const Color& color);
 			~CubeImpl();
 
-			/// Overrides from ObjectBase
 			// Getters
 			ObjectType GetType() const;
 			Math::Vec3 GetCenterPosition() const;

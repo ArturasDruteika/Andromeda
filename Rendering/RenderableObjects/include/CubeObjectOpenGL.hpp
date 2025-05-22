@@ -37,7 +37,7 @@ namespace Andromeda
 			CubeObjectOpenGL(CubeObjectOpenGL&& other) noexcept = delete;	// Prevent Move Constructor
 			CubeObjectOpenGL& operator=(CubeObjectOpenGL&& other) noexcept = delete;	// Prevent Move Assignment
 
-			/// Overrides from IRenderableObjectOpenGL
+			// Overrides from IRenderableObjectOpenGL
 			// Getters
 			unsigned int GetVBO() const override;
 			unsigned int GetVAO() const override;

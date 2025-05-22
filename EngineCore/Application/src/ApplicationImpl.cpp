@@ -5,7 +5,6 @@
 #include "Points.hpp"
 #include "Colors.hpp"
 #include "Constants.hpp"
-//#include "LinearAlgebraDataTypes.hpp"
 
 
 namespace Andromeda
@@ -18,10 +17,11 @@ namespace Andromeda
 			, m_pWindow{ nullptr }
 			, m_pRenderer{ nullptr }
 			, m_pScene{ nullptr }
-			, m_pImGuiManager{ nullptr }
+			, m_pRendererWindowOpenGL{ nullptr }
 			, m_pCamera{ nullptr }
             , m_LastMouseDragPos{ -1.0f, -1.0f }
             , m_pCameraInputMapper{ nullptr }
+			, m_pImGuiDockspaceManager{ nullptr }
 		{
 		}
 
@@ -48,8 +48,9 @@ namespace Andromeda
                         m_pContext->MakeContextCurrent(m_pWindow->GetWindow());
                         m_openGLLoader.LoadGlad(reinterpret_cast<const char*>(glfwGetProcAddress));
                         m_pWindow->SetCallbackFunctions();
-                        m_pImGuiManager = new ImGuiManager(m_pWindow->GetWindow());
-                        m_pImGuiManager->Init(m_pWindow->GetWindow());
+						m_pImGuiDockspaceManager = new ImGuiDockspaceManager(m_pWindow->GetWindow());
+                        m_pRendererWindowOpenGL = new RendererWindowOpenGL(0, "Renderer Window OpenGL");
+						m_pImGuiDockspaceManager->AddGraphicalModalWindow(m_pRendererWindowOpenGL->GetID(), m_pRendererWindowOpenGL);
                         m_pCamera = new Rendering::Camera();
                         m_pCameraInputMapper = new CameraInputMapper(m_pCamera);
 
@@ -82,7 +83,8 @@ namespace Andromeda
 			{
                 glfwPollEvents();
                 m_pRenderer->RenderFrame(*m_pScene);
-                m_pImGuiManager->Render(m_pRenderer->GetFrameBufferObjectTexture());
+                m_pRendererWindowOpenGL->SetTextureID(m_pRenderer->GetFrameBufferObjectTexture());
+                m_pImGuiDockspaceManager->Render();
 				glfwSwapBuffers(m_pWindow->GetWindow());
 			}
 		}
@@ -91,9 +93,6 @@ namespace Andromeda
         {
 			if (m_isInitialized)
 			{
-                m_pImGuiManager->DeInit();
-                delete m_pImGuiManager;
-                m_pImGuiManager = nullptr;
 				m_pRenderer->DeInit();
 				delete m_pRenderer;
 				m_pRenderer = nullptr;
@@ -107,6 +106,8 @@ namespace Andromeda
 				m_pCamera = nullptr;
 				delete m_pCameraInputMapper;
 				m_pCameraInputMapper = nullptr;
+				delete m_pImGuiDockspaceManager;
+				m_pImGuiDockspaceManager = nullptr;
 			}
         }
 
@@ -138,7 +139,7 @@ namespace Andromeda
 
         void Application::ApplicationImpl::SetupImGuiCallbacks()
         {
-            m_pImGuiManager->SetOnResizeCallback(
+            m_pRendererWindowOpenGL->SetOnResizeCallback(
                 std::bind(
                     &Rendering::OpenGLRenderer::Resize, 
                     m_pRenderer, 
@@ -147,7 +148,7 @@ namespace Andromeda
                 )
             );
 
-			m_pImGuiManager->SetOnMouseMoveCallback(
+			m_pRendererWindowOpenGL->SetOnMouseMoveCallback(
 				std::bind(
 					&Application::ApplicationImpl::OnMouseDragged,
 					this,
@@ -157,7 +158,7 @@ namespace Andromeda
 				)
 			);
 
-			m_pImGuiManager->SetOnMouseScrollCallback(
+			m_pRendererWindowOpenGL->SetOnMouseScrollCallback(
 				std::bind(
 					&Application::ApplicationImpl::OnMouseScroll,
 					this,

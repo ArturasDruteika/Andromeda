@@ -37,7 +37,7 @@ namespace Andromeda
 			SphereObjectOpenGL(SphereObjectOpenGL&& other) noexcept = delete;	// Prevent Move Constructor
 			SphereObjectOpenGL& operator=(SphereObjectOpenGL&& other) noexcept = delete;	// Prevent Move Assignment
 
-			/// Overrides from IRenderableObjectOpenGL
+			// Overrides from IRenderableObjectOpenGL
 			// Getters
 			unsigned int GetVBO() const override;
 			unsigned int GetVAO() const override;

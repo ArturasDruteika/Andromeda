@@ -2,6 +2,9 @@
 #define ENGINECORE__GRAPHICAL_MODAL_WINDOW__HPP
 
 
+#include "pch.hpp"
+
+
 namespace Andromeda
 {
 	namespace EngineCore
@@ -12,18 +15,19 @@ namespace Andromeda
 			GraphicalModalWindow();
 			~GraphicalModalWindow();
 
-			GraphicalModalWindow(const GraphicalModalWindow& other) = delete;	// Prevent Copy Constructor
-			GraphicalModalWindow& operator=(const GraphicalModalWindow& other) = delete;	// Prevent Copy assignment
-			GraphicalModalWindow(GraphicalModalWindow&& other) noexcept = delete;	// Prevent Move constructor
-			GraphicalModalWindow& operator=(const GraphicalModalWindow&& other) noexcept = delete;	//Prevent Move assignment
-
-			void Init();
-			void Render();
-			void DeInit();
-
-		private:
-			class GraphicalModalWindowImpl;
-			GraphicalModalWindowImpl* m_pGraphicalModalWindowImpl;
+			// Getters
+			virtual int GetID() = 0;
+			virtual float GetWindowWidth() = 0;
+			virtual float GetWindowHeight() = 0;
+			virtual float GetAvailableWindowWidth() = 0;
+			virtual float GetAvailableWindowHeight() = 0;
+			virtual std::string GetWindowName() = 0;
+			// Setters
+			virtual void SetWindowName(const std::string& name) = 0;
+			// Functionality
+			virtual void Init() = 0;
+			virtual void Render() = 0;
+			virtual void DeInit() = 0;
 		};
 	}
 }
