@@ -2,7 +2,7 @@
 #define ENGINECORE__APPLICATION_IMPL__HPP
 
 #include "../include/Application.hpp"
-#include "../../RenderingWindows/include/RendererWindowOpenGL.hpp"
+//#include "../../RenderingWindows/include/RendererWindowOpenGL.hpp"
 #include "../../RenderingWindows/include/ImGuiDockspaceManager.hpp"
 #include "OpenGLRenderer.hpp"
 #include "OpenGLScene.hpp"

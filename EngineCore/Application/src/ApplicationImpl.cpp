@@ -5,7 +5,6 @@
 #include "Points.hpp"
 #include "Colors.hpp"
 #include "Constants.hpp"
-//#include "LinearAlgebraDataTypes.hpp"
 
 
 namespace Andromeda
@@ -22,6 +21,7 @@ namespace Andromeda
 			, m_pCamera{ nullptr }
             , m_LastMouseDragPos{ -1.0f, -1.0f }
             , m_pCameraInputMapper{ nullptr }
+			, m_pImGuiDockspaceManager{ nullptr }
 		{
 		}
 
@@ -93,9 +93,6 @@ namespace Andromeda
         {
 			if (m_isInitialized)
 			{
-                m_pRendererWindowOpenGL->DeInit();
-                delete m_pRendererWindowOpenGL;
-                m_pRendererWindowOpenGL = nullptr;
 				m_pRenderer->DeInit();
 				delete m_pRenderer;
 				m_pRenderer = nullptr;

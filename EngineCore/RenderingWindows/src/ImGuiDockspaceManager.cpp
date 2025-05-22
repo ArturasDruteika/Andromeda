@@ -30,7 +30,8 @@ namespace Andromeda
 		{
 			if (!m_isInitialized)
 			{
-				//m_rendererWindowOpenGL = new RendererWindowOpenGL();
+				//m_rendererWindowOpenGL = new RendererWindowOpenGL(0, "Renderer Window OpenGL");
+				//m_graphicalModalWindows[m_rendererWindowOpenGL->GetID()] = m_rendererWindowOpenGL;
 				m_isInitialized = true;
 			}
 			else
@@ -68,10 +69,12 @@ namespace Andromeda
 
 		void ImGuiDockspaceManager::DeInit()
 		{
-			// Cleanup
+			DeleteGraphicalModalWindows();
+			// ImGui Cleanup
 			ImGui_ImplOpenGL3_Shutdown();
 			ImGui_ImplGlfw_Shutdown();
 			ImGui::DestroyContext();
+
 			m_isInitialized = false;
 		}
 
@@ -83,6 +86,11 @@ namespace Andromeda
 				return;
 			}
 			m_graphicalModalWindows[id] = window;
+		}
+
+		void ImGuiDockspaceManager::SetTexture(unsigned int texture)
+		{
+			m_rendererWindowOpenGL->SetTextureID(texture);
 		}
 
 		void ImGuiDockspaceManager::InitImGui(GLFWwindow* window)
@@ -111,6 +119,20 @@ namespace Andromeda
 					window->Render();
 				}
 			}
+		}
+
+		void ImGuiDockspaceManager::DeleteGraphicalModalWindows()
+		{
+			for (auto& [id, window] : m_graphicalModalWindows)
+			{
+				if (window != nullptr)
+				{
+					window->DeInit();
+					delete window;
+					window = nullptr;
+				}
+			}
+			m_graphicalModalWindows.clear();
 		}
 	}
 }
