@@ -27,7 +27,7 @@ namespace Andromeda
 		{
 			ConstructSphere(radius, 200, 200, color);
 			Init(m_vertices, m_indices);
-			UpdateModelMatrix();
+			UpdateModelMatrix(TransformationType::ALL);
 		}
 
 		SphereObjectOpenGL::SphereObjectOpenGLImpl::~SphereObjectOpenGLImpl()
@@ -74,39 +74,46 @@ namespace Andromeda
 			m_modelMatrix = MathUtils::ToGLM(modelMatrix);
 		}
 
-		void SphereObjectOpenGL::SphereObjectOpenGLImpl::UpdateModelMatrix()
+		void SphereObjectOpenGL::SphereObjectOpenGLImpl::Translate(const Math::Vec3& translation)
 		{
-			glm::mat4 translationMatrix = ConstructTranslationMatrix();
-			glm::mat4 rotationMatrix = ConstructRotationMatrix();
-			glm::mat4 scaleMatrix = ConstructScaleMatrix();
-			m_modelMatrix = translationMatrix * rotationMatrix * scaleMatrix;
+			m_centerPosition = MathUtils::ToGLM(translation);
+			UpdateModelMatrix(TransformationType::TRANSLATE);
 		}
 
-		void SphereObjectOpenGL::SphereObjectOpenGLImpl::SetCenterPosition(const Math::Vec3& position, bool updateModelMatrix)
+		void SphereObjectOpenGL::SphereObjectOpenGLImpl::TranslateDelta(const Math::Vec3& translationDelta)
 		{
-			m_centerPosition = MathUtils::ToGLM(position);
-			if (updateModelMatrix)
-			{
-				UpdateModelMatrix();
-			}
+			m_centerPosition += MathUtils::ToGLM(translationDelta);
+			UpdateModelMatrix(TransformationType::TRANSLATE);
 		}
 
-		void SphereObjectOpenGL::SphereObjectOpenGLImpl::SetRotation(const Math::Vec3& rotation, bool updateModelMatrix)
+		void SphereObjectOpenGL::SphereObjectOpenGLImpl::Rotate(const Math::Vec3& rotation)
 		{
-			m_rotation = MathUtils::ToGLM(rotation);
-			if (updateModelMatrix)
-			{
-				UpdateModelMatrix();
-			}
+			m_rotation += MathUtils::ToGLM(rotation);
+			UpdateModelMatrix(TransformationType::ROTATE);
 		}
 
-		void SphereObjectOpenGL::SphereObjectOpenGLImpl::SetScale(const Math::Vec3& scale, bool updateModelMatrix)
+		void SphereObjectOpenGL::SphereObjectOpenGLImpl::RotateX(float angle)
 		{
-			m_scale = MathUtils::ToGLM(scale);
-			if (updateModelMatrix)
-			{
-				UpdateModelMatrix();
-			}
+			m_rotation += glm::vec3(angle, 0.0f, 0.0f);
+			UpdateModelMatrix(TransformationType::ROTATE);
+		}
+
+		void SphereObjectOpenGL::SphereObjectOpenGLImpl::RotateY(float angle)
+		{
+			m_rotation += glm::vec3(0.0f, angle, 0.0f);
+			UpdateModelMatrix(TransformationType::ROTATE);
+		}
+
+		void SphereObjectOpenGL::SphereObjectOpenGLImpl::RotateZ(float angle)
+		{
+			m_rotation += glm::vec3(0.0f, 0.0f, angle);
+			UpdateModelMatrix(TransformationType::ROTATE);
+		}
+
+		void SphereObjectOpenGL::SphereObjectOpenGLImpl::Scale(const Math::Vec3& scale)
+		{
+			m_scale += MathUtils::ToGLM(scale);
+			UpdateModelMatrix(TransformationType::SCALE);
 		}
 
 		float SphereObjectOpenGL::SphereObjectOpenGLImpl::GetRadius() const
@@ -178,6 +185,42 @@ namespace Andromeda
 		{
 			// Unbind VAO
 			glBindVertexArray(0);
+		}
+
+		void SphereObjectOpenGL::SphereObjectOpenGLImpl::UpdateModelMatrix(const TransformationType& transformationType)
+		{
+			switch (transformationType)
+			{
+				case TransformationType::TRANSLATE:
+				{
+					m_translationMatrix = ConstructTranslationMatrix();
+					break;
+				}
+				case TransformationType::ROTATE:
+				{
+					m_rotationMatrix = ConstructRotationMatrix();
+					break;
+				}
+				case TransformationType::SCALE:
+				{
+					m_scaleMatrix = ConstructScaleMatrix();
+					break;
+				}
+				case TransformationType::ALL:
+				{
+					m_translationMatrix = ConstructTranslationMatrix();
+					m_rotationMatrix = ConstructRotationMatrix();
+					m_scaleMatrix = ConstructScaleMatrix();
+					break;
+				}
+				default:
+				{
+					spdlog::error("Invalid transformation type");
+					break;
+				}
+			}
+
+			m_modelMatrix = m_translationMatrix * m_rotationMatrix * m_scaleMatrix;
 		}
 
 		glm::mat4 SphereObjectOpenGL::SphereObjectOpenGLImpl::ConstructTranslationMatrix() const

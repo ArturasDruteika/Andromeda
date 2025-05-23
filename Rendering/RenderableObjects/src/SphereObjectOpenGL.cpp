@@ -56,24 +56,39 @@ namespace Andromeda
 			m_pSphereObjectOpenGLImpl->SetModelMatrix(modelMatrix);
 		}
 
-		void SphereObjectOpenGL::UpdateModelMatrix()
+		void SphereObjectOpenGL::Translate(const Math::Vec3& translation)
 		{
-			m_pSphereObjectOpenGLImpl->UpdateModelMatrix();
+			m_pSphereObjectOpenGLImpl->Translate(translation);
 		}
 
-		void SphereObjectOpenGL::SetCenterPosition(const Math::Vec3& position, bool updateModelMatrix)
+		void SphereObjectOpenGL::TranslateDelta(const Math::Vec3& translationDelta)
 		{
-			m_pSphereObjectOpenGLImpl->SetCenterPosition(position, updateModelMatrix);
+			m_pSphereObjectOpenGLImpl->TranslateDelta(translationDelta);
 		}
 
-		void SphereObjectOpenGL::SetRotation(const Math::Vec3& rotation, bool updateModelMatrix)
+		void SphereObjectOpenGL::Rotate(const Math::Vec3& rotation)
 		{
-			m_pSphereObjectOpenGLImpl->SetRotation(rotation, updateModelMatrix);
+			m_pSphereObjectOpenGLImpl->Rotate(rotation);
 		}
 
-		void SphereObjectOpenGL::SetScale(const Math::Vec3& scale, bool updateModelMatrix)
+		void SphereObjectOpenGL::RotateX(float angle)
 		{
-			m_pSphereObjectOpenGLImpl->SetScale(scale, updateModelMatrix);
+			m_pSphereObjectOpenGLImpl->RotateX(angle);
+		}
+
+		void SphereObjectOpenGL::RotateY(float angle)
+		{
+			m_pSphereObjectOpenGLImpl->RotateY(angle);
+		}
+
+		void SphereObjectOpenGL::RotateZ(float angle)
+		{
+			m_pSphereObjectOpenGLImpl->RotateZ(angle);
+		}
+
+		void SphereObjectOpenGL::Scale(const Math::Vec3& scale)
+		{
+			m_pSphereObjectOpenGLImpl->Scale(scale);
 		}
 
 		float SphereObjectOpenGL::GetRadius() const

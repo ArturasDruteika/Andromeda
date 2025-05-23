@@ -51,24 +51,39 @@ namespace Andromeda
 			m_pCubeObjectOpenGLImpl->SetModelMatrix(modelMatrix);
 		}
 
-		void CubeObjectOpenGL::UpdateModelMatrix()
+		void CubeObjectOpenGL::Translate(const Math::Vec3& translation)
 		{
-			m_pCubeObjectOpenGLImpl->UpdateModelMatrix();
+			m_pCubeObjectOpenGLImpl->Translate(translation);
 		}
 
-		void CubeObjectOpenGL::SetCenterPosition(const Math::Vec3& position, bool updateModelMatrix)
+		void CubeObjectOpenGL::TranslateDelta(const Math::Vec3& translationDelta)
 		{
-			m_pCubeObjectOpenGLImpl->SetCenterPosition(position, updateModelMatrix);
+			m_pCubeObjectOpenGLImpl->TranslateDelta(translationDelta);
 		}
 
-		void CubeObjectOpenGL::SetRotation(const Math::Vec3& rotation, bool updateModelMatrix)
+		void CubeObjectOpenGL::Rotate(const Math::Vec3& rotation)
 		{
-			m_pCubeObjectOpenGLImpl->SetRotation(rotation, updateModelMatrix);
+			m_pCubeObjectOpenGLImpl->Rotate(rotation);
 		}
 
-		void CubeObjectOpenGL::SetScale(const Math::Vec3& scale, bool updateModelMatrix)
+		void CubeObjectOpenGL::RotateX(float angle)
 		{
-			m_pCubeObjectOpenGLImpl->SetScale(scale, updateModelMatrix);
+			m_pCubeObjectOpenGLImpl->RotateX(angle);
+		}
+
+		void CubeObjectOpenGL::RotateY(float angle)
+		{
+			m_pCubeObjectOpenGLImpl->RotateY(angle);
+		}
+
+		void CubeObjectOpenGL::RotateZ(float angle)
+		{
+			m_pCubeObjectOpenGLImpl->RotateZ(angle);
+		}
+
+		void CubeObjectOpenGL::Scale(const Math::Vec3& scale)
+		{
+			m_pCubeObjectOpenGLImpl->Scale(scale);
 		}
 
 		float CubeObjectOpenGL::GetHalfExtent() const

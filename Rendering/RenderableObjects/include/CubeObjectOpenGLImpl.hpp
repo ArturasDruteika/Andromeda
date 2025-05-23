@@ -3,6 +3,7 @@
 
 
 #include "CubeObjectOpenGL.hpp"
+#include "TransformationTypes.hpp"
 #include "glm/glm.hpp"
 #include "glm/gtc/matrix_transform.hpp"
 
@@ -29,13 +30,16 @@ namespace Andromeda
 			unsigned int GetVertexCount() const;
 			std::vector<Vertex> GetVertices() const;
 			Math::Mat4 GetModelMatrix() const;
-
 			// Setters
 			void SetModelMatrix(const Math::Mat4& modelMatrix);
-			void UpdateModelMatrix();
-			void SetCenterPosition(const Math::Vec3& position, bool updateModelMatrix = true);
-			void SetRotation(const Math::Vec3& rotation, bool updateModelMatrix = true); // Euler angles in radians (X, Y, Z)
-			void SetScale(const Math::Vec3& scale, bool updateModelMatrix = true);
+			// Transformation operations
+			void Translate(const Math::Vec3& translation);
+			void TranslateDelta(const Math::Vec3& translationDelta);
+			void Rotate(const Math::Vec3& rotation);
+			void RotateX(float angle);
+			void RotateY(float angle);
+			void RotateZ(float angle);
+			void Scale(const Math::Vec3& scale);
 
 			// Getters
 			float GetHalfExtent() const;
@@ -51,6 +55,7 @@ namespace Andromeda
 			void GenerateAndBindElementBuffer(const std::vector<unsigned int>& indices);
 			void SetVertexAttributePointers();
 			void UnbindVertexAttributes();
+			void UpdateModelMatrix(const TransformationType& transformationType);
 
 			// Transformation matrices
 			glm::mat4 ConstructTranslationMatrix() const;
@@ -73,6 +78,9 @@ namespace Andromeda
 			glm::vec3 m_centerPosition;
 			glm::vec3 m_rotation;
 			glm::vec3 m_scale;
+			glm::mat4 m_translationMatrix;
+			glm::mat4 m_rotationMatrix;
+			glm::mat4 m_scaleMatrix;
 			glm::mat4 m_modelMatrix;
 
 		};
