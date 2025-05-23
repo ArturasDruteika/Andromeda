@@ -71,6 +71,26 @@ namespace Andromeda
 			m_pCubeObjectOpenGLImpl->SetScale(scale, updateModelMatrix);
 		}
 
+		void CubeObjectOpenGL::Translate(const Math::Vec3& translation)
+		{
+			m_pCubeObjectOpenGLImpl->Translate(translation);
+		}
+
+		void CubeObjectOpenGL::TranslateDelta(const Math::Vec3& translationDelta)
+		{
+			m_pCubeObjectOpenGLImpl->TranslateDelta(translationDelta);
+		}
+
+		void CubeObjectOpenGL::Rotate(const Math::Vec3& rotation)
+		{
+			m_pCubeObjectOpenGLImpl->Rotate(rotation);
+		}
+
+		void CubeObjectOpenGL::Scale(const Math::Vec3& scale)
+		{
+			m_pCubeObjectOpenGLImpl->Scale(scale);
+		}
+
 		float CubeObjectOpenGL::GetHalfExtent() const
 		{
 			return m_pCubeObjectOpenGLImpl->GetHalfExtent();

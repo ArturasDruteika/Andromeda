@@ -109,6 +109,30 @@ namespace Andromeda
 			}
 		}
 
+		void SphereObjectOpenGL::SphereObjectOpenGLImpl::Translate(const Math::Vec3& translation)
+		{
+			m_centerPosition = MathUtils::ToGLM(translation);
+			UpdateModelMatrix();
+		}
+
+		void SphereObjectOpenGL::SphereObjectOpenGLImpl::TranslateDelta(const Math::Vec3& translationDelta)
+		{
+			m_centerPosition += MathUtils::ToGLM(translationDelta);
+			UpdateModelMatrix();
+		}
+
+		void SphereObjectOpenGL::SphereObjectOpenGLImpl::Rotate(const Math::Vec3& rotation)
+		{
+			m_rotation += MathUtils::ToGLM(rotation);
+			UpdateModelMatrix();
+		}
+
+		void SphereObjectOpenGL::SphereObjectOpenGLImpl::Scale(const Math::Vec3& scale)
+		{
+			m_scale += MathUtils::ToGLM(scale);
+			UpdateModelMatrix();
+		}
+
 		float SphereObjectOpenGL::SphereObjectOpenGLImpl::GetRadius() const
 		{
 			return m_radius;

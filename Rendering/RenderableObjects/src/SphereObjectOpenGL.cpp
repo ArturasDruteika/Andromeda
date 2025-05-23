@@ -76,6 +76,26 @@ namespace Andromeda
 			m_pSphereObjectOpenGLImpl->SetScale(scale, updateModelMatrix);
 		}
 
+		void SphereObjectOpenGL::Translate(const Math::Vec3& translation)
+		{
+			m_pSphereObjectOpenGLImpl->Translate(translation);
+		}
+
+		void SphereObjectOpenGL::TranslateDelta(const Math::Vec3& translationDelta)
+		{
+			m_pSphereObjectOpenGLImpl->TranslateDelta(translationDelta);
+		}
+
+		void SphereObjectOpenGL::Rotate(const Math::Vec3& rotation)
+		{
+			m_pSphereObjectOpenGLImpl->Rotate(rotation);
+		}
+
+		void SphereObjectOpenGL::Scale(const Math::Vec3& scale)
+		{
+			m_pSphereObjectOpenGLImpl->Scale(scale);
+		}
+
 		float SphereObjectOpenGL::GetRadius() const
 		{
 			return m_pSphereObjectOpenGLImpl->GetRadius();

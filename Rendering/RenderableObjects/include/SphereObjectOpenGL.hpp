@@ -52,6 +52,11 @@ namespace Andromeda
 			void SetCenterPosition(const Math::Vec3& position, bool updateModelMatrix = false) override;
 			void SetRotation(const Math::Vec3& rotation, bool updateModelMatrix = false) override; // Euler angles in radians (X, Y, Z)
 			void SetScale(const Math::Vec3& scale, bool updateModelMatrix = false) override;
+			// Transformation operations
+			void Translate(const Math::Vec3& translation) override;
+			void TranslateDelta(const Math::Vec3& translationDelta) override;
+			void Rotate(const Math::Vec3& rotation) override;
+			void Scale(const Math::Vec3& scale) override;
 
 			// Getters
 			float GetRadius() const;
