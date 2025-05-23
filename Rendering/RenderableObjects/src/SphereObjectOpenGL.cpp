@@ -61,21 +61,6 @@ namespace Andromeda
 			m_pSphereObjectOpenGLImpl->UpdateModelMatrix();
 		}
 
-		void SphereObjectOpenGL::SetCenterPosition(const Math::Vec3& position, bool updateModelMatrix)
-		{
-			m_pSphereObjectOpenGLImpl->SetCenterPosition(position, updateModelMatrix);
-		}
-
-		void SphereObjectOpenGL::SetRotation(const Math::Vec3& rotation, bool updateModelMatrix)
-		{
-			m_pSphereObjectOpenGLImpl->SetRotation(rotation, updateModelMatrix);
-		}
-
-		void SphereObjectOpenGL::SetScale(const Math::Vec3& scale, bool updateModelMatrix)
-		{
-			m_pSphereObjectOpenGLImpl->SetScale(scale, updateModelMatrix);
-		}
-
 		void SphereObjectOpenGL::Translate(const Math::Vec3& translation)
 		{
 			m_pSphereObjectOpenGLImpl->Translate(translation);

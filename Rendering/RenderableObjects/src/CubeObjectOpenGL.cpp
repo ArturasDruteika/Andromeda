@@ -56,21 +56,6 @@ namespace Andromeda
 			m_pCubeObjectOpenGLImpl->UpdateModelMatrix();
 		}
 
-		void CubeObjectOpenGL::SetCenterPosition(const Math::Vec3& position, bool updateModelMatrix)
-		{
-			m_pCubeObjectOpenGLImpl->SetCenterPosition(position, updateModelMatrix);
-		}
-
-		void CubeObjectOpenGL::SetRotation(const Math::Vec3& rotation, bool updateModelMatrix)
-		{
-			m_pCubeObjectOpenGLImpl->SetRotation(rotation, updateModelMatrix);
-		}
-
-		void CubeObjectOpenGL::SetScale(const Math::Vec3& scale, bool updateModelMatrix)
-		{
-			m_pCubeObjectOpenGLImpl->SetScale(scale, updateModelMatrix);
-		}
-
 		void CubeObjectOpenGL::Translate(const Math::Vec3& translation)
 		{
 			m_pCubeObjectOpenGLImpl->Translate(translation);

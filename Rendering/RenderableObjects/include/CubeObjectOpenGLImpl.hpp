@@ -32,9 +32,6 @@ namespace Andromeda
 			// Setters
 			void SetModelMatrix(const Math::Mat4& modelMatrix);
 			void UpdateModelMatrix();
-			void SetCenterPosition(const Math::Vec3& position, bool updateModelMatrix = true);
-			void SetRotation(const Math::Vec3& rotation, bool updateModelMatrix = true); // Euler angles in radians (X, Y, Z)
-			void SetScale(const Math::Vec3& scale, bool updateModelMatrix = true);
 			// Transformation operations
 			void Translate(const Math::Vec3& translation);
 			void TranslateDelta(const Math::Vec3& translationDelta);

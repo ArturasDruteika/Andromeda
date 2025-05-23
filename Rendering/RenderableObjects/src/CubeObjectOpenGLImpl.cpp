@@ -77,33 +77,6 @@ namespace Andromeda
 			m_modelMatrix = translationMatrix * rotationMatrix * scaleMatrix;
 		}
 
-		void CubeObjectOpenGL::CubeObjectOpenGLImpl::SetCenterPosition(const Math::Vec3& position, bool updateModelMatrix)
-		{
-			m_centerPosition = MathUtils::ToGLM(position);
-			if (updateModelMatrix)
-			{
-				UpdateModelMatrix();
-			}
-		}
-
-		void CubeObjectOpenGL::CubeObjectOpenGLImpl::SetRotation(const Math::Vec3& rotation, bool updateModelMatrix)
-		{
-			m_rotation = MathUtils::ToGLM(rotation);
-			if (updateModelMatrix)
-			{
-				UpdateModelMatrix();
-			}
-		}
-
-		void CubeObjectOpenGL::CubeObjectOpenGLImpl::SetScale(const Math::Vec3& scale, bool updateModelMatrix)
-		{
-			m_scale = MathUtils::ToGLM(scale);
-			if (updateModelMatrix)
-			{
-				UpdateModelMatrix();
-			}
-		}
-
 		void CubeObjectOpenGL::CubeObjectOpenGLImpl::Translate(const Math::Vec3& translation)
 		{
 			m_centerPosition = MathUtils::ToGLM(translation);
