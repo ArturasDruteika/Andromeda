@@ -56,11 +56,6 @@ namespace Andromeda
 			m_pSphereObjectOpenGLImpl->SetModelMatrix(modelMatrix);
 		}
 
-		void SphereObjectOpenGL::UpdateModelMatrix()
-		{
-			m_pSphereObjectOpenGLImpl->UpdateModelMatrix();
-		}
-
 		void SphereObjectOpenGL::Translate(const Math::Vec3& translation)
 		{
 			m_pSphereObjectOpenGLImpl->Translate(translation);
@@ -74,6 +69,21 @@ namespace Andromeda
 		void SphereObjectOpenGL::Rotate(const Math::Vec3& rotation)
 		{
 			m_pSphereObjectOpenGLImpl->Rotate(rotation);
+		}
+
+		void SphereObjectOpenGL::RotateX(float angle)
+		{
+			m_pSphereObjectOpenGLImpl->RotateX(angle);
+		}
+
+		void SphereObjectOpenGL::RotateY(float angle)
+		{
+			m_pSphereObjectOpenGLImpl->RotateY(angle);
+		}
+
+		void SphereObjectOpenGL::RotateZ(float angle)
+		{
+			m_pSphereObjectOpenGLImpl->RotateZ(angle);
 		}
 
 		void SphereObjectOpenGL::Scale(const Math::Vec3& scale)

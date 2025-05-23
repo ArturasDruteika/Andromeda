@@ -48,11 +48,13 @@ namespace Andromeda
 			// Setters
 			void SetRadius(float radius);
 			void SetModelMatrix(const Math::Mat4& modelMatrix) override;
-			void UpdateModelMatrix() override;
 			// Transformation operations
 			void Translate(const Math::Vec3& translation) override;
 			void TranslateDelta(const Math::Vec3& translationDelta) override;
 			void Rotate(const Math::Vec3& rotation) override;
+			void RotateX(float angle) override;
+			void RotateY(float angle) override;
+			void RotateZ(float angle) override;
 			void Scale(const Math::Vec3& scale) override;
 
 			// Getters
