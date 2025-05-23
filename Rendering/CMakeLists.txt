@@ -42,6 +42,8 @@ add_library(${PROJECT_NAME}
         RenderableObjects/include/CubeObjectOpenGLImpl.hpp
 		RenderableObjects/src/CubeObjectOpenGLImpl.cpp
 		RenderableObjects/include/TransformationTypes.hpp
+        RenderableObjects/src/RenderableObjectOpenGLBase.cpp
+		RenderableObjects/include/RenderableObjectOpenGLBase.hpp
 
 		Vertices/include/VertexAttributes.hpp
         Vertices/include/VertexLayouts.hpp
@@ -182,6 +184,8 @@ source_group(
         RenderableObjects/include/CubeObjectOpenGLImpl.hpp
 		RenderableObjects/src/CubeObjectOpenGLImpl.cpp
         RenderableObjects/include/TransformationTypes.hpp
+        RenderableObjects/src/RenderableObjectOpenGLBase.cpp
+		RenderableObjects/include/RenderableObjectOpenGLBase.hpp
 )
 
 source_group(
