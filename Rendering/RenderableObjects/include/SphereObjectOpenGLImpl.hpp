@@ -3,9 +3,7 @@
 
 
 #include "SphereObjectOpenGL.hpp"
-#include "TransformationTypes.hpp"
-#include "glm/glm.hpp"
-#include "glm/gtc/matrix_transform.hpp"
+#include "RenderableObjectOpenGLBase.hpp"
 
 
 namespace Andromeda
@@ -13,6 +11,7 @@ namespace Andromeda
 	namespace Rendering
 	{
 		class SphereObjectOpenGL::SphereObjectOpenGLImpl
+			: public RenderableObjectOpenGLBase
 		{	
 		public:
 			SphereObjectOpenGLImpl(const Math::Vec3& centerPosition, float radius, const Space::Color& color);
@@ -23,66 +22,15 @@ namespace Andromeda
 			SphereObjectOpenGLImpl(SphereObjectOpenGLImpl&& other) noexcept = delete;	// Prevent Move Constructor
 			SphereObjectOpenGLImpl& operator=(SphereObjectOpenGLImpl&& other) noexcept = delete;	// Prevent Move Assignment
 
-			// Getters
-			unsigned int GetVBO() const;
-			unsigned int GetVAO() const;
-			unsigned int GetEBO() const;
-			unsigned int GetVertexCount() const;
-			std::vector<Vertex> GetVertices() const;
-			Math::Mat4 GetModelMatrix() const;
-			// Setters
-			void SetRadius(float radius);
-			void SetModelMatrix(const Math::Mat4& modelMatrix);
-			// Transformation operations
-			void Translate(const Math::Vec3& translation);
-			void TranslateDelta(const Math::Vec3& translationDelta);
-			void Rotate(const Math::Vec3& rotation);
-			void RotateX(float angle);
-			void RotateY(float angle);
-			void RotateZ(float angle);
-			void Scale(const Math::Vec3& scale);
-
-			// Getters
 			float GetRadius() const;
-			Math::Vec3 GetCenterPosition() const;
-			Math::Vec3 GetRotation() const;
-			Math::Vec3 GetScale() const;
+			void SetRadius(float radius);
 
 		private:
-			// OpenGL related members
-			void Init(const std::vector<Vertex>& vertices, const std::vector<unsigned int>& indices);
-			void CreateAndBindVertexAttributes();
-			void CreateAndBindVertexBuffers(const std::vector<Vertex>& vertices);
-			void GenerateAndBindElementBuffer(const std::vector<unsigned int>& indices);
-			void SetVertexAttributePointers();
-			void UnbindVertexAttributes();
-			void UpdateModelMatrix(const TransformationType& transformationType);
-
-			// Transformation matrices
-			glm::mat4 ConstructTranslationMatrix() const;
-			glm::mat4 ConstructRotationMatrix() const;
-			glm::mat4 ConstructScaleMatrix() const;
-
 			// Sphere construction
 			void ConstructSphere(float radius, int sectorCount, int stackCount, const Space::Color& color);
 
+		private:
 			float m_radius;
-			unsigned int m_VBO;
-			unsigned int m_VAO;
-			unsigned int m_EBO;
-			unsigned int m_vertexCount;
-			std::vector<Vertex> m_vertices;
-			std::vector<unsigned int> m_indices;
-			VertexLayout m_vertexLayout;
-
-			// Transform components
-			glm::vec3 m_centerPosition;
-			glm::vec3 m_rotation;
-			glm::vec3 m_scale;
-			glm::mat4 m_translationMatrix;
-			glm::mat4 m_rotationMatrix;
-			glm::mat4 m_scaleMatrix;
-			glm::mat4 m_modelMatrix;
 		};
 	}
 }

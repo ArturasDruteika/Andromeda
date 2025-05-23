@@ -20,8 +20,8 @@
 
 #include "pch.hpp"
 #include "../../Vertices/include/VertexLayouts.hpp"
-#include "LinearAlgebraDataTypes.hpp"
 #include "../../Vertices/include/Vertex.hpp"
+#include "LinearAlgebraDataTypes.hpp"
 
 
 namespace Andromeda
