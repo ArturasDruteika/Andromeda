@@ -1,27 +1,35 @@
 #version 330 core
 
-in vec4 ourColor;
-in vec3 fragNormal;
 in vec3 fragPosition;
+in vec3 fragNormal;
+in vec4 vertexColor;
 
 out vec4 FragColor;
 
-uniform vec3 u_lightDir;   // Direction TO the light (e.g., -normalize(vec3(1,1,1)))
-uniform vec3 u_lightColor; // Light color (white = vec3(1.0))
-uniform vec3 u_ambientColor; // Ambient fallback (e.g., vec3(0.1))
+uniform vec3 u_lightPos;
+uniform vec3 u_viewPos;
+uniform vec3 u_lightColor;
 
 void main()
 {
-    vec3 normal = normalize(fragNormal);
-    vec3 lightDir = normalize(u_lightDir);
+    // Ambient
+    float ambientStrength = 0.1;
+    vec3 ambient = ambientStrength * u_lightColor;
 
-    // Lambert diffuse lighting
-    float diff = max(dot(normal, lightDir), 0.0);
+    // Diffuse
+    vec3 norm = normalize(fragNormal);
+    vec3 lightDir = normalize(u_lightPos - fragPosition);
+    float diff = max(dot(norm, lightDir), 0.0);
     vec3 diffuse = diff * u_lightColor;
 
-    vec3 ambient = u_ambientColor;
+    // Specular
+    float specularStrength = 0.5;
+    vec3 viewDir = normalize(u_viewPos - fragPosition);
+    vec3 reflectDir = reflect(-lightDir, norm);
+    float spec = pow(max(dot(viewDir, reflectDir), 0.0), 32.0);
+    vec3 specular = specularStrength * spec * u_lightColor;
 
-    vec3 finalColor = (ambient + diffuse) * ourColor.rgb;
-
-    FragColor = vec4(finalColor, ourColor.a);
+    // Combine lighting and vertex color
+    vec3 lighting = (ambient + diffuse + specular) * vertexColor.rgb;
+    FragColor = vec4(lighting, vertexColor.a);
 }
