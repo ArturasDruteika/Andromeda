@@ -38,6 +38,7 @@ namespace Andromeda
 			Math::Vec3 GetRotation() const;
 			Math::Vec3 GetScale() const;
 			Math::Mat4 GetModelMatrix() const;
+			Space::Color GetColor() const;
 			// Setters
 			void SetModelMatrix(const Math::Mat4& modelMatrix);
 			// Transformation operations
@@ -71,6 +72,7 @@ namespace Andromeda
 			std::vector<Vertex> m_vertices;
 			std::vector<unsigned int> m_indices;
 			VertexLayout m_vertexLayout;
+			Space::Color m_color;
 
 			// Transform components
 			glm::vec3 m_centerPosition;

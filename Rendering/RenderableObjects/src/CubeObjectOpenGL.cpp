@@ -41,9 +41,19 @@ namespace Andromeda
 			return m_pCubeObjectOpenGLImpl->GetVertices();
 		}
 
+		Math::Vec3 CubeObjectOpenGL::GetCenterPosition() const
+		{
+			return m_pCubeObjectOpenGLImpl->GetCenterPosition();
+		}
+
 		Math::Mat4 CubeObjectOpenGL::GetModelMatrix() const
 		{
 			return m_pCubeObjectOpenGLImpl->GetModelMatrix();
+		}
+
+		Space::Color CubeObjectOpenGL::GetColor() const
+		{
+			return m_pCubeObjectOpenGLImpl->GetColor();
 		}
 
 		void CubeObjectOpenGL::SetModelMatrix(const Math::Mat4& modelMatrix)
@@ -89,11 +99,6 @@ namespace Andromeda
 		float CubeObjectOpenGL::GetHalfExtent() const
 		{
 			return m_pCubeObjectOpenGLImpl->GetHalfExtent();
-		}
-
-		Math::Vec3 CubeObjectOpenGL::GetCenterPosition() const
-		{
-			return m_pCubeObjectOpenGLImpl->GetCenterPosition();
 		}
 
 		Math::Vec3 CubeObjectOpenGL::GetRotation() const

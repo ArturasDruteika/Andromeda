@@ -41,9 +41,19 @@ namespace Andromeda
 			return m_pSphereObjectOpenGLImpl->GetVertices();
 		}
 
+		Math::Vec3 SphereObjectOpenGL::GetCenterPosition() const
+		{
+			return m_pSphereObjectOpenGLImpl->GetCenterPosition();
+		}
+
 		Math::Mat4 SphereObjectOpenGL::GetModelMatrix() const
 		{
 			return m_pSphereObjectOpenGLImpl->GetModelMatrix();
+		}
+
+		Space::Color SphereObjectOpenGL::GetColor() const
+		{
+			return m_pSphereObjectOpenGLImpl->GetColor();
 		}
 
 		void SphereObjectOpenGL::SetRadius(float radius)
@@ -94,11 +104,6 @@ namespace Andromeda
 		float SphereObjectOpenGL::GetRadius() const
 		{
 			return m_pSphereObjectOpenGLImpl->GetRadius();
-		}
-
-		Math::Vec3 SphereObjectOpenGL::GetCenterPosition() const
-		{
-			return m_pSphereObjectOpenGLImpl->GetCenterPosition();
 		}
 
 		Math::Vec3 SphereObjectOpenGL::GetRotation() const

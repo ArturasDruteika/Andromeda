@@ -16,6 +16,7 @@ namespace Andromeda
 			, m_scale{ 1.0f, 1.0f, 1.0f }
 			, m_vertexLayout{ vertexLayout }
 			, m_modelMatrix{ glm::mat4(1.0f) }
+			, m_color{ color }
 		{
 		}
 
@@ -51,9 +52,19 @@ namespace Andromeda
 			return m_indices;
 		}
 
+		Math::Vec3 RenderableObjectOpenGLBase::GetCenterPosition() const
+		{
+			return MathUtils::FromGLM(m_centerPosition);
+		}
+
 		Math::Mat4 RenderableObjectOpenGLBase::GetModelMatrix() const
 		{
 			return MathUtils::FromGLM(m_modelMatrix);
+		}
+
+		Space::Color RenderableObjectOpenGLBase::GetColor() const
+		{
+			return m_color;
 		}
 
 		void RenderableObjectOpenGLBase::SetModelMatrix(const Math::Mat4& modelMatrix)
@@ -101,11 +112,6 @@ namespace Andromeda
 		{
 			m_scale += MathUtils::ToGLM(scale);
 			UpdateModelMatrix(TransformationType::SCALE);
-		}
-
-		Math::Vec3 RenderableObjectOpenGLBase::GetCenterPosition() const
-		{
-			return MathUtils::FromGLM(m_centerPosition);
 		}
 
 		Math::Vec3 RenderableObjectOpenGLBase::GetRotation() const

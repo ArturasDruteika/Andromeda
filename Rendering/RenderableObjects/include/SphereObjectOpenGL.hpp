@@ -44,7 +44,10 @@ namespace Andromeda
 			unsigned int GetEBO() const override;
 			unsigned int GetVertexCount() const override;
 			std::vector<Vertex> GetVertices() const override;
+			Math::Vec3 GetCenterPosition() const override;
 			Math::Mat4 GetModelMatrix() const override;
+			Space::Color GetColor() const override;
+
 			// Setters
 			void SetRadius(float radius);
 			void SetModelMatrix(const Math::Mat4& modelMatrix) override;
@@ -59,7 +62,6 @@ namespace Andromeda
 
 			// Getters
 			float GetRadius() const;
-			Math::Vec3 GetCenterPosition() const;
 			Math::Vec3 GetRotation() const;
 			Math::Vec3 GetScale() const;
 
