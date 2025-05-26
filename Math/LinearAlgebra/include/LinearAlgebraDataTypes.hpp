@@ -57,6 +57,11 @@ namespace Andromeda
 			{
 				return !(*this == other);
 			}
+
+			static constexpr int Size()
+			{
+				return sizeof(Vec2) / sizeof(float);
+			}
 		};
 
 		struct Vec3
@@ -106,6 +111,11 @@ namespace Andromeda
 			bool operator!=(const Vec3& other) const
 			{
 				return !(*this == other);
+			}
+
+			static constexpr int Size()
+			{
+				return sizeof(Vec3) / sizeof(float);
 			}
 		};
 
@@ -160,6 +170,11 @@ namespace Andromeda
 			{
 				return !(*this == other);
 			}
+
+			static constexpr int Size()
+			{
+				return sizeof(Vec4) / sizeof(float);
+			}
 		};
 
 		struct Mat2
@@ -181,6 +196,11 @@ namespace Andromeda
 			bool operator!=(const Mat2& other) const
 			{
 				return !(*this == other);
+			}
+
+			static constexpr int Size()
+			{
+				return sizeof(Mat2) / sizeof(float);
 			}
 		};
 
@@ -206,6 +226,11 @@ namespace Andromeda
 			{
 				return !(*this == other);
 			}
+
+			static constexpr int Size()
+			{
+				return sizeof(Mat3) / sizeof(float);
+			}
 		};
 
 		struct Mat4
@@ -230,6 +255,11 @@ namespace Andromeda
 			bool operator!=(const Mat4& other) const
 			{
 				return !(*this == other);
+			}
+
+			static constexpr int Size()
+			{
+				return sizeof(Mat4) / sizeof(float);
 			}
 		};
 	}
