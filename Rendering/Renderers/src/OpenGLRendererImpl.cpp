@@ -280,6 +280,9 @@ namespace Andromeda
                 GL_FALSE,
                 glm::value_ptr(matrix)
             );
+            glUniform3f(glGetUniformLocation(m_shader->GetProgram(), "u_lightDir"), -1.0f, -1.0f, -1.0f); // example
+            glUniform3f(glGetUniformLocation(m_shader->GetProgram(), "u_lightColor"), 1.0f, 1.0f, 1.0f);
+            glUniform3f(glGetUniformLocation(m_shader->GetProgram(), "u_ambientColor"), 0.1f, 0.1f, 0.1f);
         }
 	}
 }

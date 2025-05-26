@@ -34,7 +34,6 @@ namespace Andromeda
 			unsigned int GetVertexCount() const;
 			std::vector<Vertex> GetVertices() const;
 			std::vector<unsigned int> GetIndices() const;
-			std::vector<Math::Vec3> GetNormals() const;
 			Math::Vec3 GetCenterPosition() const;
 			Math::Vec3 GetRotation() const;
 			Math::Vec3 GetScale() const;
@@ -71,7 +70,6 @@ namespace Andromeda
 			unsigned int m_vertexCount;
 			std::vector<Vertex> m_vertices;
 			std::vector<unsigned int> m_indices;
-			std::vector<glm::vec3> m_normals;
 			VertexLayout m_vertexLayout;
 
 			// Transform components

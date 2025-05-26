@@ -51,16 +51,6 @@ namespace Andromeda
 			return m_indices;
 		}
 
-		std::vector<Math::Vec3> RenderableObjectOpenGLBase::GetNormals() const
-		{
-			std::vector<Math::Vec3> normals;
-			for (const auto& normal : m_normals)
-			{
-				normals.push_back(MathUtils::FromGLM(normal));
-			}
-			return normals;
-		}
-
 		Math::Mat4 RenderableObjectOpenGLBase::GetModelMatrix() const
 		{
 			return MathUtils::FromGLM(m_modelMatrix);
