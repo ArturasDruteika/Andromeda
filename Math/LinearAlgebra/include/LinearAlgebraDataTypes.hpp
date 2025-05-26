@@ -47,6 +47,16 @@ namespace Andromeda
 			{
 				return lhs -= rhs;
 			}
+
+			bool operator==(const Vec2& other) const
+			{
+				return data[0] == other.data[0] && data[1] == other.data[1];
+			}
+
+			bool operator!=(const Vec2& other) const
+			{
+				return !(*this == other);
+			}
 		};
 
 		struct Vec3
@@ -84,6 +94,18 @@ namespace Andromeda
 			friend Vec3 operator-(Vec3 lhs, const Vec3& rhs)
 			{
 				return lhs -= rhs;
+			}
+
+			bool operator==(const Vec3& other) const
+			{
+				return data[0] == other.data[0] &&
+					data[1] == other.data[1] &&
+					data[2] == other.data[2];
+			}
+
+			bool operator!=(const Vec3& other) const
+			{
+				return !(*this == other);
 			}
 		};
 
@@ -125,6 +147,19 @@ namespace Andromeda
 			{
 				return lhs -= rhs;
 			}
+
+			bool operator==(const Vec4& other) const
+			{
+				return data[0] == other.data[0] &&
+					data[1] == other.data[1] &&
+					data[2] == other.data[2] &&
+					data[3] == other.data[3];
+			}
+
+			bool operator!=(const Vec4& other) const
+			{
+				return !(*this == other);
+			}
 		};
 
 		struct Mat2
@@ -137,6 +172,16 @@ namespace Andromeda
 
 			Vec2& operator[](int index) { return data[index]; }
 			const Vec2& operator[](int index) const { return data[index]; }
+
+			bool operator==(const Mat2& other) const
+			{
+				return data[0] == other.data[0] && data[1] == other.data[1];
+			}
+
+			bool operator!=(const Mat2& other) const
+			{
+				return !(*this == other);
+			}
 		};
 
 		struct Mat3
@@ -149,6 +194,18 @@ namespace Andromeda
 
 			Vec3& operator[](int index) { return data[index]; }
 			const Vec3& operator[](int index) const { return data[index]; }
+
+			bool operator==(const Mat3& other) const
+			{
+				return data[0] == other.data[0] &&
+					data[1] == other.data[1] &&
+					data[2] == other.data[2];
+			}
+
+			bool operator!=(const Mat3& other) const
+			{
+				return !(*this == other);
+			}
 		};
 
 		struct Mat4
@@ -161,6 +218,19 @@ namespace Andromeda
 
 			Vec4& operator[](int index) { return data[index]; }
 			const Vec4& operator[](int index) const { return data[index]; }
+
+			bool operator==(const Mat4& other) const
+			{
+				return data[0] == other.data[0] &&
+					data[1] == other.data[1] &&
+					data[2] == other.data[2] &&
+					data[3] == other.data[3];
+			}
+
+			bool operator!=(const Mat4& other) const
+			{
+				return !(*this == other);
+			}
 		};
 	}
 }
