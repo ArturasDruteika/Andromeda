@@ -40,6 +40,7 @@ namespace Andromeda
 			virtual unsigned int GetVAO() const = 0;
 			virtual unsigned int GetEBO() const = 0;
 			virtual unsigned int GetVertexCount() const = 0;
+			virtual unsigned int GetIndicesCount() const = 0;
 			virtual std::vector<Vertex> GetVertices() const = 0;
 			virtual Math::Vec3 GetCenterPosition() const = 0;
 			virtual Math::Mat4 GetModelMatrix() const = 0;

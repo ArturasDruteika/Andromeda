@@ -36,6 +36,11 @@ namespace Andromeda
 			return m_pCubeObjectOpenGLImpl->GetVertexCount();
 		}
 
+		unsigned int CubeObjectOpenGL::GetIndicesCount() const
+		{
+			return m_pCubeObjectOpenGLImpl->GetIndicesCount();
+		}
+
 		std::vector<Vertex> CubeObjectOpenGL::GetVertices() const
 		{
 			return m_pCubeObjectOpenGLImpl->GetVertices();

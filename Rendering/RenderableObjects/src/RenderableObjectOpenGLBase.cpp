@@ -17,6 +17,9 @@ namespace Andromeda
 			, m_vertexLayout{ vertexLayout }
 			, m_modelMatrix{ glm::mat4(1.0f) }
 			, m_color{ color }
+			, m_translationMatrix{}
+			, m_rotationMatrix{}
+			, m_scaleMatrix{}
 		{
 		}
 
@@ -39,7 +42,12 @@ namespace Andromeda
 
 		unsigned int RenderableObjectOpenGLBase::GetVertexCount() const
 		{
-			return m_vertexCount;
+			return static_cast<unsigned int>(m_vertices.size());
+		}
+
+		unsigned int RenderableObjectOpenGLBase::GetIndicesCount() const
+		{
+			return static_cast<unsigned int>(m_indices.size());
 		}
 
 		std::vector<Vertex> RenderableObjectOpenGLBase::GetVertices() const
@@ -131,8 +139,6 @@ namespace Andromeda
 			GenerateAndBindElementBuffer(indices);
 			SetVertexAttributePointers();
 			UnbindVertexAttributes();
-
-			m_vertexCount = static_cast<unsigned int>(indices.size());
 		}
 
 		void RenderableObjectOpenGLBase::CreateAndBindVertexAttributes()
