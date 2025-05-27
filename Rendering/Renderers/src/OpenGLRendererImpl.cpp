@@ -27,6 +27,7 @@ namespace Andromeda
 			, m_depthBuffer{ 0 }
 			, m_ambientStrength{ 0.1f }
 			, m_specularStrength{ 0.5f }
+			, m_shininess{ 32.0f }
         {
             glClearColor(
                 BACKGROUND_COLOR_DEFAULT.r,
@@ -174,6 +175,11 @@ namespace Andromeda
             return m_specularStrength;
         }
 
+        float OpenGLRenderer::OpenGLRendererImpl::GetShininess() const
+        {
+            return m_shininess;
+        }
+
         void OpenGLRenderer::OpenGLRendererImpl::SetCamera(Camera* camera)
         {
 			if (camera == nullptr)
@@ -192,6 +198,11 @@ namespace Andromeda
         void OpenGLRenderer::OpenGLRendererImpl::SetSpecularStrength(float specularStrength)
         {
 			m_specularStrength = specularStrength;
+        }
+
+        void OpenGLRenderer::OpenGLRendererImpl::SetShininess(float shininess)
+        {
+			m_shininess = shininess;
         }
 
         void OpenGLRenderer::OpenGLRendererImpl::InitFrameBuffer()
@@ -286,26 +297,22 @@ namespace Andromeda
                 return;
             }
 
-            glm::mat4 viewMatrix = MathUtils::ToGLM(m_pCamera->GetViewMatrix());
             float aspect = static_cast<float>(m_width) / static_cast<float>(m_height);
             glm::mat4 projectionMatrix = glm::perspective(glm::radians(45.0f), aspect, 0.1f, 100.0f);
-            glm::mat4 modelMatrix = MathUtils::ToGLM(object.GetModelMatrix());
 
             // Set common uniforms
 			SetUniformFloat("u_ambientStrength", m_ambientStrength);
 			SetUniformFloat("u_specularStrength", m_specularStrength);
-            SetUniformMatrix4("u_model", modelMatrix);
-            SetUniformMatrix4("u_view", viewMatrix);
+			SetUniformFloat("u_shininess", m_shininess);
+            SetUniformMatrix4("u_model", MathUtils::ToGLM(object.GetModelMatrix()));
+            SetUniformMatrix4("u_view", MathUtils::ToGLM(m_pCamera->GetViewMatrix()));
             SetUniformMatrix4("u_projection", projectionMatrix);
 
             // Special case: light sphere
             if (object.IsEmitingLight())
             {
-                glm::vec3 lightWorldPos = MathUtils::ToGLM(object.GetCenterPosition());
-                glm::vec3 cameraPos = MathUtils::ToGLM(m_pCamera->GetPosition());
-
-                SetUniformVec3("u_lightPos", lightWorldPos);
-                SetUniformVec3("u_viewPos", cameraPos);
+                SetUniformVec3("u_lightPos", MathUtils::ToGLM(object.GetCenterPosition()));
+                SetUniformVec3("u_viewPos", MathUtils::ToGLM(m_pCamera->GetPosition()));
                 SetUniformVec4("u_lightColor", MathUtils::ToGLM(object.GetColor().ReturnAsVec4()));
 
                 // Force vertex color to white so it appears white

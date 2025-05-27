@@ -8,6 +8,7 @@ out vec4 FragColor;
 
 uniform float u_ambientStrength;
 uniform float u_specularStrength;
+uniform float u_shininess;
 uniform vec3 u_lightPos;
 uniform vec3 u_viewPos;
 uniform vec4 u_lightColor;
@@ -34,7 +35,7 @@ void main()
 
     vec3 viewDir = normalize(u_viewPos - fragPosition);
     vec3 reflectDir = reflect(-lightDir, norm);
-    float spec = pow(max(dot(viewDir, reflectDir), 0.0), 32.0);
+    float spec = pow(max(dot(viewDir, reflectDir), 0.0), u_shininess);
     vec4 specular = u_specularStrength * spec * u_lightColor;
 
     vec4 lighting = (ambient + diffuse + specular) * effectiveColor;

@@ -37,10 +37,12 @@ namespace Andromeda
 			int GetHeight() const;
 			float GetAmbientStrength() const;
 			float GetSpecularStrength() const;
+			float GetShininess() const;
 			// Setters
 			void SetCamera(Camera* camera);
 			void SetAmbientStrength(float ambientStrength);
 			void SetSpecularStrength(float specularStrength);
+			void SetShininess(float shininess);
 
 		private:
 			void InitFrameBuffer();
@@ -68,6 +70,7 @@ namespace Andromeda
 			int m_height;
 			float m_ambientStrength;
 			float m_specularStrength;
+			float m_shininess;
 			OpenGLShader* m_shader;
 			glm::mat4 m_projectionMatrix;
 			Camera* m_pCamera;
