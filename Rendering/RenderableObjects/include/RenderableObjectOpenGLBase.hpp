@@ -28,16 +28,21 @@ namespace Andromeda
 			RenderableObjectOpenGLBase& operator=(RenderableObjectOpenGLBase&& other) noexcept = delete;	// Prevent Move Assignment
 
 			// Getters
+			bool IsEmitingLight() const;
 			unsigned int GetVBO() const;
 			unsigned int GetVAO() const;
 			unsigned int GetEBO() const;
 			unsigned int GetVertexCount() const;
+			unsigned int GetIndicesCount() const;
 			std::vector<Vertex> GetVertices() const;
+			std::vector<unsigned int> GetIndices() const;
 			Math::Vec3 GetCenterPosition() const;
 			Math::Vec3 GetRotation() const;
 			Math::Vec3 GetScale() const;
 			Math::Mat4 GetModelMatrix() const;
+			Space::Color GetColor() const;
 			// Setters
+			void SetEmitingLight(bool isEmitingLight);
 			void SetModelMatrix(const Math::Mat4& modelMatrix);
 			// Transformation operations
 			void Translate(const Math::Vec3& translation);
@@ -63,13 +68,14 @@ namespace Andromeda
 			glm::mat4 ConstructScaleMatrix() const;
 
 		protected:
+			bool m_isEmitingLight;
 			unsigned int m_VBO;
 			unsigned int m_VAO;
 			unsigned int m_EBO;
-			unsigned int m_vertexCount;
 			std::vector<Vertex> m_vertices;
 			std::vector<unsigned int> m_indices;
 			VertexLayout m_vertexLayout;
+			Space::Color m_color;
 
 			// Transform components
 			glm::vec3 m_centerPosition;

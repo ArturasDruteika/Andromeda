@@ -25,6 +25,9 @@ namespace Andromeda
 			, m_projectionMatrix{ glm::mat4(1.0f) }
 			, m_pCamera{ nullptr }
 			, m_depthBuffer{ 0 }
+			, m_ambientStrength{ 0.1f }
+			, m_specularStrength{ 0.5f }
+			, m_shininess{ 32.0f }
         {
             glClearColor(
                 BACKGROUND_COLOR_DEFAULT.r,
@@ -127,7 +130,7 @@ namespace Andromeda
             glViewport(0, 0, width, height);
             glDeleteFramebuffers(1, &m_FBO);
             glDeleteTextures(1, &m_FBOTexture);
-            glDeleteRenderbuffers(1, &m_depthBuffer); // Critical missing line
+            glDeleteRenderbuffers(1, &m_depthBuffer);
 
             InitFrameBuffer();
         }
@@ -162,6 +165,21 @@ namespace Andromeda
             return m_height;
         }
 
+        float OpenGLRenderer::OpenGLRendererImpl::GetAmbientStrength() const
+        {
+            return m_ambientStrength;
+        }
+
+        float OpenGLRenderer::OpenGLRendererImpl::GetSpecularStrength() const
+        {
+            return m_specularStrength;
+        }
+
+        float OpenGLRenderer::OpenGLRendererImpl::GetShininess() const
+        {
+            return m_shininess;
+        }
+
         void OpenGLRenderer::OpenGLRendererImpl::SetCamera(Camera* camera)
         {
 			if (camera == nullptr)
@@ -170,6 +188,21 @@ namespace Andromeda
 				return;
 			}
 			m_pCamera = camera;
+        }
+
+        void OpenGLRenderer::OpenGLRendererImpl::SetAmbientStrength(float ambientStrength)
+        {
+			m_ambientStrength = ambientStrength;
+        }
+
+        void OpenGLRenderer::OpenGLRendererImpl::SetSpecularStrength(float specularStrength)
+        {
+			m_specularStrength = specularStrength;
+        }
+
+        void OpenGLRenderer::OpenGLRendererImpl::SetShininess(float shininess)
+        {
+			m_shininess = shininess;
         }
 
         void OpenGLRenderer::OpenGLRendererImpl::InitFrameBuffer()
@@ -208,36 +241,46 @@ namespace Andromeda
             glBindTexture(GL_TEXTURE_2D, m_FBOTexture);
         }
 
-        void OpenGLRenderer::OpenGLRendererImpl::ConfigureFrameBufferTexture()
+        void OpenGLRenderer::OpenGLRendererImpl::CreateColorTexture()
         {
-            // 1. Generate FBO
-            glGenFramebuffers(1, &m_FBO);
-            glBindFramebuffer(GL_FRAMEBUFFER, m_FBO);
-
-            // 2. Create color texture
             glGenTextures(1, &m_FBOTexture);
             glBindTexture(GL_TEXTURE_2D, m_FBOTexture);
             glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, m_width, m_height, 0, GL_RGBA, GL_UNSIGNED_BYTE, nullptr);
             glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
             glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
             glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, m_FBOTexture, 0);
+        }
 
-            // 3. Create depth renderbuffer
+        void OpenGLRenderer::OpenGLRendererImpl::CreateDepthRenderBuffer()
+        {
             glGenRenderbuffers(1, &m_depthBuffer);
             glBindRenderbuffer(GL_RENDERBUFFER, m_depthBuffer);
             glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH_COMPONENT24, m_width, m_height);
             glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_RENDERBUFFER, m_depthBuffer);
+        }
 
-            // 4. Set draw buffer
+        void OpenGLRenderer::OpenGLRendererImpl::SetDrawBuffer()
+        {
             GLenum drawBuffers[1] = { GL_COLOR_ATTACHMENT0 };
             glDrawBuffers(1, drawBuffers);
+        }
 
-            // 5. Check FBO status
+        void OpenGLRenderer::OpenGLRendererImpl::CheckFBOStatus()
+        {
             GLenum status = glCheckFramebufferStatus(GL_FRAMEBUFFER);
             if (status != GL_FRAMEBUFFER_COMPLETE)
             {
                 spdlog::error("Framebuffer incomplete! Status: 0x{:X}", status); // hex
             }
+        }
+
+        void OpenGLRenderer::OpenGLRendererImpl::ConfigureFrameBufferTexture()
+        {
+			GenerateAndBindFrameBuffer();
+            CreateColorTexture();
+            CreateDepthRenderBuffer();
+            SetDrawBuffer();
+            CheckFBOStatus();
         }
 
         void OpenGLRenderer::OpenGLRendererImpl::UnbindFrameBuffer() const
@@ -250,36 +293,87 @@ namespace Andromeda
         {
             if (m_width == 0 || m_height == 0)
             {
-				spdlog::error("Framebuffer dimensions are zero. Cannot render object.");
+                spdlog::error("Framebuffer dimensions are zero. Cannot render object.");
                 return;
             }
 
-            glm::mat4 viewMatrix = MathUtils::ToGLM(m_pCamera->GetViewMatrix());
             float aspect = static_cast<float>(m_width) / static_cast<float>(m_height);
             glm::mat4 projectionMatrix = glm::perspective(glm::radians(45.0f), aspect, 0.1f, 100.0f);
-            glm::mat4 modelMatrix = MathUtils::ToGLM(object.GetModelMatrix());
 
-			// Set the uniform variables in the shader
-            SetMatrix4("u_modelMatrix", modelMatrix);
-			SetMatrix4("u_viewMatrix", viewMatrix);
-			SetMatrix4("u_projectionMatrix", projectionMatrix);
+            // Set common uniforms
+			SetUniformFloat("u_ambientStrength", m_ambientStrength);
+			SetUniformFloat("u_specularStrength", m_specularStrength);
+			SetUniformFloat("u_shininess", m_shininess);
+            SetUniformMatrix4("u_model", MathUtils::ToGLM(object.GetModelMatrix()));
+            SetUniformMatrix4("u_view", MathUtils::ToGLM(m_pCamera->GetViewMatrix()));
+            SetUniformMatrix4("u_projection", projectionMatrix);
+
+            // Special case: light sphere
+            if (object.IsEmitingLight())
+            {
+                SetUniformVec3("u_lightPos", MathUtils::ToGLM(object.GetCenterPosition()));
+                SetUniformVec3("u_viewPos", MathUtils::ToGLM(m_pCamera->GetPosition()));
+                SetUniformVec4("u_lightColor", MathUtils::ToGLM(object.GetColor().ReturnAsVec4()));
+
+                // Force vertex color to white so it appears white
+                SetUniformVec4("u_vertexColorOverride", MathUtils::ToGLM(object.GetColor().ReturnAsVec4()));
+            }
+            else
+            {
+                // Optional: reset override to no-op if your shader expects default value
+                SetUniformVec4("u_vertexColorOverride", glm::vec4(0.0f));
+            }
 
             glBindVertexArray(object.GetVAO());
-            glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, object.GetEBO()); // Bind EBO
-            glDrawElements(GL_TRIANGLES, object.GetVertexCount(), GL_UNSIGNED_INT, 0); // Use indices
+            glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, object.GetEBO());
+            glDrawElements(GL_TRIANGLES, object.GetIndicesCount(), GL_UNSIGNED_INT, 0);
         }
 
-        void OpenGLRenderer::OpenGLRendererImpl::SetMatrix4(const std::string& name, const glm::mat4& matrix)
+        void OpenGLRenderer::OpenGLRendererImpl::SetUniformFloat(const std::string& name, float value)
         {
-            glUniformMatrix4fv(
-                glGetUniformLocation(
-                    m_shader->GetProgram(),
-					name.c_str()
-                ),
-                1,
-                GL_FALSE,
-                glm::value_ptr(matrix)
-            );
+            int location = glGetUniformLocation(m_shader->GetProgram(), name.c_str());
+            if (location == -1)
+            {
+                spdlog::warn("Uniform '{}' not found in shader.", name);
+                return;
+            }
+            glUniform1f(location, value);
+        }
+
+
+        void OpenGLRenderer::OpenGLRendererImpl::SetUniformVec3(const std::string& name, const glm::vec3& vector)
+        {
+            int location = glGetUniformLocation(m_shader->GetProgram(), name.c_str());
+            if (location == -1)
+            {
+                spdlog::warn("Uniform '{}' not found in shader.", name);
+                return;
+            }
+
+            glUniform3f(location, vector.x, vector.y, vector.z);
+        }
+
+        void OpenGLRenderer::OpenGLRendererImpl::SetUniformVec4(const std::string& name, const glm::vec4& matrix)
+        {
+			int location = glGetUniformLocation(m_shader->GetProgram(), name.c_str());
+			if (location == -1)
+			{
+				spdlog::warn("Uniform '{}' not found in shader.", name);
+				return;
+			}
+			glUniform4f(location, matrix.r, matrix.g, matrix.b, matrix.a);
+        }
+
+        void OpenGLRenderer::OpenGLRendererImpl::SetUniformMatrix4(const std::string& name, const glm::mat4& matrix)
+        {
+            int location = glGetUniformLocation(m_shader->GetProgram(), name.c_str());
+            if (location == -1)
+            {
+                spdlog::warn("Uniform '{}' not found in shader.", name);
+                return;
+            }
+
+            glUniformMatrix4fv(location, 1, GL_FALSE, glm::value_ptr(matrix));
         }
 	}
 }

@@ -8,7 +8,8 @@ namespace Andromeda
 	namespace Rendering
 	{
 		RenderableObjectOpenGLBase::RenderableObjectOpenGLBase(const Math::Vec3& centerPosition, const Space::Color& color, const VertexLayout& vertexLayout)
-			: m_VBO{ 0 }
+			: m_isEmitingLight{ false }
+			, m_VBO{ 0 }
 			, m_VAO{ 0 }
 			, m_EBO{ 0 }
 			, m_centerPosition{ MathUtils::ToGLM(centerPosition) }
@@ -16,10 +17,19 @@ namespace Andromeda
 			, m_scale{ 1.0f, 1.0f, 1.0f }
 			, m_vertexLayout{ vertexLayout }
 			, m_modelMatrix{ glm::mat4(1.0f) }
+			, m_color{ color }
+			, m_translationMatrix{}
+			, m_rotationMatrix{}
+			, m_scaleMatrix{}
 		{
 		}
 
 		RenderableObjectOpenGLBase::~RenderableObjectOpenGLBase() = default;
+
+		bool RenderableObjectOpenGLBase::IsEmitingLight() const
+		{
+			return m_isEmitingLight;
+		}
 
 		unsigned int RenderableObjectOpenGLBase::GetVBO() const
 		{
@@ -38,7 +48,12 @@ namespace Andromeda
 
 		unsigned int RenderableObjectOpenGLBase::GetVertexCount() const
 		{
-			return m_vertexCount;
+			return static_cast<unsigned int>(m_vertices.size());
+		}
+
+		unsigned int RenderableObjectOpenGLBase::GetIndicesCount() const
+		{
+			return static_cast<unsigned int>(m_indices.size());
 		}
 
 		std::vector<Vertex> RenderableObjectOpenGLBase::GetVertices() const
@@ -46,9 +61,29 @@ namespace Andromeda
 			return m_vertices;
 		}
 
+		std::vector<unsigned int> RenderableObjectOpenGLBase::GetIndices() const
+		{
+			return m_indices;
+		}
+
+		Math::Vec3 RenderableObjectOpenGLBase::GetCenterPosition() const
+		{
+			return MathUtils::FromGLM(m_centerPosition);
+		}
+
 		Math::Mat4 RenderableObjectOpenGLBase::GetModelMatrix() const
 		{
 			return MathUtils::FromGLM(m_modelMatrix);
+		}
+
+		Space::Color RenderableObjectOpenGLBase::GetColor() const
+		{
+			return m_color;
+		}
+
+		void RenderableObjectOpenGLBase::SetEmitingLight(bool isEmitingLight)
+		{
+			m_isEmitingLight = isEmitingLight;
 		}
 
 		void RenderableObjectOpenGLBase::SetModelMatrix(const Math::Mat4& modelMatrix)
@@ -98,11 +133,6 @@ namespace Andromeda
 			UpdateModelMatrix(TransformationType::SCALE);
 		}
 
-		Math::Vec3 RenderableObjectOpenGLBase::GetCenterPosition() const
-		{
-			return MathUtils::FromGLM(m_centerPosition);
-		}
-
 		Math::Vec3 RenderableObjectOpenGLBase::GetRotation() const
 		{
 			return MathUtils::FromGLM(m_rotation);
@@ -120,8 +150,6 @@ namespace Andromeda
 			GenerateAndBindElementBuffer(indices);
 			SetVertexAttributePointers();
 			UnbindVertexAttributes();
-
-			m_vertexCount = static_cast<unsigned int>(indices.size());
 		}
 
 		void RenderableObjectOpenGLBase::CreateAndBindVertexAttributes()

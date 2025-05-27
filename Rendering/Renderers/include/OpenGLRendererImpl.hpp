@@ -35,25 +35,42 @@ namespace Andromeda
 			unsigned int GetDepthBuffer() const;
 			int GetWidth() const;
 			int GetHeight() const;
-
+			float GetAmbientStrength() const;
+			float GetSpecularStrength() const;
+			float GetShininess() const;
+			// Setters
 			void SetCamera(Camera* camera);
+			void SetAmbientStrength(float ambientStrength);
+			void SetSpecularStrength(float specularStrength);
+			void SetShininess(float shininess);
 
 		private:
 			void InitFrameBuffer();
 			void CreateShader();
 			void GenerateAndBindFrameBuffer();
 			void GenerateAndBindFrameBufferTexture();
+			void CreateColorTexture();
+			void CreateDepthRenderBuffer();
+			void SetDrawBuffer();
+			void CheckFBOStatus();
 			void ConfigureFrameBufferTexture();
 			void UnbindFrameBuffer() const;
 			void RenderObject(const IRenderableObjectOpenGL& object);
-			void SetMatrix4(const std::string& name, const glm::mat4& matrix);
+			void SetUniformFloat(const std::string& name, float value);
+			void SetUniformVec3(const std::string& name, const glm::vec3& matrix);
+			void SetUniformVec4(const std::string& name, const glm::vec4& matrix);
+			void SetUniformMatrix4(const std::string& name, const glm::mat4& matrix);
 
+		private:
 			bool m_isInitialized;
 			unsigned int m_FBO;
 			unsigned int m_FBOTexture;
 			unsigned int m_depthBuffer;
 			int m_width;
 			int m_height;
+			float m_ambientStrength;
+			float m_specularStrength;
+			float m_shininess;
 			OpenGLShader* m_shader;
 			glm::mat4 m_projectionMatrix;
 			Camera* m_pCamera;

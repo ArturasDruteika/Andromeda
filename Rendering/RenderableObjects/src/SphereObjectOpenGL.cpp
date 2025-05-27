@@ -16,6 +16,11 @@ namespace Andromeda
 			delete m_pSphereObjectOpenGLImpl;
 		}
 
+		bool SphereObjectOpenGL::IsEmitingLight() const
+		{
+			return m_pSphereObjectOpenGLImpl->IsEmitingLight();
+		}
+
 		unsigned int SphereObjectOpenGL::GetVBO() const
 		{
 			return m_pSphereObjectOpenGLImpl->GetVBO();
@@ -36,9 +41,19 @@ namespace Andromeda
 			return m_pSphereObjectOpenGLImpl->GetVertexCount();
 		}
 
+		unsigned int SphereObjectOpenGL::GetIndicesCount() const
+		{
+			return m_pSphereObjectOpenGLImpl->GetIndicesCount();
+		}
+
 		std::vector<Vertex> SphereObjectOpenGL::GetVertices() const
 		{
 			return m_pSphereObjectOpenGLImpl->GetVertices();
+		}
+
+		Math::Vec3 SphereObjectOpenGL::GetCenterPosition() const
+		{
+			return m_pSphereObjectOpenGLImpl->GetCenterPosition();
 		}
 
 		Math::Mat4 SphereObjectOpenGL::GetModelMatrix() const
@@ -46,9 +61,14 @@ namespace Andromeda
 			return m_pSphereObjectOpenGLImpl->GetModelMatrix();
 		}
 
-		void SphereObjectOpenGL::SetRadius(float radius)
+		Space::Color SphereObjectOpenGL::GetColor() const
 		{
-			m_pSphereObjectOpenGLImpl->SetRadius(radius);
+			return m_pSphereObjectOpenGLImpl->GetColor();
+		}
+
+		void SphereObjectOpenGL::SetEmitingLight(bool isEmitingLight)
+		{
+			m_pSphereObjectOpenGLImpl->SetEmitingLight(isEmitingLight);
 		}
 
 		void SphereObjectOpenGL::SetModelMatrix(const Math::Mat4& modelMatrix)
@@ -96,11 +116,6 @@ namespace Andromeda
 			return m_pSphereObjectOpenGLImpl->GetRadius();
 		}
 
-		Math::Vec3 SphereObjectOpenGL::GetCenterPosition() const
-		{
-			return m_pSphereObjectOpenGLImpl->GetCenterPosition();
-		}
-
 		Math::Vec3 SphereObjectOpenGL::GetRotation() const
 		{
 			return m_pSphereObjectOpenGLImpl->GetRotation();
@@ -109,6 +124,11 @@ namespace Andromeda
 		Math::Vec3 SphereObjectOpenGL::GetScale() const
 		{
 			return m_pSphereObjectOpenGLImpl->GetScale();
+		}
+
+		void SphereObjectOpenGL::SetRadius(float radius)
+		{
+			m_pSphereObjectOpenGLImpl->SetRadius(radius);
 		}
 	}
 }

@@ -16,6 +16,11 @@ namespace Andromeda
 			delete m_pCubeObjectOpenGLImpl;
 		}
 
+		bool CubeObjectOpenGL::IsEmitingLight() const
+		{
+			return m_pCubeObjectOpenGLImpl->IsEmitingLight();
+		}
+
 		unsigned int CubeObjectOpenGL::GetVBO() const
 		{
 			return m_pCubeObjectOpenGLImpl->GetVBO();
@@ -36,14 +41,34 @@ namespace Andromeda
 			return m_pCubeObjectOpenGLImpl->GetVertexCount();
 		}
 
+		unsigned int CubeObjectOpenGL::GetIndicesCount() const
+		{
+			return m_pCubeObjectOpenGLImpl->GetIndicesCount();
+		}
+
 		std::vector<Vertex> CubeObjectOpenGL::GetVertices() const
 		{
 			return m_pCubeObjectOpenGLImpl->GetVertices();
 		}
 
+		Math::Vec3 CubeObjectOpenGL::GetCenterPosition() const
+		{
+			return m_pCubeObjectOpenGLImpl->GetCenterPosition();
+		}
+
 		Math::Mat4 CubeObjectOpenGL::GetModelMatrix() const
 		{
 			return m_pCubeObjectOpenGLImpl->GetModelMatrix();
+		}
+
+		Space::Color CubeObjectOpenGL::GetColor() const
+		{
+			return m_pCubeObjectOpenGLImpl->GetColor();
+		}
+
+		void CubeObjectOpenGL::SetEmitingLight(bool isEmitingLight)
+		{
+			m_pCubeObjectOpenGLImpl->SetEmitingLight(isEmitingLight);
 		}
 
 		void CubeObjectOpenGL::SetModelMatrix(const Math::Mat4& modelMatrix)
@@ -89,11 +114,6 @@ namespace Andromeda
 		float CubeObjectOpenGL::GetHalfExtent() const
 		{
 			return m_pCubeObjectOpenGLImpl->GetHalfExtent();
-		}
-
-		Math::Vec3 CubeObjectOpenGL::GetCenterPosition() const
-		{
-			return m_pCubeObjectOpenGLImpl->GetCenterPosition();
 		}
 
 		Math::Vec3 CubeObjectOpenGL::GetRotation() const

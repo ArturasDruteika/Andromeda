@@ -113,6 +113,5 @@ namespace Andromeda
         {
             m_viewMatrix = glm::lookAt(m_position, m_targetCoords, m_up);
         }
-
     }
 }

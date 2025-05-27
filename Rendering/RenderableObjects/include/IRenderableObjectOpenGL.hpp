@@ -22,6 +22,7 @@
 #include "../../Vertices/include/VertexLayouts.hpp"
 #include "../../Vertices/include/Vertex.hpp"
 #include "LinearAlgebraDataTypes.hpp"
+#include "Colors.hpp"
 
 
 namespace Andromeda
@@ -35,13 +36,18 @@ namespace Andromeda
 			virtual ~IRenderableObjectOpenGL();
 
 			// Getters
+			virtual bool IsEmitingLight() const = 0;
 			virtual unsigned int GetVBO() const = 0;
 			virtual unsigned int GetVAO() const = 0;
 			virtual unsigned int GetEBO() const = 0;
 			virtual unsigned int GetVertexCount() const = 0;
+			virtual unsigned int GetIndicesCount() const = 0;
 			virtual std::vector<Vertex> GetVertices() const = 0;
+			virtual Math::Vec3 GetCenterPosition() const = 0;
 			virtual Math::Mat4 GetModelMatrix() const = 0;
+			virtual Space::Color GetColor() const = 0;
 			// Setters
+			virtual void SetEmitingLight(bool isEmitingLight) = 0;
 			virtual void SetModelMatrix(const Math::Mat4& modelMatrix) = 0;
 			// Transformation operations
 			virtual void Translate(const Math::Vec3& translation) = 0;
