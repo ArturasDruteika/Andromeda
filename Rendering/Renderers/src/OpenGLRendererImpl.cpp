@@ -264,7 +264,7 @@ namespace Andromeda
             SetUniformMatrix4("u_projection", projectionMatrix);
 
             // Special case: light sphere
-            if (object.GetIndicesCount() == 238800)
+            if (object.IsEmitingLight())
             {
                 glm::vec3 lightWorldPos = MathUtils::ToGLM(object.GetCenterPosition());
                 glm::vec3 cameraPos = MathUtils::ToGLM(m_pCamera->GetPosition());

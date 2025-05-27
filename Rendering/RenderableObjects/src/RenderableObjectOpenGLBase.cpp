@@ -8,7 +8,8 @@ namespace Andromeda
 	namespace Rendering
 	{
 		RenderableObjectOpenGLBase::RenderableObjectOpenGLBase(const Math::Vec3& centerPosition, const Space::Color& color, const VertexLayout& vertexLayout)
-			: m_VBO{ 0 }
+			: m_isEmitingLight{ false }
+			, m_VBO{ 0 }
 			, m_VAO{ 0 }
 			, m_EBO{ 0 }
 			, m_centerPosition{ MathUtils::ToGLM(centerPosition) }
@@ -24,6 +25,11 @@ namespace Andromeda
 		}
 
 		RenderableObjectOpenGLBase::~RenderableObjectOpenGLBase() = default;
+
+		bool RenderableObjectOpenGLBase::IsEmitingLight() const
+		{
+			return m_isEmitingLight;
+		}
 
 		unsigned int RenderableObjectOpenGLBase::GetVBO() const
 		{
@@ -73,6 +79,11 @@ namespace Andromeda
 		Space::Color RenderableObjectOpenGLBase::GetColor() const
 		{
 			return m_color;
+		}
+
+		void RenderableObjectOpenGLBase::SetEmitingLight(bool isEmitingLight)
+		{
+			m_isEmitingLight = isEmitingLight;
 		}
 
 		void RenderableObjectOpenGLBase::SetModelMatrix(const Math::Mat4& modelMatrix)

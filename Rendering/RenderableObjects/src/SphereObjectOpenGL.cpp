@@ -16,6 +16,11 @@ namespace Andromeda
 			delete m_pSphereObjectOpenGLImpl;
 		}
 
+		bool SphereObjectOpenGL::IsEmitingLight() const
+		{
+			return m_pSphereObjectOpenGLImpl->IsEmitingLight();
+		}
+
 		unsigned int SphereObjectOpenGL::GetVBO() const
 		{
 			return m_pSphereObjectOpenGLImpl->GetVBO();
@@ -61,9 +66,9 @@ namespace Andromeda
 			return m_pSphereObjectOpenGLImpl->GetColor();
 		}
 
-		void SphereObjectOpenGL::SetRadius(float radius)
+		void SphereObjectOpenGL::SetEmitingLight(bool isEmitingLight)
 		{
-			m_pSphereObjectOpenGLImpl->SetRadius(radius);
+			m_pSphereObjectOpenGLImpl->SetEmitingLight(isEmitingLight);
 		}
 
 		void SphereObjectOpenGL::SetModelMatrix(const Math::Mat4& modelMatrix)
@@ -119,6 +124,11 @@ namespace Andromeda
 		Math::Vec3 SphereObjectOpenGL::GetScale() const
 		{
 			return m_pSphereObjectOpenGLImpl->GetScale();
+		}
+
+		void SphereObjectOpenGL::SetRadius(float radius)
+		{
+			m_pSphereObjectOpenGLImpl->SetRadius(radius);
 		}
 	}
 }

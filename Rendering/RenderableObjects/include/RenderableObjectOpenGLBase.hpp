@@ -28,6 +28,7 @@ namespace Andromeda
 			RenderableObjectOpenGLBase& operator=(RenderableObjectOpenGLBase&& other) noexcept = delete;	// Prevent Move Assignment
 
 			// Getters
+			bool IsEmitingLight() const;
 			unsigned int GetVBO() const;
 			unsigned int GetVAO() const;
 			unsigned int GetEBO() const;
@@ -41,6 +42,7 @@ namespace Andromeda
 			Math::Mat4 GetModelMatrix() const;
 			Space::Color GetColor() const;
 			// Setters
+			void SetEmitingLight(bool isEmitingLight);
 			void SetModelMatrix(const Math::Mat4& modelMatrix);
 			// Transformation operations
 			void Translate(const Math::Vec3& translation);
@@ -66,6 +68,7 @@ namespace Andromeda
 			glm::mat4 ConstructScaleMatrix() const;
 
 		protected:
+			bool m_isEmitingLight;
 			unsigned int m_VBO;
 			unsigned int m_VAO;
 			unsigned int m_EBO;
