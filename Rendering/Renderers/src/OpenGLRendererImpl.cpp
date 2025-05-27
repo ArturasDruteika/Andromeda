@@ -25,6 +25,8 @@ namespace Andromeda
 			, m_projectionMatrix{ glm::mat4(1.0f) }
 			, m_pCamera{ nullptr }
 			, m_depthBuffer{ 0 }
+			, m_ambientStrength{ 0.1f }
+			, m_specularStrength{ 0.5f }
         {
             glClearColor(
                 BACKGROUND_COLOR_DEFAULT.r,
@@ -162,6 +164,16 @@ namespace Andromeda
             return m_height;
         }
 
+        float OpenGLRenderer::OpenGLRendererImpl::GetAmbientStrength() const
+        {
+            return m_ambientStrength;
+        }
+
+        float OpenGLRenderer::OpenGLRendererImpl::GetSpecularStrength() const
+        {
+            return m_specularStrength;
+        }
+
         void OpenGLRenderer::OpenGLRendererImpl::SetCamera(Camera* camera)
         {
 			if (camera == nullptr)
@@ -170,6 +182,16 @@ namespace Andromeda
 				return;
 			}
 			m_pCamera = camera;
+        }
+
+        void OpenGLRenderer::OpenGLRendererImpl::SetAmbientStrength(float ambientStrength)
+        {
+			m_ambientStrength = ambientStrength;
+        }
+
+        void OpenGLRenderer::OpenGLRendererImpl::SetSpecularStrength(float specularStrength)
+        {
+			m_specularStrength = specularStrength;
         }
 
         void OpenGLRenderer::OpenGLRendererImpl::InitFrameBuffer()
@@ -270,6 +292,8 @@ namespace Andromeda
             glm::mat4 modelMatrix = MathUtils::ToGLM(object.GetModelMatrix());
 
             // Set common uniforms
+			SetUniformFloat("u_ambientStrength", m_ambientStrength);
+			SetUniformFloat("u_specularStrength", m_specularStrength);
             SetUniformMatrix4("u_model", modelMatrix);
             SetUniformMatrix4("u_view", viewMatrix);
             SetUniformMatrix4("u_projection", projectionMatrix);
@@ -282,7 +306,7 @@ namespace Andromeda
 
                 SetUniformVec3("u_lightPos", lightWorldPos);
                 SetUniformVec3("u_viewPos", cameraPos);
-                SetUniformVec3("u_lightColor", { 1.0f, 1.0f, 1.0f });
+                SetUniformVec4("u_lightColor", MathUtils::ToGLM(object.GetColor().ReturnAsVec4()));
 
                 // Force vertex color to white so it appears white
                 SetUniformVec4("u_vertexColorOverride", MathUtils::ToGLM(object.GetColor().ReturnAsVec4()));
@@ -296,6 +320,17 @@ namespace Andromeda
             glBindVertexArray(object.GetVAO());
             glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, object.GetEBO());
             glDrawElements(GL_TRIANGLES, object.GetIndicesCount(), GL_UNSIGNED_INT, 0);
+        }
+
+        void OpenGLRenderer::OpenGLRendererImpl::SetUniformFloat(const std::string& name, float value)
+        {
+            int location = glGetUniformLocation(m_shader->GetProgram(), name.c_str());
+            if (location == -1)
+            {
+                spdlog::warn("Uniform '{}' not found in shader.", name);
+                return;
+            }
+            glUniform1f(location, value);
         }
 
 

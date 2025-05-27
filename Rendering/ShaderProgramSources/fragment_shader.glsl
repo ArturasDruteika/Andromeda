@@ -6,9 +6,11 @@ in vec4 vertexColor;
 
 out vec4 FragColor;
 
+uniform float u_ambientStrength;
+uniform float u_specularStrength;
 uniform vec3 u_lightPos;
 uniform vec3 u_viewPos;
-uniform vec3 u_lightColor;
+uniform vec4 u_lightColor;
 uniform vec4 u_vertexColorOverride;
 
 void main()
@@ -23,20 +25,18 @@ void main()
     }
 
     // 2. Standard Phong lighting
-    float ambientStrength = 0.1;
-    vec3 ambient = ambientStrength * u_lightColor;
+    vec4 ambient = u_ambientStrength * u_lightColor;
 
     vec3 norm = normalize(fragNormal);
     vec3 lightDir = normalize(u_lightPos - fragPosition);
     float diff = max(dot(norm, lightDir), 0.0);
-    vec3 diffuse = diff * u_lightColor;
+    vec4 diffuse = diff * u_lightColor;
 
-    float specularStrength = 0.5;
     vec3 viewDir = normalize(u_viewPos - fragPosition);
     vec3 reflectDir = reflect(-lightDir, norm);
     float spec = pow(max(dot(viewDir, reflectDir), 0.0), 32.0);
-    vec3 specular = specularStrength * spec * u_lightColor;
+    vec4 specular = u_specularStrength * spec * u_lightColor;
 
-    vec3 lighting = (ambient + diffuse + specular) * effectiveColor.rgb;
-    FragColor = vec4(lighting, effectiveColor.a);
+    vec4 lighting = (ambient + diffuse + specular) * effectiveColor;
+    FragColor = vec4(lighting.rgb, effectiveColor.a);
 }

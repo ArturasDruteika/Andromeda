@@ -35,8 +35,12 @@ namespace Andromeda
 			unsigned int GetDepthBuffer() const;
 			int GetWidth() const;
 			int GetHeight() const;
-
+			float GetAmbientStrength() const;
+			float GetSpecularStrength() const;
+			// Setters
 			void SetCamera(Camera* camera);
+			void SetAmbientStrength(float ambientStrength);
+			void SetSpecularStrength(float specularStrength);
 
 		private:
 			void InitFrameBuffer();
@@ -50,16 +54,20 @@ namespace Andromeda
 			void ConfigureFrameBufferTexture();
 			void UnbindFrameBuffer() const;
 			void RenderObject(const IRenderableObjectOpenGL& object);
+			void SetUniformFloat(const std::string& name, float value);
 			void SetUniformVec3(const std::string& name, const glm::vec3& matrix);
 			void SetUniformVec4(const std::string& name, const glm::vec4& matrix);
 			void SetUniformMatrix4(const std::string& name, const glm::mat4& matrix);
 
+		private:
 			bool m_isInitialized;
 			unsigned int m_FBO;
 			unsigned int m_FBOTexture;
 			unsigned int m_depthBuffer;
 			int m_width;
 			int m_height;
+			float m_ambientStrength;
+			float m_specularStrength;
 			OpenGLShader* m_shader;
 			glm::mat4 m_projectionMatrix;
 			Camera* m_pCamera;
