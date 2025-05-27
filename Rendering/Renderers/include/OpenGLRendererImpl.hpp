@@ -47,6 +47,7 @@ namespace Andromeda
 			void UnbindFrameBuffer() const;
 			void RenderObject(const IRenderableObjectOpenGL& object);
 			void SetUniformVec3(const std::string& name, const glm::vec3& matrix);
+			void SetUniformVec4(const std::string& name, const glm::vec4& matrix);
 			void SetUniformMatrix4(const std::string& name, const glm::mat4& matrix);
 
 			bool m_isInitialized;

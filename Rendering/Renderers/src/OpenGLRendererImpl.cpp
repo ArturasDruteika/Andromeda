@@ -249,7 +249,7 @@ namespace Andromeda
         {
             if (m_width == 0 || m_height == 0)
             {
-				spdlog::error("Framebuffer dimensions are zero. Cannot render object.");
+                spdlog::error("Framebuffer dimensions are zero. Cannot render object.");
                 return;
             }
 
@@ -258,27 +258,35 @@ namespace Andromeda
             glm::mat4 projectionMatrix = glm::perspective(glm::radians(45.0f), aspect, 0.1f, 100.0f);
             glm::mat4 modelMatrix = MathUtils::ToGLM(object.GetModelMatrix());
 
-			// Set the uniform variables in the shader
+            // Set common uniforms
             SetUniformMatrix4("u_model", modelMatrix);
             SetUniformMatrix4("u_view", viewMatrix);
             SetUniformMatrix4("u_projection", projectionMatrix);
 
+            // Special case: light sphere
             if (object.GetIndicesCount() == 238800)
             {
-                glm::vec3 lightWorldPos = MathUtils::ToGLM(object.GetCenterPosition()); // sphere center
-                glm::vec3 objectWorldPos = glm::vec3(modelMatrix[3]);    // translation part of model matrix
-                glm::vec3 lightDir = glm::normalize(lightWorldPos);
+                glm::vec3 lightWorldPos = MathUtils::ToGLM(object.GetCenterPosition());
                 glm::vec3 cameraPos = MathUtils::ToGLM(m_pCamera->GetPosition());
 
-				SetUniformVec3("u_lightPos", lightWorldPos);
-				SetUniformVec3("u_viewPos", cameraPos);
-				SetUniformVec3("u_lightColor", { 1.0f, 1.0f, 1.0f });
+                SetUniformVec3("u_lightPos", lightWorldPos);
+                SetUniformVec3("u_viewPos", cameraPos);
+                SetUniformVec3("u_lightColor", { 1.0f, 1.0f, 1.0f });
+
+                // Force vertex color to white so it appears white
+                SetUniformVec4("u_vertexColorOverride", MathUtils::ToGLM(object.GetColor().ReturnAsVec4()));
+            }
+            else
+            {
+                // Optional: reset override to no-op if your shader expects default value
+                SetUniformVec4("u_vertexColorOverride", glm::vec4(0.0f));
             }
 
             glBindVertexArray(object.GetVAO());
-            glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, object.GetEBO()); // Bind EBO
-            glDrawElements(GL_TRIANGLES, object.GetIndicesCount(), GL_UNSIGNED_INT, 0); // Use indices
+            glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, object.GetEBO());
+            glDrawElements(GL_TRIANGLES, object.GetIndicesCount(), GL_UNSIGNED_INT, 0);
         }
+
 
         void OpenGLRenderer::OpenGLRendererImpl::SetUniformVec3(const std::string& name, const glm::vec3& vector)
         {
@@ -292,6 +300,16 @@ namespace Andromeda
             glUniform3f(location, vector.x, vector.y, vector.z);
         }
 
+        void OpenGLRenderer::OpenGLRendererImpl::SetUniformVec4(const std::string& name, const glm::vec4& matrix)
+        {
+			int location = glGetUniformLocation(m_shader->GetProgram(), name.c_str());
+			if (location == -1)
+			{
+				spdlog::warn("Uniform '{}' not found in shader.", name);
+				return;
+			}
+			glUniform4f(location, matrix.r, matrix.g, matrix.b, matrix.a);
+        }
 
         void OpenGLRenderer::OpenGLRendererImpl::SetUniformMatrix4(const std::string& name, const glm::mat4& matrix)
         {
