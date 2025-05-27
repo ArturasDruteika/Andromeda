@@ -127,7 +127,7 @@ namespace Andromeda
             glViewport(0, 0, width, height);
             glDeleteFramebuffers(1, &m_FBO);
             glDeleteTextures(1, &m_FBOTexture);
-            glDeleteRenderbuffers(1, &m_depthBuffer); // Critical missing line
+            glDeleteRenderbuffers(1, &m_depthBuffer);
 
             InitFrameBuffer();
         }
@@ -208,35 +208,46 @@ namespace Andromeda
             glBindTexture(GL_TEXTURE_2D, m_FBOTexture);
         }
 
-        void OpenGLRenderer::OpenGLRendererImpl::ConfigureFrameBufferTexture()
+        void OpenGLRenderer::OpenGLRendererImpl::CreateColorTexture()
         {
-            // 1. Generate FBO
-			GenerateAndBindFrameBuffer();
-
-            // 2. Create color texture
             glGenTextures(1, &m_FBOTexture);
             glBindTexture(GL_TEXTURE_2D, m_FBOTexture);
             glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, m_width, m_height, 0, GL_RGBA, GL_UNSIGNED_BYTE, nullptr);
             glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
             glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
             glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, m_FBOTexture, 0);
+        }
 
-            // 3. Create depth renderbuffer
+        void OpenGLRenderer::OpenGLRendererImpl::CreateDepthRenderBuffer()
+        {
             glGenRenderbuffers(1, &m_depthBuffer);
             glBindRenderbuffer(GL_RENDERBUFFER, m_depthBuffer);
             glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH_COMPONENT24, m_width, m_height);
             glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_RENDERBUFFER, m_depthBuffer);
+        }
 
-            // 4. Set draw buffer
+        void OpenGLRenderer::OpenGLRendererImpl::SetDrawBuffer()
+        {
             GLenum drawBuffers[1] = { GL_COLOR_ATTACHMENT0 };
             glDrawBuffers(1, drawBuffers);
+        }
 
-            // 5. Check FBO status
+        void OpenGLRenderer::OpenGLRendererImpl::CheckFBOStatus()
+        {
             GLenum status = glCheckFramebufferStatus(GL_FRAMEBUFFER);
             if (status != GL_FRAMEBUFFER_COMPLETE)
             {
                 spdlog::error("Framebuffer incomplete! Status: 0x{:X}", status); // hex
             }
+        }
+
+        void OpenGLRenderer::OpenGLRendererImpl::ConfigureFrameBufferTexture()
+        {
+			GenerateAndBindFrameBuffer();
+            CreateColorTexture();
+            CreateDepthRenderBuffer();
+            SetDrawBuffer();
+            CheckFBOStatus();
         }
 
         void OpenGLRenderer::OpenGLRendererImpl::UnbindFrameBuffer() const

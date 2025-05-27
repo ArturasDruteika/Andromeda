@@ -43,6 +43,10 @@ namespace Andromeda
 			void CreateShader();
 			void GenerateAndBindFrameBuffer();
 			void GenerateAndBindFrameBufferTexture();
+			void CreateColorTexture();
+			void CreateDepthRenderBuffer();
+			void SetDrawBuffer();
+			void CheckFBOStatus();
 			void ConfigureFrameBufferTexture();
 			void UnbindFrameBuffer() const;
 			void RenderObject(const IRenderableObjectOpenGL& object);
