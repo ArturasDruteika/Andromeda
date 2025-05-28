@@ -301,79 +301,32 @@ namespace Andromeda
             glm::mat4 projectionMatrix = glm::perspective(glm::radians(45.0f), aspect, 0.1f, 100.0f);
 
             // Set common uniforms
-			SetUniformFloat("u_ambientStrength", m_ambientStrength);
-			SetUniformFloat("u_specularStrength", m_specularStrength);
-			SetUniformFloat("u_shininess", m_shininess);
-            SetUniformMatrix4("u_model", MathUtils::ToGLM(object.GetModelMatrix()));
-            SetUniformMatrix4("u_view", MathUtils::ToGLM(m_pCamera->GetViewMatrix()));
-            SetUniformMatrix4("u_projection", projectionMatrix);
+			m_shader->SetUniform("u_ambientStrength", m_ambientStrength);
+			m_shader->SetUniform("u_specularStrength", m_specularStrength);
+			m_shader->SetUniform("u_shininess", m_shininess);
+            m_shader->SetUniform("u_model", MathUtils::ToGLM(object.GetModelMatrix()));
+            m_shader->SetUniform("u_view", MathUtils::ToGLM(m_pCamera->GetViewMatrix()));
+            m_shader->SetUniform("u_projection", projectionMatrix);
 
             // Special case: light sphere
             if (object.IsEmitingLight())
             {
-                SetUniformVec3("u_lightPos", MathUtils::ToGLM(object.GetCenterPosition()));
-                SetUniformVec3("u_viewPos", MathUtils::ToGLM(m_pCamera->GetPosition()));
-                SetUniformVec4("u_lightColor", MathUtils::ToGLM(object.GetColor().ReturnAsVec4()));
+                m_shader->SetUniform("u_lightPos", MathUtils::ToGLM(object.GetCenterPosition()));
+                m_shader->SetUniform("u_viewPos", MathUtils::ToGLM(m_pCamera->GetPosition()));
+                m_shader->SetUniform("u_lightColor", MathUtils::ToGLM(object.GetColor().ReturnAsVec4()));
 
                 // Force vertex color to white so it appears white
-                SetUniformVec4("u_vertexColorOverride", MathUtils::ToGLM(object.GetColor().ReturnAsVec4()));
+                m_shader->SetUniform("u_vertexColorOverride", MathUtils::ToGLM(object.GetColor().ReturnAsVec4()));
             }
             else
             {
                 // Optional: reset override to no-op if your shader expects default value
-                SetUniformVec4("u_vertexColorOverride", glm::vec4(0.0f));
+                m_shader->SetUniform("u_vertexColorOverride", glm::vec4(0.0f));
             }
 
             glBindVertexArray(object.GetVAO());
             glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, object.GetEBO());
             glDrawElements(GL_TRIANGLES, object.GetIndicesCount(), GL_UNSIGNED_INT, 0);
-        }
-
-        void OpenGLRenderer::OpenGLRendererImpl::SetUniformFloat(const std::string& name, float value)
-        {
-            int location = glGetUniformLocation(m_shader->GetProgram(), name.c_str());
-            if (location == -1)
-            {
-                spdlog::warn("Uniform '{}' not found in shader.", name);
-                return;
-            }
-            glUniform1f(location, value);
-        }
-
-
-        void OpenGLRenderer::OpenGLRendererImpl::SetUniformVec3(const std::string& name, const glm::vec3& vector)
-        {
-            int location = glGetUniformLocation(m_shader->GetProgram(), name.c_str());
-            if (location == -1)
-            {
-                spdlog::warn("Uniform '{}' not found in shader.", name);
-                return;
-            }
-
-            glUniform3f(location, vector.x, vector.y, vector.z);
-        }
-
-        void OpenGLRenderer::OpenGLRendererImpl::SetUniformVec4(const std::string& name, const glm::vec4& matrix)
-        {
-			int location = glGetUniformLocation(m_shader->GetProgram(), name.c_str());
-			if (location == -1)
-			{
-				spdlog::warn("Uniform '{}' not found in shader.", name);
-				return;
-			}
-			glUniform4f(location, matrix.r, matrix.g, matrix.b, matrix.a);
-        }
-
-        void OpenGLRenderer::OpenGLRendererImpl::SetUniformMatrix4(const std::string& name, const glm::mat4& matrix)
-        {
-            int location = glGetUniformLocation(m_shader->GetProgram(), name.c_str());
-            if (location == -1)
-            {
-                spdlog::warn("Uniform '{}' not found in shader.", name);
-                return;
-            }
-
-            glUniformMatrix4fv(location, 1, GL_FALSE, glm::value_ptr(matrix));
         }
 	}
 }

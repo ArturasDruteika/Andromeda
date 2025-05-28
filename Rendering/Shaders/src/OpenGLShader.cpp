@@ -1,7 +1,7 @@
 #include "../include/OpenGLShader.hpp"
 #include "FileOperations.hpp"
 #include "glad/gl.h"
-//#include <glm/gtc/type_ptr.hpp>
+#include <glm/gtc/type_ptr.hpp>
 
 
 namespace Andromeda
@@ -41,23 +41,52 @@ namespace Andromeda
 			glUseProgram(0);
 		}
 
-		//void OpenGLShader::SetUniform(const std::string& name, float value)
-		//{
-		//	int location = GetUniformLocation(name);
-		//	if (location != -1)
-		//	{
-		//		glUniform1f(location, value);
-		//	}
-		//}
+		void OpenGLShader::SetUniform(const std::string& name, float value) const
+		{
+			int location = glGetUniformLocation(m_program, name.c_str());
+			if (location == -1)
+			{
+				spdlog::warn("Uniform '{}' not found in shader.", name);
+				return;
+			}
+			glUniform1f(location, value);
+		}
 
-		//void OpenGLShader::SetUniform(const std::string& name, const glm::mat4& matrix)
-		//{
-		//	int location = GetUniformLocation(name);
-		//	if (location != -1)
-		//	{
-		//		glUniformMatrix4fv(location, 1, GL_FALSE, glm::value_ptr(matrix));
-		//	}
-		//}
+
+		void OpenGLShader::SetUniform(const std::string& name, const glm::vec3& vector) const
+		{
+			int location = glGetUniformLocation(m_program, name.c_str());
+			if (location == -1)
+			{
+				spdlog::warn("Uniform '{}' not found in shader.", name);
+				return;
+			}
+
+			glUniform3f(location, vector.x, vector.y, vector.z);
+		}
+
+		void OpenGLShader::SetUniform(const std::string& name, const glm::vec4& matrix) const
+		{
+			int location = glGetUniformLocation(m_program, name.c_str());
+			if (location == -1)
+			{
+				spdlog::warn("Uniform '{}' not found in shader.", name);
+				return;
+			}
+			glUniform4f(location, matrix.r, matrix.g, matrix.b, matrix.a);
+		}
+
+		void OpenGLShader::SetUniform(const std::string& name, const glm::mat4& matrix) const
+		{
+			int location = glGetUniformLocation(m_program, name.c_str());
+			if (location == -1)
+			{
+				spdlog::warn("Uniform '{}' not found in shader.", name);
+				return;
+			}
+
+			glUniformMatrix4fv(location, 1, GL_FALSE, glm::value_ptr(matrix));
+		}
 
 		void OpenGLShader::SetVertexShaderProgramSource(const std::string& filepath)
 		{

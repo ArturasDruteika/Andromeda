@@ -3,6 +3,7 @@
 
 
 #include "pch.hpp"
+#include "glm/glm.hpp"
 
 
 namespace Andromeda
@@ -18,8 +19,10 @@ namespace Andromeda
 
 			void Bind() const;
 			void UnBind() const;
-			//void SetUniform(const std::string& name, float value);
-			//void SetUniform(const std::string& name, const glm::mat4& matrix);
+			void SetUniform(const std::string& name, float value) const;
+			void SetUniform(const std::string& name, const glm::vec3& vector) const;
+			void SetUniform(const std::string& name, const glm::vec4& vector) const;
+			void SetUniform(const std::string& name, const glm::mat4& matrix) const;
 
 			void SetVertexShaderProgramSource(const std::string& filepath);
 			std::string GetVertexShaderSourceCode();
@@ -37,6 +40,8 @@ namespace Andromeda
 			unsigned int m_program;
 			std::string m_vertexShaderSourceCode;
 			std::string m_fragmentShaderSourceCode;
+			std::string m_vertexShaderGridSourceCode;
+			std::string m_fragmentShaderGridSourceCode;
 			std::unordered_map<std::string, int> m_uniformLocationCache;
 		};
 	}

@@ -56,10 +56,6 @@ namespace Andromeda
 			void ConfigureFrameBufferTexture();
 			void UnbindFrameBuffer() const;
 			void RenderObject(const IRenderableObjectOpenGL& object);
-			void SetUniformFloat(const std::string& name, float value);
-			void SetUniformVec3(const std::string& name, const glm::vec3& matrix);
-			void SetUniformVec4(const std::string& name, const glm::vec4& matrix);
-			void SetUniformMatrix4(const std::string& name, const glm::mat4& matrix);
 
 		private:
 			bool m_isInitialized;
