@@ -1,20 +1,13 @@
 #include "../include/OpenGLShader.hpp"
 #include "FileOperations.hpp"
 #include "glad/gl.h"
-//#include <glm/gtc/type_ptr.hpp>
+#include <glm/gtc/type_ptr.hpp>
 
 
 namespace Andromeda
 {
 	namespace Rendering
 	{
-		OpenGLShader::OpenGLShader()
-			: m_program{ 0 }
-			, m_vertexShaderSourceCode{}
-			, m_fragmentShaderSourceCode{}
-		{
-		}
-
 		OpenGLShader::OpenGLShader(const std::string& vertexCode, const std::string& fragmentCode)
 			: m_vertexShaderSourceCode{ vertexCode }
 			, m_fragmentShaderSourceCode{ fragmentCode }
@@ -31,6 +24,31 @@ namespace Andromeda
 			}
 		}
 
+		unsigned int OpenGLShader::GetProgram() const
+		{
+			return m_program;
+		}
+
+		std::string OpenGLShader::GetFragmentShaderSourceCode() const
+		{
+			return m_fragmentShaderSourceCode;
+		}
+
+		std::string OpenGLShader::GetVertexShaderSourceCode() const
+		{
+			return m_vertexShaderSourceCode;
+		}
+
+		void OpenGLShader::SetVertexShaderProgramSource(const std::string& filepath)
+		{
+			m_vertexShaderSourceCode = Utils::FileOperations::LoadFileAsString(filepath);
+		}
+
+		void OpenGLShader::SetFragmentShaderProgramSource(const std::string& filepath)
+		{
+			m_fragmentShaderSourceCode = Utils::FileOperations::LoadFileAsString(filepath);
+		}
+
 		void OpenGLShader::Bind() const
 		{
 			glUseProgram(m_program);
@@ -41,47 +59,51 @@ namespace Andromeda
 			glUseProgram(0);
 		}
 
-		//void OpenGLShader::SetUniform(const std::string& name, float value)
-		//{
-		//	int location = GetUniformLocation(name);
-		//	if (location != -1)
-		//	{
-		//		glUniform1f(location, value);
-		//	}
-		//}
-
-		//void OpenGLShader::SetUniform(const std::string& name, const glm::mat4& matrix)
-		//{
-		//	int location = GetUniformLocation(name);
-		//	if (location != -1)
-		//	{
-		//		glUniformMatrix4fv(location, 1, GL_FALSE, glm::value_ptr(matrix));
-		//	}
-		//}
-
-		void OpenGLShader::SetVertexShaderProgramSource(const std::string& filepath)
+		void OpenGLShader::SetUniform(const std::string& name, float value) const
 		{
-			m_vertexShaderSourceCode = Utils::FileOperations::LoadFileAsString(filepath);
+			int location = glGetUniformLocation(m_program, name.c_str());
+			if (location == -1)
+			{
+				spdlog::warn("Uniform '{}' not found in shader.", name);
+				return;
+			}
+			glUniform1f(location, value);
 		}
 
-		std::string OpenGLShader::GetVertexShaderSourceCode()
+
+		void OpenGLShader::SetUniform(const std::string& name, const glm::vec3& vector) const
 		{
-			return m_vertexShaderSourceCode;
+			int location = glGetUniformLocation(m_program, name.c_str());
+			if (location == -1)
+			{
+				spdlog::warn("Uniform '{}' not found in shader.", name);
+				return;
+			}
+
+			glUniform3f(location, vector.x, vector.y, vector.z);
 		}
 
-		void OpenGLShader::SetFragmentShaderProgramSource(const std::string& filepath)
+		void OpenGLShader::SetUniform(const std::string& name, const glm::vec4& matrix) const
 		{
-			m_fragmentShaderSourceCode = Utils::FileOperations::LoadFileAsString(filepath);
+			int location = glGetUniformLocation(m_program, name.c_str());
+			if (location == -1)
+			{
+				spdlog::warn("Uniform '{}' not found in shader.", name);
+				return;
+			}
+			glUniform4f(location, matrix.r, matrix.g, matrix.b, matrix.a);
 		}
 
-		std::string OpenGLShader::GetFragmentShaderSourceCode()
+		void OpenGLShader::SetUniform(const std::string& name, const glm::mat4& matrix) const
 		{
-			return m_fragmentShaderSourceCode;
-		}
+			int location = glGetUniformLocation(m_program, name.c_str());
+			if (location == -1)
+			{
+				spdlog::warn("Uniform '{}' not found in shader.", name);
+				return;
+			}
 
-		unsigned int OpenGLShader::GetProgram()
-		{
-			return m_program;
+			glUniformMatrix4fv(location, 1, GL_FALSE, glm::value_ptr(matrix));
 		}
 
 		unsigned int OpenGLShader::CompileShader(unsigned int type, const std::string& shaderSource)
