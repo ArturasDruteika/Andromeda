@@ -8,13 +8,6 @@ namespace Andromeda
 {
 	namespace Rendering
 	{
-		OpenGLShader::OpenGLShader()
-			: m_program{ 0 }
-			, m_vertexShaderSourceCode{}
-			, m_fragmentShaderSourceCode{}
-		{
-		}
-
 		OpenGLShader::OpenGLShader(const std::string& vertexCode, const std::string& fragmentCode)
 			: m_vertexShaderSourceCode{ vertexCode }
 			, m_fragmentShaderSourceCode{ fragmentCode }
@@ -29,6 +22,31 @@ namespace Andromeda
 				glDeleteProgram(m_program);
 				m_program = 0;
 			}
+		}
+
+		unsigned int OpenGLShader::GetProgram() const
+		{
+			return m_program;
+		}
+
+		std::string OpenGLShader::GetFragmentShaderSourceCode() const
+		{
+			return m_fragmentShaderSourceCode;
+		}
+
+		std::string OpenGLShader::GetVertexShaderSourceCode() const
+		{
+			return m_vertexShaderSourceCode;
+		}
+
+		void OpenGLShader::SetVertexShaderProgramSource(const std::string& filepath)
+		{
+			m_vertexShaderSourceCode = Utils::FileOperations::LoadFileAsString(filepath);
+		}
+
+		void OpenGLShader::SetFragmentShaderProgramSource(const std::string& filepath)
+		{
+			m_fragmentShaderSourceCode = Utils::FileOperations::LoadFileAsString(filepath);
 		}
 
 		void OpenGLShader::Bind() const
@@ -86,31 +104,6 @@ namespace Andromeda
 			}
 
 			glUniformMatrix4fv(location, 1, GL_FALSE, glm::value_ptr(matrix));
-		}
-
-		void OpenGLShader::SetVertexShaderProgramSource(const std::string& filepath)
-		{
-			m_vertexShaderSourceCode = Utils::FileOperations::LoadFileAsString(filepath);
-		}
-
-		std::string OpenGLShader::GetVertexShaderSourceCode()
-		{
-			return m_vertexShaderSourceCode;
-		}
-
-		void OpenGLShader::SetFragmentShaderProgramSource(const std::string& filepath)
-		{
-			m_fragmentShaderSourceCode = Utils::FileOperations::LoadFileAsString(filepath);
-		}
-
-		std::string OpenGLShader::GetFragmentShaderSourceCode()
-		{
-			return m_fragmentShaderSourceCode;
-		}
-
-		unsigned int OpenGLShader::GetProgram()
-		{
-			return m_program;
 		}
 
 		unsigned int OpenGLShader::CompileShader(unsigned int type, const std::string& shaderSource)
