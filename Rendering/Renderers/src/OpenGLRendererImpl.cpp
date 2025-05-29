@@ -17,7 +17,6 @@ namespace Andromeda
 
         OpenGLRenderer::OpenGLRendererImpl::OpenGLRendererImpl()
             : m_isInitialized{ false }
-            , m_shader{ nullptr }
             , m_FBO{ 0 }
             , m_FBOTexture{ 0 }
 			, m_width{ 0 }
@@ -35,17 +34,12 @@ namespace Andromeda
                 BACKGROUND_COLOR_DEFAULT.b,
                 BACKGROUND_COLOR_DEFAULT.a
             );
-            CreateShader();
+            InitShaders();
         }
 
         OpenGLRenderer::OpenGLRendererImpl::~OpenGLRendererImpl()
         {
-            if (m_shader != nullptr)
-            {
-                delete m_shader;
-            }
-            glDeleteFramebuffers(1, &m_FBO);
-            glDeleteTextures(1, &m_FBOTexture);
+            DeInit();
         }
 
         void OpenGLRenderer::OpenGLRendererImpl::Init(int width, int height)
@@ -65,11 +59,14 @@ namespace Andromeda
         void OpenGLRenderer::OpenGLRendererImpl::DeInit()
         {
             // Cleanup resources
-            if (m_shader != nullptr)
+            for (const auto& [shaderType, shader] : m_shadersMap)
             {
-                delete m_shader;
-                m_shader = nullptr;
+                if (shader != nullptr)
+                {
+                    delete shader;
+                }
             }
+            m_shadersMap.clear();
             glDeleteFramebuffers(1, &m_FBO);
             glDeleteTextures(1, &m_FBOTexture);
             glDeleteRenderbuffers(1, &m_depthBuffer);
@@ -98,9 +95,6 @@ namespace Andromeda
 
             // Disable blending for opaque objects
             glDisable(GL_BLEND);
-
-            // Use the shader program
-            glUseProgram(m_shader->GetProgram());
 
             // Render all scene objects
             for (const auto& [id, object] : scene.GetObjects())
@@ -219,13 +213,12 @@ namespace Andromeda
             m_isInitialized = true;
         }
 
-        void OpenGLRenderer::OpenGLRendererImpl::CreateShader()
+        void OpenGLRenderer::OpenGLRendererImpl::CreateShader(const ShaderOpenGLTypes& shaderType, const std::string& vertexShaderPath, const std::string& fragmentShaderPath)
         {
-            std::string vertexShaderFilePath = "shader_program_sources/vertex_shader.glsl";
-			std::string fragmentShaderFilePath = "shader_program_sources/fragment_shader.glsl";
-            std::string vertexShaderSource = Utils::FileOperations::LoadFileAsString(vertexShaderFilePath);
-            std::string fragmentShaderSource = Utils::FileOperations::LoadFileAsString(fragmentShaderFilePath);
-            m_shader = new OpenGLShader(vertexShaderSource, fragmentShaderSource);
+            std::string vertexShaderSource = Utils::FileOperations::LoadFileAsString(vertexShaderPath);
+            std::string fragmentShaderSource = Utils::FileOperations::LoadFileAsString(fragmentShaderPath);
+            OpenGLShader* shader = new OpenGLShader(vertexShaderSource, fragmentShaderSource);
+            m_shadersMap.insert({ shaderType, shader });
         }
 
         void OpenGLRenderer::OpenGLRendererImpl::GenerateAndBindFrameBuffer()
@@ -300,33 +293,45 @@ namespace Andromeda
             float aspect = static_cast<float>(m_width) / static_cast<float>(m_height);
             glm::mat4 projectionMatrix = glm::perspective(glm::radians(45.0f), aspect, 0.1f, 100.0f);
 
+            glUseProgram(m_shadersMap.at(ShaderOpenGLTypes::RenderableObjects)->GetProgram());
+
             // Set common uniforms
-			m_shader->SetUniform("u_ambientStrength", m_ambientStrength);
-			m_shader->SetUniform("u_specularStrength", m_specularStrength);
-			m_shader->SetUniform("u_shininess", m_shininess);
-            m_shader->SetUniform("u_model", MathUtils::ToGLM(object.GetModelMatrix()));
-            m_shader->SetUniform("u_view", MathUtils::ToGLM(m_pCamera->GetViewMatrix()));
-            m_shader->SetUniform("u_projection", projectionMatrix);
+			m_shadersMap.at(ShaderOpenGLTypes::RenderableObjects)->SetUniform("u_ambientStrength", m_ambientStrength);
+			m_shadersMap.at(ShaderOpenGLTypes::RenderableObjects)->SetUniform("u_specularStrength", m_specularStrength);
+			m_shadersMap.at(ShaderOpenGLTypes::RenderableObjects)->SetUniform("u_shininess", m_shininess);
+            m_shadersMap.at(ShaderOpenGLTypes::RenderableObjects)->SetUniform("u_model", MathUtils::ToGLM(object.GetModelMatrix()));
+            m_shadersMap.at(ShaderOpenGLTypes::RenderableObjects)->SetUniform("u_view", MathUtils::ToGLM(m_pCamera->GetViewMatrix()));
+            m_shadersMap.at(ShaderOpenGLTypes::RenderableObjects)->SetUniform("u_projection", projectionMatrix);
 
             // Special case: light sphere
             if (object.IsEmitingLight())
             {
-                m_shader->SetUniform("u_lightPos", MathUtils::ToGLM(object.GetCenterPosition()));
-                m_shader->SetUniform("u_viewPos", MathUtils::ToGLM(m_pCamera->GetPosition()));
-                m_shader->SetUniform("u_lightColor", MathUtils::ToGLM(object.GetColor().ReturnAsVec4()));
+                m_shadersMap.at(ShaderOpenGLTypes::RenderableObjects)->SetUniform("u_lightPos", MathUtils::ToGLM(object.GetCenterPosition()));
+                m_shadersMap.at(ShaderOpenGLTypes::RenderableObjects)->SetUniform("u_viewPos", MathUtils::ToGLM(m_pCamera->GetPosition()));
+                m_shadersMap.at(ShaderOpenGLTypes::RenderableObjects)->SetUniform("u_lightColor", MathUtils::ToGLM(object.GetColor().ReturnAsVec4()));
 
                 // Force vertex color to white so it appears white
-                m_shader->SetUniform("u_vertexColorOverride", MathUtils::ToGLM(object.GetColor().ReturnAsVec4()));
+                m_shadersMap.at(ShaderOpenGLTypes::RenderableObjects)->SetUniform("u_vertexColorOverride", MathUtils::ToGLM(object.GetColor().ReturnAsVec4()));
             }
             else
             {
                 // Optional: reset override to no-op if your shader expects default value
-                m_shader->SetUniform("u_vertexColorOverride", glm::vec4(0.0f));
+                m_shadersMap.at(ShaderOpenGLTypes::RenderableObjects)->SetUniform("u_vertexColorOverride", glm::vec4(0.0f));
             }
 
             glBindVertexArray(object.GetVAO());
             glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, object.GetEBO());
             glDrawElements(GL_TRIANGLES, object.GetIndicesCount(), GL_UNSIGNED_INT, 0);
+        }
+
+        void OpenGLRenderer::OpenGLRendererImpl::InitShaders()
+        {
+            std::string renderableObjectsVertexShaderPath = "shader_program_sources/vertex_shader.glsl";
+            std::string renderableObjectsFragmentShaderPath = "shader_program_sources/fragment_shader.glsl";
+            std::string gridVertexShaderPath = "shader_program_sources/vertex_shader_grid.glsl";
+            std::string gridFragmentShaderPath = "shader_program_sources/fragment_shader_grid.glsl";
+			CreateShader(ShaderOpenGLTypes::RenderableObjects, renderableObjectsVertexShaderPath, renderableObjectsFragmentShaderPath);
+			CreateShader(ShaderOpenGLTypes::Grid, gridVertexShaderPath, gridFragmentShaderPath);
         }
 	}
 }

@@ -4,6 +4,7 @@
 
 #include "../include/OpenGLRenderer.hpp"
 #include "../../Shaders/include/OpenGLShader.hpp"
+#include "../../Shaders/include/ShaderOpenGLTypes.hpp"
 #include "../../RenderableObjects/include/IRenderableObjectOpenGL.hpp"
 #include "glm/glm.hpp"
 
@@ -46,7 +47,7 @@ namespace Andromeda
 
 		private:
 			void InitFrameBuffer();
-			void CreateShader();
+			void CreateShader(const ShaderOpenGLTypes& shaderType, const std::string& vertexShaderPath, const std::string& fragmentShaderPath);
 			void GenerateAndBindFrameBuffer();
 			void GenerateAndBindFrameBufferTexture();
 			void CreateColorTexture();
@@ -56,6 +57,7 @@ namespace Andromeda
 			void ConfigureFrameBufferTexture();
 			void UnbindFrameBuffer() const;
 			void RenderObject(const IRenderableObjectOpenGL& object);
+			void InitShaders();
 
 		private:
 			bool m_isInitialized;
@@ -67,7 +69,7 @@ namespace Andromeda
 			float m_ambientStrength;
 			float m_specularStrength;
 			float m_shininess;
-			OpenGLShader* m_shader;
+			std::unordered_map<ShaderOpenGLTypes, OpenGLShader*> m_shadersMap;
 			glm::mat4 m_projectionMatrix;
 			Camera* m_pCamera;
 		};
