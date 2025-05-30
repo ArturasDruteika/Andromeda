@@ -45,6 +45,8 @@ add_library(${PROJECT_NAME}
 		RenderableObjects/include/TransformationTypes.hpp
         RenderableObjects/src/RenderableObjectOpenGLBase.cpp
 		RenderableObjects/include/RenderableObjectOpenGLBase.hpp
+        RenderableObjects/src/GridOpenGL.cpp
+		RenderableObjects/include/GridOpenGL.hpp
 
 		Vertices/include/VertexAttributes.hpp
         Vertices/include/VertexLayouts.hpp
@@ -198,6 +200,8 @@ source_group(
         RenderableObjects/include/TransformationTypes.hpp
         RenderableObjects/src/RenderableObjectOpenGLBase.cpp
 		RenderableObjects/include/RenderableObjectOpenGLBase.hpp
+        RenderableObjects/src/GridOpenGL.cpp
+		RenderableObjects/include/GridOpenGL.hpp
 )
 
 source_group(
