@@ -24,11 +24,6 @@ namespace Andromeda
 			OpenGLRendererImpl(OpenGLRendererImpl&& other) noexcept = delete;	// Prevent Move Constructor
 			OpenGLRendererImpl& operator=(OpenGLRendererImpl&& other) noexcept = delete;	// Prevent Move Assignment
 
-			void Init(int width, int height);
-			void DeInit();
-			void RenderFrame(const OpenGLScene& scene);
-			void Resize(int width, int height);
-
 			// Getters
 			bool IsInitialized() const;
 			unsigned int GetFrameBufferObject() const;
@@ -44,6 +39,12 @@ namespace Andromeda
 			void SetAmbientStrength(float ambientStrength);
 			void SetSpecularStrength(float specularStrength);
 			void SetShininess(float shininess);
+			void ShowGrid(bool show);
+
+			void Init(int width, int height);
+			void DeInit();
+			void RenderFrame(const OpenGLScene& scene);
+			void Resize(int width, int height);
 
 		private:
 			void InitFrameBuffer();
@@ -61,6 +62,7 @@ namespace Andromeda
 
 		private:
 			bool m_isInitialized;
+			bool m_showGrid;
 			unsigned int m_FBO;
 			unsigned int m_FBOTexture;
 			unsigned int m_depthBuffer;

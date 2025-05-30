@@ -12,7 +12,7 @@ namespace Andromeda
 {
 	namespace Rendering
 	{
-        constexpr Space::Color BACKGROUND_COLOR_DEFAULT{ 0.0f, 0.0f, 0.1f, 1.0f };
+        constexpr Space::Color BACKGROUND_COLOR_DEFAULT{ 0.0f, 0.0f, 0.0f, 1.0f };
 
 
         OpenGLRenderer::OpenGLRendererImpl::OpenGLRendererImpl()
@@ -127,6 +127,11 @@ namespace Andromeda
             glDeleteRenderbuffers(1, &m_depthBuffer);
 
             InitFrameBuffer();
+        }
+
+        void OpenGLRenderer::OpenGLRendererImpl::ShowGrid(bool show)
+        {
+			m_showGrid = show;
         }
 
         bool OpenGLRenderer::OpenGLRendererImpl::IsInitialized() const

@@ -36,19 +36,27 @@ namespace Andromeda
 			OpenGLRenderer(OpenGLRenderer&& other) noexcept = delete;	// Prevent Move Constructor
 			OpenGLRenderer& operator=(OpenGLRenderer&& other) noexcept = delete;	// Prevent Move Assignment
 
-			void Init(int width, int height);
-			void DeInit();
-			void RenderFrame(const Rendering::OpenGLScene& scene);
-
+			// Getters
 			bool IsInitialized() const;
 			unsigned int GetFrameBufferObject() const;
 			unsigned int GetFrameBufferObjectTexture() const;
+			unsigned int GetDepthBuffer() const;
 			int GetWidth() const;
 			int GetHeight() const;
-
-			void Resize(int width, int height);
-
+			float GetAmbientStrength() const;
+			float GetSpecularStrength() const;
+			float GetShininess() const;
+			// Setters
 			void SetCamera(Camera* camera);
+			void SetAmbientStrength(float ambientStrength);
+			void SetSpecularStrength(float specularStrength);
+			void SetShininess(float shininess);
+			void ShowGrid(bool show);
+
+			void Init(int width, int height);
+			void DeInit();
+			void RenderFrame(const OpenGLScene& scene);
+			void Resize(int width, int height);
 
 		private:
 			class OpenGLRendererImpl;
