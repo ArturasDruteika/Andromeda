@@ -356,15 +356,22 @@ namespace Andromeda
             }
 
             float aspect = static_cast<float>(m_width) / static_cast<float>(m_height);
+            glm::mat4 viewMatrix = MathUtils::ToGLM(m_pCamera->GetViewMatrix());
             glm::mat4 projectionMatrix = glm::perspective(glm::radians(45.0f), aspect, 0.1f, 100.0f);
 
-            m_shadersMap.at(ShaderOpenGLTypes::Grid)->SetUniform("u_view", m_ambientStrength);
-            m_shadersMap.at(ShaderOpenGLTypes::Grid)->SetUniform("u_projection", MathUtils::ToGLM(m_pCamera->GetViewMatrix()));
+            auto& shader = m_shadersMap.at(ShaderOpenGLTypes::Grid);
+            shader->SetUniform("u_view", viewMatrix);
+            shader->SetUniform("u_projection", projectionMatrix);
 
             glBindVertexArray(object.GetVAO());
-            glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, object.GetEBO());
-            glDrawElements(GL_TRIANGLES, object.GetIndicesCount(), GL_UNSIGNED_INT, 0);
+            glBindBuffer(GL_ARRAY_BUFFER, object.GetVBO());
+
+            // Use one of the two depending on how your grid was created:
+            // With indices:
+             glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, object.GetEBO());
+             glDrawElements(GL_LINES, object.GetIndicesCount(), GL_UNSIGNED_INT, 0);
         }
+
 
         void OpenGLRenderer::OpenGLRendererImpl::InitShaders()
         {
