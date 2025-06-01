@@ -22,7 +22,6 @@ namespace Andromeda
             , m_FBOTexture{ 0 }
 			, m_width{ 0 }
 			, m_height{ 0 }
-			, m_projectionMatrix{ glm::mat4(1.0f) }
 			, m_pCamera{ nullptr }
 			, m_depthBuffer{ 0 }
 			, m_ambientStrength{ 0.1f }
@@ -37,6 +36,7 @@ namespace Andromeda
                 BACKGROUND_COLOR_DEFAULT.a
             );
             InitShaders();
+            UpdatePerspectiveMatrix(m_width, m_width);
         }
 
         OpenGLRenderer::OpenGLRendererImpl::~OpenGLRendererImpl()
@@ -135,6 +135,8 @@ namespace Andromeda
 
             m_width = width;
             m_height = height;
+
+			UpdatePerspectiveMatrix(m_width, m_height);
 
             glViewport(0, 0, width, height);
             glDeleteFramebuffers(1, &m_FBO);
@@ -315,16 +317,13 @@ namespace Andromeda
                 return;
             }
 
-            float aspect = static_cast<float>(m_width) / static_cast<float>(m_height);
-            glm::mat4 projectionMatrix = glm::perspective(glm::radians(45.0f), aspect, 0.1f, 100.0f);
-
             // Set common uniforms
 			m_shadersMap.at(ShaderOpenGLTypes::RenderableObjects)->SetUniform("u_ambientStrength", m_ambientStrength);
 			m_shadersMap.at(ShaderOpenGLTypes::RenderableObjects)->SetUniform("u_specularStrength", m_specularStrength);
 			m_shadersMap.at(ShaderOpenGLTypes::RenderableObjects)->SetUniform("u_shininess", m_shininess);
             m_shadersMap.at(ShaderOpenGLTypes::RenderableObjects)->SetUniform("u_model", MathUtils::ToGLM(object.GetModelMatrix()));
             m_shadersMap.at(ShaderOpenGLTypes::RenderableObjects)->SetUniform("u_view", MathUtils::ToGLM(m_pCamera->GetViewMatrix()));
-            m_shadersMap.at(ShaderOpenGLTypes::RenderableObjects)->SetUniform("u_projection", projectionMatrix);
+            m_shadersMap.at(ShaderOpenGLTypes::RenderableObjects)->SetUniform("u_projection", m_projectionMatrix);
 
             // Special case: light sphere
             if (object.IsEmitingLight())
@@ -354,22 +353,17 @@ namespace Andromeda
                 spdlog::error("Framebuffer dimensions are zero. Cannot render object.");
                 return;
             }
-
-            float aspect = static_cast<float>(m_width) / static_cast<float>(m_height);
             glm::mat4 viewMatrix = MathUtils::ToGLM(m_pCamera->GetViewMatrix());
-            glm::mat4 projectionMatrix = glm::perspective(glm::radians(45.0f), aspect, 0.1f, 100.0f);
 
             auto& shader = m_shadersMap.at(ShaderOpenGLTypes::Grid);
             shader->SetUniform("u_view", viewMatrix);
-            shader->SetUniform("u_projection", projectionMatrix);
+            shader->SetUniform("u_projection", m_projectionMatrix);
 
             glBindVertexArray(object.GetVAO());
             glBindBuffer(GL_ARRAY_BUFFER, object.GetVBO());
 
-            // Use one of the two depending on how your grid was created:
-            // With indices:
-             glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, object.GetEBO());
-             glDrawElements(GL_LINES, object.GetIndicesCount(), GL_UNSIGNED_INT, 0);
+            glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, object.GetEBO());
+            glDrawElements(GL_LINES, object.GetIndicesCount(), GL_UNSIGNED_INT, 0);
         }
 
 
@@ -381,6 +375,12 @@ namespace Andromeda
             std::string gridFragmentShaderPath = "shader_program_sources/fragment_shader_grid.glsl";
 			CreateShader(ShaderOpenGLTypes::RenderableObjects, renderableObjectsVertexShaderPath, renderableObjectsFragmentShaderPath);
 			CreateShader(ShaderOpenGLTypes::Grid, gridVertexShaderPath, gridFragmentShaderPath);
+        }
+
+        void OpenGLRenderer::OpenGLRendererImpl::UpdatePerspectiveMatrix(int width, int height)
+        {
+            float aspect = static_cast<float>(m_width) / static_cast<float>(m_height);
+            m_projectionMatrix = glm::infinitePerspective(glm::radians(45.0f), aspect, 0.1f);
         }
 	}
 }

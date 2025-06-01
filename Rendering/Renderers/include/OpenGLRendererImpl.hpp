@@ -61,6 +61,7 @@ namespace Andromeda
 			void RenderObject(const IRenderableObjectOpenGL& object);
 			void RenderGrid(const IRenderableObjectOpenGL& object);
 			void InitShaders();
+			void UpdatePerspectiveMatrix(int width, int height);
 
 		private:
 			bool m_isInitialized;
