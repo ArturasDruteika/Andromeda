@@ -1,4 +1,5 @@
 #include "../include/OpenGLRendererImpl.hpp"
+#include "../../Scene/include/SpecialIndices.hpp"
 #include "../../Utils/include/MathUtils.hpp"
 #include "FileOperations.hpp"
 #include "Colors.hpp"
@@ -27,6 +28,7 @@ namespace Andromeda
 			, m_ambientStrength{ 0.1f }
 			, m_specularStrength{ 0.5f }
 			, m_shininess{ 32.0f }
+            , m_isGridVisible{ false }
         {
             glClearColor(
                 BACKGROUND_COLOR_DEFAULT.r,
@@ -53,6 +55,7 @@ namespace Andromeda
 			m_width = width;
 			m_height = height;
             InitFrameBuffer();
+
             m_isInitialized = true;
         }
 
@@ -99,7 +102,19 @@ namespace Andromeda
             // Render all scene objects
             for (const auto& [id, object] : scene.GetObjects())
             {
-                RenderObject(*object);
+                if (id == static_cast<int>(SpecialIndices::Grid))
+                {
+                    if (!m_isGridVisible)
+                        continue;
+
+                    glUseProgram(m_shadersMap.at(ShaderOpenGLTypes::Grid)->GetProgram());
+                    RenderGrid(*object);
+                }
+                else
+                {
+                    glUseProgram(m_shadersMap.at(ShaderOpenGLTypes::RenderableObjects)->GetProgram());
+                    RenderObject(*object);
+                }
             }
 
             glBindFramebuffer(GL_FRAMEBUFFER, 0);
@@ -129,14 +144,14 @@ namespace Andromeda
             InitFrameBuffer();
         }
 
-        void OpenGLRenderer::OpenGLRendererImpl::ShowGrid(bool show)
-        {
-			m_showGrid = show;
-        }
-
         bool OpenGLRenderer::OpenGLRendererImpl::IsInitialized() const
         {
             return m_isInitialized;
+        }
+
+        bool OpenGLRenderer::OpenGLRendererImpl::IsGridVisible() const
+        {
+            return m_isGridVisible;
         }
 
         unsigned int OpenGLRenderer::OpenGLRendererImpl::GetFrameBufferObject() const
@@ -177,6 +192,11 @@ namespace Andromeda
         float OpenGLRenderer::OpenGLRendererImpl::GetShininess() const
         {
             return m_shininess;
+        }
+
+        void OpenGLRenderer::OpenGLRendererImpl::SetGridVisible(bool visible)
+        {
+			m_isGridVisible = visible;
         }
 
         void OpenGLRenderer::OpenGLRendererImpl::SetCamera(Camera* camera)
@@ -298,8 +318,6 @@ namespace Andromeda
             float aspect = static_cast<float>(m_width) / static_cast<float>(m_height);
             glm::mat4 projectionMatrix = glm::perspective(glm::radians(45.0f), aspect, 0.1f, 100.0f);
 
-            glUseProgram(m_shadersMap.at(ShaderOpenGLTypes::RenderableObjects)->GetProgram());
-
             // Set common uniforms
 			m_shadersMap.at(ShaderOpenGLTypes::RenderableObjects)->SetUniform("u_ambientStrength", m_ambientStrength);
 			m_shadersMap.at(ShaderOpenGLTypes::RenderableObjects)->SetUniform("u_specularStrength", m_specularStrength);
@@ -323,6 +341,25 @@ namespace Andromeda
                 // Optional: reset override to no-op if your shader expects default value
                 m_shadersMap.at(ShaderOpenGLTypes::RenderableObjects)->SetUniform("u_vertexColorOverride", glm::vec4(0.0f));
             }
+
+            glBindVertexArray(object.GetVAO());
+            glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, object.GetEBO());
+            glDrawElements(GL_TRIANGLES, object.GetIndicesCount(), GL_UNSIGNED_INT, 0);
+        }
+
+        void OpenGLRenderer::OpenGLRendererImpl::RenderGrid(const IRenderableObjectOpenGL& object)
+        {
+            if (m_width == 0 || m_height == 0)
+            {
+                spdlog::error("Framebuffer dimensions are zero. Cannot render object.");
+                return;
+            }
+
+            float aspect = static_cast<float>(m_width) / static_cast<float>(m_height);
+            glm::mat4 projectionMatrix = glm::perspective(glm::radians(45.0f), aspect, 0.1f, 100.0f);
+
+            m_shadersMap.at(ShaderOpenGLTypes::Grid)->SetUniform("u_view", m_ambientStrength);
+            m_shadersMap.at(ShaderOpenGLTypes::Grid)->SetUniform("u_projection", MathUtils::ToGLM(m_pCamera->GetViewMatrix()));
 
             glBindVertexArray(object.GetVAO());
             glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, object.GetEBO());

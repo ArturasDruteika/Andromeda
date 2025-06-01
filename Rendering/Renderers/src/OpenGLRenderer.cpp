@@ -36,6 +36,11 @@ namespace Andromeda
 			return m_pOpenGLRendererImpl->IsInitialized();
 		}
 
+		bool OpenGLRenderer::IsGridVisible() const
+		{
+			return m_pOpenGLRendererImpl->IsGridVisible();
+		}
+
 		unsigned int OpenGLRenderer::GetFrameBufferObject() const
 		{
 			return m_pOpenGLRendererImpl->GetFrameBufferObject();
@@ -81,9 +86,9 @@ namespace Andromeda
 			m_pOpenGLRendererImpl->Resize(width, height);
 		}
 
-		void OpenGLRenderer::ShowGrid(bool show)
+		void OpenGLRenderer::SetGridVisible(bool visible)
 		{
-			m_pOpenGLRendererImpl->ShowGrid(show);
+			return m_pOpenGLRendererImpl->SetGridVisible(visible);
 		}
 
 		void OpenGLRenderer::SetCamera(Camera* camera)

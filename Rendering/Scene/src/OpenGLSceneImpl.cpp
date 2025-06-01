@@ -1,4 +1,7 @@
 #include "../include/OpenGLSceneImpl.hpp"
+#include "../include/SpecialIndices.hpp"
+#include "../../RenderableObjects/include/GridOpenGL.hpp"
+
 
 
 namespace Andromeda
@@ -7,6 +10,8 @@ namespace Andromeda
 	{
 		OpenGLScene::OpenGLSceneImpl::OpenGLSceneImpl()
 		{
+			GridOpenGL* grid = new GridOpenGL(Space::Color(0.3f, 0.3f, 0.3f, 1.0f));
+			AddObject(static_cast<int>(SpecialIndices::Grid), grid);
 		}
 
 		OpenGLScene::OpenGLSceneImpl::~OpenGLSceneImpl()

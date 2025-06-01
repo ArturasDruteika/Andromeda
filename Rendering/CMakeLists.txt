@@ -31,6 +31,7 @@ add_library(${PROJECT_NAME}
 		Scene/src/OpenGLScene.cpp
         Scene/include/OpenGLSceneImpl.hpp
 		Scene/src/OpenGLSceneImpl.cpp
+        Scene/include/SpecialIndices.hpp
 
 		RenderableObjects/include/IRenderableObjectOpenGL.hpp
 		RenderableObjects/src/IRenderableObjectOpenGL.cpp
@@ -179,6 +180,7 @@ source_group(
 		Scene/src/OpenGLScene.cpp
         Scene/include/OpenGLSceneImpl.hpp
 		Scene/src/OpenGLSceneImpl.cpp
+        Scene/include/SpecialIndices.hpp
 )
 
 source_group(

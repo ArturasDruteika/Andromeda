@@ -26,6 +26,7 @@ namespace Andromeda
 
 			// Getters
 			bool IsInitialized() const;
+			bool IsGridVisible() const;
 			unsigned int GetFrameBufferObject() const;
 			unsigned int GetFrameBufferObjectTexture() const;
 			unsigned int GetDepthBuffer() const;
@@ -35,11 +36,11 @@ namespace Andromeda
 			float GetSpecularStrength() const;
 			float GetShininess() const;
 			// Setters
+			void SetGridVisible(bool visible);
 			void SetCamera(Camera* camera);
 			void SetAmbientStrength(float ambientStrength);
 			void SetSpecularStrength(float specularStrength);
 			void SetShininess(float shininess);
-			void ShowGrid(bool show);
 
 			void Init(int width, int height);
 			void DeInit();
@@ -58,11 +59,12 @@ namespace Andromeda
 			void ConfigureFrameBufferTexture();
 			void UnbindFrameBuffer() const;
 			void RenderObject(const IRenderableObjectOpenGL& object);
+			void RenderGrid(const IRenderableObjectOpenGL& object);
 			void InitShaders();
 
 		private:
 			bool m_isInitialized;
-			bool m_showGrid;
+			bool m_isGridVisible;
 			unsigned int m_FBO;
 			unsigned int m_FBOTexture;
 			unsigned int m_depthBuffer;

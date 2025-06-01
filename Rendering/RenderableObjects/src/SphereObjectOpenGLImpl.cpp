@@ -22,7 +22,7 @@ namespace Andromeda
 			)
 		{
 			ConstructSphere(radius, 200, 200, color);
-			Init(m_vertices, m_indices);
+			Init();
 			UpdateModelMatrix(TransformationType::ALL);
 		}
 
