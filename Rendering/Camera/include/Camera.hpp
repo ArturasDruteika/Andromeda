@@ -17,6 +17,7 @@
 #endif
 
 
+#include "pch.hpp"
 #include "LinearAlgebraDataTypes.hpp"
 
 
@@ -24,6 +25,8 @@ namespace Andromeda
 {
 	namespace Rendering
 	{
+        using OnCrossedDistance = std::function<void(bool)>;
+
         class RENDERING_API Camera
         {
         public:
@@ -45,6 +48,7 @@ namespace Andromeda
 
             void Rotate(float yaw, float pitch, float roll);
             void Zoom(float deltaDistance);
+            void SetOnCrossedDistance(OnCrossedDistance callback);
 
         private:
             class CameraImpl;

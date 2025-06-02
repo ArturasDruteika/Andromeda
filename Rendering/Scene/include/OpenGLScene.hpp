@@ -38,6 +38,7 @@ namespace Andromeda
 
 			void AddObject(int id, IRenderableObjectOpenGL* object);
 			void RemoveObject(int id);
+			void ResizeGrid(bool increase);
 			const std::unordered_map<int, IRenderableObjectOpenGL*> GetObjects() const;
 
 		private:

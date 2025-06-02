@@ -7,7 +7,7 @@ namespace Andromeda
 {
 	namespace Rendering
 	{
-		GridOpenGL::GridOpenGL(const Space::Color& color)
+		GridOpenGL::GridOpenGL(float spacing, const Space::Color& color)
 			: RenderableObjectOpenGLBase(
 				Math::Vec3(0.0f, 0.0f, 0.0f),
 				color,
@@ -18,7 +18,7 @@ namespace Andromeda
 				}
 			)
 		{
-            ConstructGrid(100, color);
+            ConstructGrid(100, spacing, color);
             Init();
             UpdateModelMatrix(TransformationType::ALL);
 		}
@@ -120,7 +120,7 @@ namespace Andromeda
             RenderableObjectOpenGLBase::Scale(scale);
         }
 
-        void GridOpenGL::ConstructGrid(int size, const Space::Color& gridColor)
+        void GridOpenGL::ConstructGrid(int size, float spacing, const Space::Color& gridColor)
         {
             m_vertices.clear();
             m_indices.clear();
@@ -129,24 +129,24 @@ namespace Andromeda
 
             for (int i = -size; i <= size; ++i)
             {
+                float coord = i * spacing;
                 Space::Color color = gridColor;
 
-                // Optional: Highlight center lines with different color
                 if (i == 0)
                 {
                     color = Space::Color(1.0f, 0.5f, 0.5f); // X-axis = Red
                 }
 
                 // Line parallel to Z-axis (X is constant)
-                m_vertices.emplace_back(Space::Point3D((float)i, 0.0f, -size), color);
-                m_vertices.emplace_back(Space::Point3D((float)i, 0.0f, size), color);
+                m_vertices.emplace_back(Space::Point3D(coord, 0.0f, -size * spacing), color);
+                m_vertices.emplace_back(Space::Point3D(coord, 0.0f, size * spacing), color);
                 m_indices.push_back(index++);
                 m_indices.push_back(index++);
 
                 // Line parallel to X-axis (Z is constant)
                 color = (i == 0) ? Space::Color(0.5f, 0.5f, 1.0f) : gridColor; // Z-axis = Blue
-                m_vertices.emplace_back(Space::Point3D(-size, 0.0f, (float)i), color);
-                m_vertices.emplace_back(Space::Point3D(size, 0.0f, (float)i), color);
+                m_vertices.emplace_back(Space::Point3D(-size * spacing, 0.0f, coord), color);
+                m_vertices.emplace_back(Space::Point3D(size * spacing, 0.0f, coord), color);
                 m_indices.push_back(index++);
                 m_indices.push_back(index++);
             }

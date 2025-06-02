@@ -16,7 +16,7 @@ namespace Andromeda
 			, private RenderableObjectOpenGLBase
 		{	
 		public:
-			GridOpenGL(const Space::Color& color);
+			GridOpenGL(float spacing = 1.0f, const Space::Color& color = Space::Color(0.3f, 0.3f, 0.3f, 1.0f));
 			~GridOpenGL();
 
 			GridOpenGL(const GridOpenGL& other) = delete;	// Prevent Copy Constructor
@@ -49,7 +49,7 @@ namespace Andromeda
 			void Scale(const Math::Vec3& scale) override;
 
 		private:
-			void ConstructGrid(int size = 100, const Space::Color& gridColor = { 0.3, 0.3, 0.3, 1.0 });
+			void ConstructGrid(int size = 100, float spacing = 1.0f, const Space::Color& gridColor = { 0.3, 0.3, 0.3, 1.0 });
 		};
 	}
 }
