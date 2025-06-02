@@ -29,7 +29,7 @@ namespace Andromeda
 
             void Rotate(float deltaYawRad = 0.0f, float deltaPitchRad = 0.0f, float roll = 0.0f);
             void Zoom(float deltaDistance);
-            void SetOnCrossedDistance(OnCrossedDistance callback);
+            void SetOnDistanceChange(OnDistanceChange callback);
 
         private:
             void UpdateDirection();
@@ -50,7 +50,7 @@ namespace Andromeda
             glm::mat4 m_viewMatrix;
             glm::quat m_orientation;
 
-            OnCrossedDistance m_onCrossedDistanceCallback;
+            OnDistanceChange m_onDistanceChangeCallback;
         };
     }
 }

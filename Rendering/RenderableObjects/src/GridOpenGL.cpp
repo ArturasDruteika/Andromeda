@@ -127,12 +127,18 @@ namespace Andromeda
 
             uint32_t index = 0;
 
-            for (int i = -size; i <= size; ++i)
+            // Make grid denser by using smaller spacing step
+            float densityFactor = 0.1f; // 1.0 = normal, 0.5 = 2x denser, 0.25 = 4x denser
+            float step = densityFactor;
+            float scaledSpacing = spacing * step;
+            float max = static_cast<float>(size);
+
+            for (float i = -max; i <= max; i += step)
             {
                 float coord = i * spacing;
                 Space::Color color = gridColor;
 
-                if (i == 0)
+                if (std::abs(i) < 0.001f) // Center line
                 {
                     color = Space::Color(1.0f, 0.5f, 0.5f); // X-axis = Red
                 }
@@ -144,12 +150,13 @@ namespace Andromeda
                 m_indices.push_back(index++);
 
                 // Line parallel to X-axis (Z is constant)
-                color = (i == 0) ? Space::Color(0.5f, 0.5f, 1.0f) : gridColor; // Z-axis = Blue
+                color = (std::abs(i) < 0.001f) ? Space::Color(0.5f, 0.5f, 1.0f) : gridColor; // Z-axis = Blue
                 m_vertices.emplace_back(Space::Point3D(-size * spacing, 0.0f, coord), color);
                 m_vertices.emplace_back(Space::Point3D(size * spacing, 0.0f, coord), color);
                 m_indices.push_back(index++);
                 m_indices.push_back(index++);
             }
         }
+
     }
 }

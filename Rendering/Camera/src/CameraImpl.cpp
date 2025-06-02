@@ -100,31 +100,12 @@ namespace Andromeda
             m_distance = glm::clamp(m_distance, 0.01f, 1e6f);
 
             UpdateDirection();
-
-            // Detect if crossed a multiple of 10
-            int prevBucket = static_cast<int>(previousDistance / 10.0f);
-            int currBucket = static_cast<int>(m_distance / 10.0f);
-
-            if (prevBucket != currBucket)
-            {
-                int crossedValue = (deltaDistance > 0.0f) ? (currBucket * 10) : (prevBucket * 10);
-
-                if (m_distance > previousDistance)
-                {
-                    std::cout << "Crossed " << crossedValue << " from below (zoomed out)\n";
-                }
-                else
-                {
-                    std::cout << "Crossed " << crossedValue << " from above (zoomed in)\n";
-                }
-
-                m_onCrossedDistanceCallback(m_distance > previousDistance);
-            }
+            m_onDistanceChangeCallback(m_distance);
         }
 
-        void Camera::CameraImpl::SetOnCrossedDistance(OnCrossedDistance callback)
+        void Camera::CameraImpl::SetOnDistanceChange(OnDistanceChange callback)
         {
-		    m_onCrossedDistanceCallback = std::move(callback);
+            m_onDistanceChangeCallback = std::move(callback);
 		}
 
 

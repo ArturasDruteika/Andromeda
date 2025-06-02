@@ -25,7 +25,7 @@ namespace Andromeda
 {
 	namespace Rendering
 	{
-        using OnCrossedDistance = std::function<void(bool)>;
+        using OnDistanceChange = std::function<void(float)>;
 
         class RENDERING_API Camera
         {
@@ -48,7 +48,7 @@ namespace Andromeda
 
             void Rotate(float yaw, float pitch, float roll);
             void Zoom(float deltaDistance);
-            void SetOnCrossedDistance(OnCrossedDistance callback);
+            void SetOnDistanceChange(OnDistanceChange callback);
 
         private:
             class CameraImpl;

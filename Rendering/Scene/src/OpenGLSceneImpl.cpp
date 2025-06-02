@@ -36,19 +36,26 @@ namespace Andromeda
 			m_renderableObjsPtrsMap.erase(id);
 		}
 
-		void OpenGLScene::OpenGLSceneImpl::ResizeGrid(bool increase)
+		void OpenGLScene::OpenGLSceneImpl::ResizeGrid(float cameraDistance)
 		{
-			// Use exponential scaling factor (match the zoom style)
-			float scaleFactor = std::exp((increase ? 1.0f : -1.0f) * 0.1f); // 0.1f = smoothing factor
-			m_gridSpacing *= scaleFactor;
+			// Dynamically compute grid spacing based on camera distance
+			float newGridSpacing = std::pow(cameraDistance, 0.9f);
 
-			// Optional: clamp to avoid going too small or too large
-			m_gridSpacing = std::clamp(m_gridSpacing, 2.0f, 200.0f);
-			delete m_renderableObjsPtrsMap.at(static_cast<int>(SpecialIndices::Grid));
-			m_renderableObjsPtrsMap.erase(static_cast<int>(SpecialIndices::Grid));
-			GridOpenGL* grid = new GridOpenGL(m_gridSpacing, Space::Color(0.3f, 0.3f, 0.3f, 1.0f));
-			AddObject(static_cast<int>(SpecialIndices::Grid), grid);
+			// Only update if the spacing visibly changes
+			if (std::abs(newGridSpacing - m_gridSpacing) >= 0.1f)
+			{
+				m_gridSpacing = newGridSpacing;
+				spdlog::info("Updating grid spacing to: {}", m_gridSpacing);
+
+				int gridIndex = static_cast<int>(SpecialIndices::Grid);
+				delete m_renderableObjsPtrsMap.at(gridIndex);
+				m_renderableObjsPtrsMap.erase(gridIndex);
+
+				GridOpenGL* grid = new GridOpenGL(m_gridSpacing, Space::Color(0.3f, 0.3f, 0.3f, 1.0f));
+				AddObject(gridIndex, grid);
+			}
 		}
+
 
 		const std::unordered_map<int, IRenderableObjectOpenGL*> OpenGLScene::OpenGLSceneImpl::GetObjects() const
 		{
