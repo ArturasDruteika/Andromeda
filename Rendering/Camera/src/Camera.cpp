@@ -87,5 +87,10 @@ namespace Andromeda
         {
             m_pCameraImpl->Zoom(deltaDistance);
         }
+
+        void Camera::SetOnDistanceChange(OnDistanceChange callback)
+        {
+			m_pCameraImpl->SetOnDistanceChange(callback);
+        }
 	}
 }

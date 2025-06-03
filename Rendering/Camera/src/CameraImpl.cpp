@@ -92,13 +92,22 @@ namespace Andromeda
 
         void Camera::CameraImpl::Zoom(float deltaDistance)
         {
-            // Use exponential scaling for zoom
-            float zoomFactor = std::exp(deltaDistance * 0.1f); // 0.1f is sensitivity factor
+            float previousDistance = m_distance;
+
+            // Exponential zoom
+            float zoomFactor = std::exp(deltaDistance * 0.1f);
             m_distance *= zoomFactor;
-            // Optional: Clamp to avoid going through the target or infinitely far
             m_distance = glm::clamp(m_distance, 0.01f, 1e6f);
+
             UpdateDirection();
+            m_onDistanceChangeCallback(m_distance);
         }
+
+        void Camera::CameraImpl::SetOnDistanceChange(OnDistanceChange callback)
+        {
+            m_onDistanceChangeCallback = std::move(callback);
+		}
+
 
         void Camera::CameraImpl::UpdateDirection()
         {

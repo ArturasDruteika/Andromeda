@@ -54,7 +54,7 @@ namespace Andromeda
 			void Scale(const Math::Vec3& scale);
 
 		protected:
-			void Init(const std::vector<Vertex>& vertices, const std::vector<unsigned int>& indices);
+			void Init();
 			void CreateAndBindVertexAttributes();
 			void CreateAndBindVertexBuffers(const std::vector<Vertex>& vertices);
 			void GenerateAndBindElementBuffer(const std::vector<unsigned int>& indices);

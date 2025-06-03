@@ -25,11 +25,13 @@ add_library(${PROJECT_NAME}
 
         Shaders/include/OpenGLShader.hpp
 		Shaders/src/OpenGLShader.cpp
+		Shaders/include/ShaderOpenGLTypes.hpp
 
         Scene/include/OpenGLScene.hpp
 		Scene/src/OpenGLScene.cpp
         Scene/include/OpenGLSceneImpl.hpp
 		Scene/src/OpenGLSceneImpl.cpp
+        Scene/include/SpecialIndices.hpp
 
 		RenderableObjects/include/IRenderableObjectOpenGL.hpp
 		RenderableObjects/src/IRenderableObjectOpenGL.cpp
@@ -44,6 +46,8 @@ add_library(${PROJECT_NAME}
 		RenderableObjects/include/TransformationTypes.hpp
         RenderableObjects/src/RenderableObjectOpenGLBase.cpp
 		RenderableObjects/include/RenderableObjectOpenGLBase.hpp
+        RenderableObjects/src/GridOpenGL.cpp
+		RenderableObjects/include/GridOpenGL.hpp
 
 		Vertices/include/VertexAttributes.hpp
         Vertices/include/VertexLayouts.hpp
@@ -101,12 +105,16 @@ target_precompile_headers(${PROJECT_NAME}
 
 ### Post builds
 # Define filenames
-set(VERTEX_SHADER_FILENAME "vertex_shader.glsl")
-set(FRAGMENT_SHADER_FILENAME "fragment_shader.glsl")
+set(VERTEX_SHADER_RENDERABLE_OBJECT_FILENAME "vertex_shader.glsl")
+set(FRAGMENT_SHADER_RENDERABLE_OBJECT_FILENAME "fragment_shader.glsl")
+set(VERTEX_SHADER_GRID_FILENAME "vertex_shader_grid.glsl")
+set(FRAGMENT_SHADER_GRID_FILENAME "fragment_shader_grid.glsl")
 
 # Define source shader file paths
-set(VERTEX_SHADER_SOURCE "${CMAKE_CURRENT_SOURCE_DIR}/ShaderProgramSources/${VERTEX_SHADER_FILENAME}")
-set(FRAGMENT_SHADER_SOURCE "${CMAKE_CURRENT_SOURCE_DIR}/ShaderProgramSources/${FRAGMENT_SHADER_FILENAME}")
+set(VERTEX_SHADER_RENDERABLE_OBJECT_SOURCE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/ShaderProgramSources/${VERTEX_SHADER_RENDERABLE_OBJECT_FILENAME}")
+set(FRAGMENT_SHADER_RENDERABLE_OBJECT_SOURCE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/ShaderProgramSources/${FRAGMENT_SHADER_RENDERABLE_OBJECT_FILENAME}")
+set(VERTEX_SHADER_GRID_SOURCE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/ShaderProgramSources/${VERTEX_SHADER_GRID_FILENAME}")
+set(FRAGMENT_SHADER_GRID_SOURCE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/ShaderProgramSources/${FRAGMENT_SHADER_GRID_FILENAME}")
 
 # Define the output directory (binary directory where executables are placed)
 if (CMAKE_SYSTEM_NAME STREQUAL "Windows")
@@ -123,10 +131,16 @@ add_custom_command(
         ${CMAKE_COMMAND} -E make_directory "${SHADER_OUTPUT_DIR}"
     COMMAND 
         ${CMAKE_COMMAND} -E copy_if_different
-        "${VERTEX_SHADER_SOURCE}" "${SHADER_OUTPUT_DIR}/${VERTEX_SHADER_FILENAME}"
+        "${VERTEX_SHADER_RENDERABLE_OBJECT_SOURCE_PATH}" "${SHADER_OUTPUT_DIR}/${VERTEX_SHADER_RENDERABLE_OBJECT_FILENAME}"
     COMMAND 
         ${CMAKE_COMMAND} -E copy_if_different
-        "${FRAGMENT_SHADER_SOURCE}" "${SHADER_OUTPUT_DIR}/${FRAGMENT_SHADER_FILENAME}"
+        "${VERTEX_SHADER_GRID_SOURCE_PATH}" "${SHADER_OUTPUT_DIR}/${VERTEX_SHADER_GRID_FILENAME}"
+    COMMAND 
+        ${CMAKE_COMMAND} -E copy_if_different
+        "${FRAGMENT_SHADER_RENDERABLE_OBJECT_SOURCE_PATH}" "${SHADER_OUTPUT_DIR}/${FRAGMENT_SHADER_RENDERABLE_OBJECT_FILENAME}"
+    COMMAND 
+        ${CMAKE_COMMAND} -E copy_if_different
+        "${FRAGMENT_SHADER_GRID_SOURCE_PATH}" "${SHADER_OUTPUT_DIR}/${FRAGMENT_SHADER_GRID_FILENAME}"
     COMMENT 
         "Creating directory and copying shader files to ${SHADER_OUTPUT_DIR}"
 )
@@ -153,6 +167,7 @@ source_group(
     FILES
         Shaders/include/OpenGLShader.hpp
 		Shaders/src/OpenGLShader.cpp
+        Shaders/include/ShaderOpenGLTypes.hpp
 )
 
 source_group(
@@ -165,6 +180,7 @@ source_group(
 		Scene/src/OpenGLScene.cpp
         Scene/include/OpenGLSceneImpl.hpp
 		Scene/src/OpenGLSceneImpl.cpp
+        Scene/include/SpecialIndices.hpp
 )
 
 source_group(
@@ -186,6 +202,8 @@ source_group(
         RenderableObjects/include/TransformationTypes.hpp
         RenderableObjects/src/RenderableObjectOpenGLBase.cpp
 		RenderableObjects/include/RenderableObjectOpenGLBase.hpp
+        RenderableObjects/src/GridOpenGL.cpp
+		RenderableObjects/include/GridOpenGL.hpp
 )
 
 source_group(

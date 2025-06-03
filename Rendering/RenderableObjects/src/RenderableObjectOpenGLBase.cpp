@@ -143,11 +143,11 @@ namespace Andromeda
 			return MathUtils::FromGLM(m_scale);
 		}
 
-		void RenderableObjectOpenGLBase::Init(const std::vector<Vertex>& vertices, const std::vector<unsigned int>& indices)
+		void RenderableObjectOpenGLBase::Init()
 		{
 			CreateAndBindVertexAttributes();
-			CreateAndBindVertexBuffers(vertices);
-			GenerateAndBindElementBuffer(indices);
+			CreateAndBindVertexBuffers(m_vertices);
+			GenerateAndBindElementBuffer(m_indices);
 			SetVertexAttributePointers();
 			UnbindVertexAttributes();
 		}

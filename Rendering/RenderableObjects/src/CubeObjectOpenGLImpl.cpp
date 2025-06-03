@@ -29,7 +29,7 @@ namespace Andromeda
 			)
 		{
 			ConstructCube(halfExtent, color);
-			Init(m_vertices, m_indices);
+			Init();
 			UpdateModelMatrix(TransformationType::ALL);
 		}
 

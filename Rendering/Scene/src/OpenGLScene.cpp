@@ -26,6 +26,11 @@ namespace Andromeda
 			m_pOpenGLSceneImpl->RemoveObject(id);
 		}
 
+		void OpenGLScene::ResizeGrid(float resizeFactor)
+		{
+			m_pOpenGLSceneImpl->ResizeGrid(resizeFactor);
+		}
+
 		const std::unordered_map<int, IRenderableObjectOpenGL*> OpenGLScene::GetObjects() const
 		{
 			return m_pOpenGLSceneImpl->GetObjects();

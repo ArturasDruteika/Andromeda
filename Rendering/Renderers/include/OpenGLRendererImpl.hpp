@@ -4,6 +4,7 @@
 
 #include "../include/OpenGLRenderer.hpp"
 #include "../../Shaders/include/OpenGLShader.hpp"
+#include "../../Shaders/include/ShaderOpenGLTypes.hpp"
 #include "../../RenderableObjects/include/IRenderableObjectOpenGL.hpp"
 #include "glm/glm.hpp"
 
@@ -23,13 +24,9 @@ namespace Andromeda
 			OpenGLRendererImpl(OpenGLRendererImpl&& other) noexcept = delete;	// Prevent Move Constructor
 			OpenGLRendererImpl& operator=(OpenGLRendererImpl&& other) noexcept = delete;	// Prevent Move Assignment
 
-			void Init(int width, int height);
-			void DeInit();
-			void RenderFrame(const OpenGLScene& scene);
-			void Resize(int width, int height);
-
 			// Getters
 			bool IsInitialized() const;
+			bool IsGridVisible() const;
 			unsigned int GetFrameBufferObject() const;
 			unsigned int GetFrameBufferObjectTexture() const;
 			unsigned int GetDepthBuffer() const;
@@ -39,14 +36,20 @@ namespace Andromeda
 			float GetSpecularStrength() const;
 			float GetShininess() const;
 			// Setters
+			void SetGridVisible(bool visible);
 			void SetCamera(Camera* camera);
 			void SetAmbientStrength(float ambientStrength);
 			void SetSpecularStrength(float specularStrength);
 			void SetShininess(float shininess);
 
+			void Init(int width, int height);
+			void DeInit();
+			void RenderFrame(const OpenGLScene& scene);
+			void Resize(int width, int height);
+
 		private:
 			void InitFrameBuffer();
-			void CreateShader();
+			void CreateShader(const ShaderOpenGLTypes& shaderType, const std::string& vertexShaderPath, const std::string& fragmentShaderPath);
 			void GenerateAndBindFrameBuffer();
 			void GenerateAndBindFrameBufferTexture();
 			void CreateColorTexture();
@@ -56,9 +59,13 @@ namespace Andromeda
 			void ConfigureFrameBufferTexture();
 			void UnbindFrameBuffer() const;
 			void RenderObject(const IRenderableObjectOpenGL& object);
+			void RenderGrid(const IRenderableObjectOpenGL& object);
+			void InitShaders();
+			void UpdatePerspectiveMatrix(int width, int height);
 
 		private:
 			bool m_isInitialized;
+			bool m_isGridVisible;
 			unsigned int m_FBO;
 			unsigned int m_FBOTexture;
 			unsigned int m_depthBuffer;
@@ -67,7 +74,7 @@ namespace Andromeda
 			float m_ambientStrength;
 			float m_specularStrength;
 			float m_shininess;
-			OpenGLShader* m_shader;
+			std::unordered_map<ShaderOpenGLTypes, OpenGLShader*> m_shadersMap;
 			glm::mat4 m_projectionMatrix;
 			Camera* m_pCamera;
 		};

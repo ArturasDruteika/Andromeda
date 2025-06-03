@@ -105,7 +105,7 @@ namespace Andromeda
 				float scrollY = ImGui::GetIO().MouseWheel;
 				if (scrollY != 0.0f && m_onMouseScrollCallback)
 				{
-					m_onMouseScrollCallback(scrollY);
+					m_onMouseScrollCallback(-scrollY);
 				}
 			}
 
