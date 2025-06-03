@@ -16,7 +16,12 @@ namespace Andromeda
 			, private RenderableObjectOpenGLBase
 		{	
 		public:
-			GridOpenGL(float spacing = 1.0f, const Space::Color& color = Space::Color(0.3f, 0.3f, 0.3f, 1.0f));
+			GridOpenGL(
+				int gridSize = 100, 
+				float spacing = 1.0f, 
+				float densityFactor = 0.05, 
+				const Space::Color& color = Space::Color(0.3f, 0.3f, 0.3f, 1.0f)
+			);
 			~GridOpenGL();
 
 			GridOpenGL(const GridOpenGL& other) = delete;	// Prevent Copy Constructor
@@ -48,8 +53,22 @@ namespace Andromeda
 			void RotateZ(float angle) override;
 			void Scale(const Math::Vec3& scale) override;
 
+			// Getters
+			int GetGridSize() const;
+			float GetSpacing() const;
+			float GetDensityFactor() const;
+			// Setters
+			void SetGridSize(int size);
+			void SetSpacing(float spacing);
+			void SetDensityFactor(float densityFactor);
+
 		private:
 			void ConstructGrid(int size = 100, float spacing = 1.0f, const Space::Color& gridColor = { 0.3, 0.3, 0.3, 1.0 });
+
+		private:
+			int m_gridSize;
+			float m_spacing;
+			float m_densityFactor;
 		};
 	}
 }

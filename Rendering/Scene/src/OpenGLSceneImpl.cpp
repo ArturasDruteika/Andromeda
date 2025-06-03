@@ -11,7 +11,7 @@ namespace Andromeda
 		OpenGLScene::OpenGLSceneImpl::OpenGLSceneImpl()
 			: m_gridSpacing{ 1.0f } // Default grid spacing
 		{
-			GridOpenGL* grid = new GridOpenGL(m_gridSpacing, Space::Color(0.3f, 0.3f, 0.3f, 1.0f));
+			GridOpenGL* grid = new GridOpenGL(100, m_gridSpacing, 0.05f, Space::Color(0.3f, 0.3f, 0.3f, 1.0f));
 			AddObject(static_cast<int>(SpecialIndices::Grid), grid);
 		}
 
@@ -36,22 +36,20 @@ namespace Andromeda
 			m_renderableObjsPtrsMap.erase(id);
 		}
 
-		void OpenGLScene::OpenGLSceneImpl::ResizeGrid(float cameraDistance)
+		void OpenGLScene::OpenGLSceneImpl::ResizeGrid(float resizeFactor)
 		{
 			// Dynamically compute grid spacing based on camera distance
-			float newGridSpacing = std::pow(cameraDistance, 0.9f);
+			float newGridSpacing = std::pow(resizeFactor, 0.9f);
 
 			// Only update if the spacing visibly changes
 			if (std::abs(newGridSpacing - m_gridSpacing) >= 0.1f)
 			{
 				m_gridSpacing = newGridSpacing;
-				spdlog::info("Updating grid spacing to: {}", m_gridSpacing);
-
 				int gridIndex = static_cast<int>(SpecialIndices::Grid);
 				delete m_renderableObjsPtrsMap.at(gridIndex);
 				m_renderableObjsPtrsMap.erase(gridIndex);
 
-				GridOpenGL* grid = new GridOpenGL(m_gridSpacing, Space::Color(0.3f, 0.3f, 0.3f, 1.0f));
+				GridOpenGL* grid = new GridOpenGL(100, m_gridSpacing, 0.05f, Space::Color(0.3f, 0.3f, 0.3f, 1.0f));
 				AddObject(gridIndex, grid);
 			}
 		}

@@ -1,4 +1,4 @@
-﻿#include "../include/ApplicationImpl.hpp"
+#include "../include/ApplicationImpl.hpp"
 #include "VertexLayouts.hpp"
 #include "VertexAttributes.hpp"
 #include "Vertex.hpp"
@@ -165,6 +165,14 @@ namespace Andromeda
 					std::placeholders::_1
 				)
 			);
+
+            m_pCamera->SetOnDistanceChange(
+                std::bind(
+                    &Rendering::OpenGLScene::ResizeGrid,
+                    m_pScene,
+                    std::placeholders::_1
+                )
+            );
         }
 
 		// TODO: Conside moving this to a separate or Camera class

@@ -7,8 +7,11 @@ namespace Andromeda
 {
 	namespace Rendering
 	{
-		GridOpenGL::GridOpenGL(float spacing, const Space::Color& color)
-			: RenderableObjectOpenGLBase(
+		GridOpenGL::GridOpenGL(int gridSize, float spacing, float densityFactor, const Space::Color& color)
+			: m_gridSize{ gridSize }
+            , m_spacing{ spacing }
+            , m_densityFactor{ densityFactor }
+            , RenderableObjectOpenGLBase(
 				Math::Vec3(0.0f, 0.0f, 0.0f),
 				color,
 				std::vector{
@@ -120,20 +123,52 @@ namespace Andromeda
             RenderableObjectOpenGLBase::Scale(scale);
         }
 
+        int GridOpenGL::GetGridSize() const
+        {
+            return m_gridSize;
+        }
+
+        float GridOpenGL::GetSpacing() const
+        {
+            return m_spacing;
+        }
+
+        float GridOpenGL::GetDensityFactor() const
+        {
+            return m_densityFactor;
+        }
+
+        void GridOpenGL::SetGridSize(int size)
+        {
+			m_gridSize = size;
+			ConstructGrid(size, m_spacing, m_color); // Reconstruct grid with new size
+			UpdateModelMatrix(TransformationType::ALL);
+        }
+
+        void GridOpenGL::SetSpacing(float spacing)
+        {
+			m_spacing = spacing;
+			ConstructGrid(100, spacing, m_color); // Reconstruct grid with new spacing
+			UpdateModelMatrix(TransformationType::ALL);
+        }
+
+        void GridOpenGL::SetDensityFactor(float densityFactor)
+        {
+			m_densityFactor = densityFactor;
+			ConstructGrid(100, m_spacing, m_color); // Reconstruct grid with new density factor
+			UpdateModelMatrix(TransformationType::ALL);
+        }
+
         void GridOpenGL::ConstructGrid(int size, float spacing, const Space::Color& gridColor)
         {
             m_vertices.clear();
             m_indices.clear();
 
             uint32_t index = 0;
-
-            // Make grid denser by using smaller spacing step
-            float densityFactor = 0.1f; // 1.0 = normal, 0.5 = 2x denser, 0.25 = 4x denser
-            float step = densityFactor;
-            float scaledSpacing = spacing * step;
+            float scaledSpacing = spacing * m_densityFactor;
             float max = static_cast<float>(size);
 
-            for (float i = -max; i <= max; i += step)
+            for (float i = -max; i <= max; i += m_densityFactor)
             {
                 float coord = i * spacing;
                 Space::Color color = gridColor;
