@@ -36,10 +36,13 @@ namespace Andromeda
 			OpenGLScene(OpenGLScene&& other) noexcept = delete;	// Prevent Move Constructor
 			OpenGLScene& operator=(OpenGLScene&& other) noexcept = delete;	// Prevent Move Assignment
 
+			// Getters
+			const std::unordered_map<int, IRenderableObjectOpenGL*> GetObjects() const;
+			const std::unordered_map<int, Math::Vec3> GetLightEmittingObjectsCoords() const;
+
 			void AddObject(int id, IRenderableObjectOpenGL* object);
 			void RemoveObject(int id);
 			void ResizeGrid(float resizeFactor);
-			const std::unordered_map<int, IRenderableObjectOpenGL*> GetObjects() const;
 
 		private:
 			class OpenGLSceneImpl;

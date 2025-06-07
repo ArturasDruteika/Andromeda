@@ -25,13 +25,27 @@ namespace Andromeda
 			m_renderableObjsPtrsMap.clear();
 		}
 
+		const std::unordered_map<int, IRenderableObjectOpenGL*> OpenGLScene::OpenGLSceneImpl::GetObjects() const
+		{
+			return m_renderableObjsPtrsMap;
+		}
+
+		const std::unordered_map<int, Math::Vec3> OpenGLScene::OpenGLSceneImpl::GetLightEmittingObjectsCoords() const
+		{
+			return m_lightEmittingObjectsCoords;
+		}
+
 		void OpenGLScene::OpenGLSceneImpl::AddObject(int id, IRenderableObjectOpenGL* object)
 		{
 			m_renderableObjsPtrsMap.insert({ id, object });
+			if (object->IsEmitingLight())
+				m_lightEmittingObjectsCoords.insert({ id, object->GetCenterPosition() });
 		}
 
 		void OpenGLScene::OpenGLSceneImpl::RemoveObject(int id)
 		{
+			if (m_renderableObjsPtrsMap.at(id)->IsEmitingLight())
+				m_lightEmittingObjectsCoords.erase(id);
 			delete m_renderableObjsPtrsMap[id];
 			m_renderableObjsPtrsMap.erase(id);
 		}
@@ -52,12 +66,6 @@ namespace Andromeda
 				GridOpenGL* grid = new GridOpenGL(100, m_gridSpacing, 0.05f, Space::Color(0.3f, 0.3f, 0.3f, 1.0f));
 				AddObject(gridIndex, grid);
 			}
-		}
-
-
-		const std::unordered_map<int, IRenderableObjectOpenGL*> OpenGLScene::OpenGLSceneImpl::GetObjects() const
-		{
-			return m_renderableObjsPtrsMap;
 		}
 	}
 }
