@@ -68,6 +68,7 @@ namespace Andromeda
 			void RenderGrid(const IRenderableObjectOpenGL& object);
 			void InitShaders();
 			void UpdatePerspectiveMatrix(int width, int height);
+			void RenderObjects(std::unordered_map<int, IRenderableObjectOpenGL*> objects, const std::unordered_map<int, Math::Vec3> lightEmittingObjectsCoords);
 
 		private:
 			bool m_isInitialized;

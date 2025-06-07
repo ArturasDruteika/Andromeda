@@ -103,22 +103,7 @@ namespace Andromeda
             glDisable(GL_BLEND);
 
             // Render all scene objects
-            for (const auto& [id, object] : scene.GetObjects())
-            {
-                if (id == static_cast<int>(SpecialIndices::Grid))
-                {
-                    if (!m_isGridVisible)
-                        continue;
-
-                    glUseProgram(m_shadersMap.at(ShaderOpenGLTypes::Grid)->GetProgram());
-                    RenderGrid(*object);
-                }
-                else
-                {
-                    glUseProgram(m_shadersMap.at(ShaderOpenGLTypes::RenderableObjects)->GetProgram());
-                    RenderObject(*object);
-                }
-            }
+            RenderObjects(scene.GetObjects(), scene.GetLightEmittingObjectsCoords());
 
             glBindFramebuffer(GL_FRAMEBUFFER, 0);
         }
@@ -431,6 +416,26 @@ namespace Andromeda
         {
             float aspect = static_cast<float>(m_width) / static_cast<float>(m_height);
             m_projectionMatrix = glm::infinitePerspective(glm::radians(45.0f), aspect, 0.1f);
+        }
+
+        void OpenGLRenderer::OpenGLRendererImpl::RenderObjects(std::unordered_map<int, IRenderableObjectOpenGL*> objects, const std::unordered_map<int, Math::Vec3> lightEmittingObjectsCoords)
+        {
+            for (const auto& [id, object] : objects)
+            {
+                if (id == static_cast<int>(SpecialIndices::Grid))
+                {
+                    if (!m_isGridVisible)
+                        continue;
+
+                    glUseProgram(m_shadersMap.at(ShaderOpenGLTypes::Grid)->GetProgram());
+                    RenderGrid(*object);
+                }
+                else
+                {
+                    glUseProgram(m_shadersMap.at(ShaderOpenGLTypes::RenderableObjects)->GetProgram());
+                    RenderObject(*object);
+                }
+            }
         }
 	}
 }
