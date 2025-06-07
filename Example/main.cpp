@@ -58,7 +58,7 @@ int main(void)
 
     // Light source sphere
     float sphereRadius = 0.7f;
-    Andromeda::Math::Vec3 spherePosition(15.0f, 10.0f, 10.0f);
+    Andromeda::Math::Vec3 spherePosition(10.0f, 5.0f, 5.0f);
     Andromeda::Space::Color sphereColor = { 1.0f, 1.0f, 1.0f, 1.0f };
 
     auto* lightSphere = new Andromeda::Rendering::SphereObjectOpenGL(spherePosition, sphereRadius, sphereColor);
