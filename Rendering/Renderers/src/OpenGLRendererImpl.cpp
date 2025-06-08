@@ -28,6 +28,9 @@ namespace Andromeda
 			, m_specularStrength{ 0.5f }
 			, m_shininess{ 32.0f }
             , m_isGridVisible{ false }
+            , m_attenuationConstant{ 1.0f }
+            , m_attenuationLinear{ 0.05f }
+            , m_attenuationQuadratic{ 0.001f }
         {
             glClearColor(
                 BACKGROUND_COLOR_DEFAULT.r,
@@ -100,22 +103,7 @@ namespace Andromeda
             glDisable(GL_BLEND);
 
             // Render all scene objects
-            for (const auto& [id, object] : scene.GetObjects())
-            {
-                if (id == static_cast<int>(SpecialIndices::Grid))
-                {
-                    if (!m_isGridVisible)
-                        continue;
-
-                    glUseProgram(m_shadersMap.at(ShaderOpenGLTypes::Grid)->GetProgram());
-                    RenderGrid(*object);
-                }
-                else
-                {
-                    glUseProgram(m_shadersMap.at(ShaderOpenGLTypes::RenderableObjects)->GetProgram());
-                    RenderObject(*object);
-                }
-            }
+            RenderObjects(scene.GetObjects(), scene.GetLightEmittingObjectsCoords());
 
             glBindFramebuffer(GL_FRAMEBUFFER, 0);
         }
@@ -196,6 +184,21 @@ namespace Andromeda
             return m_shininess;
         }
 
+        float OpenGLRenderer::OpenGLRendererImpl::GetAttenuationConstant() const
+        {
+            return m_attenuationConstant;
+        }
+
+        float OpenGLRenderer::OpenGLRendererImpl::GetAttenuationLinear() const
+        {
+            return m_attenuationLinear;
+        }
+
+        float OpenGLRenderer::OpenGLRendererImpl::GetAttenuationQuadratic() const
+        {
+            return m_attenuationQuadratic;
+        }
+
         void OpenGLRenderer::OpenGLRendererImpl::SetGridVisible(bool visible)
         {
 			m_isGridVisible = visible;
@@ -224,6 +227,21 @@ namespace Andromeda
         void OpenGLRenderer::OpenGLRendererImpl::SetShininess(float shininess)
         {
 			m_shininess = shininess;
+        }
+
+        void OpenGLRenderer::OpenGLRendererImpl::SetAttenuationConstant(float attenuationConstant)
+        {
+            m_attenuationConstant = attenuationConstant;
+        }
+
+        void OpenGLRenderer::OpenGLRendererImpl::SetAttenuationLinear(float attenuationLinear)
+        {
+            m_attenuationLinear = attenuationLinear;
+        }
+
+        void OpenGLRenderer::OpenGLRendererImpl::SetAttenuationQuadratic(float attenuationQuadratic)
+        {
+            m_attenuationQuadratic = attenuationQuadratic;
         }
 
         void OpenGLRenderer::OpenGLRendererImpl::InitFrameBuffer()
@@ -317,10 +335,14 @@ namespace Andromeda
                 return;
             }
 
+            // TODO: make these dynamic
+            glm::vec3 lightPosition = glm::vec3(10.0f, 5.0f, 5.0f);
+            glm::vec4 lightColor = glm::vec4(1.0f, 1.0f, 1.0f, 1.0f);
+
             // Set common uniforms
-			m_shadersMap.at(ShaderOpenGLTypes::RenderableObjects)->SetUniform("u_ambientStrength", m_ambientStrength);
-			m_shadersMap.at(ShaderOpenGLTypes::RenderableObjects)->SetUniform("u_specularStrength", m_specularStrength);
-			m_shadersMap.at(ShaderOpenGLTypes::RenderableObjects)->SetUniform("u_shininess", m_shininess);
+            m_shadersMap.at(ShaderOpenGLTypes::RenderableObjects)->SetUniform("u_ambientStrength", m_ambientStrength);
+            m_shadersMap.at(ShaderOpenGLTypes::RenderableObjects)->SetUniform("u_specularStrength", m_specularStrength);
+            m_shadersMap.at(ShaderOpenGLTypes::RenderableObjects)->SetUniform("u_shininess", m_shininess);
             m_shadersMap.at(ShaderOpenGLTypes::RenderableObjects)->SetUniform("u_model", MathUtils::ToGLM(object.GetModelMatrix()));
             m_shadersMap.at(ShaderOpenGLTypes::RenderableObjects)->SetUniform("u_view", MathUtils::ToGLM(m_pCamera->GetViewMatrix()));
             m_shadersMap.at(ShaderOpenGLTypes::RenderableObjects)->SetUniform("u_projection", m_projectionMatrix);
@@ -328,16 +350,29 @@ namespace Andromeda
             // Special case: light sphere
             if (object.IsEmitingLight())
             {
-                m_shadersMap.at(ShaderOpenGLTypes::RenderableObjects)->SetUniform("u_lightPos", MathUtils::ToGLM(object.GetCenterPosition()));
+                auto lightPos = MathUtils::ToGLM(object.GetCenterPosition());
+                auto lightColor = MathUtils::ToGLM(object.GetColor().ReturnAsVec4());
+                m_shadersMap.at(ShaderOpenGLTypes::RenderableObjects)->SetUniform("u_lightPos", lightPos);
                 m_shadersMap.at(ShaderOpenGLTypes::RenderableObjects)->SetUniform("u_viewPos", MathUtils::ToGLM(m_pCamera->GetPosition()));
-                m_shadersMap.at(ShaderOpenGLTypes::RenderableObjects)->SetUniform("u_lightColor", MathUtils::ToGLM(object.GetColor().ReturnAsVec4()));
-
-                // Force vertex color to white so it appears white
-                m_shadersMap.at(ShaderOpenGLTypes::RenderableObjects)->SetUniform("u_vertexColorOverride", MathUtils::ToGLM(object.GetColor().ReturnAsVec4()));
+                m_shadersMap.at(ShaderOpenGLTypes::RenderableObjects)->SetUniform("u_lightColor", lightColor);
+                // Set attenuation uniforms
+                m_shadersMap.at(ShaderOpenGLTypes::RenderableObjects)->SetUniform("u_attenuationConstant", m_attenuationConstant);
+                m_shadersMap.at(ShaderOpenGLTypes::RenderableObjects)->SetUniform("u_attenuationLinear", m_attenuationLinear);
+                m_shadersMap.at(ShaderOpenGLTypes::RenderableObjects)->SetUniform("u_attenuationQuadratic", m_attenuationQuadratic);
+                // Force vertex color override
+                m_shadersMap.at(ShaderOpenGLTypes::RenderableObjects)->SetUniform("u_vertexColorOverride", lightColor);
             }
             else
             {
-                // Optional: reset override to no-op if your shader expects default value
+                // Set uniforms for non-light-emitting objects
+                m_shadersMap.at(ShaderOpenGLTypes::RenderableObjects)->SetUniform("u_lightPos", lightPosition);
+                m_shadersMap.at(ShaderOpenGLTypes::RenderableObjects)->SetUniform("u_viewPos", MathUtils::ToGLM(m_pCamera->GetPosition()));
+                m_shadersMap.at(ShaderOpenGLTypes::RenderableObjects)->SetUniform("u_lightColor", lightColor);
+                // Set attenuation uniforms
+                m_shadersMap.at(ShaderOpenGLTypes::RenderableObjects)->SetUniform("u_attenuationConstant", m_attenuationConstant);
+                m_shadersMap.at(ShaderOpenGLTypes::RenderableObjects)->SetUniform("u_attenuationLinear", m_attenuationLinear);
+                m_shadersMap.at(ShaderOpenGLTypes::RenderableObjects)->SetUniform("u_attenuationQuadratic", m_attenuationQuadratic);
+                // Reset override
                 m_shadersMap.at(ShaderOpenGLTypes::RenderableObjects)->SetUniform("u_vertexColorOverride", glm::vec4(0.0f));
             }
 
@@ -381,6 +416,26 @@ namespace Andromeda
         {
             float aspect = static_cast<float>(m_width) / static_cast<float>(m_height);
             m_projectionMatrix = glm::infinitePerspective(glm::radians(45.0f), aspect, 0.1f);
+        }
+
+        void OpenGLRenderer::OpenGLRendererImpl::RenderObjects(std::unordered_map<int, IRenderableObjectOpenGL*> objects, const std::unordered_map<int, Math::Vec3> lightEmittingObjectsCoords)
+        {
+            for (const auto& [id, object] : objects)
+            {
+                if (id == static_cast<int>(SpecialIndices::Grid))
+                {
+                    if (!m_isGridVisible)
+                        continue;
+
+                    glUseProgram(m_shadersMap.at(ShaderOpenGLTypes::Grid)->GetProgram());
+                    RenderGrid(*object);
+                }
+                else
+                {
+                    glUseProgram(m_shadersMap.at(ShaderOpenGLTypes::RenderableObjects)->GetProgram());
+                    RenderObject(*object);
+                }
+            }
         }
 	}
 }

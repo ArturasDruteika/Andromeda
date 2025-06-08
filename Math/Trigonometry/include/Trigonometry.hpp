@@ -1,3 +1,6 @@
+// Myliu savo spoonchik spoonchik
+
+
 #ifndef MATH__TRIGONOMETRY__HPP
 #define MATH__TRIGONOMETRY__HPP
 
