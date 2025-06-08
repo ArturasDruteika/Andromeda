@@ -31,6 +31,7 @@ namespace Andromeda
             , m_attenuationConstant{ 1.0f }
             , m_attenuationLinear{ 0.05f }
             , m_attenuationQuadratic{ 0.001f }
+            , m_isIlluminationMode{ false }
         {
             glClearColor(
                 BACKGROUND_COLOR_DEFAULT.r,
@@ -79,7 +80,7 @@ namespace Andromeda
             m_isInitialized = false;
         }
 
-        void OpenGLRenderer::OpenGLRendererImpl::RenderFrame(const OpenGLScene& scene)
+        void OpenGLRenderer::OpenGLRendererImpl::RenderFrame(const OpenGLScene& scene) const
         {
             if (!m_isInitialized)
             {
@@ -103,7 +104,7 @@ namespace Andromeda
             glDisable(GL_BLEND);
 
             // Render all scene objects
-            RenderObjects(scene.GetObjects(), scene.GetLightEmittingObjectsCoords());
+            RenderObjects(scene.GetObjects());
 
             glBindFramebuffer(GL_FRAMEBUFFER, 0);
         }
@@ -142,6 +143,11 @@ namespace Andromeda
         bool OpenGLRenderer::OpenGLRendererImpl::IsGridVisible() const
         {
             return m_isGridVisible;
+        }
+
+        bool OpenGLRenderer::OpenGLRendererImpl::IsIlluminationMode() const
+        {
+            return m_isIlluminationMode;
         }
 
         unsigned int OpenGLRenderer::OpenGLRendererImpl::GetFrameBufferObject() const
@@ -244,6 +250,11 @@ namespace Andromeda
             m_attenuationQuadratic = attenuationQuadratic;
         }
 
+        void OpenGLRenderer::OpenGLRendererImpl::SetIlluminationMode(bool mode)
+        {
+            m_isIlluminationMode = mode;
+        }
+
         void OpenGLRenderer::OpenGLRendererImpl::InitFrameBuffer()
         {
             if (m_width <= 0 or m_height <= 0)
@@ -327,7 +338,24 @@ namespace Andromeda
             glBindFramebuffer(GL_FRAMEBUFFER, 0);
         }
 
-        void OpenGLRenderer::OpenGLRendererImpl::RenderObject(const Rendering::IRenderableObjectOpenGL& object)
+        void OpenGLRenderer::OpenGLRendererImpl::RenderObject(const Rendering::IRenderableObjectOpenGL& object) const
+        {
+            if (m_width == 0 || m_height == 0)
+            {
+                spdlog::error("Framebuffer dimensions are zero. Cannot render object.");
+                return;
+            }
+
+            m_shadersMap.at(ShaderOpenGLTypes::RenderableObjects)->SetUniform("u_model", MathUtils::ToGLM(object.GetModelMatrix()));
+            m_shadersMap.at(ShaderOpenGLTypes::RenderableObjects)->SetUniform("u_view", MathUtils::ToGLM(m_pCamera->GetViewMatrix()));
+            m_shadersMap.at(ShaderOpenGLTypes::RenderableObjects)->SetUniform("u_projection", m_projectionMatrix);
+
+            glBindVertexArray(object.GetVAO());
+            glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, object.GetEBO());
+            glDrawElements(GL_TRIANGLES, object.GetIndicesCount(), GL_UNSIGNED_INT, 0);
+        }
+
+        void OpenGLRenderer::OpenGLRendererImpl::RenderObjectWithIllumination(const IRenderableObjectOpenGL& object) const
         {
             if (m_width == 0 || m_height == 0)
             {
@@ -381,7 +409,56 @@ namespace Andromeda
             glDrawElements(GL_TRIANGLES, object.GetIndicesCount(), GL_UNSIGNED_INT, 0);
         }
 
-        void OpenGLRenderer::OpenGLRendererImpl::RenderGrid(const IRenderableObjectOpenGL& object)
+        void OpenGLRenderer::OpenGLRendererImpl::RenderObjects(const std::unordered_map<int, IRenderableObjectOpenGL*> objects) const
+        {
+            for (const auto& [id, object] : objects)
+            {
+                if (id == static_cast<int>(SpecialIndices::Grid))
+                {
+                    if (!m_isGridVisible)
+                        continue;
+
+                    glUseProgram(m_shadersMap.at(ShaderOpenGLTypes::Grid)->GetProgram());
+                    RenderGrid(*object);
+                }
+                else
+                {
+                    glUseProgram(m_shadersMap.at(ShaderOpenGLTypes::RenderableObjects)->GetProgram());
+                    RenderObject(*object);
+                }
+            }
+        }
+
+        void OpenGLRenderer::OpenGLRendererImpl::RenderObjectsWithoutIllumination() const
+        {
+
+        }
+
+        void OpenGLRenderer::OpenGLRendererImpl::RenderObjectsWithIllumination(
+            const std::unordered_map<int, IRenderableObjectOpenGL*> objects, 
+            const std::unordered_map<int, Math::Vec3> lightEmittingObjectsCoords,
+            const std::unordered_map<int, Math::Vec4> lightEmittingObjectsColors
+            ) const
+        {
+            for (const auto& [id, object] : objects)
+            {
+                if (id == static_cast<int>(SpecialIndices::Grid))
+                {
+                    if (!m_isGridVisible)
+                        continue;
+
+                    glUseProgram(m_shadersMap.at(ShaderOpenGLTypes::Grid)->GetProgram());
+                    RenderGrid(*object);
+                }
+                else
+                {
+                    glUseProgram(m_shadersMap.at(ShaderOpenGLTypes::RenderableObjects)->GetProgram());
+                    RenderObject(*object);
+                }
+            }
+        }
+
+        void OpenGLRenderer::OpenGLRendererImpl::RenderGrid(const IRenderableObjectOpenGL& object) const
         {
             if (m_width == 0 || m_height == 0)
             {
@@ -401,7 +478,6 @@ namespace Andromeda
             glDrawElements(GL_LINES, object.GetIndicesCount(), GL_UNSIGNED_INT, 0);
         }
 
-
         void OpenGLRenderer::OpenGLRendererImpl::InitShaders()
         {
             std::string renderableObjectsVertexShaderPath = "shader_program_sources/vertex_shader.glsl";
@@ -418,24 +494,6 @@ namespace Andromeda
             m_projectionMatrix = glm::infinitePerspective(glm::radians(45.0f), aspect, 0.1f);
         }
 
-        void OpenGLRenderer::OpenGLRendererImpl::RenderObjects(std::unordered_map<int, IRenderableObjectOpenGL*> objects, const std::unordered_map<int, Math::Vec3> lightEmittingObjectsCoords)
-        {
-            for (const auto& [id, object] : objects)
-            {
-                if (id == static_cast<int>(SpecialIndices::Grid))
-                {
-                    if (!m_isGridVisible)
-                        continue;
 
-                    glUseProgram(m_shadersMap.at(ShaderOpenGLTypes::Grid)->GetProgram());
-                    RenderGrid(*object);
-                }
-                else
-                {
-                    glUseProgram(m_shadersMap.at(ShaderOpenGLTypes::RenderableObjects)->GetProgram());
-                    RenderObject(*object);
-                }
-            }
-        }
 	}
 }
