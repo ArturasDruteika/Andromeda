@@ -39,6 +39,7 @@ namespace Andromeda
 			// Getters
 			const std::unordered_map<int, IRenderableObjectOpenGL*> GetObjects() const;
 			const std::unordered_map<int, Math::Vec3> GetLightEmittingObjectsCoords() const;
+			const std::unordered_map<int, Math::Vec4> GetLightEmittingObjectsColors() const;
 
 			void AddObject(int id, IRenderableObjectOpenGL* object);
 			void RemoveObject(int id);

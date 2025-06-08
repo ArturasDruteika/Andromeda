@@ -35,17 +35,28 @@ namespace Andromeda
 			return m_lightEmittingObjectsCoords;
 		}
 
+		const std::unordered_map<int, Math::Vec4> OpenGLScene::OpenGLSceneImpl::GetLightEmittingObjectsColors() const
+		{
+			return m_lightEmittingObjectsColors;
+		}
+
 		void OpenGLScene::OpenGLSceneImpl::AddObject(int id, IRenderableObjectOpenGL* object)
 		{
 			m_renderableObjsPtrsMap.insert({ id, object });
 			if (object->IsEmitingLight())
+			{
+				m_lightEmittingObjectsColors.insert({ id, object->GetColor().ReturnAsVec4() });
 				m_lightEmittingObjectsCoords.insert({ id, object->GetCenterPosition() });
+			}
 		}
 
 		void OpenGLScene::OpenGLSceneImpl::RemoveObject(int id)
 		{
 			if (m_renderableObjsPtrsMap.at(id)->IsEmitingLight())
+			{
+				m_lightEmittingObjectsColors.erase(id);
 				m_lightEmittingObjectsCoords.erase(id);
+			}
 			delete m_renderableObjsPtrsMap[id];
 			m_renderableObjsPtrsMap.erase(id);
 		}
