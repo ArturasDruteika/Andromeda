@@ -12,6 +12,7 @@ namespace Andromeda
 		enum class ShaderOpenGLTypes
 		{
 			RenderableObjects,
+			RenderableObjectsIllumination,
 			Grid
 		};
 

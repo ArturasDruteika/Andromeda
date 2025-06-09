@@ -69,12 +69,12 @@ namespace Andromeda
 			void RenderObject(const IRenderableObjectOpenGL& object) const;
 			void RenderObjectWithIllumination(const IRenderableObjectOpenGL& object) const;
 			void RenderObjects(const std::unordered_map<int, IRenderableObjectOpenGL*> objects) const;
-			void RenderObjectsWithoutIllumination() const;
-			void RenderObjectsWithIllumination(
-				const std::unordered_map<int, IRenderableObjectOpenGL*> objects, 
-				const std::unordered_map<int, Math::Vec3> lightEmittingObjectsCoords,
-				const std::unordered_map<int, Math::Vec4> lightEmittingObjectsColors
-			) const;
+			//void RenderObjectsWithoutIllumination() const;
+			//void RenderObjectsWithIllumination(
+			//	const std::unordered_map<int, IRenderableObjectOpenGL*> objects, 
+			//	const std::unordered_map<int, Math::Vec3> lightEmittingObjectsCoords,
+			//	const std::unordered_map<int, Math::Vec4> lightEmittingObjectsColors
+			//) const;
 			void RenderGrid(const IRenderableObjectOpenGL& object) const;
 			void InitShaders();
 			void UpdatePerspectiveMatrix(int width, int height);

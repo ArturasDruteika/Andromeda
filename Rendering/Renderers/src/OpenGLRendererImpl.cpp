@@ -368,40 +368,40 @@ namespace Andromeda
             glm::vec4 lightColor = glm::vec4(1.0f, 1.0f, 1.0f, 1.0f);
 
             // Set common uniforms
-            m_shadersMap.at(ShaderOpenGLTypes::RenderableObjects)->SetUniform("u_ambientStrength", m_ambientStrength);
-            m_shadersMap.at(ShaderOpenGLTypes::RenderableObjects)->SetUniform("u_specularStrength", m_specularStrength);
-            m_shadersMap.at(ShaderOpenGLTypes::RenderableObjects)->SetUniform("u_shininess", m_shininess);
-            m_shadersMap.at(ShaderOpenGLTypes::RenderableObjects)->SetUniform("u_model", MathUtils::ToGLM(object.GetModelMatrix()));
-            m_shadersMap.at(ShaderOpenGLTypes::RenderableObjects)->SetUniform("u_view", MathUtils::ToGLM(m_pCamera->GetViewMatrix()));
-            m_shadersMap.at(ShaderOpenGLTypes::RenderableObjects)->SetUniform("u_projection", m_projectionMatrix);
+            m_shadersMap.at(ShaderOpenGLTypes::RenderableObjectsIllumination)->SetUniform("u_ambientStrength", m_ambientStrength);
+            m_shadersMap.at(ShaderOpenGLTypes::RenderableObjectsIllumination)->SetUniform("u_specularStrength", m_specularStrength);
+            m_shadersMap.at(ShaderOpenGLTypes::RenderableObjectsIllumination)->SetUniform("u_shininess", m_shininess);
+            m_shadersMap.at(ShaderOpenGLTypes::RenderableObjectsIllumination)->SetUniform("u_model", MathUtils::ToGLM(object.GetModelMatrix()));
+            m_shadersMap.at(ShaderOpenGLTypes::RenderableObjectsIllumination)->SetUniform("u_view", MathUtils::ToGLM(m_pCamera->GetViewMatrix()));
+            m_shadersMap.at(ShaderOpenGLTypes::RenderableObjectsIllumination)->SetUniform("u_projection", m_projectionMatrix);
 
             // Special case: light sphere
             if (object.IsEmitingLight())
             {
                 auto lightPos = MathUtils::ToGLM(object.GetCenterPosition());
                 auto lightColor = MathUtils::ToGLM(object.GetColor().ReturnAsVec4());
-                m_shadersMap.at(ShaderOpenGLTypes::RenderableObjects)->SetUniform("u_lightPos", lightPos);
-                m_shadersMap.at(ShaderOpenGLTypes::RenderableObjects)->SetUniform("u_viewPos", MathUtils::ToGLM(m_pCamera->GetPosition()));
-                m_shadersMap.at(ShaderOpenGLTypes::RenderableObjects)->SetUniform("u_lightColor", lightColor);
+                m_shadersMap.at(ShaderOpenGLTypes::RenderableObjectsIllumination)->SetUniform("u_lightPos", lightPos);
+                m_shadersMap.at(ShaderOpenGLTypes::RenderableObjectsIllumination)->SetUniform("u_viewPos", MathUtils::ToGLM(m_pCamera->GetPosition()));
+                m_shadersMap.at(ShaderOpenGLTypes::RenderableObjectsIllumination)->SetUniform("u_lightColor", lightColor);
                 // Set attenuation uniforms
-                m_shadersMap.at(ShaderOpenGLTypes::RenderableObjects)->SetUniform("u_attenuationConstant", m_attenuationConstant);
-                m_shadersMap.at(ShaderOpenGLTypes::RenderableObjects)->SetUniform("u_attenuationLinear", m_attenuationLinear);
-                m_shadersMap.at(ShaderOpenGLTypes::RenderableObjects)->SetUniform("u_attenuationQuadratic", m_attenuationQuadratic);
+                m_shadersMap.at(ShaderOpenGLTypes::RenderableObjectsIllumination)->SetUniform("u_attenuationConstant", m_attenuationConstant);
+                m_shadersMap.at(ShaderOpenGLTypes::RenderableObjectsIllumination)->SetUniform("u_attenuationLinear", m_attenuationLinear);
+                m_shadersMap.at(ShaderOpenGLTypes::RenderableObjectsIllumination)->SetUniform("u_attenuationQuadratic", m_attenuationQuadratic);
                 // Force vertex color override
-                m_shadersMap.at(ShaderOpenGLTypes::RenderableObjects)->SetUniform("u_vertexColorOverride", lightColor);
+                m_shadersMap.at(ShaderOpenGLTypes::RenderableObjectsIllumination)->SetUniform("u_vertexColorOverride", lightColor);
             }
             else
             {
                 // Set uniforms for non-light-emitting objects
-                m_shadersMap.at(ShaderOpenGLTypes::RenderableObjects)->SetUniform("u_lightPos", lightPosition);
-                m_shadersMap.at(ShaderOpenGLTypes::RenderableObjects)->SetUniform("u_viewPos", MathUtils::ToGLM(m_pCamera->GetPosition()));
-                m_shadersMap.at(ShaderOpenGLTypes::RenderableObjects)->SetUniform("u_lightColor", lightColor);
+                m_shadersMap.at(ShaderOpenGLTypes::RenderableObjectsIllumination)->SetUniform("u_lightPos", lightPosition);
+                m_shadersMap.at(ShaderOpenGLTypes::RenderableObjectsIllumination)->SetUniform("u_viewPos", MathUtils::ToGLM(m_pCamera->GetPosition()));
+                m_shadersMap.at(ShaderOpenGLTypes::RenderableObjectsIllumination)->SetUniform("u_lightColor", lightColor);
                 // Set attenuation uniforms
-                m_shadersMap.at(ShaderOpenGLTypes::RenderableObjects)->SetUniform("u_attenuationConstant", m_attenuationConstant);
-                m_shadersMap.at(ShaderOpenGLTypes::RenderableObjects)->SetUniform("u_attenuationLinear", m_attenuationLinear);
-                m_shadersMap.at(ShaderOpenGLTypes::RenderableObjects)->SetUniform("u_attenuationQuadratic", m_attenuationQuadratic);
+                m_shadersMap.at(ShaderOpenGLTypes::RenderableObjectsIllumination)->SetUniform("u_attenuationConstant", m_attenuationConstant);
+                m_shadersMap.at(ShaderOpenGLTypes::RenderableObjectsIllumination)->SetUniform("u_attenuationLinear", m_attenuationLinear);
+                m_shadersMap.at(ShaderOpenGLTypes::RenderableObjectsIllumination)->SetUniform("u_attenuationQuadratic", m_attenuationQuadratic);
                 // Reset override
-                m_shadersMap.at(ShaderOpenGLTypes::RenderableObjects)->SetUniform("u_vertexColorOverride", glm::vec4(0.0f));
+                m_shadersMap.at(ShaderOpenGLTypes::RenderableObjectsIllumination)->SetUniform("u_vertexColorOverride", glm::vec4(0.0f));
             }
 
             glBindVertexArray(object.GetVAO());
@@ -423,37 +423,16 @@ namespace Andromeda
                 }
                 else
                 {
-                    glUseProgram(m_shadersMap.at(ShaderOpenGLTypes::RenderableObjects)->GetProgram());
-                    RenderObject(*object);
-                }
-            }
-        }
-
-        void OpenGLRenderer::OpenGLRendererImpl::RenderObjectsWithoutIllumination() const
-        {
-
-        }
-
-        void OpenGLRenderer::OpenGLRendererImpl::RenderObjectsWithIllumination(
-            const std::unordered_map<int, IRenderableObjectOpenGL*> objects, 
-            const std::unordered_map<int, Math::Vec3> lightEmittingObjectsCoords,
-            const std::unordered_map<int, Math::Vec4> lightEmittingObjectsColors
-            ) const
-        {
-            for (const auto& [id, object] : objects)
-            {
-                if (id == static_cast<int>(SpecialIndices::Grid))
-                {
-                    if (!m_isGridVisible)
-                        continue;
-
-                    glUseProgram(m_shadersMap.at(ShaderOpenGLTypes::Grid)->GetProgram());
-                    RenderGrid(*object);
-                }
-                else
-                {
-                    glUseProgram(m_shadersMap.at(ShaderOpenGLTypes::RenderableObjects)->GetProgram());
-                    RenderObject(*object);
+                    if (m_isIlluminationMode)
+                    {
+                        glUseProgram(m_shadersMap.at(ShaderOpenGLTypes::RenderableObjectsIllumination)->GetProgram());
+                        RenderObjectWithIllumination(*object);
+                    }
+                    else
+                    {
+                        glUseProgram(m_shadersMap.at(ShaderOpenGLTypes::RenderableObjects)->GetProgram());
+                        RenderObject(*object);
+                    }
                 }
             }
         }
@@ -487,7 +466,7 @@ namespace Andromeda
                     "shader_program_sources/fragment_shader.glsl"
                 },
                 {
-                    ShaderOpenGLTypes::RenderableObjects,
+                    ShaderOpenGLTypes::RenderableObjectsIllumination,
                     "shader_program_sources/vertex_shader_illumination.glsl",
                     "shader_program_sources/fragment_shader_illumination.glsl"
                 },
@@ -509,7 +488,5 @@ namespace Andromeda
             float aspect = static_cast<float>(m_width) / static_cast<float>(m_height);
             m_projectionMatrix = glm::infinitePerspective(glm::radians(45.0f), aspect, 0.1f);
         }
-
-
 	}
 }
