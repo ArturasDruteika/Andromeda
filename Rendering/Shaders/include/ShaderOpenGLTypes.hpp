@@ -14,6 +14,13 @@ namespace Andromeda
 			RenderableObjects,
 			Grid
 		};
+
+		struct ShaderDefinition
+		{
+			ShaderOpenGLTypes type;
+			std::string vertexPath;
+			std::string fragmentPath;
+		};
 	}
 }
 

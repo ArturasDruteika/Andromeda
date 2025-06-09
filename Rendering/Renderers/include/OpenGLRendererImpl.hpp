@@ -41,6 +41,7 @@ namespace Andromeda
 			float GetAttenuationQuadratic() const;
 			// Setters
 			void SetGridVisible(bool visible);
+			void SetIlluminationMode(bool mode);
 			void SetCamera(Camera* camera);
 			void SetAmbientStrength(float ambientStrength);
 			void SetSpecularStrength(float specularStrength);
@@ -48,7 +49,6 @@ namespace Andromeda
 			void SetAttenuationConstant(float attenuationConstant);
 			void SetAttenuationLinear(float attenuationLinear);
 			void SetAttenuationQuadratic(float attenuationQuadratic);
-			void SetIlluminationMode(bool mode);
 
 			void Init(int width, int height);
 			void DeInit();

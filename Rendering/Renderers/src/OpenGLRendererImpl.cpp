@@ -210,6 +210,11 @@ namespace Andromeda
 			m_isGridVisible = visible;
         }
 
+        void OpenGLRenderer::OpenGLRendererImpl::SetIlluminationMode(bool mode)
+        {
+            m_isIlluminationMode = mode;
+        }
+
         void OpenGLRenderer::OpenGLRendererImpl::SetCamera(Camera* camera)
         {
 			if (camera == nullptr)
@@ -248,11 +253,6 @@ namespace Andromeda
         void OpenGLRenderer::OpenGLRendererImpl::SetAttenuationQuadratic(float attenuationQuadratic)
         {
             m_attenuationQuadratic = attenuationQuadratic;
-        }
-
-        void OpenGLRenderer::OpenGLRendererImpl::SetIlluminationMode(bool mode)
-        {
-            m_isIlluminationMode = mode;
         }
 
         void OpenGLRenderer::OpenGLRendererImpl::InitFrameBuffer()
@@ -480,12 +480,28 @@ namespace Andromeda
 
         void OpenGLRenderer::OpenGLRendererImpl::InitShaders()
         {
-            std::string renderableObjectsVertexShaderPath = "shader_program_sources/vertex_shader.glsl";
-            std::string renderableObjectsFragmentShaderPath = "shader_program_sources/fragment_shader.glsl";
-            std::string gridVertexShaderPath = "shader_program_sources/vertex_shader_grid.glsl";
-            std::string gridFragmentShaderPath = "shader_program_sources/fragment_shader_grid.glsl";
-			CreateShader(ShaderOpenGLTypes::RenderableObjects, renderableObjectsVertexShaderPath, renderableObjectsFragmentShaderPath);
-			CreateShader(ShaderOpenGLTypes::Grid, gridVertexShaderPath, gridFragmentShaderPath);
+            std::vector<ShaderDefinition> shaders = {
+                {
+                    ShaderOpenGLTypes::RenderableObjects,
+                    "shader_program_sources/vertex_shader.glsl",
+                    "shader_program_sources/fragment_shader.glsl"
+                },
+                {
+                    ShaderOpenGLTypes::RenderableObjects,
+                    "shader_program_sources/vertex_shader_illumination.glsl",
+                    "shader_program_sources/fragment_shader_illumination.glsl"
+                },
+                {
+                    ShaderOpenGLTypes::Grid,
+                    "shader_program_sources/vertex_shader_grid.glsl",
+                    "shader_program_sources/fragment_shader_grid.glsl" 
+                }
+            };
+
+            for (const auto& shader : shaders)
+            {
+                CreateShader(shader.type, shader.vertexPath, shader.fragmentPath);
+            }
         }
 
         void OpenGLRenderer::OpenGLRendererImpl::UpdatePerspectiveMatrix(int width, int height)
