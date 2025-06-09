@@ -39,6 +39,7 @@ namespace Andromeda
 			// Getters
 			bool IsInitialized() const;
 			bool IsGridVisible() const;
+			bool IsIlluminationMode() const;
 			unsigned int GetFrameBufferObject() const;
 			unsigned int GetFrameBufferObjectTexture() const;
 			unsigned int GetDepthBuffer() const;
@@ -47,16 +48,23 @@ namespace Andromeda
 			float GetAmbientStrength() const;
 			float GetSpecularStrength() const;
 			float GetShininess() const;
+			float GetAttenuationConstant() const;
+			float GetAttenuationLinear() const;
+			float GetAttenuationQuadratic() const;
 			// Setters
 			void SetGridVisible(bool visible);
+			void SetIlluminationMode(bool mode);
 			void SetCamera(Camera* camera);
 			void SetAmbientStrength(float ambientStrength);
 			void SetSpecularStrength(float specularStrength);
 			void SetShininess(float shininess);
+			void SetAttenuationConstant(float attenuationConstant);
+			void SetAttenuationLinear(float attenuationLinear);
+			void SetAttenuationQuadratic(float attenuationQuadratic);
 
 			void Init(int width, int height);
 			void DeInit();
-			void RenderFrame(const OpenGLScene& scene);
+			void RenderFrame(const OpenGLScene& scene) const;
 			void Resize(int width, int height);
 
 		private:
