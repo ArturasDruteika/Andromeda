@@ -105,45 +105,45 @@ target_precompile_headers(${PROJECT_NAME}
 
 ### Post builds
 # Define filenames
-set(VERTEX_SHADER_RENDERABLE_OBJECT_FILENAME "vertex_shader.glsl")
-set(FRAGMENT_SHADER_RENDERABLE_OBJECT_FILENAME "fragment_shader.glsl")
-set(VERTEX_SHADER_GRID_FILENAME "vertex_shader_grid.glsl")
-set(FRAGMENT_SHADER_GRID_FILENAME "fragment_shader_grid.glsl")
+# Define shader filenames
+set(SHADER_FILES
+    "vertex_shader.glsl"
+    "fragment_shader.glsl"
+    "vertex_shader_illumination.glsl"
+    "fragment_shader_illumination.glsl"
+    "vertex_shader_grid.glsl"
+    "fragment_shader_grid.glsl"
+)
 
-# Define source shader file paths
-set(VERTEX_SHADER_RENDERABLE_OBJECT_SOURCE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/ShaderProgramSources/${VERTEX_SHADER_RENDERABLE_OBJECT_FILENAME}")
-set(FRAGMENT_SHADER_RENDERABLE_OBJECT_SOURCE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/ShaderProgramSources/${FRAGMENT_SHADER_RENDERABLE_OBJECT_FILENAME}")
-set(VERTEX_SHADER_GRID_SOURCE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/ShaderProgramSources/${VERTEX_SHADER_GRID_FILENAME}")
-set(FRAGMENT_SHADER_GRID_SOURCE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/ShaderProgramSources/${FRAGMENT_SHADER_GRID_FILENAME}")
+# Create full source paths
+set(SHADER_SOURCE_PATHS "")
+foreach(FILE_NAME IN LISTS SHADER_FILES)
+    list(APPEND SHADER_SOURCE_PATHS "${CMAKE_CURRENT_SOURCE_DIR}/ShaderProgramSources/${FILE_NAME}")
+endforeach()
 
-# Define the output directory (binary directory where executables are placed)
+# Determine output directory based on platform
 if (CMAKE_SYSTEM_NAME STREQUAL "Windows")
     set(SHADER_OUTPUT_DIR "${CMAKE_ASSETS_OUTPUT_DIRECTORY}/$<CONFIG>/shader_program_sources")
-elseif (CMAKE_SYSTEM_NAME STREQUAL "Linux")
+else()
     set(SHADER_OUTPUT_DIR "${CMAKE_ASSETS_OUTPUT_DIRECTORY}/shader_program_sources")
 endif()
 
-# Post-build step to copy shader files
+# Create custom commands
 add_custom_command(
-    TARGET 
-        ${PROJECT_NAME} POST_BUILD
-    COMMAND 
-        ${CMAKE_COMMAND} -E make_directory "${SHADER_OUTPUT_DIR}"
-    COMMAND 
-        ${CMAKE_COMMAND} -E copy_if_different
-        "${VERTEX_SHADER_RENDERABLE_OBJECT_SOURCE_PATH}" "${SHADER_OUTPUT_DIR}/${VERTEX_SHADER_RENDERABLE_OBJECT_FILENAME}"
-    COMMAND 
-        ${CMAKE_COMMAND} -E copy_if_different
-        "${VERTEX_SHADER_GRID_SOURCE_PATH}" "${SHADER_OUTPUT_DIR}/${VERTEX_SHADER_GRID_FILENAME}"
-    COMMAND 
-        ${CMAKE_COMMAND} -E copy_if_different
-        "${FRAGMENT_SHADER_RENDERABLE_OBJECT_SOURCE_PATH}" "${SHADER_OUTPUT_DIR}/${FRAGMENT_SHADER_RENDERABLE_OBJECT_FILENAME}"
-    COMMAND 
-        ${CMAKE_COMMAND} -E copy_if_different
-        "${FRAGMENT_SHADER_GRID_SOURCE_PATH}" "${SHADER_OUTPUT_DIR}/${FRAGMENT_SHADER_GRID_FILENAME}"
-    COMMENT 
-        "Creating directory and copying shader files to ${SHADER_OUTPUT_DIR}"
+    TARGET ${PROJECT_NAME} POST_BUILD
+    COMMAND ${CMAKE_COMMAND} -E make_directory "${SHADER_OUTPUT_DIR}"
+    COMMENT "Creating directory ${SHADER_OUTPUT_DIR} for shaders"
 )
+
+foreach(SHADER_PATH IN LISTS SHADER_SOURCE_PATHS)
+    get_filename_component(FILE_NAME "${SHADER_PATH}" NAME)
+    add_custom_command(
+        TARGET ${PROJECT_NAME} POST_BUILD
+        COMMAND ${CMAKE_COMMAND} -E copy_if_different
+            "${SHADER_PATH}" "${SHADER_OUTPUT_DIR}/${FILE_NAME}"
+        COMMENT "Copying ${FILE_NAME} to ${SHADER_OUTPUT_DIR}"
+    )
+endforeach()
 
 
 # Organize files into Solution Explorer folders

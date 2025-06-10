@@ -12,7 +12,15 @@ namespace Andromeda
 		enum class ShaderOpenGLTypes
 		{
 			RenderableObjects,
+			RenderableObjectsIllumination,
 			Grid
+		};
+
+		struct ShaderDefinition
+		{
+			ShaderOpenGLTypes type;
+			std::string vertexPath;
+			std::string fragmentPath;
 		};
 	}
 }

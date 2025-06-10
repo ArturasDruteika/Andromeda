@@ -30,14 +30,14 @@ namespace Andromeda
 			return m_renderableObjsPtrsMap;
 		}
 
-		const std::unordered_map<int, Math::Vec3> OpenGLScene::OpenGLSceneImpl::GetLightEmittingObjectsCoords() const
+		const Math::Vec3 OpenGLScene::OpenGLSceneImpl::GetLightEmittingObjectsCoords() const
 		{
-			return m_lightEmittingObjectsCoords;
+			return m_lightEmittingObjectCoords;
 		}
 
-		const std::unordered_map<int, Math::Vec4> OpenGLScene::OpenGLSceneImpl::GetLightEmittingObjectsColors() const
+		const Math::Vec4 OpenGLScene::OpenGLSceneImpl::GetLightEmittingObjectsColors() const
 		{
-			return m_lightEmittingObjectsColors;
+			return m_lightEmittingObjectColor;
 		}
 
 		void OpenGLScene::OpenGLSceneImpl::AddObject(int id, IRenderableObjectOpenGL* object)
@@ -45,8 +45,8 @@ namespace Andromeda
 			m_renderableObjsPtrsMap.insert({ id, object });
 			if (object->IsEmitingLight())
 			{
-				m_lightEmittingObjectsColors.insert({ id, object->GetColor().ReturnAsVec4() });
-				m_lightEmittingObjectsCoords.insert({ id, object->GetCenterPosition() });
+				m_lightEmittingObjectColor = object->GetColor().ReturnAsVec4();
+				m_lightEmittingObjectCoords = object->GetCenterPosition();
 			}
 		}
 
@@ -54,8 +54,7 @@ namespace Andromeda
 		{
 			if (m_renderableObjsPtrsMap.at(id)->IsEmitingLight())
 			{
-				m_lightEmittingObjectsColors.erase(id);
-				m_lightEmittingObjectsCoords.erase(id);
+				m_lightEmittingObjectColor = { 0.0f, 0.0f, 0.0f, 0.0f };
 			}
 			delete m_renderableObjsPtrsMap[id];
 			m_renderableObjsPtrsMap.erase(id);

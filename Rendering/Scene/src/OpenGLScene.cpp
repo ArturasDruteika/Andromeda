@@ -21,12 +21,12 @@ namespace Andromeda
 			return m_pOpenGLSceneImpl->GetObjects();
 		}
 
-		const std::unordered_map<int, Math::Vec3> OpenGLScene::GetLightEmittingObjectsCoords() const
+		const Math::Vec3 OpenGLScene::GetLightEmittingObjectsCoords() const
 		{
 			return m_pOpenGLSceneImpl->GetLightEmittingObjectsCoords();
 		}
 
-		const std::unordered_map<int, Math::Vec4> OpenGLScene::GetLightEmittingObjectsColors() const
+		const Math::Vec4 OpenGLScene::GetLightEmittingObjectsColors() const
 		{
 			return m_pOpenGLSceneImpl->GetLightEmittingObjectsColors();
 		}

@@ -27,6 +27,7 @@ namespace Andromeda
 			// Getters
 			bool IsInitialized() const;
 			bool IsGridVisible() const;
+			bool IsIlluminationMode() const;
 			unsigned int GetFrameBufferObject() const;
 			unsigned int GetFrameBufferObjectTexture() const;
 			unsigned int GetDepthBuffer() const;
@@ -40,6 +41,7 @@ namespace Andromeda
 			float GetAttenuationQuadratic() const;
 			// Setters
 			void SetGridVisible(bool visible);
+			void SetIlluminationMode(bool mode);
 			void SetCamera(Camera* camera);
 			void SetAmbientStrength(float ambientStrength);
 			void SetSpecularStrength(float specularStrength);
@@ -50,7 +52,7 @@ namespace Andromeda
 
 			void Init(int width, int height);
 			void DeInit();
-			void RenderFrame(const OpenGLScene& scene);
+			void RenderFrame(const OpenGLScene& scene) const;
 			void Resize(int width, int height);
 
 		private:
@@ -64,15 +66,21 @@ namespace Andromeda
 			void CheckFBOStatus();
 			void ConfigureFrameBufferTexture();
 			void UnbindFrameBuffer() const;
-			void RenderObject(const IRenderableObjectOpenGL& object);
-			void RenderGrid(const IRenderableObjectOpenGL& object);
+			void RenderObject(const IRenderableObjectOpenGL& object) const;
+			void RenderObjectWithIllumination(
+				const IRenderableObjectOpenGL& object,
+				const Math::Vec3& lightEmittingObjectCoords,
+				const Math::Vec4& lightEmittingObjectColors
+			) const;
+			void RenderObjects(const OpenGLScene& scene) const;
+			void RenderGrid(const IRenderableObjectOpenGL& object) const;
 			void InitShaders();
 			void UpdatePerspectiveMatrix(int width, int height);
-			void RenderObjects(std::unordered_map<int, IRenderableObjectOpenGL*> objects, const std::unordered_map<int, Math::Vec3> lightEmittingObjectsCoords);
 
 		private:
 			bool m_isInitialized;
 			bool m_isGridVisible;
+			bool m_isIlluminationMode;
 			unsigned int m_FBO;
 			unsigned int m_FBOTexture;
 			unsigned int m_depthBuffer;
