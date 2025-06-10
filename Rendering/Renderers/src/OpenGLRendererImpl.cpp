@@ -104,7 +104,7 @@ namespace Andromeda
             glDisable(GL_BLEND);
 
             // Render all scene objects
-            RenderObjects(scene.GetObjects());
+            RenderObjects(scene);
 
             glBindFramebuffer(GL_FRAMEBUFFER, 0);
         }
@@ -355,17 +355,17 @@ namespace Andromeda
             glDrawElements(GL_TRIANGLES, object.GetIndicesCount(), GL_UNSIGNED_INT, 0);
         }
 
-        void OpenGLRenderer::OpenGLRendererImpl::RenderObjectWithIllumination(const IRenderableObjectOpenGL& object) const
+        void OpenGLRenderer::OpenGLRendererImpl::RenderObjectWithIllumination(
+            const IRenderableObjectOpenGL& object,
+            const Math::Vec3& lightEmittingObjectCoords,
+            const Math::Vec4& lightEmittingObjectColors
+        ) const
         {
             if (m_width == 0 || m_height == 0)
             {
                 spdlog::error("Framebuffer dimensions are zero. Cannot render object.");
                 return;
             }
-
-            // TODO: make these dynamic
-            glm::vec3 lightPosition = glm::vec3(10.0f, 5.0f, 5.0f);
-            glm::vec4 lightColor = glm::vec4(1.0f, 1.0f, 1.0f, 1.0f);
 
             // Set common uniforms
             m_shadersMap.at(ShaderOpenGLTypes::RenderableObjectsIllumination)->SetUniform("u_ambientStrength", m_ambientStrength);
@@ -393,9 +393,9 @@ namespace Andromeda
             else
             {
                 // Set uniforms for non-light-emitting objects
-                m_shadersMap.at(ShaderOpenGLTypes::RenderableObjectsIllumination)->SetUniform("u_lightPos", lightPosition);
+                m_shadersMap.at(ShaderOpenGLTypes::RenderableObjectsIllumination)->SetUniform("u_lightPos", MathUtils::ToGLM(lightEmittingObjectCoords));
                 m_shadersMap.at(ShaderOpenGLTypes::RenderableObjectsIllumination)->SetUniform("u_viewPos", MathUtils::ToGLM(m_pCamera->GetPosition()));
-                m_shadersMap.at(ShaderOpenGLTypes::RenderableObjectsIllumination)->SetUniform("u_lightColor", lightColor);
+                m_shadersMap.at(ShaderOpenGLTypes::RenderableObjectsIllumination)->SetUniform("u_lightColor", MathUtils::ToGLM(lightEmittingObjectColors));
                 // Set attenuation uniforms
                 m_shadersMap.at(ShaderOpenGLTypes::RenderableObjectsIllumination)->SetUniform("u_attenuationConstant", m_attenuationConstant);
                 m_shadersMap.at(ShaderOpenGLTypes::RenderableObjectsIllumination)->SetUniform("u_attenuationLinear", m_attenuationLinear);
@@ -409,9 +409,9 @@ namespace Andromeda
             glDrawElements(GL_TRIANGLES, object.GetIndicesCount(), GL_UNSIGNED_INT, 0);
         }
 
-        void OpenGLRenderer::OpenGLRendererImpl::RenderObjects(const std::unordered_map<int, IRenderableObjectOpenGL*> objects) const
+        void OpenGLRenderer::OpenGLRendererImpl::RenderObjects(const OpenGLScene& scene) const
         {
-            for (const auto& [id, object] : objects)
+            for (const auto& [id, object] : scene.GetObjects())
             {
                 if (id == static_cast<int>(SpecialIndices::Grid))
                 {
@@ -426,7 +426,11 @@ namespace Andromeda
                     if (m_isIlluminationMode)
                     {
                         glUseProgram(m_shadersMap.at(ShaderOpenGLTypes::RenderableObjectsIllumination)->GetProgram());
-                        RenderObjectWithIllumination(*object);
+                        RenderObjectWithIllumination(
+                            *object, 
+                            scene.GetLightEmittingObjectsCoords(), 
+                            scene.GetLightEmittingObjectsColors()
+                        );
                     }
                     else
                     {
