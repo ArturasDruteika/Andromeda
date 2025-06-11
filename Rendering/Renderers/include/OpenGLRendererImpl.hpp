@@ -69,8 +69,8 @@ namespace Andromeda
 			void RenderObject(const IRenderableObjectOpenGL& object) const;
 			void RenderObjectWithIllumination(
 				const IRenderableObjectOpenGL& object,
-				const Math::Vec3& lightEmittingObjectCoords,
-				const Math::Vec4& lightEmittingObjectColors
+				const std::unordered_map<int, Math::Vec3>& lightEmittingObjectCoords,
+				const std::unordered_map<int, Math::Vec4>& lightEmittingObjectColors
 			) const;
 			void RenderObjects(const OpenGLScene& scene) const;
 			void RenderGrid(const IRenderableObjectOpenGL& object) const;

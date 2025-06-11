@@ -346,23 +346,23 @@ namespace Andromeda
                 return;
             }
 
-            m_shadersMap.at(ShaderOpenGLTypes::RenderableObjects)->Bind();
+            const OpenGLShader& shader = *m_shadersMap.at(ShaderOpenGLTypes::RenderableObjects);
 
-            m_shadersMap.at(ShaderOpenGLTypes::RenderableObjects)->SetUniform("u_model", MathUtils::ToGLM(object.GetModelMatrix()));
-            m_shadersMap.at(ShaderOpenGLTypes::RenderableObjects)->SetUniform("u_view", MathUtils::ToGLM(m_pCamera->GetViewMatrix()));
-            m_shadersMap.at(ShaderOpenGLTypes::RenderableObjects)->SetUniform("u_projection", m_projectionMatrix);
+            shader.SetUniform("u_model", MathUtils::ToGLM(object.GetModelMatrix()));
+            shader.SetUniform("u_view", MathUtils::ToGLM(m_pCamera->GetViewMatrix()));
+            shader.SetUniform("u_projection", m_projectionMatrix);
 
             glBindVertexArray(object.GetVAO());
             glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, object.GetEBO());
             glDrawElements(GL_TRIANGLES, object.GetIndicesCount(), GL_UNSIGNED_INT, 0);
 
-            m_shadersMap.at(ShaderOpenGLTypes::RenderableObjects)->UnBind();
+            shader.UnBind();
         }
 
         void OpenGLRenderer::OpenGLRendererImpl::RenderObjectWithIllumination(
             const IRenderableObjectOpenGL& object,
-            const Math::Vec3& lightEmittingObjectCoords,
-            const Math::Vec4& lightEmittingObjectColors
+            const std::unordered_map<int, Math::Vec3>& lightEmittingObjectCoords,
+            const std::unordered_map<int, Math::Vec4>& lightEmittingObjectColors
         ) const
         {
             if (m_width == 0 || m_height == 0)
@@ -371,50 +371,61 @@ namespace Andromeda
                 return;
             }
 
-            m_shadersMap.at(ShaderOpenGLTypes::RenderableObjectsIllumination)->Bind();
+            OpenGLShader& shader = *m_shadersMap.at(ShaderOpenGLTypes::RenderableObjectsIllumination);
+            shader.Bind();
 
-            // Set common uniforms
-            m_shadersMap.at(ShaderOpenGLTypes::RenderableObjectsIllumination)->SetUniform("u_ambientStrength", m_ambientStrength);
-            m_shadersMap.at(ShaderOpenGLTypes::RenderableObjectsIllumination)->SetUniform("u_specularStrength", m_specularStrength);
-            m_shadersMap.at(ShaderOpenGLTypes::RenderableObjectsIllumination)->SetUniform("u_shininess", m_shininess);
-            m_shadersMap.at(ShaderOpenGLTypes::RenderableObjectsIllumination)->SetUniform("u_model", MathUtils::ToGLM(object.GetModelMatrix()));
-            m_shadersMap.at(ShaderOpenGLTypes::RenderableObjectsIllumination)->SetUniform("u_view", MathUtils::ToGLM(m_pCamera->GetViewMatrix()));
-            m_shadersMap.at(ShaderOpenGLTypes::RenderableObjectsIllumination)->SetUniform("u_projection", m_projectionMatrix);
+            // Set shared uniforms
+            shader.SetUniform("u_ambientStrength", m_ambientStrength);
+            shader.SetUniform("u_specularStrength", m_specularStrength);
+            shader.SetUniform("u_shininess", m_shininess);
+            shader.SetUniform("u_model", MathUtils::ToGLM(object.GetModelMatrix()));
+            shader.SetUniform("u_view", MathUtils::ToGLM(m_pCamera->GetViewMatrix()));
+            shader.SetUniform("u_projection", m_projectionMatrix);
+            shader.SetUniform("u_viewPos", MathUtils::ToGLM(m_pCamera->GetPosition()));
 
-            // Special case: light sphere
+            // Attenuation
+            shader.SetUniform("u_attenuationConstant", m_attenuationConstant);
+            shader.SetUniform("u_attenuationLinear", m_attenuationLinear);
+            shader.SetUniform("u_attenuationQuadratic", m_attenuationQuadratic);
+
+            // Convert map values to vectors
+            std::vector<glm::vec3> lightPositions;
+            std::vector<glm::vec4> lightColors;
+
+            for (const auto& [id, pos] : lightEmittingObjectCoords)
+            {
+                auto colorIt = lightEmittingObjectColors.find(id);
+                if (colorIt != lightEmittingObjectColors.end())
+                {
+                    lightPositions.push_back(MathUtils::ToGLM(pos));
+                    lightColors.push_back(MathUtils::ToGLM(colorIt->second));
+                }
+                else
+                {
+                    spdlog::warn("Light position with ID {} has no corresponding color. Skipping.", id);
+                }
+            }
+
+            // Send light data to shader
+            shader.SetUniform("u_numLights", static_cast<int>(lightPositions.size()));
+            shader.SetUniform("u_lightPos", lightPositions);
+            shader.SetUniform("u_lightColor", lightColors);
+
+            // Vertex color override
             if (object.IsEmitingLight())
             {
-                auto lightPos = MathUtils::ToGLM(object.GetCenterPosition());
-                auto lightColor = MathUtils::ToGLM(object.GetColor().ReturnAsVec4());
-                m_shadersMap.at(ShaderOpenGLTypes::RenderableObjectsIllumination)->SetUniform("u_lightPos", lightPos);
-                m_shadersMap.at(ShaderOpenGLTypes::RenderableObjectsIllumination)->SetUniform("u_viewPos", MathUtils::ToGLM(m_pCamera->GetPosition()));
-                m_shadersMap.at(ShaderOpenGLTypes::RenderableObjectsIllumination)->SetUniform("u_lightColor", lightColor);
-                // Set attenuation uniforms
-                m_shadersMap.at(ShaderOpenGLTypes::RenderableObjectsIllumination)->SetUniform("u_attenuationConstant", m_attenuationConstant);
-                m_shadersMap.at(ShaderOpenGLTypes::RenderableObjectsIllumination)->SetUniform("u_attenuationLinear", m_attenuationLinear);
-                m_shadersMap.at(ShaderOpenGLTypes::RenderableObjectsIllumination)->SetUniform("u_attenuationQuadratic", m_attenuationQuadratic);
-                // Force vertex color override
-                m_shadersMap.at(ShaderOpenGLTypes::RenderableObjectsIllumination)->SetUniform("u_vertexColorOverride", lightColor);
+                shader.SetUniform("u_vertexColorOverride", MathUtils::ToGLM(object.GetColor().ReturnAsVec4()));
             }
             else
             {
-                // Set uniforms for non-light-emitting objects
-                m_shadersMap.at(ShaderOpenGLTypes::RenderableObjectsIllumination)->SetUniform("u_lightPos", MathUtils::ToGLM(lightEmittingObjectCoords));
-                m_shadersMap.at(ShaderOpenGLTypes::RenderableObjectsIllumination)->SetUniform("u_viewPos", MathUtils::ToGLM(m_pCamera->GetPosition()));
-                m_shadersMap.at(ShaderOpenGLTypes::RenderableObjectsIllumination)->SetUniform("u_lightColor", MathUtils::ToGLM(lightEmittingObjectColors));
-                // Set attenuation uniforms
-                m_shadersMap.at(ShaderOpenGLTypes::RenderableObjectsIllumination)->SetUniform("u_attenuationConstant", m_attenuationConstant);
-                m_shadersMap.at(ShaderOpenGLTypes::RenderableObjectsIllumination)->SetUniform("u_attenuationLinear", m_attenuationLinear);
-                m_shadersMap.at(ShaderOpenGLTypes::RenderableObjectsIllumination)->SetUniform("u_attenuationQuadratic", m_attenuationQuadratic);
-                // Reset override
-                m_shadersMap.at(ShaderOpenGLTypes::RenderableObjectsIllumination)->SetUniform("u_vertexColorOverride", glm::vec4(0.0f));
+                shader.SetUniform("u_vertexColorOverride", glm::vec4(0.0f));
             }
 
+            // Draw
             glBindVertexArray(object.GetVAO());
             glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, object.GetEBO());
             glDrawElements(GL_TRIANGLES, object.GetIndicesCount(), GL_UNSIGNED_INT, 0);
-
-            m_shadersMap.at(ShaderOpenGLTypes::RenderableObjectsIllumination)->UnBind();
+            shader.UnBind();
         }
 
         void OpenGLRenderer::OpenGLRendererImpl::RenderObjects(const OpenGLScene& scene) const
@@ -433,7 +444,7 @@ namespace Andromeda
                     if (m_isIlluminationMode)
                     {
                         RenderObjectWithIllumination(
-                            *object, 
+                            *object,
                             scene.GetLightEmittingObjectsCoords(), 
                             scene.GetLightEmittingObjectsColors()
                         );
@@ -454,13 +465,13 @@ namespace Andromeda
                 return;
             }
 
-            m_shadersMap.at(ShaderOpenGLTypes::Grid)->Bind();
+            const OpenGLShader& shader = *m_shadersMap.at(ShaderOpenGLTypes::Grid);
+            shader.Bind();
 
             glm::mat4 viewMatrix = MathUtils::ToGLM(m_pCamera->GetViewMatrix());
 
-            auto& shader = m_shadersMap.at(ShaderOpenGLTypes::Grid);
-            shader->SetUniform("u_view", viewMatrix);
-            shader->SetUniform("u_projection", m_projectionMatrix);
+            shader.SetUniform("u_view", viewMatrix);
+            shader.SetUniform("u_projection", m_projectionMatrix);
 
             glBindVertexArray(object.GetVAO());
             glBindBuffer(GL_ARRAY_BUFFER, object.GetVBO());
@@ -468,7 +479,7 @@ namespace Andromeda
             glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, object.GetEBO());
             glDrawElements(GL_LINES, object.GetIndicesCount(), GL_UNSIGNED_INT, 0);
 
-            m_shadersMap.at(ShaderOpenGLTypes::Grid)->UnBind();
+            shader.UnBind();
         }
 
         void OpenGLRenderer::OpenGLRendererImpl::InitShaders()
