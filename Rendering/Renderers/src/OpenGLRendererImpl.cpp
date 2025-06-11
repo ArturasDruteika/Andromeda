@@ -346,6 +346,8 @@ namespace Andromeda
                 return;
             }
 
+            m_shadersMap.at(ShaderOpenGLTypes::RenderableObjects)->Bind();
+
             m_shadersMap.at(ShaderOpenGLTypes::RenderableObjects)->SetUniform("u_model", MathUtils::ToGLM(object.GetModelMatrix()));
             m_shadersMap.at(ShaderOpenGLTypes::RenderableObjects)->SetUniform("u_view", MathUtils::ToGLM(m_pCamera->GetViewMatrix()));
             m_shadersMap.at(ShaderOpenGLTypes::RenderableObjects)->SetUniform("u_projection", m_projectionMatrix);
@@ -353,6 +355,8 @@ namespace Andromeda
             glBindVertexArray(object.GetVAO());
             glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, object.GetEBO());
             glDrawElements(GL_TRIANGLES, object.GetIndicesCount(), GL_UNSIGNED_INT, 0);
+
+            m_shadersMap.at(ShaderOpenGLTypes::RenderableObjects)->UnBind();
         }
 
         void OpenGLRenderer::OpenGLRendererImpl::RenderObjectWithIllumination(
@@ -366,6 +370,8 @@ namespace Andromeda
                 spdlog::error("Framebuffer dimensions are zero. Cannot render object.");
                 return;
             }
+
+            m_shadersMap.at(ShaderOpenGLTypes::RenderableObjectsIllumination)->Bind();
 
             // Set common uniforms
             m_shadersMap.at(ShaderOpenGLTypes::RenderableObjectsIllumination)->SetUniform("u_ambientStrength", m_ambientStrength);
@@ -407,6 +413,8 @@ namespace Andromeda
             glBindVertexArray(object.GetVAO());
             glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, object.GetEBO());
             glDrawElements(GL_TRIANGLES, object.GetIndicesCount(), GL_UNSIGNED_INT, 0);
+
+            m_shadersMap.at(ShaderOpenGLTypes::RenderableObjectsIllumination)->UnBind();
         }
 
         void OpenGLRenderer::OpenGLRendererImpl::RenderObjects(const OpenGLScene& scene) const
@@ -418,14 +426,12 @@ namespace Andromeda
                     if (!m_isGridVisible)
                         continue;
 
-                    glUseProgram(m_shadersMap.at(ShaderOpenGLTypes::Grid)->GetProgram());
                     RenderGrid(*object);
                 }
                 else
                 {
                     if (m_isIlluminationMode)
                     {
-                        glUseProgram(m_shadersMap.at(ShaderOpenGLTypes::RenderableObjectsIllumination)->GetProgram());
                         RenderObjectWithIllumination(
                             *object, 
                             scene.GetLightEmittingObjectsCoords(), 
@@ -434,7 +440,6 @@ namespace Andromeda
                     }
                     else
                     {
-                        glUseProgram(m_shadersMap.at(ShaderOpenGLTypes::RenderableObjects)->GetProgram());
                         RenderObject(*object);
                     }
                 }
@@ -448,6 +453,9 @@ namespace Andromeda
                 spdlog::error("Framebuffer dimensions are zero. Cannot render object.");
                 return;
             }
+
+            m_shadersMap.at(ShaderOpenGLTypes::Grid)->Bind();
+
             glm::mat4 viewMatrix = MathUtils::ToGLM(m_pCamera->GetViewMatrix());
 
             auto& shader = m_shadersMap.at(ShaderOpenGLTypes::Grid);
@@ -459,6 +467,8 @@ namespace Andromeda
 
             glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, object.GetEBO());
             glDrawElements(GL_LINES, object.GetIndicesCount(), GL_UNSIGNED_INT, 0);
+
+            m_shadersMap.at(ShaderOpenGLTypes::Grid)->UnBind();
         }
 
         void OpenGLRenderer::OpenGLRendererImpl::InitShaders()
