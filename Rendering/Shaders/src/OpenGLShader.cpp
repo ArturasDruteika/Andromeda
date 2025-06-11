@@ -59,6 +59,19 @@ namespace Andromeda
 			glUseProgram(0);
 		}
 
+		void OpenGLShader::SetUniform(const std::string& name, int value) const
+		{
+			int location = glGetUniformLocation(m_program, name.c_str());
+			if (location != -1)
+			{
+				glUniform1i(location, value);
+			}
+			else
+			{
+				spdlog::warn("Uniform '{}' not found in shader.", name);
+			}
+		}
+
 		void OpenGLShader::SetUniform(const std::string& name, float value) const
 		{
 			int location = glGetUniformLocation(m_program, name.c_str());
@@ -104,6 +117,36 @@ namespace Andromeda
 			}
 
 			glUniformMatrix4fv(location, 1, GL_FALSE, glm::value_ptr(matrix));
+		}
+
+		void OpenGLShader::SetUniform(const std::string& name, const std::vector<glm::vec3>& vectors) const
+		{
+			for (size_t i = 0; i < vectors.size(); ++i)
+			{
+				std::string indexedName = name + "[" + std::to_string(i) + "]";
+				int location = glGetUniformLocation(m_program, indexedName.c_str());
+				if (location == -1)
+				{
+					spdlog::warn("Uniform '{}' not found in shader.", indexedName);
+					continue;
+				}
+				glUniform3f(location, vectors[i].x, vectors[i].y, vectors[i].z);
+			}
+		}
+
+		void OpenGLShader::SetUniform(const std::string& name, const std::vector<glm::vec4>& vectors) const
+		{
+			for (size_t i = 0; i < vectors.size(); ++i)
+			{
+				std::string indexedName = name + "[" + std::to_string(i) + "]";
+				int location = glGetUniformLocation(m_program, indexedName.c_str());
+				if (location == -1)
+				{
+					spdlog::warn("Uniform '{}' not found in shader.", indexedName);
+					continue;
+				}
+				glUniform4f(location, vectors[i].r, vectors[i].g, vectors[i].b, vectors[i].a);
+			}
 		}
 
 		unsigned int OpenGLShader::CompileShader(unsigned int type, const std::string& shaderSource)
