@@ -60,6 +60,8 @@ namespace Andromeda
                         // Create and initialize the Renderer
                         m_pRenderer = new Rendering::OpenGLRenderer();
                         m_pRenderer->Init(m_pWindow->GetWidth(), m_pWindow->GetHeight());
+                        //m_pRenderer->SetGridVisible(true);
+                        m_pRenderer->SetIlluminationMode(true);
                         m_pScene = new Rendering::OpenGLScene();
 
 						m_pRenderer->SetCamera(m_pCamera);

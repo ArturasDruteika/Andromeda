@@ -128,20 +128,20 @@ else()
     set(SHADER_OUTPUT_DIR "${CMAKE_ASSETS_OUTPUT_DIRECTORY}/shader_program_sources")
 endif()
 
-# Create custom commands
+# Create output directory
 add_custom_command(
     TARGET ${PROJECT_NAME} POST_BUILD
+    COMMAND ${CMAKE_COMMAND} -E echo "Creating directory ${SHADER_OUTPUT_DIR} for shaders"
     COMMAND ${CMAKE_COMMAND} -E make_directory "${SHADER_OUTPUT_DIR}"
-    COMMENT "Creating directory ${SHADER_OUTPUT_DIR} for shaders"
 )
 
-foreach(SHADER_PATH IN LISTS SHADER_SOURCE_PATHS)
+# Copy shaders with echo for each
+foreach(SHADER_PATH IN LISTS SHADER_SOURCE_PATHS) 
     get_filename_component(FILE_NAME "${SHADER_PATH}" NAME)
     add_custom_command(
         TARGET ${PROJECT_NAME} POST_BUILD
-        COMMAND ${CMAKE_COMMAND} -E copy_if_different
-            "${SHADER_PATH}" "${SHADER_OUTPUT_DIR}/${FILE_NAME}"
-        COMMENT "Copying ${FILE_NAME} to ${SHADER_OUTPUT_DIR}"
+        COMMAND ${CMAKE_COMMAND} -E echo "Copying ${FILE_NAME} to ${SHADER_OUTPUT_DIR}"
+        COMMAND ${CMAKE_COMMAND} -E copy_if_different "${SHADER_PATH}" "${SHADER_OUTPUT_DIR}/${FILE_NAME}"
     )
 endforeach()
 

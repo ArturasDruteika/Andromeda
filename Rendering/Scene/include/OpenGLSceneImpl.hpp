@@ -22,8 +22,8 @@ namespace Andromeda
 
 			// Getters
 			const std::unordered_map<int, IRenderableObjectOpenGL*> GetObjects() const;
-			const Math::Vec3 GetLightEmittingObjectsCoords() const;
-			const Math::Vec4 GetLightEmittingObjectsColors() const;
+			const std::unordered_map<int, Math::Vec3> GetLightEmittingObjectsCoords() const;
+			const std::unordered_map<int, Math::Vec4> GetLightEmittingObjectsColors() const;
 
 			void AddObject(int id, IRenderableObjectOpenGL* object);
 			void RemoveObject(int id);
@@ -32,8 +32,8 @@ namespace Andromeda
 		private:
 			float m_gridSpacing;
 			std::unordered_map<int, IRenderableObjectOpenGL*> m_renderableObjsPtrsMap;
-			Math::Vec3 m_lightEmittingObjectCoords;
-			Math::Vec4 m_lightEmittingObjectColor;
+			std::unordered_map<int, Math::Vec3> m_lightEmittingObjectsCoords;
+			std::unordered_map<int, Math::Vec4> m_lightEmittingObjectsColors;
 		};
 	}
 }
