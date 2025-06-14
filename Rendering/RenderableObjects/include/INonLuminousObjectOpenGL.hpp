@@ -33,6 +33,8 @@ namespace Andromeda
 			virtual ~INonLuminousObjectOpenGL();
 
 			// Getters
+			virtual bool IsEmitingLight();
+			// Setters
 			virtual float GetShininess() const = 0;
 			virtual float GetSpecularStrength() const = 0;
 			// Setters
