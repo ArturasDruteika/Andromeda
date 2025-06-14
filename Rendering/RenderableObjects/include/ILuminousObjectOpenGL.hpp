@@ -33,11 +33,13 @@ namespace Andromeda
 			virtual ~ILuminousObjectOpenGL();
 
 			// Getters
-			virtual bool IsEmitingLight();
 			virtual float GetAttenuationConstant() const = 0;
 			virtual float GetAttenuationLinear() const = 0;
 			virtual float GetAttenuationQuadratic() const = 0;
 			// Setters
+			virtual void SetAttenuationConstant(float attenuationConstant) = 0;
+			virtual void SetAttenuationLinear(float attenuationLinear) = 0;
+			virtual void SetAttenuationQuadratic(float attenuationQuadratic) = 0;
 			
 		};
 	}
