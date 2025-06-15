@@ -10,6 +10,7 @@ out vec4 FragColor;
 
 uniform float u_ambientStrength;
 uniform float u_specularStrength;
+uniform float u_diffuseStrength;
 uniform float u_shininess;
 
 uniform int u_numLights;
@@ -53,7 +54,7 @@ void main()
 
         // Diffuse
         float diff = max(dot(norm, lightDir), 0.0);
-        diffuse += diff * u_lightColor[i] * attenuation;
+        diffuse += diff * u_lightColor[i] * attenuation * u_diffuseStrength;
 
         // Specular
         vec3 reflectDir = reflect(-lightDir, norm);

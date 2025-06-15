@@ -377,6 +377,7 @@ namespace Andromeda
             // Set shared uniforms
             shader.SetUniform("u_ambientStrength", m_ambientStrength);
             shader.SetUniform("u_specularStrength", m_specularStrength);
+            shader.SetUniform("u_diffuseStrength", 1.0f);
             shader.SetUniform("u_shininess", m_shininess);
             shader.SetUniform("u_model", MathUtils::ToGLM(object.GetModelMatrix()));
             shader.SetUniform("u_view", MathUtils::ToGLM(m_pCamera->GetViewMatrix()));
