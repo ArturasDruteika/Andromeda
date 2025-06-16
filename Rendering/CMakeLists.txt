@@ -74,6 +74,13 @@ add_library(${PROJECT_NAME}
 		Camera/src/Camera.cpp
         Camera/include/CameraImpl.hpp
 		Camera/src/CameraImpl.cpp
+
+        Light/include/ILightBehavior.hpp
+		Light/src/ILightBehavior.cpp
+        Light/include/LuminousBehavior.hpp
+		Light/src/LuminousBehavior.cpp
+        Light/include/NonLuminousBehavior.hpp
+		Light/src/NonLuminousBehavior.cpp
 )
 
 target_include_directories(${PROJECT_NAME} 
@@ -268,4 +275,18 @@ source_group(
 		Camera/src/Camera.cpp
         Camera/include/CameraImpl.hpp
 		Camera/src/CameraImpl.cpp
+)
+
+source_group(
+    TREE 
+        ${CMAKE_CURRENT_SOURCE_DIR}/Light
+    PREFIX
+        "Light"
+    FILES
+        Light/include/ILightBehavior.hpp
+		Light/src/ILightBehavior.cpp
+        Light/include/LuminousBehavior.hpp
+		Light/src/LuminousBehavior.cpp
+        Light/include/NonLuminousBehavior.hpp
+		Light/src/NonLuminousBehavior.cpp
 )
