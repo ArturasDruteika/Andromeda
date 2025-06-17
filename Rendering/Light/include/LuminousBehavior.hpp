@@ -11,7 +11,7 @@ namespace Andromeda
 	namespace Rendering
 	{
 		class LuminousBehavior
-			: ILightBehavior
+			: public ILightBehavior
 		{
 		public:
 			LuminousBehavior();

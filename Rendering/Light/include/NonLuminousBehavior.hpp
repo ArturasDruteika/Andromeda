@@ -5,6 +5,7 @@
 #include "pch.hpp"
 #include "ILightBehavior.hpp"
 
+
 namespace Andromeda
 {
 	namespace Rendering
@@ -12,6 +13,7 @@ namespace Andromeda
 		class NonLuminousBehavior
 			: public ILightBehavior
 		{
+		public:
 			NonLuminousBehavior();
 			NonLuminousBehavior(
 				float shininess,
