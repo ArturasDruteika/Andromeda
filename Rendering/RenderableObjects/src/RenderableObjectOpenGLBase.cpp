@@ -1,4 +1,6 @@
 #include "../include/RenderableObjectOpenGLBase.hpp"
+#include "../../Light/include/LuminousBehavior.hpp"
+#include "../../Light/include/NonLuminousBehavior.hpp"
 #include "../../Utils/include/MathUtils.hpp"
 #include "glad/gl.h"
 
@@ -21,7 +23,7 @@ namespace Andromeda
 			, m_translationMatrix{}
 			, m_rotationMatrix{}
 			, m_scaleMatrix{}
-			, m_pILightBehavior{ nullptr }
+			, m_pILightBehavior{ new NonLuminousBehavior() }
 		{
 		}
 
@@ -87,14 +89,18 @@ namespace Andromeda
 			return m_pILightBehavior;
 		}
 
-		void RenderableObjectOpenGLBase::SetLuminous(bool isEmitingLight)
+		void RenderableObjectOpenGLBase::SetLuminous(bool shouldEmit)
 		{
-			if (m_luminous != isEmitingLight)
-			{
-				delete m_pILightBehavior;
-				
-			}
-			m_luminous = isEmitingLight;
+			if (m_luminous == shouldEmit)
+				return;
+
+			delete m_pILightBehavior;
+			m_pILightBehavior = nullptr;
+			if (shouldEmit)
+				m_pILightBehavior = new LuminousBehavior();
+			else
+				m_pILightBehavior = new NonLuminousBehavior();
+			m_luminous = shouldEmit;
 		}
 
 		void RenderableObjectOpenGLBase::SetModelMatrix(const Math::Mat4& modelMatrix)
