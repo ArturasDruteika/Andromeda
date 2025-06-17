@@ -21,6 +21,7 @@
 #include "pch.hpp"
 #include "../../Vertices/include/VertexLayouts.hpp"
 #include "../../Vertices/include/Vertex.hpp"
+#include "../../Light/include/ILightBehavior.hpp"
 #include "LinearAlgebraDataTypes.hpp"
 #include "Colors.hpp"
 
@@ -36,7 +37,7 @@ namespace Andromeda
 			virtual ~IRenderableObjectOpenGL();
 
 			// Getters
-			virtual bool IsEmitingLight() const = 0;
+			virtual bool IsLuminous() const = 0;
 			virtual unsigned int GetVBO() const = 0;
 			virtual unsigned int GetVAO() const = 0;
 			virtual unsigned int GetEBO() const = 0;
@@ -46,8 +47,9 @@ namespace Andromeda
 			virtual Math::Vec3 GetCenterPosition() const = 0;
 			virtual Math::Mat4 GetModelMatrix() const = 0;
 			virtual Space::Color GetColor() const = 0;
+			virtual ILightBehavior* GetLightBehavior() const = 0;
 			// Setters
-			virtual void SetEmitingLight(bool isEmitingLight) = 0;
+			virtual void SetLuminous(bool isEmitingLight) = 0;
 			virtual void SetModelMatrix(const Math::Mat4& modelMatrix) = 0;
 			// Transformation operations
 			virtual void Translate(const Math::Vec3& translation) = 0;

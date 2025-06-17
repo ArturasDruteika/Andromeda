@@ -413,7 +413,7 @@ namespace Andromeda
             shader.SetUniform("u_lightColor", lightColors);
 
             // Vertex color override
-            if (object.IsEmitingLight())
+            if (object.IsLuminous())
             {
                 shader.SetUniform("u_vertexColorOverride", MathUtils::ToGLM(object.GetColor().ReturnAsVec4()));
             }

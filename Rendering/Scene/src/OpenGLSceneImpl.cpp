@@ -43,7 +43,7 @@ namespace Andromeda
 		void OpenGLScene::OpenGLSceneImpl::AddObject(int id, IRenderableObjectOpenGL* object)
 		{
 			m_renderableObjsPtrsMap.insert({ id, object });
-			if (object->IsEmitingLight())
+			if (object->IsLuminous())
 			{
 				m_lightEmittingObjectsColors.insert({ id, object->GetColor().ReturnAsVec4() });
 				m_lightEmittingObjectsCoords.insert({ id, object->GetCenterPosition() });
@@ -52,7 +52,7 @@ namespace Andromeda
 
 		void OpenGLScene::OpenGLSceneImpl::RemoveObject(int id)
 		{
-			if (m_renderableObjsPtrsMap.at(id)->IsEmitingLight())
+			if (m_renderableObjsPtrsMap.at(id)->IsLuminous())
 			{
 				m_lightEmittingObjectsColors.erase(id);
 				m_lightEmittingObjectsCoords.erase(id);
