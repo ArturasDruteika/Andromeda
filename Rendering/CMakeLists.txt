@@ -48,14 +48,6 @@ add_library(${PROJECT_NAME}
 		RenderableObjects/include/RenderableObjectOpenGLBase.hpp
         RenderableObjects/src/GridOpenGL.cpp
 		RenderableObjects/include/GridOpenGL.hpp
-        RenderableObjects/include/ILuminousObjectOpenGL.hpp
-        RenderableObjects/src/ILuminousObjectOpenGL.cpp
-        RenderableObjects/include/INonLuminousObjectOpenGL.hpp
-        RenderableObjects/src/INonLuminousObjectOpenGL.cpp
-		RenderableObjects/include/LuminousObjectOpenGLBase.hpp
-        RenderableObjects/src/LuminousObjectOpenGLBase.cpp
-        RenderableObjects/include/NonLuminousObjectOpenGLBase.hpp
-        RenderableObjects/src/NonLuminousObjectOpenGLBase.cpp
 
 		Vertices/include/VertexAttributes.hpp
         Vertices/include/VertexLayouts.hpp
@@ -219,14 +211,6 @@ source_group(
 		RenderableObjects/include/RenderableObjectOpenGLBase.hpp
         RenderableObjects/src/GridOpenGL.cpp
 		RenderableObjects/include/GridOpenGL.hpp
-        RenderableObjects/include/ILuminousObjectOpenGL.hpp
-        RenderableObjects/src/ILuminousObjectOpenGL.cpp
-        RenderableObjects/include/INonLuminousObjectOpenGL.hpp
-        RenderableObjects/src/INonLuminousObjectOpenGL.cpp
-		RenderableObjects/include/LuminousObjectOpenGLBase.hpp
-        RenderableObjects/src/LuminousObjectOpenGLBase.cpp
-        RenderableObjects/include/NonLuminousObjectOpenGLBase.hpp
-        RenderableObjects/src/NonLuminousObjectOpenGLBase.cpp
 )
 
 source_group(
