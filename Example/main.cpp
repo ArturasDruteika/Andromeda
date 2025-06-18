@@ -62,7 +62,7 @@ int main(void)
     Andromeda::Space::Color sphereColor = { 1.0f, 1.0f, 1.0f, 1.0f };
 
     auto* lightSphere = new Andromeda::Rendering::SphereObjectOpenGL(spherePosition, sphereRadius, sphereColor);
-    lightSphere->SetEmitingLight(true);
+    lightSphere->SetLuminous(true);
     app.AddToScene(objectId++, lightSphere);
 
     app.RunMainLoop();
