@@ -371,56 +371,68 @@ namespace Andromeda
                 return;
             }
 
-            OpenGLShader& shader = *m_shadersMap.at(ShaderOpenGLTypes::RenderableObjectsIllumination);
+            // 1) Choose shader based on whether this object is luminous
+            ShaderOpenGLTypes shaderType = object.IsLuminous()
+                ? ShaderOpenGLTypes::RenderableObjectsLuminous
+                : ShaderOpenGLTypes::RenderableObjectsIllumination;
+
+            OpenGLShader& shader = *m_shadersMap.at(shaderType);
             shader.Bind();
 
-            // Set shared uniforms
-            shader.SetUniform("u_ambientStrength", m_ambientStrength);
-            shader.SetUniform("u_specularStrength", m_specularStrength);
-            shader.SetUniform("u_diffuseStrength", 1.0f);
-            shader.SetUniform("u_shininess", m_shininess);
+            // 2) Always set the common MVP uniforms
             shader.SetUniform("u_model", MathUtils::ToGLM(object.GetModelMatrix()));
             shader.SetUniform("u_view", MathUtils::ToGLM(m_pCamera->GetViewMatrix()));
             shader.SetUniform("u_projection", m_projectionMatrix);
+
+            // 3a) Luminous-only path:
+            //     the fragment shader just outputs the vertex color-no lighting uniforms needed.
+            if (object.IsLuminous())
+            {
+                // The luminous shader reads only the vertex color, so nothing else to set.
+                // (Optionally could set a debug tint or other uniform if you wanted.)
+
+                // Draw
+                glBindVertexArray(object.GetVAO());
+                glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, object.GetEBO());
+                glDrawElements(GL_TRIANGLES, object.GetIndicesCount(), GL_UNSIGNED_INT, 0);
+                shader.UnBind();
+                return;
+            }
+
+            // 3b) Non - luminous path : full Blinn - Phong setup
+            shader.SetUniform("u_ambientStrength", m_ambientStrength);
+            shader.SetUniform("u_diffuseStrength", 1.0f);
+            shader.SetUniform("u_specularStrength", m_specularStrength);
+            shader.SetUniform("u_shininess", m_shininess);
             shader.SetUniform("u_viewPos", MathUtils::ToGLM(m_pCamera->GetPosition()));
 
-            // Attenuation
             shader.SetUniform("u_attenuationConstant", m_attenuationConstant);
             shader.SetUniform("u_attenuationLinear", m_attenuationLinear);
             shader.SetUniform("u_attenuationQuadratic", m_attenuationQuadratic);
 
-            // Convert map values to vectors
+            // Gather lights into flat arrays
             std::vector<glm::vec3> lightPositions;
             std::vector<glm::vec4> lightColors;
+            lightPositions.reserve(lightEmittingObjectCoords.size());
+            lightColors.reserve(lightEmittingObjectCoords.size());
 
-            for (const auto& [id, pos] : lightEmittingObjectCoords)
+            for (auto& [id, pos] : lightEmittingObjectCoords)
             {
-                auto colorIt = lightEmittingObjectColors.find(id);
-                if (colorIt != lightEmittingObjectColors.end())
+                auto it = lightEmittingObjectColors.find(id);
+                if (it != lightEmittingObjectColors.end())
                 {
                     lightPositions.push_back(MathUtils::ToGLM(pos));
-                    lightColors.push_back(MathUtils::ToGLM(colorIt->second));
+                    lightColors.push_back(MathUtils::ToGLM(it->second));
                 }
                 else
                 {
-                    spdlog::warn("Light position with ID {} has no corresponding color. Skipping.", id);
+                    spdlog::warn("Light {} has position but no color; skipping.", id);
                 }
             }
 
-            // Send light data to shader
             shader.SetUniform("u_numLights", static_cast<int>(lightPositions.size()));
             shader.SetUniform("u_lightPos", lightPositions);
             shader.SetUniform("u_lightColor", lightColors);
-
-            // Vertex color override
-            if (object.IsLuminous())
-            {
-                shader.SetUniform("u_vertexColorOverride", MathUtils::ToGLM(object.GetColor().ReturnAsVec4()));
-            }
-            else
-            {
-                shader.SetUniform("u_vertexColorOverride", glm::vec4(0.0f));
-            }
 
             // Draw
             glBindVertexArray(object.GetVAO());
@@ -500,6 +512,16 @@ namespace Andromeda
                     ShaderOpenGLTypes::Grid,
                     "shader_program_sources/vertex_shader_grid.glsl",
                     "shader_program_sources/fragment_shader_grid.glsl" 
+                },
+                {
+                    ShaderOpenGLTypes::RenderableObjectsLuminous,
+                    "shader_program_sources/vertex_shader_illumination.glsl",
+                    "shader_program_sources/fragment_shader_luminous_objects.glsl"
+                },
+                {
+                    ShaderOpenGLTypes::RenderableObjectsNonLuminous,
+                    "shader_program_sources/vertex_shader_illumination.glsl",
+                    "shader_program_sources/fragment_shader_non_luminous_objects.glsl"
                 }
             };
 

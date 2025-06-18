@@ -120,6 +120,8 @@ set(SHADER_FILES
     "fragment_shader_illumination.glsl"
     "vertex_shader_grid.glsl"
     "fragment_shader_grid.glsl"
+    "fragment_shader_luminous_objects.glsl"
+    "fragment_shader_non_luminous_objects.glsl"
 )
 
 # Create full source paths

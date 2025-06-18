@@ -13,7 +13,9 @@ namespace Andromeda
 		{
 			RenderableObjects,
 			RenderableObjectsIllumination,
-			Grid
+			Grid,
+			RenderableObjectsLuminous,
+			RenderableObjectsNonLuminous
 		};
 
 		struct ShaderDefinition
