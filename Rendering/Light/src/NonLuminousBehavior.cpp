@@ -8,7 +8,7 @@ namespace Andromeda
 		NonLuminousBehavior::NonLuminousBehavior()
 			: m_shininess{ 1.0f }
 			, m_specularStrength{ 0.05f }
-			, m_diffuseStrength{ 0.001f }
+			, m_diffuseStrength{ 1.0f }
 		{
 		}
 
