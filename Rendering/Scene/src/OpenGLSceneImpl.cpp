@@ -10,6 +10,7 @@ namespace Andromeda
 	{
 		OpenGLScene::OpenGLSceneImpl::OpenGLSceneImpl()
 			: m_gridSpacing{ 1.0f } // Default grid spacing
+			, m_ambientStrength{ 0.1f } // Default ambient light strength
 		{
 			GridOpenGL* grid = new GridOpenGL(100, m_gridSpacing, 0.05f, Space::Color(0.3f, 0.3f, 0.3f, 1.0f));
 			AddObject(static_cast<int>(SpecialIndices::Grid), grid);
@@ -23,6 +24,11 @@ namespace Andromeda
 				m_renderableObjsPtrsMap.at(id) = nullptr;
 			}
 			m_renderableObjsPtrsMap.clear();
+		}
+
+		float OpenGLScene::OpenGLSceneImpl::GetAmbientStrength() const
+		{
+			return m_ambientStrength;
 		}
 
 		const std::unordered_map<int, IRenderableObjectOpenGL*> OpenGLScene::OpenGLSceneImpl::GetObjects() const
@@ -43,6 +49,18 @@ namespace Andromeda
 		const std::unordered_map<int, LuminousBehavior*> OpenGLScene::OpenGLSceneImpl::GetLuminousObjectsBehaviors() const
 		{
 			return m_luminousObjectsBehaviors;
+		}
+
+		void OpenGLScene::OpenGLSceneImpl::SetAmbientStrength(float ambientStrength)
+		{
+			if (ambientStrength >= 0.0f && ambientStrength <= 1.0f)
+			{
+				m_ambientStrength = ambientStrength;
+			}
+			else
+			{
+				spdlog::warn("Ambient strength must be between 0.0 and 1.0. Value {} is ignored.", ambientStrength);
+			}
 		}
 
 		void OpenGLScene::OpenGLSceneImpl::AddObject(int id, IRenderableObjectOpenGL* object)

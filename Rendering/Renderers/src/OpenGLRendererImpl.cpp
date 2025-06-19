@@ -26,13 +26,7 @@ namespace Andromeda
 			, m_height{ 0 }
 			, m_pCamera{ nullptr }
 			, m_depthBuffer{ 0 }
-			, m_ambientStrength{ 0.1f }
-			, m_specularStrength{ 0.5f }
-			, m_shininess{ 32.0f }
             , m_isGridVisible{ false }
-            , m_attenuationConstant{ 1.0f }
-            , m_attenuationLinear{ 0.05f }
-            , m_attenuationQuadratic{ 0.001f }
             , m_isIlluminationMode{ false }
         {
             glClearColor(
@@ -177,36 +171,6 @@ namespace Andromeda
             return m_height;
         }
 
-        float OpenGLRenderer::OpenGLRendererImpl::GetAmbientStrength() const
-        {
-            return m_ambientStrength;
-        }
-
-        float OpenGLRenderer::OpenGLRendererImpl::GetSpecularStrength() const
-        {
-            return m_specularStrength;
-        }
-
-        float OpenGLRenderer::OpenGLRendererImpl::GetShininess() const
-        {
-            return m_shininess;
-        }
-
-        float OpenGLRenderer::OpenGLRendererImpl::GetAttenuationConstant() const
-        {
-            return m_attenuationConstant;
-        }
-
-        float OpenGLRenderer::OpenGLRendererImpl::GetAttenuationLinear() const
-        {
-            return m_attenuationLinear;
-        }
-
-        float OpenGLRenderer::OpenGLRendererImpl::GetAttenuationQuadratic() const
-        {
-            return m_attenuationQuadratic;
-        }
-
         void OpenGLRenderer::OpenGLRendererImpl::SetGridVisible(bool visible)
         {
 			m_isGridVisible = visible;
@@ -225,36 +189,6 @@ namespace Andromeda
 				return;
 			}
 			m_pCamera = camera;
-        }
-
-        void OpenGLRenderer::OpenGLRendererImpl::SetAmbientStrength(float ambientStrength)
-        {
-			m_ambientStrength = ambientStrength;
-        }
-
-        void OpenGLRenderer::OpenGLRendererImpl::SetSpecularStrength(float specularStrength)
-        {
-			m_specularStrength = specularStrength;
-        }
-
-        void OpenGLRenderer::OpenGLRendererImpl::SetShininess(float shininess)
-        {
-			m_shininess = shininess;
-        }
-
-        void OpenGLRenderer::OpenGLRendererImpl::SetAttenuationConstant(float attenuationConstant)
-        {
-            m_attenuationConstant = attenuationConstant;
-        }
-
-        void OpenGLRenderer::OpenGLRendererImpl::SetAttenuationLinear(float attenuationLinear)
-        {
-            m_attenuationLinear = attenuationLinear;
-        }
-
-        void OpenGLRenderer::OpenGLRendererImpl::SetAttenuationQuadratic(float attenuationQuadratic)
-        {
-            m_attenuationQuadratic = attenuationQuadratic;
         }
 
         void OpenGLRenderer::OpenGLRendererImpl::InitFrameBuffer()
@@ -365,7 +299,8 @@ namespace Andromeda
             const IRenderableObjectOpenGL& object,
             const std::unordered_map<int, Math::Vec3>& lightEmittingObjectCoords,
             const std::unordered_map<int, Math::Vec4>& lightEmittingObjectColors,
-            const std::unordered_map<int, LuminousBehavior*>& lightEmittingObjectBehaviors
+            const std::unordered_map<int, LuminousBehavior*>& lightEmittingObjectBehaviors,
+            float ambieentStrength
         ) const
         {
             if (m_width == 0 || m_height == 0)
@@ -396,7 +331,7 @@ namespace Andromeda
                     return;
                 }
 
-                shader.SetUniform("u_ambientStrength", m_ambientStrength);
+                shader.SetUniform("u_ambientStrength", ambieentStrength);
                 shader.SetUniform("u_diffuseStrength", nonLum->GetDiffuseStrength());
                 shader.SetUniform("u_specularStrength", nonLum->GetSpecularStrength());
                 shader.SetUniform("u_shininess", nonLum->GetShininess());
@@ -459,7 +394,8 @@ namespace Andromeda
                             *object,
                             scene.GetLightEmittingObjectsCoords(), 
                             scene.GetLightEmittingObjectsColors(),
-                            scene.GetLuminousObjectsBehaviors()
+                            scene.GetLuminousObjectsBehaviors(),
+							scene.GetAmbientStrength()
                         );
                     }
                     else

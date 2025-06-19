@@ -16,6 +16,11 @@ namespace Andromeda
 			delete m_pOpenGLSceneImpl;
 		}
 
+		float OpenGLScene::GetAmbientStrength() const
+		{
+			return m_pOpenGLSceneImpl->GetAmbientStrength();
+		}
+
 		const std::unordered_map<int, IRenderableObjectOpenGL*> OpenGLScene::GetObjects() const
 		{
 			return m_pOpenGLSceneImpl->GetObjects();
@@ -34,6 +39,11 @@ namespace Andromeda
 		const std::unordered_map<int, LuminousBehavior*> OpenGLScene::GetLuminousObjectsBehaviors() const
 		{
 			return m_pOpenGLSceneImpl->GetLuminousObjectsBehaviors();
+		}
+
+		void OpenGLScene::SetAmbientStrength(float ambientStrength)
+		{
+			m_pOpenGLSceneImpl->SetAmbientStrength(ambientStrength);
 		}
 
 		void OpenGLScene::AddObject(int id, IRenderableObjectOpenGL* object)
