@@ -31,6 +31,7 @@ namespace Andromeda
 			void SetUniform(const std::string& name, const glm::vec3& vector) const;
 			void SetUniform(const std::string& name, const glm::vec4& vector) const;
 			void SetUniform(const std::string& name, const glm::mat4& matrix) const;
+			void SetUniform(const std::string& name, const std::vector<float>& values) const;
 			void SetUniform(const std::string& name, const std::vector<glm::vec3>& vectors) const;
 			void SetUniform(const std::string& name, const std::vector<glm::vec4>& vectors) const;
 
