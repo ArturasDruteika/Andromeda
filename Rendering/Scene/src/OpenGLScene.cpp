@@ -31,6 +31,11 @@ namespace Andromeda
 			return m_pOpenGLSceneImpl->GetLightEmittingObjectsColors();
 		}
 
+		const std::unordered_map<int, LuminousBehavior*> OpenGLScene::GetLuminousObjectsBehaviors() const
+		{
+			return m_pOpenGLSceneImpl->GetLuminousObjectsBehaviors();
+		}
+
 		void OpenGLScene::AddObject(int id, IRenderableObjectOpenGL* object)
 		{
 			m_pOpenGLSceneImpl->AddObject(id, object);

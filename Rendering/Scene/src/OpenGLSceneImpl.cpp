@@ -40,6 +40,11 @@ namespace Andromeda
 			return m_lightEmittingObjectsColors;
 		}
 
+		const std::unordered_map<int, LuminousBehavior*> OpenGLScene::OpenGLSceneImpl::GetLuminousObjectsBehaviors() const
+		{
+			return m_luminousObjectsBehaviors;
+		}
+
 		void OpenGLScene::OpenGLSceneImpl::AddObject(int id, IRenderableObjectOpenGL* object)
 		{
 			m_renderableObjsPtrsMap.insert({ id, object });
@@ -47,6 +52,11 @@ namespace Andromeda
 			{
 				m_lightEmittingObjectsColors.insert({ id, object->GetColor().ReturnAsVec4() });
 				m_lightEmittingObjectsCoords.insert({ id, object->GetCenterPosition() });
+				Andromeda::Rendering::LuminousBehavior* luminousBehavior = dynamic_cast<Andromeda::Rendering::LuminousBehavior*>(object->GetLightBehavior());
+				if (luminousBehavior)
+				{
+					m_luminousObjectsBehaviors.insert({ id, luminousBehavior });
+				}
 			}
 		}
 
