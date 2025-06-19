@@ -440,11 +440,6 @@ namespace Andromeda
                     "shader_program_sources/fragment_shader.glsl"
                 },
                 {
-                    ShaderOpenGLTypes::RenderableObjectsIllumination,
-                    "shader_program_sources/vertex_shader_illumination.glsl",
-                    "shader_program_sources/fragment_shader_illumination.glsl"
-                },
-                {
                     ShaderOpenGLTypes::Grid,
                     "shader_program_sources/vertex_shader_grid.glsl",
                     "shader_program_sources/fragment_shader_grid.glsl" 

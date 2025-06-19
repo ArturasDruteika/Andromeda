@@ -117,7 +117,6 @@ set(SHADER_FILES
     "vertex_shader.glsl"
     "fragment_shader.glsl"
     "vertex_shader_illumination.glsl"
-    "fragment_shader_illumination.glsl"
     "vertex_shader_grid.glsl"
     "fragment_shader_grid.glsl"
     "fragment_shader_luminous_objects.glsl"
