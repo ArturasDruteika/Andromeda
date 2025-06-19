@@ -12,8 +12,9 @@ namespace Andromeda
 		enum class ShaderOpenGLTypes
 		{
 			RenderableObjects,
-			RenderableObjectsIllumination,
-			Grid
+			RenderableObjectsLuminous,
+			RenderableObjectsNonLuminous,
+			Grid,
 		};
 
 		struct ShaderDefinition

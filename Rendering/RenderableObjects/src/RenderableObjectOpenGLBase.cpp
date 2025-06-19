@@ -1,4 +1,6 @@
 #include "../include/RenderableObjectOpenGLBase.hpp"
+#include "../../Light/include/LuminousBehavior.hpp"
+#include "../../Light/include/NonLuminousBehavior.hpp"
 #include "../../Utils/include/MathUtils.hpp"
 #include "glad/gl.h"
 
@@ -8,7 +10,7 @@ namespace Andromeda
 	namespace Rendering
 	{
 		RenderableObjectOpenGLBase::RenderableObjectOpenGLBase(const Math::Vec3& centerPosition, const Space::Color& color, const VertexLayout& vertexLayout)
-			: m_isEmitingLight{ false }
+			: m_luminous{ false }
 			, m_VBO{ 0 }
 			, m_VAO{ 0 }
 			, m_EBO{ 0 }
@@ -21,14 +23,15 @@ namespace Andromeda
 			, m_translationMatrix{}
 			, m_rotationMatrix{}
 			, m_scaleMatrix{}
+			, m_pILightBehavior{ new NonLuminousBehavior() }
 		{
 		}
 
 		RenderableObjectOpenGLBase::~RenderableObjectOpenGLBase() = default;
 
-		bool RenderableObjectOpenGLBase::IsEmitingLight() const
+		bool RenderableObjectOpenGLBase::IsLuminous() const
 		{
-			return m_isEmitingLight;
+			return m_luminous;
 		}
 
 		unsigned int RenderableObjectOpenGLBase::GetVBO() const
@@ -81,9 +84,23 @@ namespace Andromeda
 			return m_color;
 		}
 
-		void RenderableObjectOpenGLBase::SetEmitingLight(bool isEmitingLight)
+		ILightBehavior* RenderableObjectOpenGLBase::GetLightBehavior() const
 		{
-			m_isEmitingLight = isEmitingLight;
+			return m_pILightBehavior;
+		}
+
+		void RenderableObjectOpenGLBase::SetLuminous(bool shouldEmit)
+		{
+			if (m_luminous == shouldEmit)
+				return;
+
+			delete m_pILightBehavior;
+			m_pILightBehavior = nullptr;
+			if (shouldEmit)
+				m_pILightBehavior = new LuminousBehavior();
+			else
+				m_pILightBehavior = new NonLuminousBehavior();
+			m_luminous = shouldEmit;
 		}
 
 		void RenderableObjectOpenGLBase::SetModelMatrix(const Math::Mat4& modelMatrix)

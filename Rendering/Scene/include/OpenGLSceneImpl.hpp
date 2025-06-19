@@ -3,6 +3,7 @@
 
 
 #include "../include/OpenGLScene.hpp"
+#include "../../Light/include/LuminousBehavior.hpp"
 
 
 namespace Andromeda
@@ -21,9 +22,13 @@ namespace Andromeda
 			OpenGLSceneImpl& operator=(OpenGLSceneImpl&& other) noexcept = delete;	// Prevent Move Assignment
 
 			// Getters
+			float GetAmbientStrength() const;
 			const std::unordered_map<int, IRenderableObjectOpenGL*> GetObjects() const;
 			const std::unordered_map<int, Math::Vec3> GetLightEmittingObjectsCoords() const;
 			const std::unordered_map<int, Math::Vec4> GetLightEmittingObjectsColors() const;
+			const std::unordered_map<int, LuminousBehavior*> GetLuminousObjectsBehaviors() const;
+			// Setters
+			void SetAmbientStrength(float ambientStrength);
 
 			void AddObject(int id, IRenderableObjectOpenGL* object);
 			void RemoveObject(int id);
@@ -31,9 +36,11 @@ namespace Andromeda
 
 		private:
 			float m_gridSpacing;
+			float m_ambientStrength;
 			std::unordered_map<int, IRenderableObjectOpenGL*> m_renderableObjsPtrsMap;
 			std::unordered_map<int, Math::Vec3> m_lightEmittingObjectsCoords;
 			std::unordered_map<int, Math::Vec4> m_lightEmittingObjectsColors;
+			std::unordered_map<int, LuminousBehavior*> m_luminousObjectsBehaviors;
 		};
 	}
 }

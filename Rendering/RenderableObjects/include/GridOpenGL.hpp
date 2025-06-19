@@ -31,7 +31,7 @@ namespace Andromeda
 
 			// Overrides from IRenderableObjectOpenGL
 			// Getters
-			bool IsEmitingLight() const override;
+			bool IsLuminous() const override;
 			unsigned int GetVBO() const override;
 			unsigned int GetVAO() const override;
 			unsigned int GetEBO() const override;
@@ -41,8 +41,9 @@ namespace Andromeda
 			Math::Vec3 GetCenterPosition() const override;
 			Math::Mat4 GetModelMatrix() const override;
 			Space::Color GetColor() const override;
+			ILightBehavior* GetLightBehavior() const override;	// Method not needed for this object
 			// Setters
-			void SetEmitingLight(bool isEmitingLight) override;
+			void SetLuminous(bool isEmitingLight) override;
 			void SetModelMatrix(const Math::Mat4& modelMatrix) override;
 			// Transformation operations
 			void Translate(const Math::Vec3& translation) override;

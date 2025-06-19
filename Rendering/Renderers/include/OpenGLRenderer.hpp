@@ -45,22 +45,10 @@ namespace Andromeda
 			unsigned int GetDepthBuffer() const;
 			int GetWidth() const;
 			int GetHeight() const;
-			float GetAmbientStrength() const;
-			float GetSpecularStrength() const;
-			float GetShininess() const;
-			float GetAttenuationConstant() const;
-			float GetAttenuationLinear() const;
-			float GetAttenuationQuadratic() const;
 			// Setters
 			void SetGridVisible(bool visible);
 			void SetIlluminationMode(bool mode);
 			void SetCamera(Camera* camera);
-			void SetAmbientStrength(float ambientStrength);
-			void SetSpecularStrength(float specularStrength);
-			void SetShininess(float shininess);
-			void SetAttenuationConstant(float attenuationConstant);
-			void SetAttenuationLinear(float attenuationLinear);
-			void SetAttenuationQuadratic(float attenuationQuadratic);
 
 			void Init(int width, int height);
 			void DeInit();

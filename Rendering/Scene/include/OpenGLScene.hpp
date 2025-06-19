@@ -19,6 +19,7 @@
 
 #include "pch.hpp"
 #include "../../RenderableObjects/include/IRenderableObjectOpenGL.hpp"
+#include "../../Light/include/LuminousBehavior.hpp"
 
 
 namespace Andromeda
@@ -37,9 +38,13 @@ namespace Andromeda
 			OpenGLScene& operator=(OpenGLScene&& other) noexcept = delete;	// Prevent Move Assignment
 
 			// Getters
+			float GetAmbientStrength() const;
 			const std::unordered_map<int, IRenderableObjectOpenGL*> GetObjects() const;
 			const std::unordered_map<int, Math::Vec3> GetLightEmittingObjectsCoords() const;
 			const std::unordered_map<int, Math::Vec4> GetLightEmittingObjectsColors() const;
+			const std::unordered_map<int, LuminousBehavior*> GetLuminousObjectsBehaviors() const;
+			// Setters
+			void SetAmbientStrength(float ambientStrength);
 
 			void AddObject(int id, IRenderableObjectOpenGL* object);
 			void RemoveObject(int id);

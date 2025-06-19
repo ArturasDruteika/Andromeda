@@ -28,9 +28,9 @@ namespace Andromeda
 
 		GridOpenGL::~GridOpenGL() = default;
 
-        bool GridOpenGL::IsEmitingLight() const
+        bool GridOpenGL::IsLuminous() const
         {
-            return RenderableObjectOpenGLBase::IsEmitingLight();
+            return RenderableObjectOpenGLBase::IsLuminous();
         }
 
         unsigned int GridOpenGL::GetVBO() const
@@ -78,9 +78,14 @@ namespace Andromeda
             return m_color;
         }
 
-        void GridOpenGL::SetEmitingLight(bool isEmitingLight)
+        ILightBehavior* GridOpenGL::GetLightBehavior() const
         {
-            m_isEmitingLight = isEmitingLight;
+            return nullptr;
+        }
+
+        void GridOpenGL::SetLuminous(bool isEmitingLight)
+        {
+            m_luminous = isEmitingLight;
         }
 
         void GridOpenGL::SetModelMatrix(const Math::Mat4& modelMatrix)

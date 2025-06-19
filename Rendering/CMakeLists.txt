@@ -66,6 +66,13 @@ add_library(${PROJECT_NAME}
 		Camera/src/Camera.cpp
         Camera/include/CameraImpl.hpp
 		Camera/src/CameraImpl.cpp
+
+        Light/include/ILightBehavior.hpp
+		Light/src/ILightBehavior.cpp
+        Light/include/LuminousBehavior.hpp
+		Light/src/LuminousBehavior.cpp
+        Light/include/NonLuminousBehavior.hpp
+		Light/src/NonLuminousBehavior.cpp
 )
 
 target_include_directories(${PROJECT_NAME} 
@@ -110,9 +117,10 @@ set(SHADER_FILES
     "vertex_shader.glsl"
     "fragment_shader.glsl"
     "vertex_shader_illumination.glsl"
-    "fragment_shader_illumination.glsl"
     "vertex_shader_grid.glsl"
     "fragment_shader_grid.glsl"
+    "fragment_shader_luminous_objects.glsl"
+    "fragment_shader_non_luminous_objects.glsl"
 )
 
 # Create full source paths
@@ -252,4 +260,18 @@ source_group(
 		Camera/src/Camera.cpp
         Camera/include/CameraImpl.hpp
 		Camera/src/CameraImpl.cpp
+)
+
+source_group(
+    TREE 
+        ${CMAKE_CURRENT_SOURCE_DIR}/Light
+    PREFIX
+        "Light"
+    FILES
+        Light/include/ILightBehavior.hpp
+		Light/src/ILightBehavior.cpp
+        Light/include/LuminousBehavior.hpp
+		Light/src/LuminousBehavior.cpp
+        Light/include/NonLuminousBehavior.hpp
+		Light/src/NonLuminousBehavior.cpp
 )

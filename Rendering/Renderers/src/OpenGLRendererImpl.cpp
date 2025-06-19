@@ -1,6 +1,8 @@
 #include "../include/OpenGLRendererImpl.hpp"
 #include "../../Scene/include/SpecialIndices.hpp"
 #include "../../Utils/include/MathUtils.hpp"
+#include "../../Light/include/LuminousBehavior.hpp"
+#include "../../Light/include/NonLuminousBehavior.hpp"
 #include "FileOperations.hpp"
 #include "Colors.hpp"
 #include "glad/gl.h"
@@ -24,13 +26,7 @@ namespace Andromeda
 			, m_height{ 0 }
 			, m_pCamera{ nullptr }
 			, m_depthBuffer{ 0 }
-			, m_ambientStrength{ 0.1f }
-			, m_specularStrength{ 0.5f }
-			, m_shininess{ 32.0f }
             , m_isGridVisible{ false }
-            , m_attenuationConstant{ 1.0f }
-            , m_attenuationLinear{ 0.05f }
-            , m_attenuationQuadratic{ 0.001f }
             , m_isIlluminationMode{ false }
         {
             glClearColor(
@@ -175,36 +171,6 @@ namespace Andromeda
             return m_height;
         }
 
-        float OpenGLRenderer::OpenGLRendererImpl::GetAmbientStrength() const
-        {
-            return m_ambientStrength;
-        }
-
-        float OpenGLRenderer::OpenGLRendererImpl::GetSpecularStrength() const
-        {
-            return m_specularStrength;
-        }
-
-        float OpenGLRenderer::OpenGLRendererImpl::GetShininess() const
-        {
-            return m_shininess;
-        }
-
-        float OpenGLRenderer::OpenGLRendererImpl::GetAttenuationConstant() const
-        {
-            return m_attenuationConstant;
-        }
-
-        float OpenGLRenderer::OpenGLRendererImpl::GetAttenuationLinear() const
-        {
-            return m_attenuationLinear;
-        }
-
-        float OpenGLRenderer::OpenGLRendererImpl::GetAttenuationQuadratic() const
-        {
-            return m_attenuationQuadratic;
-        }
-
         void OpenGLRenderer::OpenGLRendererImpl::SetGridVisible(bool visible)
         {
 			m_isGridVisible = visible;
@@ -223,36 +189,6 @@ namespace Andromeda
 				return;
 			}
 			m_pCamera = camera;
-        }
-
-        void OpenGLRenderer::OpenGLRendererImpl::SetAmbientStrength(float ambientStrength)
-        {
-			m_ambientStrength = ambientStrength;
-        }
-
-        void OpenGLRenderer::OpenGLRendererImpl::SetSpecularStrength(float specularStrength)
-        {
-			m_specularStrength = specularStrength;
-        }
-
-        void OpenGLRenderer::OpenGLRendererImpl::SetShininess(float shininess)
-        {
-			m_shininess = shininess;
-        }
-
-        void OpenGLRenderer::OpenGLRendererImpl::SetAttenuationConstant(float attenuationConstant)
-        {
-            m_attenuationConstant = attenuationConstant;
-        }
-
-        void OpenGLRenderer::OpenGLRendererImpl::SetAttenuationLinear(float attenuationLinear)
-        {
-            m_attenuationLinear = attenuationLinear;
-        }
-
-        void OpenGLRenderer::OpenGLRendererImpl::SetAttenuationQuadratic(float attenuationQuadratic)
-        {
-            m_attenuationQuadratic = attenuationQuadratic;
         }
 
         void OpenGLRenderer::OpenGLRendererImpl::InitFrameBuffer()
@@ -362,7 +298,9 @@ namespace Andromeda
         void OpenGLRenderer::OpenGLRendererImpl::RenderObjectWithIllumination(
             const IRenderableObjectOpenGL& object,
             const std::unordered_map<int, Math::Vec3>& lightEmittingObjectCoords,
-            const std::unordered_map<int, Math::Vec4>& lightEmittingObjectColors
+            const std::unordered_map<int, Math::Vec4>& lightEmittingObjectColors,
+            const std::unordered_map<int, LuminousBehavior*>& lightEmittingObjectBehaviors,
+            float ambieentStrength
         ) const
         {
             if (m_width == 0 || m_height == 0)
@@ -371,57 +309,66 @@ namespace Andromeda
                 return;
             }
 
-            OpenGLShader& shader = *m_shadersMap.at(ShaderOpenGLTypes::RenderableObjectsIllumination);
+            ShaderOpenGLTypes shaderType = object.IsLuminous()
+                ? ShaderOpenGLTypes::RenderableObjectsLuminous
+                : ShaderOpenGLTypes::RenderableObjectsNonLuminous;
+
+            OpenGLShader& shader = *m_shadersMap.at(shaderType);
             shader.Bind();
 
-            // Set shared uniforms
-            shader.SetUniform("u_ambientStrength", m_ambientStrength);
-            shader.SetUniform("u_specularStrength", m_specularStrength);
-            shader.SetUniform("u_shininess", m_shininess);
+            // Set MVP matrices
             shader.SetUniform("u_model", MathUtils::ToGLM(object.GetModelMatrix()));
             shader.SetUniform("u_view", MathUtils::ToGLM(m_pCamera->GetViewMatrix()));
             shader.SetUniform("u_projection", m_projectionMatrix);
-            shader.SetUniform("u_viewPos", MathUtils::ToGLM(m_pCamera->GetPosition()));
 
-            // Attenuation
-            shader.SetUniform("u_attenuationConstant", m_attenuationConstant);
-            shader.SetUniform("u_attenuationLinear", m_attenuationLinear);
-            shader.SetUniform("u_attenuationQuadratic", m_attenuationQuadratic);
-
-            // Convert map values to vectors
-            std::vector<glm::vec3> lightPositions;
-            std::vector<glm::vec4> lightColors;
-
-            for (const auto& [id, pos] : lightEmittingObjectCoords)
+            if (!object.IsLuminous())
             {
-                auto colorIt = lightEmittingObjectColors.find(id);
-                if (colorIt != lightEmittingObjectColors.end())
+                auto* nonLum = dynamic_cast<NonLuminousBehavior*>(object.GetLightBehavior());
+                if (!nonLum)
                 {
+                    spdlog::error("Non-luminous object has no NonLuminousBehavior!");
+                    shader.UnBind();
+                    return;
+                }
+
+                shader.SetUniform("u_ambientStrength", ambieentStrength);
+                shader.SetUniform("u_diffuseStrength", nonLum->GetDiffuseStrength());
+                shader.SetUniform("u_specularStrength", nonLum->GetSpecularStrength());
+                shader.SetUniform("u_shininess", nonLum->GetShininess());
+                shader.SetUniform("u_viewPos", MathUtils::ToGLM(m_pCamera->GetPosition()));
+
+                // 5) Gather all lights into flat arrays, including per-light attenuation
+                std::vector<glm::vec3> lightPositions;
+                std::vector<glm::vec4> lightColors;
+                std::vector<float> lightConstants;
+                std::vector<float> lightLinears;
+                std::vector<float> lightQuadratics;
+
+                lightPositions.reserve(lightEmittingObjectCoords.size());
+                lightColors.reserve(lightEmittingObjectCoords.size());
+                lightConstants.reserve(lightEmittingObjectCoords.size());
+                lightLinears.reserve(lightEmittingObjectCoords.size());
+                lightQuadratics.reserve(lightEmittingObjectCoords.size());
+
+                for (auto& [id, pos] : lightEmittingObjectCoords)
+                {
+                    LuminousBehavior* beh = lightEmittingObjectBehaviors.at(id);
                     lightPositions.push_back(MathUtils::ToGLM(pos));
-                    lightColors.push_back(MathUtils::ToGLM(colorIt->second));
+                    lightColors.push_back(MathUtils::ToGLM(lightEmittingObjectColors.at(id)));
+                    lightConstants.push_back(beh->GetAttenuationConstant());
+                    lightLinears.push_back(beh->GetAttenuationLinear());
+                    lightQuadratics.push_back(beh->GetAttenuationQuadratic());
                 }
-                else
-                {
-                    spdlog::warn("Light position with ID {} has no corresponding color. Skipping.", id);
-                }
+
+                int numLights = static_cast<int>(lightPositions.size());
+                shader.SetUniform("u_numLights", numLights);
+                shader.SetUniform("u_lightPos", lightPositions);
+                shader.SetUniform("u_lightColor", lightColors);
+                shader.SetUniform("u_lightConstant", lightConstants);
+                shader.SetUniform("u_lightLinear", lightLinears);
+                shader.SetUniform("u_lightQuadratic", lightQuadratics);
             }
 
-            // Send light data to shader
-            shader.SetUniform("u_numLights", static_cast<int>(lightPositions.size()));
-            shader.SetUniform("u_lightPos", lightPositions);
-            shader.SetUniform("u_lightColor", lightColors);
-
-            // Vertex color override
-            if (object.IsEmitingLight())
-            {
-                shader.SetUniform("u_vertexColorOverride", MathUtils::ToGLM(object.GetColor().ReturnAsVec4()));
-            }
-            else
-            {
-                shader.SetUniform("u_vertexColorOverride", glm::vec4(0.0f));
-            }
-
-            // Draw
             glBindVertexArray(object.GetVAO());
             glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, object.GetEBO());
             glDrawElements(GL_TRIANGLES, object.GetIndicesCount(), GL_UNSIGNED_INT, 0);
@@ -446,7 +393,9 @@ namespace Andromeda
                         RenderObjectWithIllumination(
                             *object,
                             scene.GetLightEmittingObjectsCoords(), 
-                            scene.GetLightEmittingObjectsColors()
+                            scene.GetLightEmittingObjectsColors(),
+                            scene.GetLuminousObjectsBehaviors(),
+							scene.GetAmbientStrength()
                         );
                     }
                     else
@@ -491,14 +440,19 @@ namespace Andromeda
                     "shader_program_sources/fragment_shader.glsl"
                 },
                 {
-                    ShaderOpenGLTypes::RenderableObjectsIllumination,
-                    "shader_program_sources/vertex_shader_illumination.glsl",
-                    "shader_program_sources/fragment_shader_illumination.glsl"
-                },
-                {
                     ShaderOpenGLTypes::Grid,
                     "shader_program_sources/vertex_shader_grid.glsl",
                     "shader_program_sources/fragment_shader_grid.glsl" 
+                },
+                {
+                    ShaderOpenGLTypes::RenderableObjectsLuminous,
+                    "shader_program_sources/vertex_shader_illumination.glsl",
+                    "shader_program_sources/fragment_shader_luminous_objects.glsl"
+                },
+                {
+                    ShaderOpenGLTypes::RenderableObjectsNonLuminous,
+                    "shader_program_sources/vertex_shader_illumination.glsl",
+                    "shader_program_sources/fragment_shader_non_luminous_objects.glsl"
                 }
             };
 

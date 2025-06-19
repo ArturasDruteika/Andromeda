@@ -33,22 +33,10 @@ namespace Andromeda
 			unsigned int GetDepthBuffer() const;
 			int GetWidth() const;
 			int GetHeight() const;
-			float GetAmbientStrength() const;
-			float GetSpecularStrength() const;
-			float GetShininess() const;
-			float GetAttenuationConstant() const;
-			float GetAttenuationLinear() const;
-			float GetAttenuationQuadratic() const;
 			// Setters
 			void SetGridVisible(bool visible);
 			void SetIlluminationMode(bool mode);
 			void SetCamera(Camera* camera);
-			void SetAmbientStrength(float ambientStrength);
-			void SetSpecularStrength(float specularStrength);
-			void SetShininess(float shininess);
-			void SetAttenuationConstant(float attenuationConstant);
-			void SetAttenuationLinear(float attenuationLinear);
-			void SetAttenuationQuadratic(float attenuationQuadratic);
 
 			void Init(int width, int height);
 			void DeInit();
@@ -70,7 +58,9 @@ namespace Andromeda
 			void RenderObjectWithIllumination(
 				const IRenderableObjectOpenGL& object,
 				const std::unordered_map<int, Math::Vec3>& lightEmittingObjectCoords,
-				const std::unordered_map<int, Math::Vec4>& lightEmittingObjectColors
+				const std::unordered_map<int, Math::Vec4>& lightEmittingObjectColors,
+				const std::unordered_map<int, LuminousBehavior*>& lightEmittingObjectBehaviors,
+				float ambieentStrength
 			) const;
 			void RenderObjects(const OpenGLScene& scene) const;
 			void RenderGrid(const IRenderableObjectOpenGL& object) const;
@@ -86,12 +76,6 @@ namespace Andromeda
 			unsigned int m_depthBuffer;
 			int m_width;
 			int m_height;
-			float m_ambientStrength;
-			float m_specularStrength;
-			float m_shininess;
-			float m_attenuationConstant;
-			float m_attenuationLinear;
-			float m_attenuationQuadratic;
 			std::unordered_map<ShaderOpenGLTypes, OpenGLShader*> m_shadersMap;
 			glm::mat4 m_projectionMatrix;
 			Camera* m_pCamera;

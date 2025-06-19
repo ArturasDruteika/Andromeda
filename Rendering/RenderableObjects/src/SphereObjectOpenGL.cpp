@@ -16,9 +16,9 @@ namespace Andromeda
 			delete m_pSphereObjectOpenGLImpl;
 		}
 
-		bool SphereObjectOpenGL::IsEmitingLight() const
+		bool SphereObjectOpenGL::IsLuminous() const
 		{
-			return m_pSphereObjectOpenGLImpl->IsEmitingLight();
+			return m_pSphereObjectOpenGLImpl->IsLuminous();
 		}
 
 		unsigned int SphereObjectOpenGL::GetVBO() const
@@ -66,9 +66,14 @@ namespace Andromeda
 			return m_pSphereObjectOpenGLImpl->GetColor();
 		}
 
-		void SphereObjectOpenGL::SetEmitingLight(bool isEmitingLight)
+		ILightBehavior* SphereObjectOpenGL::GetLightBehavior() const
 		{
-			m_pSphereObjectOpenGLImpl->SetEmitingLight(isEmitingLight);
+			return m_pSphereObjectOpenGLImpl->GetLightBehavior();
+		}
+
+		void SphereObjectOpenGL::SetLuminous(bool isEmitingLight)
+		{
+			m_pSphereObjectOpenGLImpl->SetLuminous(isEmitingLight);
 		}
 
 		void SphereObjectOpenGL::SetModelMatrix(const Math::Mat4& modelMatrix)

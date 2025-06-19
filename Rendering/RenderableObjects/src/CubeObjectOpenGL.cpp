@@ -16,9 +16,9 @@ namespace Andromeda
 			delete m_pCubeObjectOpenGLImpl;
 		}
 
-		bool CubeObjectOpenGL::IsEmitingLight() const
+		bool CubeObjectOpenGL::IsLuminous() const
 		{
-			return m_pCubeObjectOpenGLImpl->IsEmitingLight();
+			return m_pCubeObjectOpenGLImpl->IsLuminous();
 		}
 
 		unsigned int CubeObjectOpenGL::GetVBO() const
@@ -66,9 +66,14 @@ namespace Andromeda
 			return m_pCubeObjectOpenGLImpl->GetColor();
 		}
 
-		void CubeObjectOpenGL::SetEmitingLight(bool isEmitingLight)
+		ILightBehavior* CubeObjectOpenGL::GetLightBehavior() const
 		{
-			m_pCubeObjectOpenGLImpl->SetEmitingLight(isEmitingLight);
+			return m_pCubeObjectOpenGLImpl->GetLightBehavior();
+		}
+
+		void CubeObjectOpenGL::SetLuminous(bool isEmitingLight)
+		{
+			m_pCubeObjectOpenGLImpl->SetLuminous(isEmitingLight);
 		}
 
 		void CubeObjectOpenGL::SetModelMatrix(const Math::Mat4& modelMatrix)
