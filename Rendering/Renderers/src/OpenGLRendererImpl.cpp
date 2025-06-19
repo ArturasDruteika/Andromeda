@@ -1,6 +1,8 @@
 #include "../include/OpenGLRendererImpl.hpp"
 #include "../../Scene/include/SpecialIndices.hpp"
 #include "../../Utils/include/MathUtils.hpp"
+#include "../../Light/include/LuminousBehavior.hpp"
+#include "../../Light/include/NonLuminousBehavior.hpp"
 #include "FileOperations.hpp"
 #include "Colors.hpp"
 #include "glad/gl.h"
@@ -362,7 +364,8 @@ namespace Andromeda
         void OpenGLRenderer::OpenGLRendererImpl::RenderObjectWithIllumination(
             const IRenderableObjectOpenGL& object,
             const std::unordered_map<int, Math::Vec3>& lightEmittingObjectCoords,
-            const std::unordered_map<int, Math::Vec4>& lightEmittingObjectColors
+            const std::unordered_map<int, Math::Vec4>& lightEmittingObjectColors,
+            const std::unordered_map<int, LuminousBehavior*>& lightEmittingObjectBehaviors
         ) const
         {
             if (m_width == 0 || m_height == 0)
@@ -371,70 +374,66 @@ namespace Andromeda
                 return;
             }
 
-            // 1) Choose shader based on whether this object is luminous
             ShaderOpenGLTypes shaderType = object.IsLuminous()
                 ? ShaderOpenGLTypes::RenderableObjectsLuminous
-                : ShaderOpenGLTypes::RenderableObjectsIllumination;
+                : ShaderOpenGLTypes::RenderableObjectsNonLuminous;
 
             OpenGLShader& shader = *m_shadersMap.at(shaderType);
             shader.Bind();
 
-            // 2) Always set the common MVP uniforms
+            // Set MVP matrices
             shader.SetUniform("u_model", MathUtils::ToGLM(object.GetModelMatrix()));
             shader.SetUniform("u_view", MathUtils::ToGLM(m_pCamera->GetViewMatrix()));
             shader.SetUniform("u_projection", m_projectionMatrix);
 
-            // 3a) Luminous-only path:
-            //     the fragment shader just outputs the vertex color-no lighting uniforms needed.
-            if (object.IsLuminous())
+            if (!object.IsLuminous())
             {
-                // The luminous shader reads only the vertex color, so nothing else to set.
-                // (Optionally could set a debug tint or other uniform if you wanted.)
-
-                // Draw
-                glBindVertexArray(object.GetVAO());
-                glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, object.GetEBO());
-                glDrawElements(GL_TRIANGLES, object.GetIndicesCount(), GL_UNSIGNED_INT, 0);
-                shader.UnBind();
-                return;
-            }
-
-            // 3b) Non - luminous path : full Blinn - Phong setup
-            shader.SetUniform("u_ambientStrength", m_ambientStrength);
-            shader.SetUniform("u_diffuseStrength", 1.0f);
-            shader.SetUniform("u_specularStrength", m_specularStrength);
-            shader.SetUniform("u_shininess", m_shininess);
-            shader.SetUniform("u_viewPos", MathUtils::ToGLM(m_pCamera->GetPosition()));
-
-            shader.SetUniform("u_attenuationConstant", m_attenuationConstant);
-            shader.SetUniform("u_attenuationLinear", m_attenuationLinear);
-            shader.SetUniform("u_attenuationQuadratic", m_attenuationQuadratic);
-
-            // Gather lights into flat arrays
-            std::vector<glm::vec3> lightPositions;
-            std::vector<glm::vec4> lightColors;
-            lightPositions.reserve(lightEmittingObjectCoords.size());
-            lightColors.reserve(lightEmittingObjectCoords.size());
-
-            for (auto& [id, pos] : lightEmittingObjectCoords)
-            {
-                auto it = lightEmittingObjectColors.find(id);
-                if (it != lightEmittingObjectColors.end())
+                auto* nonLum = dynamic_cast<NonLuminousBehavior*>(object.GetLightBehavior());
+                if (!nonLum)
                 {
+                    spdlog::error("Non-luminous object has no NonLuminousBehavior!");
+                    shader.UnBind();
+                    return;
+                }
+
+                shader.SetUniform("u_ambientStrength", m_ambientStrength);
+                shader.SetUniform("u_diffuseStrength", nonLum->GetDiffuseStrength());
+                shader.SetUniform("u_specularStrength", nonLum->GetSpecularStrength());
+                shader.SetUniform("u_shininess", nonLum->GetShininess());
+                shader.SetUniform("u_viewPos", MathUtils::ToGLM(m_pCamera->GetPosition()));
+
+                // 5) Gather all lights into flat arrays, including per-light attenuation
+                std::vector<glm::vec3> lightPositions;
+                std::vector<glm::vec4> lightColors;
+                std::vector<float> lightConstants;
+                std::vector<float> lightLinears;
+                std::vector<float> lightQuadratics;
+
+                lightPositions.reserve(lightEmittingObjectCoords.size());
+                lightColors.reserve(lightEmittingObjectCoords.size());
+                lightConstants.reserve(lightEmittingObjectCoords.size());
+                lightLinears.reserve(lightEmittingObjectCoords.size());
+                lightQuadratics.reserve(lightEmittingObjectCoords.size());
+
+                for (auto& [id, pos] : lightEmittingObjectCoords)
+                {
+                    LuminousBehavior* beh = lightEmittingObjectBehaviors.at(id);
                     lightPositions.push_back(MathUtils::ToGLM(pos));
-                    lightColors.push_back(MathUtils::ToGLM(it->second));
+                    lightColors.push_back(MathUtils::ToGLM(lightEmittingObjectColors.at(id)));
+                    lightConstants.push_back(beh->GetAttenuationConstant());
+                    lightLinears.push_back(beh->GetAttenuationLinear());
+                    lightQuadratics.push_back(beh->GetAttenuationQuadratic());
                 }
-                else
-                {
-                    spdlog::warn("Light {} has position but no color; skipping.", id);
-                }
+
+                int numLights = static_cast<int>(lightPositions.size());
+                shader.SetUniform("u_numLights", numLights);
+                shader.SetUniform("u_lightPos", lightPositions);
+                shader.SetUniform("u_lightColor", lightColors);
+                shader.SetUniform("u_lightConstant", lightConstants);
+                shader.SetUniform("u_lightLinear", lightLinears);
+                shader.SetUniform("u_lightQuadratic", lightQuadratics);
             }
 
-            shader.SetUniform("u_numLights", static_cast<int>(lightPositions.size()));
-            shader.SetUniform("u_lightPos", lightPositions);
-            shader.SetUniform("u_lightColor", lightColors);
-
-            // Draw
             glBindVertexArray(object.GetVAO());
             glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, object.GetEBO());
             glDrawElements(GL_TRIANGLES, object.GetIndicesCount(), GL_UNSIGNED_INT, 0);
@@ -459,7 +458,8 @@ namespace Andromeda
                         RenderObjectWithIllumination(
                             *object,
                             scene.GetLightEmittingObjectsCoords(), 
-                            scene.GetLightEmittingObjectsColors()
+                            scene.GetLightEmittingObjectsColors(),
+                            scene.GetLuminousObjectsBehaviors()
                         );
                     }
                     else
