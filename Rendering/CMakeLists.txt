@@ -73,6 +73,8 @@ add_library(${PROJECT_NAME}
 		Light/src/LuminousBehavior.cpp
         Light/include/NonLuminousBehavior.hpp
 		Light/src/NonLuminousBehavior.cpp
+
+        RayTracing/include/Ray.hpp
 )
 
 target_include_directories(${PROJECT_NAME} 
@@ -274,4 +276,13 @@ source_group(
 		Light/src/LuminousBehavior.cpp
         Light/include/NonLuminousBehavior.hpp
 		Light/src/NonLuminousBehavior.cpp
+)
+
+source_group(
+    TREE 
+        ${CMAKE_CURRENT_SOURCE_DIR}/RayTracing
+    PREFIX
+        "RayTracing"
+    FILES
+        RayTracing/include/Ray.hpp
 )
