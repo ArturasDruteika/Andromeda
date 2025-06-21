@@ -84,26 +84,26 @@ namespace Andromeda
                 return;
             }
 
-            // Bind the framebuffer
+            // 1) Bind FBO and viewport
             glBindFramebuffer(GL_FRAMEBUFFER, m_FBO);
             glViewport(0, 0, m_width, m_height);
 
-            // Clear both color and depth
-            glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
-            // Make sure depth test/write are enabled
+            // 2) Configure depth and blending *before* clearing
             glEnable(GL_DEPTH_TEST);
             glDepthFunc(GL_LESS);
             glDepthMask(GL_TRUE);
-
-            // Disable blending for opaque objects
             glDisable(GL_BLEND);
 
-            // Render all scene objects
+            // 3) Clear buffers
+            glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+            // 4) Draw the scene
             RenderObjects(scene);
 
+            // 5) Unbind
             glBindFramebuffer(GL_FRAMEBUFFER, 0);
         }
+
 
         void OpenGLRenderer::OpenGLRendererImpl::Resize(int width, int height)
         {
@@ -118,16 +118,18 @@ namespace Andromeda
 				return;
             }
 
-            m_width = width;
-            m_height = height;
-
-			UpdatePerspectiveMatrix(m_width, m_height);
-
-            glViewport(0, 0, width, height);
+            glBindFramebuffer(GL_FRAMEBUFFER, 0);
+            glBindTexture(GL_TEXTURE_2D, 0);
+            glBindRenderbuffer(GL_RENDERBUFFER, 0);
             glDeleteFramebuffers(1, &m_FBO);
             glDeleteTextures(1, &m_FBOTexture);
             glDeleteRenderbuffers(1, &m_depthBuffer);
 
+            m_width = width;
+            m_height = height;
+
+			UpdatePerspectiveMatrix(m_width, m_height);
+            glViewport(0, 0, width, height);
             InitFrameBuffer();
         }
 
@@ -300,7 +302,7 @@ namespace Andromeda
             const std::unordered_map<int, Math::Vec3>& lightEmittingObjectCoords,
             const std::unordered_map<int, Math::Vec4>& lightEmittingObjectColors,
             const std::unordered_map<int, LuminousBehavior*>& lightEmittingObjectBehaviors,
-            float ambieentStrength
+            float ambientStrength
         ) const
         {
             if (m_width == 0 || m_height == 0)
@@ -331,7 +333,7 @@ namespace Andromeda
                     return;
                 }
 
-                shader.SetUniform("u_ambientStrength", ambieentStrength);
+                shader.SetUniform("u_ambientStrength", ambientStrength);
                 shader.SetUniform("u_diffuseStrength", nonLum->GetDiffuseStrength());
                 shader.SetUniform("u_specularStrength", nonLum->GetSpecularStrength());
                 shader.SetUniform("u_shininess", nonLum->GetShininess());
