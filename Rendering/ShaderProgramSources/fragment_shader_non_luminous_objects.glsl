@@ -10,6 +10,7 @@ out vec4 FragColor;
 
 // material uniforms
 uniform float u_ambientStrength;
+uniform float u_ambientReflectivity;
 uniform float u_diffuseStrength;
 uniform float u_specularStrength;
 uniform float u_shininess;
@@ -49,7 +50,7 @@ void main()
         );
 
         // Ambient
-        ambient += u_ambientStrength * u_lightColor[i] * attenuation;
+        ambient += u_ambientStrength * u_ambientReflectivity * u_lightColor[i] * attenuation;
 
         // Diffuse
         float diff = max(dot(norm, lightDir), 0.0);

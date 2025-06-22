@@ -334,6 +334,7 @@ namespace Andromeda
                 }
 
                 shader.SetUniform("u_ambientStrength", ambientStrength);
+                shader.SetUniform("u_ambientReflectivity", nonLum->GetAmbientReflectivity());
                 shader.SetUniform("u_diffuseStrength", nonLum->GetDiffuseStrength());
                 shader.SetUniform("u_specularStrength", nonLum->GetSpecularStrength());
                 shader.SetUniform("u_shininess", nonLum->GetShininess());

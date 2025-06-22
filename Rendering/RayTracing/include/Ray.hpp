@@ -11,7 +11,7 @@ namespace Andromeda
 	{
 		struct Ray
 		{
-			glm::vec3 orgigin;
+			glm::vec3 origin;
 			glm::vec3 direction;
 		};
 	}
