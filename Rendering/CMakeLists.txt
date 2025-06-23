@@ -73,6 +73,7 @@ add_library(${PROJECT_NAME}
 		Light/src/LuminousBehavior.cpp
         Light/include/NonLuminousBehavior.hpp
 		Light/src/NonLuminousBehavior.cpp
+        Light/include/LightProperties.hpp
 
         RayTracing/include/Ray.hpp
 )
@@ -276,6 +277,7 @@ source_group(
 		Light/src/LuminousBehavior.cpp
         Light/include/NonLuminousBehavior.hpp
 		Light/src/NonLuminousBehavior.cpp
+        Light/include/LightProperties.hpp
 )
 
 source_group(
