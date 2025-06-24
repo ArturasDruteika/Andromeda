@@ -19,6 +19,28 @@ namespace Andromeda
 		{
 		}
 
+        LightData::LightData(
+            float intensity, 
+            float range, 
+            float innerCutoff, 
+            float outerCutoff, 
+            const LightType& lightType, 
+            const glm::vec3& position, 
+            const glm::vec3& color, 
+            const glm::vec3& direction, 
+            const glm::vec3& attenuation
+        )
+			: m_intensity{ intensity }
+			, m_range{ range }
+			, m_innerCutoff{ innerCutoff }
+			, m_outerCutoff{ outerCutoff }
+			, m_lightType{ lightType }
+			, m_position{ position }
+			, m_color{ color }
+			, m_direction{ glm::normalize(direction) }
+        {
+        }
+
 		LightData::~LightData() = default;
 
 		float LightData::GetIntensity() const
@@ -41,6 +63,21 @@ namespace Andromeda
 			return m_outerCutoff;
 		}
 
+        float LightData::GetAttenuationConstant() const
+        {
+            return m_attenuationConstant;
+        }
+
+        float LightData::GetAttenuationLinear() const
+        {
+            return m_attenuationLinear;
+        }
+
+        float LightData::GetAttenuationQuadratic() const
+        {
+            return m_attenuationQuadratic;
+        }
+
 		LightType LightData::GetLightType() const
 		{
 			return m_lightType;
@@ -58,11 +95,6 @@ namespace Andromeda
 		glm::vec3 LightData::GetDirection() const
 		{
 			return m_direction;
-		}
-
-		glm::vec3 LightData::GetAttenuation() const
-		{
-			return m_attenuation;
 		}
 
         void LightData::SetIntensity(float intensity)
@@ -97,9 +129,42 @@ namespace Andromeda
             m_outerCutoff = outerCutoff;
         }
 
+        void LightData::SetAttenuationConstant(float constant)
+        {
+			if (constant < 0.0f)
+				spdlog::error("Attenuation constant must be non-negative");
+			m_attenuationConstant = constant;
+        }
+
+        void LightData::SetAttenuationLinear(float linear)
+        {
+            if (linear < 0.0f || linear > 1.0f)
+            {
+                spdlog::error(
+                    "Attenuation linear must be between 0.0 and 1.0 (inclusive), got {}",
+                    linear
+                );
+                return;
+            }
+            m_attenuationLinear = linear;
+        }
+
+        void LightData::SetAttenuationQuadratic(float quadratic)
+        {
+            if (quadratic < 0.0f || quadratic > 1.0f)
+            {
+                spdlog::error(
+                    "Attenuation quadratic must be between 0.0 and 1.0 (inclusive), got {}",
+                    quadratic
+                );
+                return;
+            }
+            m_attenuationQuadratic = quadratic;
+        }
+
+
         void LightData::SetLightType(const LightType& lightType)
         {
-            // No validation needed for enum, but could check valid range if extended
             m_lightType = lightType;
         }
 
@@ -119,13 +184,6 @@ namespace Andromeda
             if (len2 < 1e-6f)
                 spdlog::error("Direction vector must be non-zero");
             m_direction = glm::normalize(direction);
-        }
-
-        void LightData::SetAttenuation(const glm::vec3& attenuation)
-        {
-            if (glm::any(glm::lessThan(attenuation, glm::vec3(0.0f))))
-                spdlog::error("Attenuation factors must be non-negative");
-            m_attenuation = attenuation;
         }
 	}
 }
