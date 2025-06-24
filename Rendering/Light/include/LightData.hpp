@@ -19,11 +19,13 @@ namespace Andromeda
 				float range,
 				float innerCutoff,
 				float outerCutoff,
+				float attenuationConstant,
+				float attenuationLinear,
+				float attenuationQuadratic,
 				const LightType& lightType,
 				const glm::vec3& position,
 				const glm::vec3& color,
-				const glm::vec3& direction,
-				const glm::vec3& attenuation
+				const glm::vec3& direction
 			);
 			~LightData();
 

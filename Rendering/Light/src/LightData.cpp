@@ -12,9 +12,11 @@ namespace Andromeda
 			, m_intensity{ 1.0f }
 			, m_position{ 0.0f }
 			, m_range{ 100.0f }
+			, m_attenuationConstant{ 1.0f }
+			, m_attenuationLinear{ 0.05f }
+			, m_attenuationQuadratic{ 0.001f }
 			, m_direction{ 0.0f, -1.0f, 0.0f }
 			, m_innerCutoff{ glm::cos(glm::radians(12.5f)) }
-			, m_attenuation{ 1.0f, 0.09f, 0.032f }
 			, m_outerCutoff{ glm::cos(glm::radians(17.5f)) }
 		{
 		}
@@ -24,16 +26,21 @@ namespace Andromeda
             float range, 
             float innerCutoff, 
             float outerCutoff, 
+			float attenuationConstant,
+			float attenuationLinear,
+			float attenuationQuadratic,
             const LightType& lightType, 
             const glm::vec3& position, 
             const glm::vec3& color, 
-            const glm::vec3& direction, 
-            const glm::vec3& attenuation
+            const glm::vec3& direction
         )
 			: m_intensity{ intensity }
 			, m_range{ range }
 			, m_innerCutoff{ innerCutoff }
 			, m_outerCutoff{ outerCutoff }
+			, m_attenuationConstant{ attenuationConstant }
+			, m_attenuationLinear{ attenuationLinear }
+			, m_attenuationQuadratic{ attenuationQuadratic }
 			, m_lightType{ lightType }
 			, m_position{ position }
 			, m_color{ color }

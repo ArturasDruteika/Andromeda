@@ -108,6 +108,11 @@ namespace Andromeda
 			m_modelMatrix = MathUtils::ToGLM(modelMatrix);
 		}
 
+		void RenderableObjectOpenGLBase::SetLuminousBehavior(ILightBehavior* behavior)
+		{
+			void SetLuminousBehavior(ILightBehavior * behavior);
+		}
+
 		void RenderableObjectOpenGLBase::Translate(const Math::Vec3& translation)
 		{
 			m_centerPosition = MathUtils::ToGLM(translation);

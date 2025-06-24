@@ -51,6 +51,7 @@ namespace Andromeda
 			// Setters
 			virtual void SetLuminous(bool isEmitingLight) = 0;
 			virtual void SetModelMatrix(const Math::Mat4& modelMatrix) = 0;
+			virtual void SetLuminousBehavior(ILightBehavior* behavior) = 0;
 			// Transformation operations
 			virtual void Translate(const Math::Vec3& translation) = 0;
 			virtual void TranslateDelta(const Math::Vec3& translationDelta) = 0;
