@@ -14,6 +14,7 @@ namespace Andromeda
 			RenderableObjects,
 			RenderableObjectsLuminous,
 			RenderableObjectsNonLuminous,
+			ShadowMap,
 			Grid,
 		};
 
