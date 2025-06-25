@@ -30,7 +30,8 @@ namespace Andromeda
 			bool IsIlluminationMode() const;
 			unsigned int GetFrameBufferObject() const;
 			unsigned int GetFrameBufferObjectTexture() const;
-			unsigned int GetDepthBuffer() const;
+			unsigned int GetDepthRenderBuffer() const;
+			unsigned int GetShadowMap() const;
 			int GetWidth() const;
 			int GetHeight() const;
 			// Setters
@@ -47,9 +48,8 @@ namespace Andromeda
 			void InitFrameBuffer();
 			void CreateShader(const ShaderOpenGLTypes& shaderType, const std::string& vertexShaderPath, const std::string& fragmentShaderPath);
 			void GenerateAndBindFrameBuffer();
-			void GenerateAndBindFrameBufferTexture();
 			void CreateColorTexture();
-			void CreateDepthRenderBuffer();
+			void CreateRenderBuffer();
 			void SetDrawBuffer();
 			void CheckFBOStatus();
 			void ConfigureFrameBufferTexture();
@@ -67,13 +67,18 @@ namespace Andromeda
 			void InitShaders();
 			void UpdatePerspectiveMatrix(int width, int height);
 
+			void InitShadowMap(int width, int height);
+			glm::mat4 ComputeLightSpaceMatrix(const OpenGLScene& scene) const;
+
 		private:
 			bool m_isInitialized;
 			bool m_isGridVisible;
 			bool m_isIlluminationMode;
 			unsigned int m_FBO;
+			unsigned int m_RBO;
+			unsigned int m_shadowFBO;
 			unsigned int m_FBOTexture;
-			unsigned int m_depthBuffer;
+			unsigned int m_shadowMapTexture;
 			int m_width;
 			int m_height;
 			std::unordered_map<ShaderOpenGLTypes, OpenGLShader*> m_shadersMap;
