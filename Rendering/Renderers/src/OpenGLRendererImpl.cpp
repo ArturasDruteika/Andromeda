@@ -213,6 +213,50 @@ namespace Andromeda
             m_isInitialized = true;
         }
 
+        void OpenGLRenderer::OpenGLRendererImpl::InitShadowMap(int width, int height)
+        {
+            // 1) Create the FBO
+            glGenFramebuffers(1, &m_shadowFBO);
+            glBindFramebuffer(GL_FRAMEBUFFER, m_shadowFBO);
+
+            // 2) Create & configure the depth texture
+            glGenTextures(1, &m_shadowMapTexture);
+            glBindTexture(GL_TEXTURE_2D, m_shadowMapTexture);
+            glTexImage2D(GL_TEXTURE_2D,
+                0,
+                GL_DEPTH_COMPONENT24,
+                width,
+                height,
+                0,
+                GL_DEPTH_COMPONENT,
+                GL_FLOAT,
+                nullptr);
+            glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+            glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+            glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_BORDER);
+            glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_BORDER);
+            float borderColor[] = { 1, 1, 1, 1 };
+            glTexParameterfv(GL_TEXTURE_2D, GL_TEXTURE_BORDER_COLOR, borderColor);
+
+            // 3) Attach it as the depth-only attachment
+            glFramebufferTexture2D(GL_FRAMEBUFFER,
+                GL_DEPTH_ATTACHMENT,
+                GL_TEXTURE_2D,
+                m_shadowMapTexture,
+                0);
+
+            // 4) No color writes for this FBO
+            glDrawBuffer(GL_NONE);
+            glReadBuffer(GL_NONE);
+
+            // 5) Check completeness
+            if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE)
+                spdlog::error("Shadow FBO not complete! Status: 0x{:X}", glCheckFramebufferStatus(GL_FRAMEBUFFER));
+
+            // 6) Unbind so we don't accidentally render to it
+            glBindFramebuffer(GL_FRAMEBUFFER, 0);
+        }
+
         void OpenGLRenderer::OpenGLRendererImpl::CreateShader(const ShaderOpenGLTypes& shaderType, const std::string& vertexShaderPath, const std::string& fragmentShaderPath)
         {
             std::string vertexShaderSource = Utils::FileOperations::LoadFileAsString(vertexShaderPath);
@@ -323,13 +367,12 @@ namespace Andromeda
             glActiveTexture(GL_TEXTURE0 + SHADOW_UNIT);
             glBindTexture(GL_TEXTURE_2D, m_shadowMapTexture);
 
+            if (m_isGridVisible)
+                RenderGrid(*scene.GetObjects().at(static_cast<int>(SpecialIndices::Grid)));
+
             // --- (a) Non-luminous objects: Blinn-Phong + shadows ---
             OpenGLShader& nlShader = *m_shadersMap.at(ShaderOpenGLTypes::RenderableObjectsNonLuminous);
             nlShader.Bind();
-
-
-            if (m_isGridVisible)
-				RenderGrid(*scene.GetObjects().at(static_cast<int>(SpecialIndices::Grid)));
 
             // camera uniforms
             nlShader.SetUniform("u_view", MathUtils::ToGLM(m_pCamera->GetViewMatrix()));
@@ -498,50 +541,6 @@ namespace Andromeda
         {
             float aspect = static_cast<float>(m_width) / static_cast<float>(m_height);
             m_projectionMatrix = glm::infinitePerspective(glm::radians(45.0f), aspect, 0.1f);
-        }
-
-        void OpenGLRenderer::OpenGLRendererImpl::InitShadowMap(int width, int height)
-        {
-            // 1) Create the FBO
-            glGenFramebuffers(1, &m_shadowFBO);
-            glBindFramebuffer(GL_FRAMEBUFFER, m_shadowFBO);
-
-            // 2) Create & configure the depth texture
-            glGenTextures(1, &m_shadowMapTexture);
-            glBindTexture(GL_TEXTURE_2D, m_shadowMapTexture);
-            glTexImage2D(GL_TEXTURE_2D,
-                0,
-                GL_DEPTH_COMPONENT24,
-                width,
-                height,
-                0,
-                GL_DEPTH_COMPONENT,
-                GL_FLOAT,
-                nullptr);
-            glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-            glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-            glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_BORDER);
-            glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_BORDER);
-            float borderColor[] = { 1, 1, 1, 1 };
-            glTexParameterfv(GL_TEXTURE_2D, GL_TEXTURE_BORDER_COLOR, borderColor);
-
-            // 3) Attach it as the depth-only attachment
-            glFramebufferTexture2D(GL_FRAMEBUFFER,
-                GL_DEPTH_ATTACHMENT,
-                GL_TEXTURE_2D,
-                m_shadowMapTexture,
-                0);
-
-            // 4) No color writes for this FBO
-            glDrawBuffer(GL_NONE);
-            glReadBuffer(GL_NONE);
-
-            // 5) Check completeness
-            if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE)
-                spdlog::error("Shadow FBO not complete! Status: 0x{:X}", glCheckFramebufferStatus(GL_FRAMEBUFFER));
-
-            // 6) Unbind so we don't accidentally render to it
-            glBindFramebuffer(GL_FRAMEBUFFER, 0);
         }
 
         glm::mat4 OpenGLRenderer::OpenGLRendererImpl::ComputeLightSpaceMatrix(const OpenGLScene& scene) const

@@ -46,6 +46,7 @@ namespace Andromeda
 
 		private:
 			void InitFrameBuffer();
+			void InitShadowMap(int width, int height);
 			void CreateShader(const ShaderOpenGLTypes& shaderType, const std::string& vertexShaderPath, const std::string& fragmentShaderPath);
 			void GenerateAndBindFrameBuffer();
 			void CreateColorTexture();
@@ -60,8 +61,6 @@ namespace Andromeda
 			void RenderGrid(const IRenderableObjectOpenGL& object) const;
 			void InitShaders();
 			void UpdatePerspectiveMatrix(int width, int height);
-
-			void InitShadowMap(int width, int height);
 			glm::mat4 ComputeLightSpaceMatrix(const OpenGLScene& scene) const;
 
 		private:
