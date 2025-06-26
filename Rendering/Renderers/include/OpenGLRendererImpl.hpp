@@ -54,15 +54,9 @@ namespace Andromeda
 			void CheckFBOStatus();
 			void ConfigureFrameBufferTexture();
 			void UnbindFrameBuffer() const;
-			void RenderObject(const IRenderableObjectOpenGL& object) const;
-			void RenderObjectWithIllumination(
-				const IRenderableObjectOpenGL& object,
-				const std::unordered_map<int, Math::Vec3>& lightEmittingObjectCoords,
-				const std::unordered_map<int, Math::Vec4>& lightEmittingObjectColors,
-				const std::unordered_map<int, LuminousBehavior*>& lightEmittingObjectBehaviors,
-				float ambientStrength
-			) const;
-			void RenderObjects(const OpenGLScene& scene) const;
+			void ShadowMapDepthPass(const OpenGLScene& scene, const glm::mat4& lightSpace) const;
+			void RenderNonLuminousObjects(const OpenGLScene& scene, const glm::mat4& lightSpace) const;
+			void RenderLuminousObjects(const OpenGLScene& scene) const;
 			void RenderGrid(const IRenderableObjectOpenGL& object) const;
 			void InitShaders();
 			void UpdatePerspectiveMatrix(int width, int height);

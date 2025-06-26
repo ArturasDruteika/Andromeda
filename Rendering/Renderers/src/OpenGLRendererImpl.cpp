@@ -86,149 +86,12 @@ namespace Andromeda
             if (!m_isInitialized)
                 return;
 
-            // 1) Compute light-space matrix
             glm::mat4 lightSpace = ComputeLightSpaceMatrix(scene);
 
-            // ----- PASS A: Shadow-map depth pass -----
-            glBindFramebuffer(GL_FRAMEBUFFER, m_shadowFBO);
-            glViewport(0, 0, m_width, m_height);
-            glEnable(GL_DEPTH_TEST);
-            glClear(GL_DEPTH_BUFFER_BIT);
+			ShadowMapDepthPass(scene, lightSpace);
+			RenderNonLuminousObjects(scene, lightSpace);
+			RenderLuminousObjects(scene);
 
-            auto& depthShader = *m_shadersMap.at(ShaderOpenGLTypes::ShadowMap);
-            depthShader.Bind();
-            depthShader.SetUniform("u_lightSpaceMatrix", lightSpace);
-
-            for (auto& [id, obj] : scene.GetObjects())
-            {
-                depthShader.SetUniform("u_model",
-                    MathUtils::ToGLM(obj->GetModelMatrix()));
-                glBindVertexArray(obj->GetVAO());
-                glDrawElements(GL_TRIANGLES,
-                    obj->GetIndicesCount(),
-                    GL_UNSIGNED_INT,
-                    nullptr);
-            }
-            depthShader.UnBind();
-
-            // ----- PASS B: Lighting + shadows -----
-            glBindFramebuffer(GL_FRAMEBUFFER, m_FBO);
-            glViewport(0, 0, m_width, m_height);
-            glEnable(GL_DEPTH_TEST);
-            glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
-            // bind the shadow map into texture unit 5
-            const int SHADOW_UNIT = 5;
-            glActiveTexture(GL_TEXTURE0 + SHADOW_UNIT);
-            glBindTexture(GL_TEXTURE_2D, m_shadowMapTexture);
-
-            // --- (a) Non-luminous objects: Blinn-Phong + shadows ---
-            auto& nlShader =
-                *m_shadersMap.at(ShaderOpenGLTypes::RenderableObjectsNonLuminous);
-            nlShader.Bind();
-
-            // camera uniforms
-            nlShader.SetUniform("u_view",
-                MathUtils::ToGLM(m_pCamera->GetViewMatrix()));
-            nlShader.SetUniform("u_projection", m_projectionMatrix);
-            nlShader.SetUniform("u_viewPos",
-                MathUtils::ToGLM(m_pCamera->GetPosition()));
-
-            // shadow uniforms
-            nlShader.SetUniform("u_lightSpaceMatrix", lightSpace);
-            nlShader.SetUniform("u_shadowMap", SHADOW_UNIT);
-
-            // material ambient global
-            nlShader.SetUniform("u_ambientStrength",
-                scene.GetAmbientStrength());
-
-            // collect all lights
-            const auto& coords = scene.GetLightEmittingObjectsCoords();
-            const auto& colors = scene.GetLightEmittingObjectsColors();
-            const auto& behaviors = scene.GetLuminousObjectsBehaviors();
-
-            std::vector<glm::vec3> lightPositions;
-            std::vector<glm::vec4> lightColors;
-            std::vector<float>     lightConstants;
-            std::vector<float>     lightLinears;
-            std::vector<float>     lightQuadratics;
-
-            lightPositions.reserve(coords.size());
-            lightColors.reserve(coords.size());
-            lightConstants.reserve(coords.size());
-            lightLinears.reserve(coords.size());
-            lightQuadratics.reserve(coords.size());
-
-            for (auto& [id, pos] : coords)
-            {
-                auto lightPosGLM = MathUtils::ToGLM(pos);
-                lightPositions.push_back(lightPosGLM);
-                lightColors.push_back(MathUtils::ToGLM(colors.at(id)));
-
-                auto* lumBehavior = behaviors.at(id);
-                auto  data = lumBehavior->GetLightData();
-                lightConstants.push_back(data.GetAttenuationConstant());
-                lightLinears.push_back(data.GetAttenuationLinear());
-                lightQuadratics.push_back(data.GetAttenuationQuadratic());
-            }
-
-            int numLights = static_cast<int>(lightPositions.size());
-            nlShader.SetUniform("u_numLights", numLights);
-            nlShader.SetUniform("u_lightPos", lightPositions);
-            nlShader.SetUniform("u_lightColor", lightColors);
-            nlShader.SetUniform("u_lightConstant", lightConstants);
-            nlShader.SetUniform("u_lightLinear", lightLinears);
-            nlShader.SetUniform("u_lightQuadratic", lightQuadratics);
-
-            // draw each non-luminous object with its own material
-            for (auto& [id, obj] : scene.GetObjects())
-            {
-                if (id > 0)
-                {
-                    if (!obj->IsLuminous())
-                    {
-                        // per-object material uniforms
-                        NonLuminousBehavior* nonLum = dynamic_cast<NonLuminousBehavior*>(obj->GetLightBehavior());
-                        nlShader.SetUniform("u_ambientReflectivity", nonLum->GetAmbientReflectivity());
-                        nlShader.SetUniform("u_diffuseStrength", nonLum->GetDiffuseStrength());
-                        nlShader.SetUniform("u_specularStrength", nonLum->GetSpecularStrength());
-                        nlShader.SetUniform("u_shininess", nonLum->GetShininess());
-                        nlShader.SetUniform("u_model",MathUtils::ToGLM(obj->GetModelMatrix()));
-                        glBindVertexArray(obj->GetVAO());
-                        glDrawElements(GL_TRIANGLES,
-                            obj->GetIndicesCount(),
-                            GL_UNSIGNED_INT,
-                            nullptr);
-                    }
-                }
-
-            }
-            nlShader.UnBind();
-
-            // --- (b) Luminous objects: unshaded pass-through ---
-            auto& lumShader =
-                *m_shadersMap.at(ShaderOpenGLTypes::RenderableObjectsLuminous);
-            lumShader.Bind();
-            lumShader.SetUniform("u_view",
-                MathUtils::ToGLM(m_pCamera->GetViewMatrix()));
-            lumShader.SetUniform("u_projection", m_projectionMatrix);
-
-            for (auto& [id, obj] : scene.GetObjects())
-            {
-                if (obj->IsLuminous())
-                {
-                    lumShader.SetUniform("u_model",
-                        MathUtils::ToGLM(obj->GetModelMatrix()));
-                    glBindVertexArray(obj->GetVAO());
-                    glDrawElements(GL_TRIANGLES,
-                        obj->GetIndicesCount(),
-                        GL_UNSIGNED_INT,
-                        nullptr);
-                }
-            }
-            lumShader.UnBind();
-
-            // 4) restore default framebuffer
             glBindFramebuffer(GL_FRAMEBUFFER, 0);
         }
 
@@ -413,152 +276,147 @@ namespace Andromeda
             glBindFramebuffer(GL_FRAMEBUFFER, 0);
         }
 
-        void OpenGLRenderer::OpenGLRendererImpl::RenderObject(const Rendering::IRenderableObjectOpenGL& object) const
+        void OpenGLRenderer::OpenGLRendererImpl::ShadowMapDepthPass(const OpenGLScene& scene, const glm::mat4& lightSpace) const
         {
-            if (m_width == 0 || m_height == 0)
+            // ----- PASS A: Shadow-map depth pass -----
+            glBindFramebuffer(GL_FRAMEBUFFER, m_shadowFBO);
+            glViewport(0, 0, m_width, m_height);
+            glEnable(GL_DEPTH_TEST);
+            glClear(GL_DEPTH_BUFFER_BIT);
+
+            auto& depthShader = *m_shadersMap.at(ShaderOpenGLTypes::ShadowMap);
+            depthShader.Bind();
+            depthShader.SetUniform("u_lightSpaceMatrix", lightSpace);
+
+            for (auto& [id, obj] : scene.GetObjects())
             {
-                spdlog::error("Framebuffer dimensions are zero. Cannot render object.");
-                return;
+                depthShader.SetUniform("u_model", MathUtils::ToGLM(obj->GetModelMatrix()));
+                glBindVertexArray(obj->GetVAO());
+                glDrawElements(GL_TRIANGLES,
+                    obj->GetIndicesCount(),
+                    GL_UNSIGNED_INT,
+                    nullptr);
             }
-
-            const OpenGLShader& shader = *m_shadersMap.at(ShaderOpenGLTypes::RenderableObjects);
-            shader.Bind();
-
-            shader.SetUniform("u_model", MathUtils::ToGLM(object.GetModelMatrix()));
-            shader.SetUniform("u_view", MathUtils::ToGLM(m_pCamera->GetViewMatrix()));
-            shader.SetUniform("u_projection", m_projectionMatrix);
-
-            glBindVertexArray(object.GetVAO());
-            glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, object.GetEBO());
-            glDrawElements(GL_TRIANGLES, object.GetIndicesCount(), GL_UNSIGNED_INT, 0);
-
-            shader.UnBind();
+            depthShader.UnBind();
         }
 
-        void OpenGLRenderer::OpenGLRendererImpl::RenderObjectWithIllumination(
-            const IRenderableObjectOpenGL& object,
-            const std::unordered_map<int, Math::Vec3>& lightEmittingObjectCoords,
-            const std::unordered_map<int, Math::Vec4>& lightEmittingObjectColors,
-            const std::unordered_map<int, LuminousBehavior*>& lightEmittingObjectBehaviors,
-            float ambientStrength
-        ) const
+        void OpenGLRenderer::OpenGLRendererImpl::RenderNonLuminousObjects(const OpenGLScene& scene, const glm::mat4& lightSpace) const
         {
-            if (m_width == 0 || m_height == 0)
+            // ----- PASS B: Lighting + shadows -----
+            glBindFramebuffer(GL_FRAMEBUFFER, m_FBO);
+            glViewport(0, 0, m_width, m_height);
+            glEnable(GL_DEPTH_TEST);
+            glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+            // bind the shadow map into texture unit 5
+            const int SHADOW_UNIT = 5;
+            glActiveTexture(GL_TEXTURE0 + SHADOW_UNIT);
+            glBindTexture(GL_TEXTURE_2D, m_shadowMapTexture);
+
+            // --- (a) Non-luminous objects: Blinn-Phong + shadows ---
+            auto& nlShader = *m_shadersMap.at(ShaderOpenGLTypes::RenderableObjectsNonLuminous);
+            nlShader.Bind();
+
+            // camera uniforms
+            nlShader.SetUniform("u_view", MathUtils::ToGLM(m_pCamera->GetViewMatrix()));
+            nlShader.SetUniform("u_projection", m_projectionMatrix);
+            nlShader.SetUniform("u_viewPos", MathUtils::ToGLM(m_pCamera->GetPosition()));
+
+            // shadow uniforms
+            nlShader.SetUniform("u_lightSpaceMatrix", lightSpace);
+            nlShader.SetUniform("u_shadowMap", SHADOW_UNIT);
+
+            // material ambient global
+            nlShader.SetUniform("u_ambientStrength", scene.GetAmbientStrength());
+
+            // collect all lights
+            const auto& coords = scene.GetLightEmittingObjectsCoords();
+            const auto& colors = scene.GetLightEmittingObjectsColors();
+            const auto& behaviors = scene.GetLuminousObjectsBehaviors();
+
+            std::vector<glm::vec3> lightPositions;
+            std::vector<glm::vec4> lightColors;
+            std::vector<float>     lightConstants;
+            std::vector<float>     lightLinears;
+            std::vector<float>     lightQuadratics;
+
+            lightPositions.reserve(coords.size());
+            lightColors.reserve(coords.size());
+            lightConstants.reserve(coords.size());
+            lightLinears.reserve(coords.size());
+            lightQuadratics.reserve(coords.size());
+
+            for (auto& [id, pos] : coords)
             {
-                spdlog::error("Framebuffer dimensions are zero. Cannot render object.");
-                return;
+                auto lightPosGLM = MathUtils::ToGLM(pos);
+                lightPositions.push_back(lightPosGLM);
+                lightColors.push_back(MathUtils::ToGLM(colors.at(id)));
+
+                auto* lumBehavior = behaviors.at(id);
+                auto  data = lumBehavior->GetLightData();
+                lightConstants.push_back(data.GetAttenuationConstant());
+                lightLinears.push_back(data.GetAttenuationLinear());
+                lightQuadratics.push_back(data.GetAttenuationQuadratic());
             }
 
-            ShaderOpenGLTypes shaderType = object.IsLuminous()
-                ? ShaderOpenGLTypes::RenderableObjectsLuminous
-                : ShaderOpenGLTypes::RenderableObjectsNonLuminous;
+            int numLights = static_cast<int>(lightPositions.size());
+            nlShader.SetUniform("u_numLights", numLights);
+            nlShader.SetUniform("u_lightPos", lightPositions);
+            nlShader.SetUniform("u_lightColor", lightColors);
+            nlShader.SetUniform("u_lightConstant", lightConstants);
+            nlShader.SetUniform("u_lightLinear", lightLinears);
+            nlShader.SetUniform("u_lightQuadratic", lightQuadratics);
 
-            OpenGLShader& shader = *m_shadersMap.at(shaderType);
-            shader.Bind();
-
-            if (!object.IsLuminous())
+            // draw each non-luminous object with its own material
+            for (auto& [id, obj] : scene.GetObjects())
             {
-                // pick a free texture unit
-                const int SHADOW_TEX_UNIT = 5;
-
-                // bind our depth-texture (shadow map) there
-                glActiveTexture(GL_TEXTURE0 + SHADOW_TEX_UNIT);
-                glBindTexture(GL_TEXTURE_2D, m_shadowMapTexture);
-
-                // tell the shader which unit holds the shadow map
-                shader.SetUniform("u_shadowMap", SHADOW_TEX_UNIT);
-            }
-
-            // Set MVP matrices
-            shader.SetUniform("u_model", MathUtils::ToGLM(object.GetModelMatrix()));
-            shader.SetUniform("u_view", MathUtils::ToGLM(m_pCamera->GetViewMatrix()));
-            shader.SetUniform("u_projection", m_projectionMatrix);
-
-            if (!object.IsLuminous())
-            {
-                auto* nonLum = dynamic_cast<NonLuminousBehavior*>(object.GetLightBehavior());
-                if (!nonLum)
+                if (id > 0)
                 {
-                    spdlog::error("Non-luminous object has no NonLuminousBehavior!");
-                    shader.UnBind();
-                    return;
-                }
-
-                shader.SetUniform("u_ambientStrength", ambientStrength);
-                shader.SetUniform("u_ambientReflectivity", nonLum->GetAmbientReflectivity());
-                shader.SetUniform("u_diffuseStrength", nonLum->GetDiffuseStrength());
-                shader.SetUniform("u_specularStrength", nonLum->GetSpecularStrength());
-                shader.SetUniform("u_shininess", nonLum->GetShininess());
-                shader.SetUniform("u_viewPos", MathUtils::ToGLM(m_pCamera->GetPosition()));
-
-                // 5) Gather all lights into flat arrays, including per-light attenuation
-                std::vector<glm::vec3> lightPositions;
-                std::vector<glm::vec4> lightColors;
-                std::vector<float> lightConstants;
-                std::vector<float> lightLinears;
-                std::vector<float> lightQuadratics;
-
-                lightPositions.reserve(lightEmittingObjectCoords.size());
-                lightColors.reserve(lightEmittingObjectCoords.size());
-                lightConstants.reserve(lightEmittingObjectCoords.size());
-                lightLinears.reserve(lightEmittingObjectCoords.size());
-                lightQuadratics.reserve(lightEmittingObjectCoords.size());
-
-                for (auto& [id, pos] : lightEmittingObjectCoords)
-                {
-                    LuminousBehavior* beh = lightEmittingObjectBehaviors.at(id);
-					LightData lightData = beh->GetLightData();
-                    lightPositions.push_back(MathUtils::ToGLM(pos));
-                    lightColors.push_back(MathUtils::ToGLM(lightEmittingObjectColors.at(id)));
-                    lightConstants.push_back(lightData.GetAttenuationConstant());
-                    lightLinears.push_back(lightData.GetAttenuationLinear());
-                    lightQuadratics.push_back(lightData.GetAttenuationQuadratic());
-                }
-
-                int numLights = static_cast<int>(lightPositions.size());
-                shader.SetUniform("u_numLights", numLights);
-                shader.SetUniform("u_lightPos", lightPositions);
-                shader.SetUniform("u_lightColor", lightColors);
-                shader.SetUniform("u_lightConstant", lightConstants);
-                shader.SetUniform("u_lightLinear", lightLinears);
-                shader.SetUniform("u_lightQuadratic", lightQuadratics);
-            }
-
-            glBindVertexArray(object.GetVAO());
-            glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, object.GetEBO());
-            glDrawElements(GL_TRIANGLES, object.GetIndicesCount(), GL_UNSIGNED_INT, 0);
-            shader.UnBind();
-        }
-
-        void OpenGLRenderer::OpenGLRendererImpl::RenderObjects(const OpenGLScene& scene) const
-        {
-            for (const auto& [id, object] : scene.GetObjects())
-            {
-                if (id == static_cast<int>(SpecialIndices::Grid))
-                {
-                    if (!m_isGridVisible)
-                        continue;
-
-                    RenderGrid(*object);
-                }
-                else
-                {
-                    if (m_isIlluminationMode)
+                    if (!obj->IsLuminous())
                     {
-                        RenderObjectWithIllumination(
-                            *object,
-                            scene.GetLightEmittingObjectsCoords(), 
-                            scene.GetLightEmittingObjectsColors(),
-                            scene.GetLuminousObjectsBehaviors(),
-							scene.GetAmbientStrength()
+                        // per-object material uniforms
+                        NonLuminousBehavior* nonLum = dynamic_cast<NonLuminousBehavior*>(obj->GetLightBehavior());
+                        nlShader.SetUniform("u_ambientReflectivity", nonLum->GetAmbientReflectivity());
+                        nlShader.SetUniform("u_diffuseStrength", nonLum->GetDiffuseStrength());
+                        nlShader.SetUniform("u_specularStrength", nonLum->GetSpecularStrength());
+                        nlShader.SetUniform("u_shininess", nonLum->GetShininess());
+                        nlShader.SetUniform("u_model", MathUtils::ToGLM(obj->GetModelMatrix()));
+                        glBindVertexArray(obj->GetVAO());
+                        glDrawElements(
+                            GL_TRIANGLES,
+                            obj->GetIndicesCount(),
+                            GL_UNSIGNED_INT,
+                            nullptr
                         );
                     }
-                    else
-                    {
-                        RenderObject(*object);
-                    }
                 }
             }
+            nlShader.UnBind();
+        }
+
+        void OpenGLRenderer::OpenGLRendererImpl::RenderLuminousObjects(const OpenGLScene& scene) const
+        {
+            // --- (b) Luminous objects: unshaded pass-through ---
+            auto& lumShader = *m_shadersMap.at(ShaderOpenGLTypes::RenderableObjectsLuminous);
+            lumShader.Bind();
+            lumShader.SetUniform("u_view", MathUtils::ToGLM(m_pCamera->GetViewMatrix()));
+            lumShader.SetUniform("u_projection", m_projectionMatrix);
+
+            for (auto& [id, obj] : scene.GetObjects())
+            {
+                if (obj->IsLuminous())
+                {
+                    lumShader.SetUniform("u_model", MathUtils::ToGLM(obj->GetModelMatrix()));
+                    glBindVertexArray(obj->GetVAO());
+                    glDrawElements(
+                        GL_TRIANGLES,
+                        obj->GetIndicesCount(),
+                        GL_UNSIGNED_INT,
+                        nullptr
+                    );
+                }
+            }
+            lumShader.UnBind();
         }
 
         void OpenGLRenderer::OpenGLRendererImpl::RenderGrid(const IRenderableObjectOpenGL& object) const
