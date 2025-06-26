@@ -73,6 +73,11 @@ add_library(${PROJECT_NAME}
 		Light/src/LuminousBehavior.cpp
         Light/include/NonLuminousBehavior.hpp
 		Light/src/NonLuminousBehavior.cpp
+        Light/include/LightProperties.hpp
+        Light/include/LightData.hpp
+		Light/src/LightData.cpp
+
+        RayTracing/include/Ray.hpp
 )
 
 target_include_directories(${PROJECT_NAME} 
@@ -114,13 +119,15 @@ target_precompile_headers(${PROJECT_NAME}
 # Define filenames
 # Define shader filenames
 set(SHADER_FILES
-    "vertex_shader.glsl"
-    "fragment_shader.glsl"
-    "vertex_shader_illumination.glsl"
-    "vertex_shader_grid.glsl"
-    "fragment_shader_grid.glsl"
-    "fragment_shader_luminous_objects.glsl"
-    "fragment_shader_non_luminous_objects.glsl"
+    "vertex.glsl"
+    "fragment.glsl"
+    "vertex_illumination.glsl"
+    "vertex_grid.glsl"
+    "fragment_grid.glsl"
+    "fragment_luminous_objects.glsl"
+    "fragment_non_luminous_objects.glsl"
+    "vertex_depth_only.glsl"
+    "fragment_depth_only.glsl"
 )
 
 # Create full source paths
@@ -274,4 +281,16 @@ source_group(
 		Light/src/LuminousBehavior.cpp
         Light/include/NonLuminousBehavior.hpp
 		Light/src/NonLuminousBehavior.cpp
+        Light/include/LightProperties.hpp
+        Light/include/LightData.hpp
+		Light/src/LightData.cpp
+)
+
+source_group(
+    TREE 
+        ${CMAKE_CURRENT_SOURCE_DIR}/RayTracing
+    PREFIX
+        "RayTracing"
+    FILES
+        RayTracing/include/Ray.hpp
 )

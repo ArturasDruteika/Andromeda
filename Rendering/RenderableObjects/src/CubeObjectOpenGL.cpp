@@ -81,6 +81,11 @@ namespace Andromeda
 			m_pCubeObjectOpenGLImpl->SetModelMatrix(modelMatrix);
 		}
 
+		void CubeObjectOpenGL::SetLuminousBehavior(ILightBehavior* behavior)
+		{
+			m_pCubeObjectOpenGLImpl->SetLuminousBehavior(behavior);
+		}
+
 		void CubeObjectOpenGL::Translate(const Math::Vec3& translation)
 		{
 			m_pCubeObjectOpenGLImpl->Translate(translation);

@@ -42,7 +42,8 @@ namespace Andromeda
 			bool IsIlluminationMode() const;
 			unsigned int GetFrameBufferObject() const;
 			unsigned int GetFrameBufferObjectTexture() const;
-			unsigned int GetDepthBuffer() const;
+			unsigned int GetDepthRenderBuffer() const;
+			unsigned int GetShadowMap() const;
 			int GetWidth() const;
 			int GetHeight() const;
 			// Setters

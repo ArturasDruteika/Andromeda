@@ -17,6 +17,7 @@ namespace Andromeda
 			NonLuminousBehavior();
 			NonLuminousBehavior(
 				float shininess,
+				float ambientReflectivity,
 				float specularStrength,
 				float diffuseStrength
 			);
@@ -24,15 +25,18 @@ namespace Andromeda
 
 			// Getters
 			float GetShininess() const;
+			float GetAmbientReflectivity() const;
 			float GetSpecularStrength() const;
 			float GetDiffuseStrength() const;
 			// Setters
 			void SetShininess(float shininess);
+			void SetAmbientReflectivity(float ambientReflectivity);
 			void SetSpecularStrength(float specularStrength);
 			void SetDiffuseStrength(float diffuseStrength);
 
 		private:
 			float m_shininess;
+			float m_ambientReflectivity;
 			float m_specularStrength;
 			float m_diffuseStrength;
 		};

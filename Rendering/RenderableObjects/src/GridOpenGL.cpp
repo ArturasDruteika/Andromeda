@@ -93,6 +93,11 @@ namespace Andromeda
             m_modelMatrix = MathUtils::ToGLM(modelMatrix);
         }
 
+        void GridOpenGL::SetLuminousBehavior(ILightBehavior* behavior)
+        {
+			// This object does not support luminous behavior, so we do nothing.
+        }
+
         void GridOpenGL::Translate(const Math::Vec3& translation)
         {
             RenderableObjectOpenGLBase::Translate(translation);
