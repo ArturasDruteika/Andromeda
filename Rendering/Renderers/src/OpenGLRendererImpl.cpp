@@ -98,30 +98,40 @@ namespace Andromeda
 
         void OpenGLRenderer::OpenGLRendererImpl::Resize(int width, int height)
         {
-			if (width <= 0 || height <= 0)
-			{
-				spdlog::error("Invalid dimensions for resizing: {}x{}", width, height);
-				return;
-			}
-            else if (width == m_width && height == m_height)
+            if (width <= 0 || height <= 0)
             {
-				spdlog::warn("Resize called with same dimensions: {}x{}", width, height);
-				return;
+                spdlog::error("Invalid dimensions for resizing: {}x{}", width, height);
+                return;
+            }
+            if (width == m_width && height == m_height)
+            {
+                spdlog::warn("Resize called with same dimensions: {}x{}", width, height);
+                return;
             }
 
+            // Unbind any bound framebuffers/textures
             glBindFramebuffer(GL_FRAMEBUFFER, 0);
-            glBindTexture(GL_TEXTURE_2D, 0);
-            glBindRenderbuffer(GL_RENDERBUFFER, 0);
+
+            // Delete existing framebuffer resources
             glDeleteFramebuffers(1, &m_FBO);
             glDeleteTextures(1, &m_FBOTexture);
             glDeleteRenderbuffers(1, &m_RBO);
 
+            // Delete shadow map resources
+            glDeleteFramebuffers(1, &m_shadowFBO);
+            glDeleteTextures(1, &m_shadowMapTexture);
+
+            // Update dimensions
             m_width = width;
             m_height = height;
 
-			UpdatePerspectiveMatrix(m_width, m_height);
+            // Recompute projection
+            UpdatePerspectiveMatrix(m_width, m_height);
             glViewport(0, 0, width, height);
+
+            // Recreate buffers
             InitFrameBuffer();
+            InitShadowMap(width, height);
         }
 
         bool OpenGLRenderer::OpenGLRendererImpl::IsInitialized() const
@@ -284,7 +294,7 @@ namespace Andromeda
             glEnable(GL_DEPTH_TEST);
             glClear(GL_DEPTH_BUFFER_BIT);
 
-            auto& depthShader = *m_shadersMap.at(ShaderOpenGLTypes::ShadowMap);
+            OpenGLShader& depthShader = *m_shadersMap.at(ShaderOpenGLTypes::ShadowMap);
             depthShader.Bind();
             depthShader.SetUniform("u_lightSpaceMatrix", lightSpace);
 
@@ -314,8 +324,12 @@ namespace Andromeda
             glBindTexture(GL_TEXTURE_2D, m_shadowMapTexture);
 
             // --- (a) Non-luminous objects: Blinn-Phong + shadows ---
-            auto& nlShader = *m_shadersMap.at(ShaderOpenGLTypes::RenderableObjectsNonLuminous);
+            OpenGLShader& nlShader = *m_shadersMap.at(ShaderOpenGLTypes::RenderableObjectsNonLuminous);
             nlShader.Bind();
+
+
+            if (m_isGridVisible)
+				RenderGrid(*scene.GetObjects().at(static_cast<int>(SpecialIndices::Grid)));
 
             // camera uniforms
             nlShader.SetUniform("u_view", MathUtils::ToGLM(m_pCamera->GetViewMatrix()));
@@ -330,15 +344,15 @@ namespace Andromeda
             nlShader.SetUniform("u_ambientStrength", scene.GetAmbientStrength());
 
             // collect all lights
-            const auto& coords = scene.GetLightEmittingObjectsCoords();
-            const auto& colors = scene.GetLightEmittingObjectsColors();
-            const auto& behaviors = scene.GetLuminousObjectsBehaviors();
+            const std::unordered_map<int, Math::Vec3>& coords = scene.GetLightEmittingObjectsCoords();
+            const std::unordered_map<int, Math::Vec4>& colors = scene.GetLightEmittingObjectsColors();
+            const std::unordered_map<int, LuminousBehavior*>& behaviors = scene.GetLuminousObjectsBehaviors();
 
             std::vector<glm::vec3> lightPositions;
             std::vector<glm::vec4> lightColors;
-            std::vector<float>     lightConstants;
-            std::vector<float>     lightLinears;
-            std::vector<float>     lightQuadratics;
+            std::vector<float> lightConstants;
+            std::vector<float> lightLinears;
+            std::vector<float> lightQuadratics;
 
             lightPositions.reserve(coords.size());
             lightColors.reserve(coords.size());
@@ -348,12 +362,12 @@ namespace Andromeda
 
             for (auto& [id, pos] : coords)
             {
-                auto lightPosGLM = MathUtils::ToGLM(pos);
+                glm::vec3 lightPosGLM = MathUtils::ToGLM(pos);
                 lightPositions.push_back(lightPosGLM);
                 lightColors.push_back(MathUtils::ToGLM(colors.at(id)));
 
-                auto* lumBehavior = behaviors.at(id);
-                auto  data = lumBehavior->GetLightData();
+                LuminousBehavior* lumBehavior = behaviors.at(id);
+                LightData data = lumBehavior->GetLightData();
                 lightConstants.push_back(data.GetAttenuationConstant());
                 lightLinears.push_back(data.GetAttenuationLinear());
                 lightQuadratics.push_back(data.GetAttenuationQuadratic());
@@ -397,7 +411,7 @@ namespace Andromeda
         void OpenGLRenderer::OpenGLRendererImpl::RenderLuminousObjects(const OpenGLScene& scene) const
         {
             // --- (b) Luminous objects: unshaded pass-through ---
-            auto& lumShader = *m_shadersMap.at(ShaderOpenGLTypes::RenderableObjectsLuminous);
+            OpenGLShader& lumShader = *m_shadersMap.at(ShaderOpenGLTypes::RenderableObjectsLuminous);
             lumShader.Bind();
             lumShader.SetUniform("u_view", MathUtils::ToGLM(m_pCamera->GetViewMatrix()));
             lumShader.SetUniform("u_projection", m_projectionMatrix);
@@ -533,7 +547,7 @@ namespace Andromeda
         glm::mat4 OpenGLRenderer::OpenGLRendererImpl::ComputeLightSpaceMatrix(const OpenGLScene& scene) const
         {
             // 1) Grab the first light's world-space position:
-            const auto& lightCoords = scene.GetLightEmittingObjectsCoords();
+            const std::unordered_map<int, Math::Vec3>& lightCoords = scene.GetLightEmittingObjectsCoords();
             if (lightCoords.empty())
                 return glm::mat4(1.0f);
 
