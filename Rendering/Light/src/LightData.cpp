@@ -6,21 +6,6 @@ namespace Andromeda
 {
 	namespace Rendering
 	{
-		LightData::LightData()
-			: m_lightType{ LightType::None }
-			, m_color{ 1.0f }
-			, m_intensity{ 1.0f }
-			, m_position{ 0.0f }
-			, m_range{ 100.0f }
-			, m_attenuationConstant{ 1.0f }
-			, m_attenuationLinear{ 0.05f }
-			, m_attenuationQuadratic{ 0.001f }
-			, m_direction{ 0.0f, -1.0f, 0.0f }
-			, m_innerCutoff{ glm::cos(glm::radians(12.5f)) }
-			, m_outerCutoff{ glm::cos(glm::radians(17.5f)) }
-		{
-		}
-
         LightData::LightData(
             float intensity, 
             float range, 
@@ -29,6 +14,8 @@ namespace Andromeda
 			float attenuationConstant,
 			float attenuationLinear,
 			float attenuationQuadratic,
+			float diffuseIntensity,
+			float specularIntensity,
             const LightType& lightType, 
             const glm::vec3& position, 
             const glm::vec3& color, 
@@ -41,6 +28,8 @@ namespace Andromeda
 			, m_attenuationConstant{ attenuationConstant }
 			, m_attenuationLinear{ attenuationLinear }
 			, m_attenuationQuadratic{ attenuationQuadratic }
+			, m_diffuseIntensity{ diffuseIntensity }
+			, m_specularIntensity{ specularIntensity }
 			, m_lightType{ lightType }
 			, m_position{ position }
 			, m_color{ color }
@@ -83,6 +72,16 @@ namespace Andromeda
         float LightData::GetAttenuationQuadratic() const
         {
             return m_attenuationQuadratic;
+        }
+
+        float LightData::GetDiffuseIntensity() const
+        {
+            return m_diffuseIntensity;
+        }
+
+        float LightData::GetSpecularIntensity() const
+        {
+            return m_specularIntensity;
         }
 
 		LightType LightData::GetLightType() const
@@ -169,6 +168,25 @@ namespace Andromeda
             m_attenuationQuadratic = quadratic;
         }
 
+        void LightData::SetDiffuseIntensity(float diffuseIntensity)
+        {
+            if (diffuseIntensity < 0.0f)
+            {
+                spdlog::error("Diffuse intensity must be non-negative");
+				return;
+            }
+            m_diffuseIntensity = diffuseIntensity;
+        }
+
+        void LightData::SetSpecularIntensity(float specularIntensity)
+        {
+            if (specularIntensity < 0.0f)
+            {
+                spdlog::error("Specular intensity must be non-negative");
+				return;
+            }
+            m_specularIntensity = specularIntensity;
+        }
 
         void LightData::SetLightType(const LightType& lightType)
         {
@@ -189,7 +207,10 @@ namespace Andromeda
         {
             float len2 = glm::dot(direction, direction);
             if (len2 < 1e-6f)
+            {
                 spdlog::error("Direction vector must be non-zero");
+				return;
+            }
             m_direction = glm::normalize(direction);
         }
 	}

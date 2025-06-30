@@ -13,19 +13,20 @@ namespace Andromeda
 		class LightData 
 		{
 		public:
-			LightData();
 			LightData(
-				float intensity,
-				float range,
-				float innerCutoff,
-				float outerCutoff,
-				float attenuationConstant,
-				float attenuationLinear,
-				float attenuationQuadratic,
-				const LightType& lightType,
-				const glm::vec3& position,
-				const glm::vec3& color,
-				const glm::vec3& direction
+				float intensity = 1.0f,
+				float range = 100.0f,
+				float innerCutoff = 12.5f,
+				float outerCutoff = 17.5f,
+				float attenuationConstant = 1.0f,
+				float attenuationLinear = 0.05f,
+				float attenuationQuadratic = 0.001f,
+				float diffuseIntensity = 1.0f,
+				float specularIntensity = 1.0f,
+				const LightType& lightType = LightType::None,
+				const glm::vec3& position = glm::vec3{ 0.0f },
+				const glm::vec3& color = glm::vec3{ 1.0f },
+				const glm::vec3& direction = glm::vec3{ 0.0f, -1.0f, 0.0f }
 			);
 			~LightData();
 
@@ -37,6 +38,8 @@ namespace Andromeda
 			float GetAttenuationConstant() const;
 			float GetAttenuationLinear() const;
 			float GetAttenuationQuadratic() const;
+			float GetDiffuseIntensity() const;
+			float GetSpecularIntensity() const;
 			LightType GetLightType() const;
 			glm::vec3 GetPosition() const;
 			glm::vec3 GetColor() const;
@@ -49,6 +52,8 @@ namespace Andromeda
 			void SetAttenuationConstant(float constant);
 			void SetAttenuationLinear(float linear);
 			void SetAttenuationQuadratic(float quadratic);
+			void SetDiffuseIntensity(float diffuseIntensity);
+			void SetSpecularIntensity(float specularIntensity);
 			void SetLightType(const LightType& lightType);
 			void SetPosition(const glm::vec3& position);
 			void SetColor(const glm::vec3& color);
@@ -62,6 +67,8 @@ namespace Andromeda
 			float m_attenuationConstant;
 			float m_attenuationLinear;
 			float m_attenuationQuadratic;
+			float m_diffuseIntensity;
+			float m_specularIntensity;
 			LightType m_lightType;
 			glm::vec3 m_position;
 			glm::vec3 m_color;
