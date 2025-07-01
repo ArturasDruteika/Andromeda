@@ -11,6 +11,7 @@
 #include "glm/glm.hpp"
 #include <glm/gtc/type_ptr.hpp>
 #include <glm/gtc/matrix_transform.hpp>
+#include <glm/gtc/matrix_inverse.hpp>
 
 
 namespace Andromeda
@@ -431,6 +432,7 @@ namespace Andromeda
                 {
                     if (!obj->IsLuminous())
                     {
+                        glm::mat3 normalMatrix = glm::inverseTranspose(glm::mat3(MathUtils::ToGLM(obj->GetModelMatrix())));
                         // per-object material uniforms
                         NonLuminousBehavior* nonLum = dynamic_cast<NonLuminousBehavior*>(obj->GetLightBehavior());
                         nlShader.SetUniform("u_ambientReflectivity", nonLum->GetAmbientReflectivity());
@@ -438,6 +440,7 @@ namespace Andromeda
                         nlShader.SetUniform("u_specularStrength", nonLum->GetSpecularStrength());
                         nlShader.SetUniform("u_shininess", nonLum->GetShininess());
                         nlShader.SetUniform("u_model", MathUtils::ToGLM(obj->GetModelMatrix()));
+                        nlShader.SetUniform("u_normalMatrix", normalMatrix);
                         glBindVertexArray(obj->GetVAO());
                         glDrawElements(
                             GL_TRIANGLES,
