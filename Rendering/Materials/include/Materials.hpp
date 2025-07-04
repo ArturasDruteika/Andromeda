@@ -40,13 +40,13 @@ namespace Andromeda
             Count  // always keep last; useful for iteration/arrays
         };
 
-        struct Material 
+        struct Material
         {
-            float shininess;
-            std::string name;
-            Math::Vec3 ambient;
-            Math::Vec3 diffuse;
-            Math::Vec3 specular;
+            float shininess = 0.0f;
+            std::string name = "None";
+            Math::Vec3 ambient = { 0.0f, 0.0f, 0.0f };
+            Math::Vec3 diffuse = { 0.0f, 0.0f, 0.0f };
+            Math::Vec3 specular = { 0.0f, 0.0f, 0.0f };
         };
 	}
 }

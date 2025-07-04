@@ -15,7 +15,12 @@ namespace Andromeda
 		{
 		public:
 			MaterialLibrary();
+			MaterialLibrary(const std::string& filePath);
 			~MaterialLibrary();
+
+			// Getters
+			std::unordered_map<MaterialType, Material> GetMaterials() const;
+			Material GetMaterialProperties(const MaterialType& materialType) const;
 
 			bool LoadFromFile(const std::string& filePath);
 
