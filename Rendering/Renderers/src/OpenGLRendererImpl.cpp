@@ -428,7 +428,7 @@ namespace Andromeda
             // draw each non-luminous object with its own material
             for (auto& [id, obj] : scene.GetObjects())
             {
-                if (id > 0)
+                if (id >= 0)
                 {
                     if (!obj->IsLuminous())
                     {
