@@ -34,7 +34,6 @@ target_link_libraries(${PROJECT_NAME}
 target_precompile_headers(${PROJECT_NAME} 
     PUBLIC
         PrecompiledHeaders/include/pch.hpp
-        nlohmann_json::nlohmann_json
 )
 
 
