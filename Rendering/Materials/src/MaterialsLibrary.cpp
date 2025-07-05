@@ -42,25 +42,41 @@ namespace Andromeda
 		}
 
 		MaterialLibrary::MaterialLibrary(const std::string& filePath)
+			: m_materialsConfigFilePath{ filePath }
 		{
 			LoadFromFile(filePath);
 		}
 
 		MaterialLibrary::~MaterialLibrary() = default;
 
+		bool MaterialLibrary::Has(const MaterialType& materialType) const
+		{
+			return m_materials.find(materialType) != m_materials.end();
+		}
+
+		size_t MaterialLibrary::GetSize() const
+		{
+			return m_materials.size();
+		}
+
+		std::string MaterialLibrary::GetMaterialsConfigFilePath() const
+		{
+			return m_materialsConfigFilePath;
+		}
+
 		std::unordered_map<MaterialType, Material> MaterialLibrary::GetMaterials() const
 		{
 			return m_materials;
 		}
 
-		Material MaterialLibrary::GetMaterialProperties(const MaterialType& materialType) const
+		Material MaterialLibrary::GetMaterial(const MaterialType& materialType) const
 		{
 			std::unordered_map<MaterialType, Material>::const_iterator it = m_materials.find(materialType);
 
 			if (it == m_materials.end()) 
 			{
 				spdlog::error(
-					"MaterialLibrary::GetMaterialProperties – material '{}' not found; returning default",
+					"MaterialLibrary::GetMaterial - material '{}' not found; returning default",
 					static_cast<int>(materialType)
 				);
 				return Material{};
@@ -92,9 +108,9 @@ namespace Andromeda
 			{
 				// Required fields
 				std::string name = entry.at("name").get<std::string>();
-				auto amb = entry.at("ambient");
-				auto dif = entry.at("diffuse");
-				auto spec = entry.at("specular");
+				auto& amb = entry.at("ambient");
+				auto& dif = entry.at("diffuse");
+				auto& spec = entry.at("specular");
 				float shininess = entry.at("shininess").get<float>();
 
 				// Build Material struct
@@ -109,7 +125,48 @@ namespace Andromeda
 				MaterialType type = materialTypeFromString(name);
 				m_materials[type] = std::move(mat);
 			}
+			m_materialsConfigFilePath = filePath;
 
+			return true;
+		}
+
+		bool MaterialLibrary::SaveToFile(const std::string& filePath) const
+		{
+			spdlog::info("Saving {} materials to \"{}\"", m_materials.size(), filePath);
+
+			// Build a JSON array
+			nlohmann::json j = nlohmann::json::array();
+			for (const auto& kv : m_materials)
+			{
+				const Material& m = kv.second;
+				nlohmann::json entry;
+				entry["name"] = m.name;
+				entry["ambient"] = { m.ambient[0],  m.ambient[1],  m.ambient[2]};
+				entry["diffuse"] = { m.diffuse[0],  m.diffuse[1],  m.diffuse[2] };
+				entry["specular"] = { m.specular[0], m.specular[1], m.specular[2] };
+				entry["shininess"] = m.shininess;
+				j.push_back(std::move(entry));
+			}
+
+			// Open output file
+			std::ofstream out(filePath);
+			if (!out.is_open()) 
+			{
+				spdlog::error("MaterialLibrary::SaveToFile - failed to open \"{}\" for writing", filePath);
+				return false;
+			}
+
+			out << std::fixed
+				<< std::setprecision(4)
+				<< std::setw(4)
+				<< j << std::endl;
+			if (!out.good()) 
+			{
+				spdlog::error("MaterialLibrary::SaveToFile - error occurred while writing to \"{}\"", filePath);
+				return false;
+			}
+
+			spdlog::info("Successfully wrote material data to \"{}\"", filePath);
 			return true;
 		}
 	}
