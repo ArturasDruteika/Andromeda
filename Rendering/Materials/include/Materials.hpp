@@ -12,6 +12,8 @@ namespace Andromeda
 	{
         enum class MaterialType 
         {
+            None,
+
             Emerald,
             Jade,
             Obsidian,
