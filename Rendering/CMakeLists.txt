@@ -80,8 +80,10 @@ add_library(${PROJECT_NAME}
         RayTracing/include/Ray.hpp
 
         Materials/include/Materials.hpp
+        Materials/src/Materials.cpp
         Materials/include/MaterialsLibrary.hpp
         Materials/src/MaterialsLibrary.cpp
+        Materials/include/MaterialTypes.hpp
 )
 
 target_include_directories(${PROJECT_NAME} 
@@ -333,6 +335,8 @@ source_group(
         "Materials"
     FILES
         Materials/include/Materials.hpp
+        Materials/src/Materials.cpp
         Materials/include/MaterialsLibrary.hpp
         Materials/src/MaterialsLibrary.cpp
+        Materials/include/MaterialTypes.hpp
 )

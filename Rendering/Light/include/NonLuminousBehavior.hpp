@@ -17,28 +17,13 @@ namespace Andromeda
 		{
 		public:
 			NonLuminousBehavior();
-			NonLuminousBehavior(
-				float shininess,
-				const std::string& name,
-				const Math::Vec3& ambient,
-				const Math::Vec3& specular,
-				const Math::Vec3& diffuse
-			);
 			NonLuminousBehavior(const Material& material);
 			~NonLuminousBehavior();
 
 			// Getters
-			float GetShininess() const;
-			std::string GetName() const;
-			Math::Vec3 GetAmbient() const;
-			Math::Vec3 GetSpecular() const;
-			Math::Vec3 GetDiffuse() const;
+			Material GetMaterial();
 			// Setters
-			void SetShininess(float shininess);
-			void SetName(const std::string& name);
-			void SetAmbient(const Math::Vec3& ambient);
-			void SetSpecular(const Math::Vec3& specular);
-			void SetDiffuse(const Math::Vec3& diffuse);
+			void SetMaterial(const Material& material);
 
 		private:
 			Material m_material;

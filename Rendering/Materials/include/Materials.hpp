@@ -3,6 +3,7 @@
 
 
 #include "pch.hpp"
+#include "MaterialTypes.hpp"
 #include "LinearAlgebraDataTypes.hpp"
 
 
@@ -10,45 +11,34 @@ namespace Andromeda
 {
 	namespace Rendering
 	{
-        enum class MaterialType 
+        class Material
         {
-            None,
+        public:
+            Material();
+            ~Material();
 
-            Emerald,
-            Jade,
-            Obsidian,
-            Pearl,
-            Ruby,
-            Turquoise,
-            Brass,
-            Bronze,
-            Chrome,
-            Copper,
-            Gold,
-            Silver,
-            BlackPlastic,
-            CyanPlastic,
-            GreenPlastic,
-            RedPlastic,
-            WhitePlastic,
-            YellowPlastic,
-            BlackRubber,
-            CyanRubber,
-            GreenRubber,
-            RedRubber,
-            WhiteRubber,
-            YellowRubber,
+            // Getters
+            float GetShininess() const;
+            std::string GetName() const;
+            Math::Vec3 GetAmbient() const;
+            Math::Vec3 GetDiffuse() const;
+            Math::Vec3 GetSpecular() const;
+            // Setters
+            void SetShininess(float shininess);
+            void SetName(const std::string& name);
+            void SetAmbient(const Math::Vec3& ambient);
+            void SetDiffuse(const Math::Vec3& diffuse);
+            void SetSpecular(const Math::Vec3& specular);
 
-            Count  // always keep last; useful for iteration/arrays
-        };
+        private:
+            bool ValidateVec3Components(const Math::Vec3& vector);
 
-        struct Material
-        {
-            float shininess = 0.0f;
-            std::string name = "None";
-            Math::Vec3 ambient = { 0.0f, 0.0f, 0.0f };
-            Math::Vec3 diffuse = { 0.0f, 0.0f, 0.0f };
-            Math::Vec3 specular = { 0.0f, 0.0f, 0.0f };
+        private:
+            float m_shininess;
+            std::string m_name;
+            Math::Vec3 m_ambient;
+            Math::Vec3 m_diffuse;
+            Math::Vec3 m_specular;
         };
 	}
 }
