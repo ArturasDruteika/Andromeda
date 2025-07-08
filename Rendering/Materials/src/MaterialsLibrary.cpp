@@ -1,4 +1,5 @@
 #include "../include/MaterialsLibrary.hpp"
+#include "../../Utils/include/MathUtils.hpp"
 #include "json.hpp"
 
 
@@ -115,11 +116,11 @@ namespace Andromeda
 
 				// Build Material struct
 				Material mat;
-				mat.name = name;
-				mat.shininess = shininess;
-				mat.ambient = { amb[0].get<float>(), amb[1].get<float>(), amb[2].get<float>() };
-				mat.diffuse = { dif[0].get<float>(), dif[1].get<float>(), dif[2].get<float>() };
-				mat.specular = { spec[0].get<float>(), spec[1].get<float>(), spec[2].get<float>() };
+				mat.SetShininess(shininess);
+				mat.SetName(name);
+				mat.SetAmbient({ amb[0].get<float>(), amb[1].get<float>(), amb[2].get<float>() });
+				mat.SetDiffuse({ dif[0].get<float>(), dif[1].get<float>(), dif[2].get<float>() });
+				mat.SetSpecular({ spec[0].get<float>(), spec[1].get<float>(), spec[2].get<float>() });
 
 				// Map to enum and insert
 				MaterialType type = materialTypeFromString(name);
@@ -140,11 +141,14 @@ namespace Andromeda
 			{
 				const Material& m = kv.second;
 				nlohmann::json entry;
-				entry["name"] = m.name;
-				entry["ambient"] = { m.ambient[0],  m.ambient[1],  m.ambient[2]};
-				entry["diffuse"] = { m.diffuse[0],  m.diffuse[1],  m.diffuse[2] };
-				entry["specular"] = { m.specular[0], m.specular[1], m.specular[2] };
-				entry["shininess"] = m.shininess;
+				Math::Vec3 ambient = m.GetAmbient();
+				Math::Vec3 diffuse = m.GetDiffuse();
+				Math::Vec3 specular = m.GetSpecular();
+				entry["name"] = m.GetName();
+				entry["ambient"] = { ambient[0], ambient[1], ambient[2] };
+				entry["diffuse"] = { diffuse[0],  diffuse[1],  diffuse[2] };
+				entry["specular"] = { specular[0], specular[1], specular[2] };
+				entry["shininess"] = m.GetShininess();
 				j.push_back(std::move(entry));
 			}
 

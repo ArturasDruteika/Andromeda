@@ -6,11 +6,11 @@ namespace Andromeda
 	namespace Rendering
 	{
 		Material::Material()
-			: m_shininess{ 0.0f }
-			, m_name{ "None" }
-			, m_ambient{ 0.0f, 0.0f, 0.0f }
-			, m_diffuse{ 0.0f, 0.0f, 0.0f }
-			, m_specular{ 0.0f, 0.0f, 0.0f }
+			: m_shininess{ 0.6f }
+			, m_name{ "emerald" }
+			, m_ambient{ 0.0215,   0.1745,   0.0215 }
+			, m_diffuse{ 0.07568,  0.61424,  0.07568 }
+			, m_specular{ 0.633,    0.727811, 0.633 }
 		{
 		}
 
