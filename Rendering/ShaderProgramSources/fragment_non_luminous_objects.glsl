@@ -2,56 +2,48 @@
 
 #define MAX_LIGHTS 8
 
-in vec3 fragPosition;    // world-space position
-in vec3 fragNormal;      // world-space normal
-in vec4 vertexColor;     // base albedo color
+in vec3    fragPosition;       // world‐space position
+in vec3    fragNormal;         // world‐space normal
+in vec4    vertexColor;        // base albedo color
 
 out vec4 FragColor;
 
-// ----------- Material uniforms ------------
-uniform float u_ambientStrength;
-uniform float u_ambientReflectivity;
-uniform float u_diffuseStrength;
-uniform float u_specularStrength;
-uniform float u_shininess;
+// --------- Material uniforms ---------
+uniform vec3  u_ambientMaterial;
+uniform vec3  u_diffuseMaterial;
+uniform vec3  u_specularMaterial;
+uniform float u_shininessMaterial;
 
-// ----------- Light arrays ---------------
-uniform int   u_numLights;
-uniform vec3  u_lightPos[MAX_LIGHTS];
-uniform vec4  u_lightColor[MAX_LIGHTS];
+// --------- Light uniforms (renamed) ---------
+uniform int    u_numLights;
+uniform vec3   u_positionLight[MAX_LIGHTS];
+uniform vec3   u_ambientLight[MAX_LIGHTS];
+uniform vec3   u_diffuseLight[MAX_LIGHTS];
+uniform vec3   u_specularLight[MAX_LIGHTS];
+uniform float  u_constantLight[MAX_LIGHTS];
+uniform float  u_linearLight[MAX_LIGHTS];
+uniform float  u_quadraticLight[MAX_LIGHTS];
 
-// per-light attenuation
-uniform float u_lightConstant[MAX_LIGHTS];
-uniform float u_lightLinear[MAX_LIGHTS];
-uniform float u_lightQuadratic[MAX_LIGHTS];
+// Shadow map (for light 0)
+uniform sampler2D u_shadowMap;
+uniform mat4      u_lightSpaceMatrix;
 
-// ----------- Shadow map (one light) -------
-uniform sampler2D u_shadowMap;         // depth texture
-uniform mat4 u_lightSpaceMatrix; // to transform fragPosition into light clip‐space
+uniform vec3 u_viewPos;
 
-uniform vec3  u_viewPos;
-
+// --------- Shadow calculation (updated) --------
 float ShadowCalculation(vec4 fragPosLightSpace)
 {
-    // Perform perspective divide
     vec3 projCoords = fragPosLightSpace.xyz / fragPosLightSpace.w;
-    // Transform to [0,1]
     projCoords = projCoords * 0.5 + 0.5;
+    if (projCoords.z > 1.0) return 0.0;
 
-    // If outside the shadow map, consider fully lit
-    if(projCoords.z > 1.0) 
-        return 0.0;
-
-    // Depth stored in shadow map
     float closestDepth = texture(u_shadowMap, projCoords.xy).r;
-    // Current fragment depth from light POV
     float currentDepth = projCoords.z;
-
-    // Bias to prevent self‐shadowing ("shadow acne")
-    float bias = max(0.005 * (1.0 - dot(normalize(fragNormal), normalize(u_lightPos[0] - fragPosition))), 
+    float bias = max(0.005 * (1.0 - dot(
+                        normalize(fragNormal),
+                        normalize(u_positionLight[0] - fragPosition)
+                     )),
                      0.0005);
-
-    // Simple binary shadow
     return currentDepth - bias > closestDepth ? 1.0 : 0.0;
 }
 
@@ -59,54 +51,55 @@ void main()
 {
     vec3 norm    = normalize(fragNormal);
     vec3 viewDir = normalize(u_viewPos - fragPosition);
+    vec4 result  = vec4(0.0);
 
-    vec4 ambientAcc  = vec4(0.0);
-    vec4 diffuseAcc  = vec4(0.0);
-    vec4 specularAcc = vec4(0.0);
-
-    // Precompute the light‐space position for shadow lookup
-    vec4 fragPosLightSpace = u_lightSpaceMatrix * vec4(fragPosition, 1.0);
-    float shadow = ShadowCalculation(fragPosLightSpace);
+    // Precompute for shadow
+    vec4 fragPosLS = u_lightSpaceMatrix * vec4(fragPosition, 1.0);
+    float shadow   = ShadowCalculation(fragPosLS);
 
     for (int i = 0; i < u_numLights; ++i)
     {
-        vec3  L        = u_lightPos[i] - fragPosition;
-        float distance = length(L);
-        vec3  lightDir = normalize(L);
+        vec3  lightPos      = u_positionLight[i];
+        vec3  lightAmb      = u_ambientLight[i];
+        vec3  lightDiff     = u_diffuseLight[i];
+        vec3  lightSpec     = u_specularLight[i];
+        float constantAtt   = u_constantLight[i];
+        float linearAtt     = u_linearLight[i];
+        float quadraticAtt  = u_quadraticLight[i];
 
-        // per-light geometric attenuation
-        float attenuation = 1.0 / (
-            u_lightConstant[i] +
-            u_lightLinear  [i] * distance +
-            u_lightQuadratic[i] * distance * distance
-        );
+        vec3 lightDir = normalize(lightPos - fragPosition);
+        float distance = length(lightPos - fragPosition);
+        float attenuation = 1.0 / (constantAtt
+                                 + linearAtt   * distance
+                                 + quadraticAtt * distance * distance);
 
-        // Ambient always applies
-        ambientAcc += u_ambientStrength 
-                    * u_ambientReflectivity 
-                    * u_lightColor[i] 
+        // Ambient
+        vec3 ambient = u_ambientMaterial * lightAmb * attenuation;
+
+        // Diffuse & Specular
+        vec3 diffuse  = vec3(0.0);
+        vec3 specular = vec3(0.0);
+        if (shadow < 0.5)
+        {
+            float diffFactor = max(dot(norm, lightDir), 0.0);
+            diffuse = u_diffuseMaterial
+                    * lightDiff
+                    * diffFactor
                     * attenuation;
 
-        // Only add diffuse+specular if NOT in shadow
-        if (shadow < 0.5) {
-            // Diffuse
-            float diff = max(dot(norm, lightDir), 0.0);
-            diffuseAcc += diff 
-                        * u_lightColor[i] 
-                        * u_diffuseStrength 
-                        * attenuation;
-
-            // Specular (Blinn–Phong)
             vec3 halfwayDir = normalize(lightDir + viewDir);
-            float spec = pow(max(dot(norm, halfwayDir), 0.0), u_shininess);
-            specularAcc += u_specularStrength 
-                         * spec 
-                         * u_lightColor[i] 
-                         * attenuation;
+            float specFactor = pow(
+                max(dot(norm, halfwayDir), 0.0),
+                u_shininessMaterial
+            );
+            specular = u_specularMaterial
+                     * lightSpec
+                     * specFactor
+                     * attenuation;
         }
+
+        result.rgb += (ambient + diffuse + specular);
     }
 
-    // Combine with base color
-    vec4 result = ambientAcc + diffuseAcc + specularAcc;
-    FragColor = vec4(result.rgb * vertexColor.rgb, vertexColor.a);
+    FragColor = vec4(result.rgb * u_diffuseMaterial, 1.0);
 }
