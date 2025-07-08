@@ -39,10 +39,8 @@ namespace Andromeda
 
 			// Getters
 			float GetAmbientStrength() const;
-			const std::unordered_map<int, IRenderableObjectOpenGL*> GetObjects() const;
-			const std::unordered_map<int, Math::Vec3> GetLightEmittingObjectsCoords() const;
-			const std::unordered_map<int, Math::Vec4> GetLightEmittingObjectsColors() const;
-			const std::unordered_map<int, LuminousBehavior*> GetLuminousObjectsBehaviors() const;
+			const std::unordered_map<int, IRenderableObjectOpenGL*>& GetObjects() const;
+			const std::unordered_map<int, IRenderableObjectOpenGL*>& GetLuminousObjects() const;
 			// Setters
 			void SetAmbientStrength(float ambientStrength);
 

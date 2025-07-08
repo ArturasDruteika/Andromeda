@@ -31,24 +31,14 @@ namespace Andromeda
 			return m_ambientStrength;
 		}
 
-		const std::unordered_map<int, IRenderableObjectOpenGL*> OpenGLScene::OpenGLSceneImpl::GetObjects() const
+		const std::unordered_map<int, IRenderableObjectOpenGL*>& OpenGLScene::OpenGLSceneImpl::GetObjects() const
 		{
 			return m_renderableObjsPtrsMap;
 		}
 
-		const std::unordered_map<int, Math::Vec3> OpenGLScene::OpenGLSceneImpl::GetLightEmittingObjectsCoords() const
+		const std::unordered_map<int, IRenderableObjectOpenGL*>& OpenGLScene::OpenGLSceneImpl::GetLuminousObjects() const
 		{
-			return m_lightEmittingObjectsCoords;
-		}
-
-		const std::unordered_map<int, Math::Vec4> OpenGLScene::OpenGLSceneImpl::GetLightEmittingObjectsColors() const
-		{
-			return m_lightEmittingObjectsColors;
-		}
-
-		const std::unordered_map<int, LuminousBehavior*> OpenGLScene::OpenGLSceneImpl::GetLuminousObjectsBehaviors() const
-		{
-			return m_luminousObjectsBehaviors;
+			return m_luminousObjsPtrsMap;
 		}
 
 		void OpenGLScene::OpenGLSceneImpl::SetAmbientStrength(float ambientStrength)
@@ -68,13 +58,7 @@ namespace Andromeda
 			m_renderableObjsPtrsMap.insert({ id, object });
 			if (object->IsLuminous())
 			{
-				m_lightEmittingObjectsColors.insert({ id, object->GetColor().ReturnAsVec4() });
-				m_lightEmittingObjectsCoords.insert({ id, object->GetCenterPosition() });
-				Andromeda::Rendering::LuminousBehavior* luminousBehavior = dynamic_cast<Andromeda::Rendering::LuminousBehavior*>(object->GetLightBehavior());
-				if (luminousBehavior)
-				{
-					m_luminousObjectsBehaviors.insert({ id, luminousBehavior });
-				}
+				m_luminousObjsPtrsMap.insert({ id, object });
 			}
 		}
 
@@ -82,8 +66,8 @@ namespace Andromeda
 		{
 			if (m_renderableObjsPtrsMap.at(id)->IsLuminous())
 			{
-				m_lightEmittingObjectsColors.erase(id);
-				m_lightEmittingObjectsCoords.erase(id);
+				delete m_luminousObjsPtrsMap[id];
+				m_luminousObjsPtrsMap.erase(id);
 			}
 			delete m_renderableObjsPtrsMap[id];
 			m_renderableObjsPtrsMap.erase(id);
