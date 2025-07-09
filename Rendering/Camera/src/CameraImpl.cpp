@@ -11,7 +11,7 @@ namespace Andromeda
     namespace Rendering
     {
         Camera::CameraImpl::CameraImpl()
-            : Camera::CameraImpl(Math::Vec3(0.0f, 0.0f, 3.0f), -glm::half_pi<float>(), 0.0f) // -pi/2 yaw = looking along -Z
+            : Camera::CameraImpl(Math::Vec3(20.0f, 20.0f, 25.0f), -glm::half_pi<float>(), 0.0f)
         {
         }
 
