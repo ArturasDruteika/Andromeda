@@ -19,6 +19,7 @@ add_library(${PROJECT_NAME}
         PrecompiledHeaders/src/pch.cpp
         FileOperations/include/FileOperations.hpp
         FileOperations/src/FileOperations.cpp
+        nlohmann_json/include/json.hpp
 )
 
 set_target_properties(${PROJECT_NAME} PROPERTIES POSITION_INDEPENDENT_CODE ON)
@@ -89,4 +90,13 @@ source_group(
     FILES
         FileOperations/include/FileOperations.hpp
         FileOperations/src/FileOperations.cpp
+)
+
+source_group(
+    TREE 
+        ${CMAKE_CURRENT_SOURCE_DIR}/nlohmann_json
+    PREFIX
+        "nlohmann_json"
+    FILES
+        nlohmann_json/include/json.hpp
 )

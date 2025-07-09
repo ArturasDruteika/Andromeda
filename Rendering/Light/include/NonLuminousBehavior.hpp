@@ -4,6 +4,8 @@
 
 #include "pch.hpp"
 #include "ILightBehavior.hpp"
+#include "../../Materials/include/Materials.hpp"
+
 
 
 namespace Andromeda
@@ -15,30 +17,16 @@ namespace Andromeda
 		{
 		public:
 			NonLuminousBehavior();
-			NonLuminousBehavior(
-				float shininess,
-				float ambientReflectivity,
-				float specularStrength,
-				float diffuseStrength
-			);
+			NonLuminousBehavior(const Material& material);
 			~NonLuminousBehavior();
 
 			// Getters
-			float GetShininess() const;
-			float GetAmbientReflectivity() const;
-			float GetSpecularStrength() const;
-			float GetDiffuseStrength() const;
+			Material GetMaterial();
 			// Setters
-			void SetShininess(float shininess);
-			void SetAmbientReflectivity(float ambientReflectivity);
-			void SetSpecularStrength(float specularStrength);
-			void SetDiffuseStrength(float diffuseStrength);
+			void SetMaterial(const Material& material);
 
 		private:
-			float m_shininess;
-			float m_ambientReflectivity;
-			float m_specularStrength;
-			float m_diffuseStrength;
+			Material m_material;
 		};
 	}
 }

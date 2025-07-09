@@ -107,6 +107,18 @@ namespace Andromeda
 			glUniform4f(location, matrix.r, matrix.g, matrix.b, matrix.a);
 		}
 
+		void OpenGLShader::SetUniform(const std::string& name, const glm::mat3& matrix) const
+		{
+			int location = glGetUniformLocation(m_program, name.c_str());
+			if (location == -1)
+			{
+				spdlog::warn("Uniform '{}' not found in shader.", name);
+				return;
+			}
+
+			glUniformMatrix3fv(location, 1, GL_FALSE, glm::value_ptr(matrix));
+		}
+
 		void OpenGLShader::SetUniform(const std::string& name, const glm::mat4& matrix) const
 		{
 			int location = glGetUniformLocation(m_program, name.c_str());

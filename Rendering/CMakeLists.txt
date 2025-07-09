@@ -78,12 +78,19 @@ add_library(${PROJECT_NAME}
 		Light/src/LightData.cpp
 
         RayTracing/include/Ray.hpp
+
+        Materials/include/Materials.hpp
+        Materials/src/Materials.cpp
+        Materials/include/MaterialsLibrary.hpp
+        Materials/src/MaterialsLibrary.cpp
+        Materials/include/MaterialTypes.hpp
 )
 
 target_include_directories(${PROJECT_NAME} 
     PRIVATE
         ..//Utils//PrecompiledHeaders//include//
         ..//Utils//FileOperations//include//
+        ..//Utils//nlohmann_json//include//
         ..//ExternalGraphicsLibs//glad//include//
 	    ..//ExternalGraphicsLibs//glm//
     PUBLIC
@@ -116,6 +123,8 @@ target_precompile_headers(${PROJECT_NAME}
 
 
 ### Post builds
+
+## Shaders
 # Define filenames
 # Define shader filenames
 set(SHADER_FILES
@@ -159,6 +168,30 @@ foreach(SHADER_PATH IN LISTS SHADER_SOURCE_PATHS)
         COMMAND ${CMAKE_COMMAND} -E copy_if_different "${SHADER_PATH}" "${SHADER_OUTPUT_DIR}/${FILE_NAME}"
     )
 endforeach()
+
+## Material properties
+set(MATERIAL_JSON_FILENAME "material_properties.json")
+set(MATERIAL_JSON_SOURCE
+    "${CMAKE_CURRENT_SOURCE_DIR}/MaterialProperties/${MATERIAL_JSON_FILENAME}"
+)
+set(MATERIAL_JSON_OUTPUT_DIR
+    "${CMAKE_BINARY_DIR}/${CMAKE_CFG_INTDIR}/material_properties"
+)
+set(MATERIAL_JSON_OUTPUT
+    "${MATERIAL_JSON_OUTPUT_DIR}/${MATERIAL_JSON_FILENAME}"
+)
+add_custom_command(
+    TARGET ${PROJECT_NAME} POST_BUILD
+
+    COMMAND ${CMAKE_COMMAND} -E make_directory
+        "${MATERIAL_JSON_OUTPUT_DIR}"
+
+    COMMAND ${CMAKE_COMMAND} -E copy_if_different
+        "${MATERIAL_JSON_SOURCE}"
+        "${MATERIAL_JSON_OUTPUT}"
+
+    COMMENT "Copying ${MATERIAL_JSON_FILENAME} to ${MATERIAL_JSON_OUTPUT_DIR}"
+)
 
 
 # Organize files into Solution Explorer folders
@@ -293,4 +326,17 @@ source_group(
         "RayTracing"
     FILES
         RayTracing/include/Ray.hpp
+)
+
+source_group(
+    TREE 
+        ${CMAKE_CURRENT_SOURCE_DIR}/Materials
+    PREFIX
+        "Materials"
+    FILES
+        Materials/include/Materials.hpp
+        Materials/src/Materials.cpp
+        Materials/include/MaterialsLibrary.hpp
+        Materials/src/MaterialsLibrary.cpp
+        Materials/include/MaterialTypes.hpp
 )
