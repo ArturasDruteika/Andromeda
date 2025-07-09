@@ -101,5 +101,5 @@ void main()
         result.rgb += (ambient + diffuse + specular);
     }
 
-    FragColor = vec4(result.rgb * u_diffuseMaterial, 1.0);
+    FragColor = vec4(result.rgb, 1.0);
 }
