@@ -76,6 +76,14 @@ add_library(${PROJECT_NAME}
         Light/include/LightProperties.hpp
         Light/include/LightData.hpp
 		Light/src/LightData.cpp
+        Light/include/DirectionalLight.hpp
+        Light/src/DirectionalLight.cpp
+        Light/include/SpotLight.hpp
+        Light/src/SpotLight.cpp
+        Light/include/PointLight.hpp
+        Light/src/PointLight.cpp
+        Light/include/Light.hpp
+        Light/src/Light.cpp
 
         RayTracing/include/Ray.hpp
 
@@ -317,6 +325,14 @@ source_group(
         Light/include/LightProperties.hpp
         Light/include/LightData.hpp
 		Light/src/LightData.cpp
+        Light/include/DirectionalLight.hpp
+        Light/src/DirectionalLight.cpp
+        Light/include/SpotLight.hpp
+        Light/src/SpotLight.cpp
+        Light/include/PointLight.hpp
+        Light/src/PointLight.cpp
+        Light/include/Light.hpp
+        Light/src/Light.cpp
 )
 
 source_group(
