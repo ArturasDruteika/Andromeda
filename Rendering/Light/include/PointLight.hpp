@@ -11,7 +11,13 @@ namespace Andromeda::Rendering
 	class PointLight : public Light
 	{
 	public:
-		PointLight(const glm::vec3& position, const glm::vec3& color = glm::vec3{ 1.0f }, float intensity = 1.0f);
+		PointLight(
+			const glm::vec3& position, 
+			const glm::vec3& color = glm::vec3{ 1.0f }, 
+			float intensity = 1.0f,
+			float attenuationConstant = 1.0f,
+			float attenuationLinear = 0.1f,
+			float attenuationQuadratic = 0.01f);
 		~PointLight();
 
 		// Getters

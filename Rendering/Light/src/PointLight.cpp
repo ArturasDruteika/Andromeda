@@ -3,13 +3,23 @@
 
 namespace Andromeda::Rendering
 {
-	PointLight::PointLight(const glm::vec3& position, const glm::vec3& color, float intensity)
-		: Light(color, intensity, LightType::Point)
+    PointLight::PointLight(
+        const glm::vec3& position, 
+        const glm::vec3& color, 
+        float intensity, 
+        float attenuationConstant, 
+        float attenuationLinear, 
+        float attenuationQuadratic
+    )
+        : Light(color, intensity, LightType::Point)
+        , m_attenuationConstant{ attenuationConstant }
+        , m_attenuationLinear{ attenuationLinear }
+        , m_attenuationQuadratic{ attenuationQuadratic }
         , m_position{ position }
-	{
-	}
+    {
+    }
 
-	PointLight::~PointLight() = default;
+    PointLight::~PointLight() = default;
 
     float PointLight::GetAttenuationConstant() const
     {
