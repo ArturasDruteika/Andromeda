@@ -3,8 +3,9 @@
 
 namespace Andromeda::Rendering
 {
-	PointLight::PointLight(const glm::vec3& color, float intensity)
+	PointLight::PointLight(const glm::vec3& position, const glm::vec3& color, float intensity)
 		: Light(color, intensity, LightType::Point)
+        , m_position{ position }
 	{
 	}
 
