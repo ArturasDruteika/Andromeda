@@ -2,16 +2,38 @@
 #define RENDERING__LIGHT__HPP
 
 
+#if defined(_WIN32)
+	#if defined(RENDERING_EXPORT)
+		#define RENDERING_API __declspec(dllexport)
+	#else
+		#define RENDERING_API __declspec(dllimport)
+	#endif /* RENDERING_API */
+	#define _sprintf sprintf_s
+#endif
+
+#if defined(__GNUC__)
+	// GCC
+	#define RENDERING_API __attribute__((visibility("default")))
+#endif
+
+
 #include "LightProperties.hpp"
 #include "glm/glm.hpp"
 
 
 namespace Andromeda::Rendering
 {
-	class Light
+	class RENDERING_API Light
 	{
 	public:
-		Light(const glm::vec3 color, float intensity, const LightType& type);
+		Light(
+			const glm::vec3 color,
+			float intensity,
+			const glm::vec3& ambient,
+			const glm::vec3& diffuse,
+			const glm::vec3& specular,
+			const LightType& type
+		);
 		virtual ~Light();
 
 		// Getters

@@ -7,11 +7,21 @@ namespace Andromeda::Rendering
         const glm::vec3& position, 
         const glm::vec3& color, 
         float intensity, 
+        const glm::vec3& ambient,
+        const glm::vec3& diffuse,
+        const glm::vec3& specular,
         float attenuationConstant, 
         float attenuationLinear, 
         float attenuationQuadratic
     )
-        : Light(color, intensity, LightType::Point)
+        : Light(
+            color, 
+            intensity, 
+            ambient,
+            diffuse,
+            specular,
+            LightType::Point
+        )
         , m_attenuationConstant{ attenuationConstant }
         , m_attenuationLinear{ attenuationLinear }
         , m_attenuationQuadratic{ attenuationQuadratic }

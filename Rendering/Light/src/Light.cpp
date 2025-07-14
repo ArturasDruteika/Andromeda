@@ -3,10 +3,20 @@
 
 namespace Andromeda::Rendering
 {
-	Light::Light(const glm::vec3 color, float intensity, const LightType& type)
+	Light::Light(
+		const glm::vec3 color, 
+		float intensity, 
+		const glm::vec3& ambient, 
+		const glm::vec3& diffuse,
+		const glm::vec3& specular, 
+		const LightType& type
+	)
 		: m_intensity{ intensity }
 		, m_color{ color }
 		, m_type{ type }
+		, m_ambient{ ambient }
+		, m_diffuse{ diffuse }
+		, m_specular{ specular }
 	{
 	}
 

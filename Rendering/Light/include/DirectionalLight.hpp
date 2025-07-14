@@ -14,7 +14,10 @@ namespace Andromeda::Rendering
 		DirectionalLight(
 			const glm::vec3& direction,
 			const glm::vec3& color = glm::vec3{ 1.0f },
-			float intensity = 1.0f
+			float intensity = 1.0f,
+			const glm::vec3& ambient = glm::vec3(0.1f),
+			const glm::vec3& diffuse = glm::vec3(0.4f, 0.4f, 0.4f),
+			const glm::vec3& specular = glm::vec3(0.4f, 0.4f, 0.4f)
 		);
 		~DirectionalLight();
 
