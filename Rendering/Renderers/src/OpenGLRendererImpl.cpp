@@ -5,6 +5,7 @@
 #include "../../Light/include/NonLuminousBehavior.hpp"
 #include "../../Light/include/LightData.hpp"
 #include "../../RenderableObjects/include/GridOpenGL.hpp"
+#include "../../Light/include/PointLight.hpp"
 #include "FileOperations.hpp"
 #include "Colors.hpp"
 #include "glad/gl.h"
@@ -415,13 +416,13 @@ namespace Andromeda
                 lightColors.push_back(MathUtils::ToGLM(lightCaster->GetColor().ReturnAsVec4()));
 
                 Andromeda::Rendering::LuminousBehavior* luminousBehavior = dynamic_cast<Andromeda::Rendering::LuminousBehavior*>(lightCaster->GetLightBehavior());
-                LightData data = luminousBehavior->GetLightData();
-                lightConstants.push_back(data.GetAttenuationConstant());
-                lightLinears.push_back(data.GetAttenuationLinear());
-                lightQuadratics.push_back(data.GetAttenuationQuadratic());
-                lightAmbientValues.push_back({ 0.1f, 0.1f, 0.1f });
-                lightDiffuseValues.push_back(data.GetDiffuseIntensity());
-                lightSpecularValues.push_back(data.GetSpecularIntensity());
+                PointLight* pPointLight = dynamic_cast<PointLight*>(luminousBehavior->GetLight());
+                lightConstants.push_back(pPointLight->GetAttenuationConstant());
+                lightLinears.push_back(pPointLight->GetAttenuationLinear());
+                lightQuadratics.push_back(pPointLight->GetAttenuationQuadratic());
+                lightAmbientValues.push_back({ 0.9f, 0.9f, 0.9f });
+                lightDiffuseValues.push_back(pPointLight->GetDiffuse());
+                lightSpecularValues.push_back(pPointLight->GetSpecular());
             }
 
             int numLights = static_cast<int>(lightPositions.size());
