@@ -5,6 +5,9 @@
 #include "SphereObjectOpenGL.hpp"
 #include "CubeObjectOpenGL.hpp"
 #include "Constants.hpp"
+#include "PointLight.hpp"
+#include "LuminousBehavior.hpp"
+#include "glm/glm.hpp"
 
 
 int main(void)
@@ -50,7 +53,7 @@ int main(void)
                 // Use neon color based on level
                 Andromeda::Space::Color color = neonColors[level % neonColors.size()];
 
-                auto* cube = new Andromeda::Rendering::CubeObjectOpenGL(pos, cubeHalfExtent, color);
+                Andromeda::Rendering::CubeObjectOpenGL* cube = new Andromeda::Rendering::CubeObjectOpenGL(pos, cubeHalfExtent, color);
                 app.AddToScene(objectId++, cube);
             }
         }
@@ -61,8 +64,15 @@ int main(void)
     Andromeda::Math::Vec3 spherePosition(10.0f, 5.0f, 5.0f);
     Andromeda::Space::Color sphereColor = { 1.0f, 1.0f, 1.0f, 1.0f };
 
-    auto* lightSphere = new Andromeda::Rendering::SphereObjectOpenGL(spherePosition, sphereRadius, sphereColor);
-    lightSphere->SetLuminous(true);
+    Andromeda::Rendering::SphereObjectOpenGL* lightSphere = new Andromeda::Rendering::SphereObjectOpenGL(spherePosition, sphereRadius, sphereColor);
+
+    Andromeda::Rendering::PointLight* pPointLight = new Andromeda::Rendering::PointLight(
+        glm::vec3(spherePosition[0], spherePosition[1], spherePosition[2]),
+        glm::vec3(sphereColor.r, sphereColor.g, sphereColor.b)
+    );
+
+    Andromeda::Rendering::LuminousBehavior* lumBehavior = new Andromeda::Rendering::LuminousBehavior(pPointLight);
+    lightSphere->SetLuminousBehavior(lumBehavior);
     app.AddToScene(objectId++, lightSphere);
 
     app.RunMainLoop();

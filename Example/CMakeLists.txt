@@ -8,17 +8,20 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 add_executable(${PROJECT_NAME} main.cpp)
 
-# Ensure the include directories are properly formatted
-include_directories(
-    ..//Utils//PrecompiledHeaders//include//
-    ../Math/LinearAlgebra/include/
-    ../Space/Objects/include/
-    ../Space/Scene/include/
-    ../Space/Attributes/include/
-    ../Space/DataTypes/include/
-    ../Rendering/Scene/include/
-    ../Rendering/RenderableObjects/include/
-    ../EngineCore/Application/include/
+target_include_directories(${PROJECT_NAME} 
+    PRIVATE
+        ..//Utils//PrecompiledHeaders//include//
+	    ..//ExternalGraphicsLibs//glm//
+        ../Math/LinearAlgebra/include/
+        ../Space/Objects/include/
+        ../Space/Scene/include/
+        ../Space/Attributes/include/
+        ../Space/DataTypes/include/
+        ../Rendering/Scene/include/
+        ../Rendering/Light/include/
+        ../Rendering/RenderableObjects/include/
+        ../EngineCore/Application/include/
+
 )
 
 # Ensure EngineCore is linked
@@ -27,6 +30,7 @@ target_link_libraries(${PROJECT_NAME}
         Utils
         Math
         Space
+        ExternalGraphicsLibs
         Rendering
         EngineCore
 )
@@ -36,6 +40,7 @@ add_dependencies(${PROJECT_NAME}
     Utils
     Math
     Space
+    ExternalGraphicsLibs
     Rendering
     EngineCore
 )
