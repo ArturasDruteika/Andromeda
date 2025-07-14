@@ -49,7 +49,6 @@ namespace Andromeda
 			virtual Space::Color GetColor() const = 0;
 			virtual ILightBehavior* GetLightBehavior() const = 0;
 			// Setters
-			virtual void SetLuminous(bool isEmitingLight) = 0;
 			virtual void SetModelMatrix(const Math::Mat4& modelMatrix) = 0;
 			virtual void SetLuminousBehavior(ILightBehavior* behavior) = 0;
 			// Transformation operations

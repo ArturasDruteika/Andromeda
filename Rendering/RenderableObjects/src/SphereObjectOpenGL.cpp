@@ -71,11 +71,6 @@ namespace Andromeda
 			return m_pSphereObjectOpenGLImpl->GetLightBehavior();
 		}
 
-		void SphereObjectOpenGL::SetLuminous(bool isEmitingLight)
-		{
-			m_pSphereObjectOpenGLImpl->SetLuminous(isEmitingLight);
-		}
-
 		void SphereObjectOpenGL::SetModelMatrix(const Math::Mat4& modelMatrix)
 		{
 			m_pSphereObjectOpenGLImpl->SetModelMatrix(modelMatrix);

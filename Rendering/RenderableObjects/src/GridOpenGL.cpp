@@ -83,11 +83,6 @@ namespace Andromeda
             return nullptr;
         }
 
-        void GridOpenGL::SetLuminous(bool isEmitingLight)
-        {
-            m_luminous = isEmitingLight;
-        }
-
         void GridOpenGL::SetModelMatrix(const Math::Mat4& modelMatrix)
         {
             m_modelMatrix = MathUtils::ToGLM(modelMatrix);

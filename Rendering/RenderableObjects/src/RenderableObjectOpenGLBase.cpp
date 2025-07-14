@@ -89,20 +89,6 @@ namespace Andromeda
 			return m_pILightBehavior;
 		}
 
-		void RenderableObjectOpenGLBase::SetLuminous(bool shouldEmit)
-		{
-			if (m_luminous == shouldEmit)
-				return;
-
-			delete m_pILightBehavior;
-			m_pILightBehavior = nullptr;
-			if (shouldEmit)
-				m_pILightBehavior = new LuminousBehavior();
-			else
-				m_pILightBehavior = new NonLuminousBehavior();
-			m_luminous = shouldEmit;
-		}
-
 		void RenderableObjectOpenGLBase::SetModelMatrix(const Math::Mat4& modelMatrix)
 		{
 			m_modelMatrix = MathUtils::ToGLM(modelMatrix);
@@ -110,7 +96,14 @@ namespace Andromeda
 
 		void RenderableObjectOpenGLBase::SetLuminousBehavior(ILightBehavior* behavior)
 		{
-			void SetLuminousBehavior(ILightBehavior * behavior);
+			if (behavior == nullptr)
+			{
+				spdlog::error("Trying to set nullptr behavior.");
+				return;
+			}
+			delete m_pILightBehavior;
+			m_pILightBehavior = behavior;
+			m_luminous = dynamic_cast<LuminousBehavior*>(m_pILightBehavior) ? true : false;
 		}
 
 		void RenderableObjectOpenGLBase::Translate(const Math::Vec3& translation)
