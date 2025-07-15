@@ -22,37 +22,44 @@
 #include "../../Light/include/LuminousBehavior.hpp"
 
 
-namespace Andromeda
+namespace Andromeda::Rendering
 {
-	namespace Rendering
+	class RENDERING_API OpenGLScene
 	{
-		class RENDERING_API OpenGLScene
-		{
-		public:
-			OpenGLScene();
-			~OpenGLScene();
+	public:
+		OpenGLScene();
+		~OpenGLScene();
 
-			OpenGLScene(const OpenGLScene& other) = delete;	// Prevent Copy Constructor
-			OpenGLScene& operator=(const OpenGLScene& other) = delete;	// Prevent Copy Assignment
-			OpenGLScene(OpenGLScene&& other) noexcept = delete;	// Prevent Move Constructor
-			OpenGLScene& operator=(OpenGLScene&& other) noexcept = delete;	// Prevent Move Assignment
+		OpenGLScene(const OpenGLScene& other) = delete;	// Prevent Copy Constructor
+		OpenGLScene& operator=(const OpenGLScene& other) = delete;	// Prevent Copy Assignment
+		OpenGLScene(OpenGLScene&& other) noexcept = delete;	// Prevent Move Constructor
+		OpenGLScene& operator=(OpenGLScene&& other) noexcept = delete;	// Prevent Move Assignment
 
-			// Getters
-			float GetAmbientStrength() const;
-			const std::unordered_map<int, IRenderableObjectOpenGL*>& GetObjects() const;
-			const std::unordered_map<int, IRenderableObjectOpenGL*>& GetLuminousObjects() const;
-			// Setters
-			void SetAmbientStrength(float ambientStrength);
+		// Getters
+		float GetAmbientStrength() const;
+		const std::unordered_map<int, IRenderableObjectOpenGL*>& GetObjects() const;
+		const std::unordered_map<int, IRenderableObjectOpenGL*>& GetLuminousObjects() const;
+		// Setters
+		void SetAmbientStrength(float ambientStrength);
 
-			void AddObject(int id, IRenderableObjectOpenGL* object);
-			void RemoveObject(int id);
-			void ResizeGrid(float resizeFactor);
+		void AddObject(int id, IRenderableObjectOpenGL* object);
+		void RemoveObject(int id);
+		void AddDirectionalLight(
+			int id, 
+			const glm::vec3& direction,
+			const glm::vec3& color = glm::vec3{ 1.0f },
+			float intensity = 1.0f,
+			const glm::vec3& ambient = glm::vec3(0.1f),
+			const glm::vec3& diffuse = glm::vec3(0.4f, 0.4f, 0.4f),
+			const glm::vec3& specular = glm::vec3(0.4f, 0.4f, 0.4f)
+		);
+		void RemoveDrectionalLight(int id);
+		void ResizeGrid(float resizeFactor);
 
-		private:
-			class OpenGLSceneImpl;
-			OpenGLSceneImpl* m_pOpenGLSceneImpl;
-		};
-	}
+	private:
+		class OpenGLSceneImpl;
+		OpenGLSceneImpl* m_pOpenGLSceneImpl;
+	};
 }
 
 
