@@ -45,7 +45,7 @@ namespace Andromeda
             InitShaders();
             UpdatePerspectiveMatrix(m_width, m_width);
             MaterialLibrary materialsLibrary = MaterialLibrary("material_properties/material_properties.json");
-            materialsLibrary.SaveToFile("material_properties/material_propertiesss.json");
+            materialsLibrary.SaveToFile("material_properties/material_properties.json");
         }
 
         OpenGLRenderer::OpenGLRendererImpl::~OpenGLRendererImpl()

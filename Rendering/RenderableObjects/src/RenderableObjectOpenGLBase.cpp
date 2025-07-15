@@ -51,12 +51,12 @@ namespace Andromeda
 
 		unsigned int RenderableObjectOpenGLBase::GetVertexCount() const
 		{
-			return static_cast<unsigned int>(m_vertices.size());
+			return m_vertices.size();
 		}
 
 		unsigned int RenderableObjectOpenGLBase::GetIndicesCount() const
 		{
-			return static_cast<unsigned int>(m_indices.size());
+			return m_indices.size();
 		}
 
 		std::vector<Vertex> RenderableObjectOpenGLBase::GetVertices() const
