@@ -2,6 +2,21 @@
 #define RENDERING__MATERIALS__HPP
 
 
+#if defined(_WIN32)
+    #if defined(RENDERING_EXPORT)
+        #define RENDERING_API __declspec(dllexport)
+    #else
+        #define RENDERING_API __declspec(dllimport)
+    #endif /* RENDERING_API */
+    #define _sprintf sprintf_s
+#endif
+
+#if defined(__GNUC__)
+    // GCC
+    #define RENDERING_API __attribute__((visibility("default")))
+#endif
+
+
 #include "pch.hpp"
 #include "MaterialTypes.hpp"
 #include "LinearAlgebraDataTypes.hpp"
@@ -11,7 +26,7 @@ namespace Andromeda
 {
 	namespace Rendering
 	{
-        class Material
+        class RENDERING_API Material
         {
         public:
             Material();
