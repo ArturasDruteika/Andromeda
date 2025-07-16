@@ -7,13 +7,18 @@
 #include "Constants.hpp"
 #include "PointLight.hpp"
 #include "LuminousBehavior.hpp"
+#include "NonLuminousBehavior.hpp"
+#include "MaterialsLibrary.hpp"
+#include "Materials.hpp"
+#include "MaterialTypes.hpp"
 #include "glm/glm.hpp"
-
 
 int main(void)
 {
     Andromeda::EngineCore::Application app;
     app.Init();
+
+    Andromeda::Rendering::MaterialLibrary materialsLib("material_properties/material_properties.json");
 
     float cubeHalfExtent = 0.5f;
     float spacing = 1.05f;
@@ -21,20 +26,25 @@ int main(void)
 
     int objectId = 0;
 
-    // Neon-style RGB-only hardcoded palette
-    const std::vector<Andromeda::Space::Color> neonColors = {
-        {0.0f, 1.0f, 1.0f, 1.0f},     // Electric Cyan
-        {1.0f, 0.0f, 1.0f, 1.0f},     // Vivid Magenta
-        {0.2f, 1.0f, 0.6f, 1.0f},     // Bright Mint Green
-        {0.6f, 0.2f, 1.0f, 1.0f},     // Violet Glow
-        {1.0f, 0.2f, 0.6f, 1.0f},     // Hot Pink
-        {0.0f, 0.4f, 1.0f, 1.0f},     // Electric Blue
-        {0.22f, 1.0f, 0.08f, 1.0f},   // Cyberpunk Green
-        {0.56f, 0.0f, 1.0f, 1.0f},    // Cyberpunk Violet
-    };
+    // Collect available materials
+    std::vector<Andromeda::Rendering::MaterialType> materialTypes;
+    for (int i = 0; i < static_cast<int>(Andromeda::Rendering::MaterialType::Count); ++i)
+    {
+        Andromeda::Rendering::MaterialType type = static_cast<Andromeda::Rendering::MaterialType>(i);
+        if (type != Andromeda::Rendering::MaterialType::None && materialsLib.Has(type))
+        {
+            materialTypes.push_back(type);
+        }
+    }
 
+    size_t numMaterials = materialTypes.size();
+    if (numMaterials == 0)
+    {
+        std::cerr << "No materials found in material library. Aborting." << std::endl;
+        return -1;
+    }
 
-    // Build 10-storey pyramid
+    // Build material-based pyramid
     for (int level = 0; level < pyramidHeight; ++level)
     {
         int width = pyramidHeight - level;
@@ -44,16 +54,24 @@ int main(void)
         {
             for (int col = 0; col < width; ++col)
             {
-                // Center the pyramid
                 float x = (col - width / 2.0f + 0.5f) * spacing;
                 float z = (row - width / 2.0f + 0.5f) * spacing;
-
                 Andromeda::Math::Vec3 pos(x, y, z);
 
-                // Use neon color based on level
-                Andromeda::Space::Color color = neonColors[level % neonColors.size()];
+                // Select material in cyclic order
+                Andromeda::Rendering::MaterialType materialType = materialTypes[objectId % numMaterials];
+                Andromeda::Rendering::Material material = materialsLib.GetMaterial(materialType);
+
+                Andromeda::Space::Color color(
+                    material.GetDiffuse()[0],
+                    material.GetDiffuse()[1],
+                    material.GetDiffuse()[2],
+                    1.0f
+                );
 
                 Andromeda::Rendering::CubeObjectOpenGL* cube = new Andromeda::Rendering::CubeObjectOpenGL(pos, cubeHalfExtent, color);
+                Andromeda::Rendering::NonLuminousBehavior* nlBehavior = new Andromeda::Rendering::NonLuminousBehavior(material);
+                cube->SetLuminousBehavior(nlBehavior); // if your class supports material application
                 app.AddToScene(objectId++, cube);
             }
         }
@@ -62,7 +80,7 @@ int main(void)
     // Light source sphere
     float sphereRadius = 0.7f;
     Andromeda::Math::Vec3 spherePosition(10.0f, 5.0f, 5.0f);
-    Andromeda::Space::Color sphereColor = { 1.0f, 1.0f, 1.0f, 1.0f };
+    Andromeda::Space::Color sphereColor(1.0f, 1.0f, 1.0f, 1.0f);
 
     Andromeda::Rendering::SphereObjectOpenGL* lightSphere = new Andromeda::Rendering::SphereObjectOpenGL(spherePosition, sphereRadius, sphereColor);
 
@@ -80,5 +98,3 @@ int main(void)
 
     return 0;
 }
-
-
