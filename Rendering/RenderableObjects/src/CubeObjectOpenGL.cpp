@@ -71,11 +71,6 @@ namespace Andromeda
 			return m_pCubeObjectOpenGLImpl->GetLightBehavior();
 		}
 
-		void CubeObjectOpenGL::SetLuminous(bool isEmitingLight)
-		{
-			m_pCubeObjectOpenGLImpl->SetLuminous(isEmitingLight);
-		}
-
 		void CubeObjectOpenGL::SetModelMatrix(const Math::Mat4& modelMatrix)
 		{
 			m_pCubeObjectOpenGLImpl->SetModelMatrix(modelMatrix);

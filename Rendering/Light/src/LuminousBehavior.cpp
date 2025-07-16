@@ -5,20 +5,21 @@ namespace Andromeda
 {
 	namespace Rendering
 	{
-		LuminousBehavior::LuminousBehavior()
-		{
-		}
+		//LuminousBehavior::LuminousBehavior()
+		//	: m_light{ glm::vec3(1.0f), 1.0f, LightType::None }
+		//{
+		//}
 
-		LuminousBehavior::LuminousBehavior(const LightData& lightData)
+		LuminousBehavior::LuminousBehavior(Light* light)
+			: m_light{ light }
 		{
-			m_lightData = lightData;
 		}
 
 		LuminousBehavior::~LuminousBehavior() = default;
 
-		LightData LuminousBehavior::GetLightData() const
+		Light* LuminousBehavior::GetLight() const
 		{
-			return m_lightData;
+			return m_light;
 		}
 	}
 }

@@ -2,28 +2,42 @@
 #define RENDERING__LUMINOUS_BEHAVIOR__HPP
 
 
+#if defined(_WIN32)
+	#if defined(RENDERING_EXPORT)
+		#define RENDERING_API __declspec(dllexport)
+	#else
+		#define RENDERING_API __declspec(dllimport)
+	#endif /* RENDERING_API */
+	#define _sprintf sprintf_s
+#endif
+
+#if defined(__GNUC__)
+	// GCC
+	#define RENDERING_API __attribute__((visibility("default")))
+#endif
+
+
 #include "pch.hpp"
 #include "ILightBehavior.hpp"
-#include "LightProperties.hpp"
-#include "LightData.hpp"
+#include "Light.hpp"
 
 
 namespace Andromeda
 {
 	namespace Rendering
 	{
-		class LuminousBehavior
+		class RENDERING_API LuminousBehavior
 			: public ILightBehavior
 		{
 		public:
-			LuminousBehavior();
-			LuminousBehavior(const LightData& lightData);
+			//LuminousBehavior();
+			LuminousBehavior(Light* light);
 			~LuminousBehavior();
 
-			LightData GetLightData() const;
+			Light* GetLight() const;
 
 		private:
-			LightData m_lightData;
+			Light* m_light;
 		};
 	}
 }

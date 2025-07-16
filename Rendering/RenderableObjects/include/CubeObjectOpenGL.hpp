@@ -51,7 +51,6 @@ namespace Andromeda
 			Space::Color GetColor() const override;
 			ILightBehavior* GetLightBehavior() const override;
 			// Setters
-			void SetLuminous(bool isEmitingLight) override;
 			void SetModelMatrix(const Math::Mat4& modelMatrix) override;
 			void SetLuminousBehavior(ILightBehavior* behavior) override;
 			// Transformation operations
