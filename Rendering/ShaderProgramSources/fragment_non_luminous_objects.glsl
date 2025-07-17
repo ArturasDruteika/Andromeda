@@ -1,5 +1,7 @@
 #version 330 core
 
+layout(early_fragment_tests) in;
+
 #define MAX_LIGHTS 8
 
 in vec3    fragPosition;       // world‐space position
