@@ -30,6 +30,7 @@ namespace Andromeda
 
 			// Getters
 			bool IsLuminous() const;
+			bool StateChanged() const;
 			unsigned int GetVBO() const;
 			unsigned int GetVAO() const;
 			unsigned int GetEBO() const;
@@ -46,6 +47,7 @@ namespace Andromeda
 			// Setters
 			void SetModelMatrix(const Math::Mat4& modelMatrix);
 			void SetLuminousBehavior(ILightBehavior* behavior);
+			void ResetState();
 			// Transformation operations
 			void Translate(const Math::Vec3& translation);
 			void TranslateDelta(const Math::Vec3& translationDelta);
@@ -71,6 +73,7 @@ namespace Andromeda
 
 		protected:
 			bool m_luminous;
+			bool m_stateChanged;
 			unsigned int m_VBO;
 			unsigned int m_VAO;
 			unsigned int m_EBO;

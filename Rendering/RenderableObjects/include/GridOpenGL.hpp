@@ -32,6 +32,7 @@ namespace Andromeda
 			// Overrides from IRenderableObjectOpenGL
 			// Getters
 			bool IsLuminous() const override;
+			bool StateChanged() const override;
 			unsigned int GetVBO() const override;
 			unsigned int GetVAO() const override;
 			unsigned int GetEBO() const override;
@@ -45,6 +46,7 @@ namespace Andromeda
 			// Setters
 			void SetModelMatrix(const Math::Mat4& modelMatrix) override;
 			void SetLuminousBehavior(ILightBehavior* behavior) override;
+			void ResetState() override;
 			// Transformation operations
 			void Translate(const Math::Vec3& translation) override;
 			void TranslateDelta(const Math::Vec3& translationDelta) override;
