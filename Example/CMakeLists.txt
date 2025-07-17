@@ -20,6 +20,7 @@ target_include_directories(${PROJECT_NAME}
         ../Rendering/Scene/include/
         ../Rendering/Light/include/
         ../Rendering/RenderableObjects/include/
+        ../Rendering/Materials/include/
         ../EngineCore/Application/include/
 
 )
