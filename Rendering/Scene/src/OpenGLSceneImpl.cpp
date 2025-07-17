@@ -24,6 +24,21 @@ namespace Andromeda::Rendering
 		m_renderableObjsPtrsMap.clear();
 	}
 
+	bool OpenGLScene::OpenGLSceneImpl::StateChanged() const
+	{
+		for (const auto& [id, obj] : m_renderableObjsPtrsMap)
+		{
+			if (id >= 0)
+			{
+				if (obj && obj->StateChanged())
+				{
+					return true;
+				}
+			}
+		}
+		return false;
+	}
+
 	float OpenGLScene::OpenGLSceneImpl::GetAmbientStrength() const
 	{
 		return m_ambientStrength;
@@ -53,6 +68,17 @@ namespace Andromeda::Rendering
 		else
 		{
 			spdlog::warn("Ambient strength must be between 0.0 and 1.0. Value {} is ignored.", ambientStrength);
+		}
+	}
+
+	void OpenGLScene::OpenGLSceneImpl::ResetState()
+	{
+		for (auto& [id, obj] : m_renderableObjsPtrsMap)
+		{
+			if (id >= 0)
+			{
+				obj->ResetState();
+			}
 		}
 	}
 

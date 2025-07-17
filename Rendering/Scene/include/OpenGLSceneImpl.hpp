@@ -21,12 +21,14 @@ namespace Andromeda::Rendering
 		OpenGLSceneImpl& operator=(OpenGLSceneImpl&& other) noexcept = delete;	// Prevent Move Assignment
 
 		// Getters
+		bool StateChanged() const;
 		float GetAmbientStrength() const;
 		const std::unordered_map<int, IRenderableObjectOpenGL*>& GetObjects() const;
 		const std::unordered_map<int, IRenderableObjectOpenGL*>& GetLuminousObjects() const;
 		const std::unordered_map<int, DirectionalLight>& GetDirectionalLights() const;
 		// Setters
 		void SetAmbientStrength(float ambientStrength);
+		void ResetState();
 
 		void AddObject(int id, IRenderableObjectOpenGL* object);
 		void RemoveObject(int id);
