@@ -35,6 +35,7 @@ namespace Andromeda
             , m_isGridVisible{ false }
             , m_isIlluminationMode{ false }
             , m_shadowFBO{ 0 }
+            , m_lightSpace{ glm::mat4(1.0f) }
         {
             glClearColor(
                 BACKGROUND_COLOR_DEFAULT.r,
@@ -43,9 +44,8 @@ namespace Andromeda
                 BACKGROUND_COLOR_DEFAULT.a
             );
             InitShaders();
-            UpdatePerspectiveMatrix(m_width, m_width);
+            UpdatePerspectiveMatrix(m_width, m_height);
             MaterialLibrary materialsLibrary = MaterialLibrary("material_properties/material_properties.json");
-            materialsLibrary.SaveToFile("material_properties/material_properties.json");
         }
 
         OpenGLRenderer::OpenGLRendererImpl::~OpenGLRendererImpl()
@@ -64,7 +64,7 @@ namespace Andromeda
 			m_width = width;
 			m_height = height;
             InitFrameBuffer();
-            InitShadowMap(width, height);
+            InitShadowMap(width / 2, height / 2);
 
             m_isInitialized = true;
         }
@@ -86,15 +86,19 @@ namespace Andromeda
             m_isInitialized = false;
         }
 
-        void OpenGLRenderer::OpenGLRendererImpl::RenderFrame(const OpenGLScene& scene) const
+        void OpenGLRenderer::OpenGLRendererImpl::RenderFrame(OpenGLScene& scene)
         {
             if (!m_isInitialized)
                 return;
 
-            glm::mat4 lightSpace = ComputeLightSpaceMatrix(scene);
+            if (scene.StateChanged())
+            {
+                m_lightSpace = ComputeLightSpaceMatrix(scene);
+                scene.ResetState();
+            }
 
-			ShadowMapDepthPass(scene, lightSpace);
-			RenderNonLuminousObjects(scene, lightSpace);
+			ShadowMapDepthPass(scene, m_lightSpace);
+			RenderNonLuminousObjects(scene, m_lightSpace);
 			RenderLuminousObjects(scene);
 
             glBindFramebuffer(GL_FRAMEBUFFER, 0);
@@ -215,7 +219,6 @@ namespace Andromeda
             CreateColorTexture();
 			ConfigureFrameBufferTexture();
 			UnbindFrameBuffer();
-            m_isInitialized = true;
         }
 
         void OpenGLRenderer::OpenGLRendererImpl::InitShadowMap(int width, int height)
@@ -316,13 +319,17 @@ namespace Andromeda
             GLenum status = glCheckFramebufferStatus(GL_FRAMEBUFFER);
             if (status != GL_FRAMEBUFFER_COMPLETE)
             {
-                spdlog::error("Framebuffer incomplete! Status: 0x{:X}", status); // hex
+                switch (status)
+                {
+                    case GL_FRAMEBUFFER_INCOMPLETE_ATTACHMENT: spdlog::error("Incomplete attachment"); break;
+                    case GL_FRAMEBUFFER_INCOMPLETE_MISSING_ATTACHMENT: spdlog::error("Missing attachment"); break;
+                    case GL_FRAMEBUFFER_UNSUPPORTED: spdlog::error("Unsupported framebuffer format"); break;
+                }
             }
         }
 
         void OpenGLRenderer::OpenGLRendererImpl::ConfigureFrameBufferTexture()
         {
-			GenerateAndBindFrameBuffer();
             CreateColorTexture();
             CreateRenderBuffer();
             SetDrawBuffer();
@@ -343,6 +350,9 @@ namespace Andromeda
             glEnable(GL_DEPTH_TEST);
             glClear(GL_DEPTH_BUFFER_BIT);
 
+            glEnable(GL_POLYGON_OFFSET_FILL);
+            glPolygonOffset(1.1f, 4.0f); // Experiment with values if needed
+
             OpenGLShader& depthShader = *m_shadersMap.at(ShaderOpenGLTypes::ShadowMap);
             depthShader.Bind();
             depthShader.SetUniform("u_lightSpaceMatrix", lightSpace);
@@ -361,109 +371,25 @@ namespace Andromeda
 
         void OpenGLRenderer::OpenGLRendererImpl::RenderNonLuminousObjects(const OpenGLScene& scene, const glm::mat4& lightSpace) const
         {
-            // ----- PASS B: Lighting + shadows -----
-            glBindFramebuffer(GL_FRAMEBUFFER, m_FBO);
-            glViewport(0, 0, m_width, m_height);
-            glEnable(GL_DEPTH_TEST);
-            glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+            constexpr int SHADOW_UNIT = 5;
 
-            // bind the shadow map into texture unit 5
-            const int SHADOW_UNIT = 5;
-            glActiveTexture(GL_TEXTURE0 + SHADOW_UNIT);
-            glBindTexture(GL_TEXTURE_2D, m_shadowMapTexture);
+            PrepareFramebufferForNonLuminousPass();
+            BindShadowMap(SHADOW_UNIT);
+            RenderGridIfVisible(scene);
 
-            if (m_isGridVisible)
-                RenderGrid(*scene.GetObjects().at(static_cast<int>(SpecialIndices::Grid)));
-
-            // --- (a) Non-luminous objects: Blinn-Phong + shadows ---
             OpenGLShader& nlShader = *m_shadersMap.at(ShaderOpenGLTypes::RenderableObjectsNonLuminous);
             nlShader.Bind();
 
-            // camera uniforms
+            // Camera and shadow uniforms
             nlShader.SetUniform("u_view", MathUtils::ToGLM(m_pCamera->GetViewMatrix()));
             nlShader.SetUniform("u_projection", m_projectionMatrix);
             nlShader.SetUniform("u_viewPos", MathUtils::ToGLM(m_pCamera->GetPosition()));
-
-            // shadow uniforms
             nlShader.SetUniform("u_lightSpaceMatrix", lightSpace);
             nlShader.SetUniform("u_shadowMap", SHADOW_UNIT);
 
-            // collect all lights
-            const std::unordered_map<int, IRenderableObjectOpenGL*>& luminousObjsMap = scene.GetLuminousObjects();
+            PopulateLightUniforms(nlShader, scene);
+            RenderEachNonLuminousObject(nlShader, scene);
 
-            std::vector<float> lightConstants;
-            std::vector<float> lightLinears;
-            std::vector<float> lightQuadratics;
-            std::vector<glm::vec3> lightPositions;
-            std::vector<glm::vec3> lightAmbientValues;
-            std::vector<glm::vec3> lightDiffuseValues;
-            std::vector<glm::vec3> lightSpecularValues;
-            std::vector<glm::vec4> lightColors;
-
-            lightPositions.reserve(luminousObjsMap.size());
-            lightColors.reserve(luminousObjsMap.size());
-            lightConstants.reserve(luminousObjsMap.size());
-            lightLinears.reserve(luminousObjsMap.size());
-            lightQuadratics.reserve(luminousObjsMap.size());
-            lightAmbientValues.reserve(luminousObjsMap.size());
-            lightDiffuseValues.reserve(luminousObjsMap.size());
-            lightSpecularValues.reserve(luminousObjsMap.size());
-
-            for (auto& [id, lightCaster] : luminousObjsMap)
-            {
-                glm::vec3 lightPosGLM = MathUtils::ToGLM(lightCaster->GetCenterPosition());
-                lightPositions.push_back(lightPosGLM);
-                lightColors.push_back(MathUtils::ToGLM(lightCaster->GetColor().ReturnAsVec4()));
-
-                Andromeda::Rendering::LuminousBehavior* luminousBehavior = dynamic_cast<Andromeda::Rendering::LuminousBehavior*>(lightCaster->GetLightBehavior());
-                PointLight* pPointLight = dynamic_cast<PointLight*>(luminousBehavior->GetLight());
-                lightConstants.push_back(pPointLight->GetAttenuationConstant());
-                lightLinears.push_back(pPointLight->GetAttenuationLinear());
-                lightQuadratics.push_back(pPointLight->GetAttenuationQuadratic());
-                lightAmbientValues.push_back({ 0.9f, 0.9f, 0.9f });
-                lightDiffuseValues.push_back(pPointLight->GetDiffuse());
-                lightSpecularValues.push_back(pPointLight->GetSpecular());
-            }
-
-            int numLights = static_cast<int>(lightPositions.size());
-            nlShader.SetUniform("u_numLights", numLights);
-            nlShader.SetUniform("u_positionLight", lightPositions);
-            //nlShader.SetUniform("u_lightColor", lightColors);
-            nlShader.SetUniform("u_constantLight", lightConstants);
-            nlShader.SetUniform("u_linearLight", lightLinears);
-            nlShader.SetUniform("u_quadraticLight", lightQuadratics);
-            nlShader.SetUniform("u_ambientLight", lightAmbientValues);
-            nlShader.SetUniform("u_diffuseLight", lightDiffuseValues);
-            nlShader.SetUniform("u_specularLight", lightSpecularValues);
-
-            // draw each non-luminous object with its own material
-            for (auto& [id, obj] : scene.GetObjects())
-            {
-                if (id >= 0)
-                {
-                    if (!obj->IsLuminous())
-                    {
-                        glm::mat3 normalMatrix = glm::inverseTranspose(glm::mat3(MathUtils::ToGLM(obj->GetModelMatrix())));
-                        // per-object material uniforms
-                        NonLuminousBehavior* nonLum = dynamic_cast<NonLuminousBehavior*>(obj->GetLightBehavior());
-                        Material material = nonLum->GetMaterial();
-
-                        nlShader.SetUniform("u_ambientMaterial", MathUtils::ToGLM(material.GetAmbient()));
-                        nlShader.SetUniform("u_diffuseMaterial", MathUtils::ToGLM(material.GetDiffuse()));
-                        nlShader.SetUniform("u_specularMaterial", MathUtils::ToGLM(material.GetSpecular()));
-                        nlShader.SetUniform("u_shininessMaterial", material.GetShininess());
-                        nlShader.SetUniform("u_model", MathUtils::ToGLM(obj->GetModelMatrix()));
-                        nlShader.SetUniform("u_normalMatrix", normalMatrix);
-                        glBindVertexArray(obj->GetVAO());
-                        glDrawElements(
-                            GL_TRIANGLES,
-                            obj->GetIndicesCount(),
-                            GL_UNSIGNED_INT,
-                            nullptr
-                        );
-                    }
-                }
-            }
             nlShader.UnBind();
         }
 
@@ -559,6 +485,93 @@ namespace Andromeda
             m_projectionMatrix = glm::infinitePerspective(glm::radians(45.0f), aspect, 0.1f);
         }
 
+        void OpenGLRenderer::OpenGLRendererImpl::PrepareFramebufferForNonLuminousPass() const
+        {
+            glBindFramebuffer(GL_FRAMEBUFFER, m_FBO);
+            glViewport(0, 0, m_width, m_height);
+            glEnable(GL_DEPTH_TEST);
+            glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+        }
+
+        void OpenGLRenderer::OpenGLRendererImpl::BindShadowMap(int textureUnit) const
+        {
+            glActiveTexture(GL_TEXTURE0 + textureUnit);
+            glBindTexture(GL_TEXTURE_2D, m_shadowMapTexture);
+        }
+
+        void OpenGLRenderer::OpenGLRendererImpl::RenderGridIfVisible(const OpenGLScene& scene) const
+        {
+            if (m_isGridVisible)
+            {
+                const auto& objects = scene.GetObjects();
+                auto it = objects.find(static_cast<int>(SpecialIndices::Grid));
+                if (it != objects.end())
+                {
+                    RenderGrid(*it->second);
+                }
+            }
+        }
+
+        void OpenGLRenderer::OpenGLRendererImpl::PopulateLightUniforms(OpenGLShader& shader, const OpenGLScene& scene) const
+        {
+            const auto& luminousObjsMap = scene.GetLuminousObjects();
+
+            std::vector<float> lightConstants, lightLinears, lightQuadratics;
+            std::vector<glm::vec3> lightPositions, lightAmbientValues, lightDiffuseValues, lightSpecularValues;
+
+            for (const auto& [id, lightCaster] : luminousObjsMap)
+            {
+                glm::vec3 lightPosGLM = MathUtils::ToGLM(lightCaster->GetCenterPosition());
+                lightPositions.push_back(lightPosGLM);
+
+                auto* luminousBehavior = dynamic_cast<LuminousBehavior*>(lightCaster->GetLightBehavior());
+                auto* pointLight = dynamic_cast<PointLight*>(luminousBehavior->GetLight());
+
+                lightConstants.push_back(pointLight->GetAttenuationConstant());
+                lightLinears.push_back(pointLight->GetAttenuationLinear());
+                lightQuadratics.push_back(pointLight->GetAttenuationQuadratic());
+
+                lightAmbientValues.push_back({ 0.9f, 0.9f, 0.9f }); // or get from config
+                lightDiffuseValues.push_back(pointLight->GetDiffuse());
+                lightSpecularValues.push_back(pointLight->GetSpecular());
+            }
+
+            shader.SetUniform("u_numLights", static_cast<int>(lightPositions.size()));
+            shader.SetUniform("u_positionLight", lightPositions);
+            shader.SetUniform("u_constantLight", lightConstants);
+            shader.SetUniform("u_linearLight", lightLinears);
+            shader.SetUniform("u_quadraticLight", lightQuadratics);
+            shader.SetUniform("u_ambientLight", lightAmbientValues);
+            shader.SetUniform("u_diffuseLight", lightDiffuseValues);
+            shader.SetUniform("u_specularLight", lightSpecularValues);
+        }
+
+        void OpenGLRenderer::OpenGLRendererImpl::RenderEachNonLuminousObject(OpenGLShader& shader, const OpenGLScene& scene) const
+        {
+            for (const auto& [id, obj] : scene.GetObjects())
+            {
+                if (id < 0 || obj->IsLuminous())
+                    continue;
+
+                auto* nonLum = dynamic_cast<NonLuminousBehavior*>(obj->GetLightBehavior());
+                if (!nonLum)
+                    continue;
+
+                Material material = nonLum->GetMaterial();
+                glm::mat3 normalMatrix = glm::inverseTranspose(glm::mat3(MathUtils::ToGLM(obj->GetModelMatrix())));
+
+                shader.SetUniform("u_ambientMaterial", MathUtils::ToGLM(material.GetAmbient()));
+                shader.SetUniform("u_diffuseMaterial", MathUtils::ToGLM(material.GetDiffuse()));
+                shader.SetUniform("u_specularMaterial", MathUtils::ToGLM(material.GetSpecular()));
+                shader.SetUniform("u_shininessMaterial", material.GetShininess());
+                shader.SetUniform("u_model", MathUtils::ToGLM(obj->GetModelMatrix()));
+                shader.SetUniform("u_normalMatrix", normalMatrix);
+
+                glBindVertexArray(obj->GetVAO());
+                glDrawElements(GL_TRIANGLES, obj->GetIndicesCount(), GL_UNSIGNED_INT, nullptr);
+            }
+        }
+
         glm::mat4 OpenGLRenderer::OpenGLRendererImpl::ComputeLightSpaceMatrix(const OpenGLScene& scene) const
         {
             // 1) Grab the first light's world-space position:
@@ -587,9 +600,9 @@ namespace Andromeda
 
             // 4) Build an orthographic projection for the directional light.
             //    Tweak these extents and near/far to cover your scene.
-            float orthoHalfSize = 20.0f;
-            float nearPlane = 1.0f;
-            float farPlane = 100.0f;
+            float orthoHalfSize = 10.0f;
+            float nearPlane = 1.0f; // TODO: make near plane the radius or half extent of the sphere or the cube
+            float farPlane = 30.0f;
             glm::mat4 lightProj = glm::ortho(
                 -orthoHalfSize, orthoHalfSize,
                 -orthoHalfSize, orthoHalfSize,

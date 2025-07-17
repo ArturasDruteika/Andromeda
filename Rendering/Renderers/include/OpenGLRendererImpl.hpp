@@ -41,7 +41,7 @@ namespace Andromeda
 
 			void Init(int width, int height);
 			void DeInit();
-			void RenderFrame(const OpenGLScene& scene) const;
+			void RenderFrame(OpenGLScene& scene);
 			void Resize(int width, int height);
 
 		private:
@@ -61,6 +61,11 @@ namespace Andromeda
 			void RenderGrid(const IRenderableObjectOpenGL& object) const;
 			void InitShaders();
 			void UpdatePerspectiveMatrix(int width, int height);
+			void PrepareFramebufferForNonLuminousPass() const;
+			void BindShadowMap(int textureUnit)const;
+			void RenderGridIfVisible(const OpenGLScene& scene) const;
+			void PopulateLightUniforms(OpenGLShader& shader, const OpenGLScene& scene) const;
+			void RenderEachNonLuminousObject(OpenGLShader& shader, const OpenGLScene& scene) const;
 			glm::mat4 ComputeLightSpaceMatrix(const OpenGLScene& scene) const;
 
 		private:
@@ -76,6 +81,7 @@ namespace Andromeda
 			int m_height;
 			std::unordered_map<ShaderOpenGLTypes, OpenGLShader*> m_shadersMap;
 			glm::mat4 m_projectionMatrix;
+			glm::mat4 m_lightSpace;
 			Camera* m_pCamera;
 		};
 	}
