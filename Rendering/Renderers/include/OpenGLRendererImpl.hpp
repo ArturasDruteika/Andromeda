@@ -83,6 +83,7 @@ namespace Andromeda
 			glm::mat4 m_projectionMatrix;
 			glm::mat4 m_lightSpace;
 			Camera* m_pCamera;
+			unsigned int m_timerQuery;
 		};
 	}
 }

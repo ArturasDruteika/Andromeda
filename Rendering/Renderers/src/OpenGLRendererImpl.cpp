@@ -36,6 +36,7 @@ namespace Andromeda
             , m_isIlluminationMode{ false }
             , m_shadowFBO{ 0 }
             , m_lightSpace{ glm::mat4(1.0f) }
+			, m_timerQuery{ 0 }
         {
             glClearColor(
                 BACKGROUND_COLOR_DEFAULT.r,
@@ -51,6 +52,7 @@ namespace Andromeda
         OpenGLRenderer::OpenGLRendererImpl::~OpenGLRendererImpl()
         {
             DeInit();
+            glDeleteQueries(1, &m_timerQuery);
         }
 
         void OpenGLRenderer::OpenGLRendererImpl::Init(int width, int height)
@@ -64,9 +66,10 @@ namespace Andromeda
 			m_width = width;
 			m_height = height;
             InitFrameBuffer();
-            InitShadowMap(width / 2, height / 2);
+            InitShadowMap(width, height);
 
             m_isInitialized = true;
+            glGenQueries(1, &m_timerQuery);
         }
 
         void OpenGLRenderer::OpenGLRendererImpl::DeInit()
@@ -97,13 +100,21 @@ namespace Andromeda
                 scene.ResetState();
             }
 
-			ShadowMapDepthPass(scene, m_lightSpace);
-			RenderNonLuminousObjects(scene, m_lightSpace);
-			RenderLuminousObjects(scene);
+            glBeginQuery(GL_TIME_ELAPSED, m_timerQuery);
 
+            ShadowMapDepthPass(scene, m_lightSpace);
+            RenderNonLuminousObjects(scene, m_lightSpace);
+            RenderLuminousObjects(scene);
+
+            glEndQuery(GL_TIME_ELAPSED);
+
+            // Restore framebuffer (for showing to screen)
             glBindFramebuffer(GL_FRAMEBUFFER, 0);
-        }
 
+            GLuint64 elapsedTime = 0;
+            glGetQueryObjectui64v(m_timerQuery, GL_QUERY_RESULT, &elapsedTime);
+            spdlog::info("GPU frame render time: {} ms", elapsedTime / 1'000'000.0);
+        }
 
         void OpenGLRenderer::OpenGLRendererImpl::Resize(int width, int height)
         {
@@ -344,14 +355,19 @@ namespace Andromeda
 
         void OpenGLRenderer::OpenGLRendererImpl::ShadowMapDepthPass(const OpenGLScene& scene, const glm::mat4& lightSpace) const
         {
-            // ----- PASS A: Shadow-map depth pass -----
             glBindFramebuffer(GL_FRAMEBUFFER, m_shadowFBO);
             glViewport(0, 0, m_width, m_height);
             glEnable(GL_DEPTH_TEST);
             glClear(GL_DEPTH_BUFFER_BIT);
 
+            // Cull FRONT faces to reduce shadow acne
+            glEnable(GL_CULL_FACE);
+            glCullFace(GL_FRONT);
+            glFrontFace(GL_CW);
+
+            // Use polygon offset to prevent z-fighting
             glEnable(GL_POLYGON_OFFSET_FILL);
-            glPolygonOffset(1.1f, 4.0f); // Experiment with values if needed
+            glPolygonOffset(2.0f, 4.0f); // Adjust if needed
 
             OpenGLShader& depthShader = *m_shadersMap.at(ShaderOpenGLTypes::ShadowMap);
             depthShader.Bind();
@@ -361,12 +377,14 @@ namespace Andromeda
             {
                 depthShader.SetUniform("u_model", MathUtils::ToGLM(obj->GetModelMatrix()));
                 glBindVertexArray(obj->GetVAO());
-                glDrawElements(GL_TRIANGLES,
-                    obj->GetIndicesCount(),
-                    GL_UNSIGNED_INT,
-                    nullptr);
+                glDrawElements(GL_TRIANGLES, obj->GetIndicesCount(), GL_UNSIGNED_INT, nullptr);
             }
+
             depthShader.UnBind();
+
+            // Restore OpenGL state
+            glDisable(GL_POLYGON_OFFSET_FILL);
+            glDisable(GL_CULL_FACE);
         }
 
         void OpenGLRenderer::OpenGLRendererImpl::RenderNonLuminousObjects(const OpenGLScene& scene, const glm::mat4& lightSpace) const
