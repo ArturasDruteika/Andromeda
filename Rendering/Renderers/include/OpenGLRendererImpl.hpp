@@ -66,6 +66,8 @@ namespace Andromeda
 			void RenderGridIfVisible(const OpenGLScene& scene) const;
 			void PopulateLightUniforms(OpenGLShader& shader, const OpenGLScene& scene) const;
 			void RenderEachNonLuminousObject(OpenGLShader& shader, const OpenGLScene& scene) const;
+			void EnableFaceCulling(unsigned int face, unsigned int winding) const;
+			void DisableFaceCulling() const;
 			glm::mat4 ComputeLightSpaceMatrix(const OpenGLScene& scene) const;
 
 		private:

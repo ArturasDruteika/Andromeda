@@ -361,9 +361,7 @@ namespace Andromeda
             glClear(GL_DEPTH_BUFFER_BIT);
 
             // Cull FRONT faces to reduce shadow acne
-            glEnable(GL_CULL_FACE);
-            glCullFace(GL_FRONT);
-            glFrontFace(GL_CW);
+			EnableFaceCulling(GL_FRONT, GL_CW);
 
             // Use polygon offset to prevent z-fighting
             glEnable(GL_POLYGON_OFFSET_FILL);
@@ -383,12 +381,12 @@ namespace Andromeda
             depthShader.UnBind();
 
             // Restore OpenGL state
-            glDisable(GL_POLYGON_OFFSET_FILL);
-            glDisable(GL_CULL_FACE);
+			DisableFaceCulling();
         }
 
         void OpenGLRenderer::OpenGLRendererImpl::RenderNonLuminousObjects(const OpenGLScene& scene, const glm::mat4& lightSpace) const
         {
+			EnableFaceCulling(GL_BACK, GL_CCW);
             constexpr int SHADOW_UNIT = 5;
 
             PrepareFramebufferForNonLuminousPass();
@@ -409,10 +407,13 @@ namespace Andromeda
             RenderEachNonLuminousObject(nlShader, scene);
 
             nlShader.UnBind();
+			DisableFaceCulling();
         }
 
         void OpenGLRenderer::OpenGLRendererImpl::RenderLuminousObjects(const OpenGLScene& scene) const
         {
+			EnableFaceCulling(GL_BACK, GL_CCW);
+
             // --- (b) Luminous objects: unshaded pass-through ---
             OpenGLShader& lumShader = *m_shadersMap.at(ShaderOpenGLTypes::RenderableObjectsLuminous);
             lumShader.Bind();
@@ -434,6 +435,7 @@ namespace Andromeda
                 }
             }
             lumShader.UnBind();
+			DisableFaceCulling();
         }
 
         void OpenGLRenderer::OpenGLRendererImpl::RenderGrid(const IRenderableObjectOpenGL& object) const
@@ -588,6 +590,19 @@ namespace Andromeda
                 glBindVertexArray(obj->GetVAO());
                 glDrawElements(GL_TRIANGLES, obj->GetIndicesCount(), GL_UNSIGNED_INT, nullptr);
             }
+        }
+
+        void OpenGLRenderer::OpenGLRendererImpl::EnableFaceCulling(unsigned int face, unsigned int winding) const
+        {
+            glEnable(GL_CULL_FACE);
+            glCullFace(face);
+            glFrontFace(winding);
+        }
+
+        void OpenGLRenderer::OpenGLRendererImpl::DisableFaceCulling() const
+        {
+			//glDisable(GL_POLYGON_OFFSET_FILL);
+            glDisable(GL_CULL_FACE);
         }
 
         glm::mat4 OpenGLRenderer::OpenGLRendererImpl::ComputeLightSpaceMatrix(const OpenGLScene& scene) const
