@@ -51,9 +51,9 @@ namespace Andromeda
 			std::vector<CubeFace> faces = {
 				{{0, 0, -1}, {{ {-h, -h, -h}, { h, -h, -h}, { h,  h, -h}, {-h,  h, -h} }}},	// back face (-Z)
 				{{0, 0, 1},  {{ {-h, -h,  h}, { h, -h,  h}, { h,  h,  h}, {-h,  h,  h} }}},	// front face (+Z)
-				{{-1, 0, 0}, {{ {-h, -h, -h}, {-h, -h,  h}, {-h,  h,  h}, {-h,  h, -h} }}}, // left face (-X)
+				{{-1, 0, 0}, {{ {-h, -h,  h}, {-h, -h, -h}, {-h,  h, -h}, {-h,  h,  h} }}}, // left face (-X)
 				{{1, 0, 0},  {{ { h, -h, -h}, { h, -h,  h}, { h,  h,  h}, { h,  h, -h} }}}, // right face (+X)
-				{{0, -1, 0}, {{ {-h, -h, -h}, { h, -h, -h}, { h, -h,  h}, {-h, -h,  h} }}}, // bottom face (-Y)
+				{{0, -1, 0}, {{ {-h, -h,  h}, { h, -h,  h}, { h, -h, -h}, {-h, -h, -h} }}}, // bottom face (-Y)
 				{{0, 1, 0},  {{ {-h,  h, -h}, { h,  h, -h}, { h,  h,  h}, {-h,  h,  h} }}}	// top face (+Y)
 			};
 
