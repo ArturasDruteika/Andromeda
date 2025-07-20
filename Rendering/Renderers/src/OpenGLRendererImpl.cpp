@@ -112,8 +112,12 @@ namespace Andromeda
             glBindFramebuffer(GL_FRAMEBUFFER, 0);
 
             GLuint64 elapsedTime = 0;
-            glGetQueryObjectui64v(m_timerQuery, GL_QUERY_RESULT, &elapsedTime);
-            spdlog::info("GPU frame render time: {} ms", elapsedTime / 1'000'000.0);
+            glGetQueryObjectui64v(m_timerQuery, GL_QUERY_RESULT, &elapsedTime); // elapsedTime is in nanoseconds
+
+            double secondsPerFrame = elapsedTime / 1'000'000'000.0;
+            double fps = secondsPerFrame > 0.0 ? 1.0 / secondsPerFrame : 0.0;
+
+            spdlog::info("FPS: {:.2f}", fps);
         }
 
         void OpenGLRenderer::OpenGLRendererImpl::Resize(int width, int height)
