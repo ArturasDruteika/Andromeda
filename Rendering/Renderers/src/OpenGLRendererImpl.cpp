@@ -372,7 +372,6 @@ namespace Andromeda
 
         void OpenGLRenderer::OpenGLRendererImpl::RenderNonLuminousObjects(const OpenGLScene& scene, const glm::mat4& lightSpace) const
         {
-            // ----- PASS B: Lighting + shadows -----
             glBindFramebuffer(GL_FRAMEBUFFER, m_FBO);
             glViewport(0, 0, m_width, m_height);
             glEnable(GL_DEPTH_TEST);
@@ -482,7 +481,10 @@ namespace Andromeda
 
         void OpenGLRenderer::OpenGLRendererImpl::RenderLuminousObjects(const OpenGLScene& scene) const
         {
-            // --- (b) Luminous objects: unshaded pass-through ---
+            glBindFramebuffer(GL_FRAMEBUFFER, m_FBO);
+            glViewport(0, 0, m_width, m_height);
+            glEnable(GL_DEPTH_TEST);
+
             OpenGLShader& lumShader = *m_shadersMap.at(ShaderOpenGLTypes::RenderableObjectsLuminous);
             lumShader.Bind();
             lumShader.SetUniform("u_view", MathUtils::ToGLM(m_pCamera->GetViewMatrix()));
@@ -503,6 +505,7 @@ namespace Andromeda
                 }
             }
             lumShader.UnBind();
+            glBindFramebuffer(GL_FRAMEBUFFER, 0);
         }
 
         void OpenGLRenderer::OpenGLRendererImpl::RenderObjects(const OpenGLScene& scene) const
