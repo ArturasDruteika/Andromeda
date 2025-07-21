@@ -96,6 +96,8 @@ namespace Andromeda
             if (!m_isInitialized)
                 return;
 
+			BeginFrame();
+
             if (m_isIlluminationMode)
             {
                 glm::mat4 lightSpace = ComputeLightSpaceMatrix(scene);
@@ -109,8 +111,8 @@ namespace Andromeda
 				RenderObjects(scene);
             }
 
+            EndFrame();
         }
-
 
         void OpenGLRenderer::OpenGLRendererImpl::Resize(int width, int height)
         {
@@ -348,7 +350,15 @@ namespace Andromeda
 
         void OpenGLRenderer::OpenGLRendererImpl::ShadowMapDepthPass(const OpenGLScene& scene, const glm::mat4& lightSpace) const
         {
-            // ----- PASS A: Shadow-map depth pass -----
+            if (m_width <= 0 || m_height <= 0)
+            {
+                spdlog::error("Shadow map dimensions are zero. Cannot render shadow map.");
+                return;
+			}
+
+            int prevFBO;
+            glGetIntegerv(GL_DRAW_FRAMEBUFFER_BINDING, &prevFBO);
+
             glBindFramebuffer(GL_FRAMEBUFFER, m_shadowFBO);
             glViewport(0, 0, m_width, m_height);
             glEnable(GL_DEPTH_TEST);
@@ -368,15 +378,11 @@ namespace Andromeda
                     nullptr);
             }
             depthShader.UnBind();
+            glBindFramebuffer(GL_FRAMEBUFFER, prevFBO);
         }
 
         void OpenGLRenderer::OpenGLRendererImpl::RenderNonLuminousObjects(const OpenGLScene& scene, const glm::mat4& lightSpace) const
         {
-            glBindFramebuffer(GL_FRAMEBUFFER, m_FBO);
-            glViewport(0, 0, m_width, m_height);
-            glEnable(GL_DEPTH_TEST);
-            glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
             // bind the shadow map into texture unit 5
             const int SHADOW_UNIT = 5;
             glActiveTexture(GL_TEXTURE0 + SHADOW_UNIT);
@@ -475,16 +481,10 @@ namespace Andromeda
                 }
             }
             nlShader.UnBind();
-
-            glBindFramebuffer(GL_FRAMEBUFFER, 0);
         }
 
         void OpenGLRenderer::OpenGLRendererImpl::RenderLuminousObjects(const OpenGLScene& scene) const
         {
-            glBindFramebuffer(GL_FRAMEBUFFER, m_FBO);
-            glViewport(0, 0, m_width, m_height);
-            glEnable(GL_DEPTH_TEST);
-
             OpenGLShader& lumShader = *m_shadersMap.at(ShaderOpenGLTypes::RenderableObjectsLuminous);
             lumShader.Bind();
             lumShader.SetUniform("u_view", MathUtils::ToGLM(m_pCamera->GetViewMatrix()));
@@ -505,7 +505,6 @@ namespace Andromeda
                 }
             }
             lumShader.UnBind();
-            glBindFramebuffer(GL_FRAMEBUFFER, 0);
         }
 
         void OpenGLRenderer::OpenGLRendererImpl::RenderObjects(const OpenGLScene& scene) const
@@ -535,7 +534,6 @@ namespace Andromeda
                 }
             }
             shader.UnBind();
-            glBindFramebuffer(GL_FRAMEBUFFER, 0);
         }
 
         void OpenGLRenderer::OpenGLRendererImpl::RenderGrid(const IRenderableObjectOpenGL& object) const
@@ -545,11 +543,6 @@ namespace Andromeda
                 spdlog::error("Framebuffer dimensions are zero. Cannot render object.");
                 return;
             }
-
-            glBindFramebuffer(GL_FRAMEBUFFER, m_FBO);
-            glViewport(0, 0, m_width, m_height);
-            glEnable(GL_DEPTH_TEST);
-            glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
             const OpenGLShader& shader = *m_shadersMap.at(ShaderOpenGLTypes::Grid);
             shader.Bind();
@@ -566,7 +559,6 @@ namespace Andromeda
             glDrawElements(GL_LINES, object.GetIndicesCount(), GL_UNSIGNED_INT, 0);
 
             shader.UnBind();
-            glBindFramebuffer(GL_FRAMEBUFFER, 0);
         }
 
         void OpenGLRenderer::OpenGLRendererImpl::InitShaders()
@@ -609,6 +601,21 @@ namespace Andromeda
         {
             float aspect = static_cast<float>(m_width) / static_cast<float>(m_height);
             m_projectionMatrix = glm::infinitePerspective(glm::radians(45.0f), aspect, 0.1f);
+        }
+
+        void OpenGLRenderer::OpenGLRendererImpl::BeginFrame() const
+        {
+            glBindFramebuffer(GL_FRAMEBUFFER, m_FBO);
+            glViewport(0, 0, m_width, m_height);
+            glEnable(GL_DEPTH_TEST);
+            glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+        }
+
+        void OpenGLRenderer::OpenGLRendererImpl::EndFrame() const
+        {
+            glBindFramebuffer(GL_FRAMEBUFFER, 0);
+            glViewport(0, 0, m_width, m_height);
+            glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
         }
 
         glm::mat4 OpenGLRenderer::OpenGLRendererImpl::ComputeLightSpaceMatrix(const OpenGLScene& scene) const

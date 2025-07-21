@@ -62,6 +62,8 @@ namespace Andromeda
 			void RenderGrid(const IRenderableObjectOpenGL& object) const;
 			void InitShaders();
 			void UpdatePerspectiveMatrix(int width, int height);
+			void BeginFrame() const;
+			void EndFrame() const;
 			glm::mat4 ComputeLightSpaceMatrix(const OpenGLScene& scene) const;
 
 		private:
