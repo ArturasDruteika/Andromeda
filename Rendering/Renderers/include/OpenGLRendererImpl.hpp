@@ -58,8 +58,8 @@ namespace Andromeda
 			void ShadowMapDepthPass(const OpenGLScene& scene, const glm::mat4& lightSpace) const;
 			void RenderNonLuminousObjects(const OpenGLScene& scene, const glm::mat4& lightSpace) const;
 			void RenderLuminousObjects(const OpenGLScene& scene) const;
-			void RenderGrid(const IRenderableObjectOpenGL& object) const;
 			void RenderObjects(const OpenGLScene& scene) const;
+			void RenderGrid(const IRenderableObjectOpenGL& object) const;
 			void InitShaders();
 			void UpdatePerspectiveMatrix(int width, int height);
 			glm::mat4 ComputeLightSpaceMatrix(const OpenGLScene& scene) const;

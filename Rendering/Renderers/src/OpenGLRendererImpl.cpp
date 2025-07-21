@@ -107,7 +107,6 @@ namespace Andromeda
             else
             {
 				RenderObjects(scene);
-                //glBindFramebuffer(GL_FRAMEBUFFER, 0);
             }
 
         }
@@ -506,6 +505,36 @@ namespace Andromeda
             lumShader.UnBind();
         }
 
+        void OpenGLRenderer::OpenGLRendererImpl::RenderObjects(const OpenGLScene& scene) const
+        {
+            glBindFramebuffer(GL_FRAMEBUFFER, m_FBO);
+            glViewport(0, 0, m_width, m_height);
+            glEnable(GL_DEPTH_TEST);
+            glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+            OpenGLShader& shader = *m_shadersMap.at(ShaderOpenGLTypes::RenderableObjects);
+            shader.Bind();
+            shader.SetUniform("u_view", MathUtils::ToGLM(m_pCamera->GetViewMatrix()));
+            shader.SetUniform("u_projection", m_projectionMatrix);
+
+            for (auto& [id, obj] : scene.GetObjects())
+            {
+                if (id >= 0)
+                {
+                    shader.SetUniform("u_model", MathUtils::ToGLM(obj->GetModelMatrix()));
+                    glBindVertexArray(obj->GetVAO());
+                    glDrawElements(
+                        GL_TRIANGLES,
+                        obj->GetIndicesCount(),
+                        GL_UNSIGNED_INT,
+                        nullptr
+                    );
+                }
+            }
+            shader.UnBind();
+            glBindFramebuffer(GL_FRAMEBUFFER, 0);
+        }
+
         void OpenGLRenderer::OpenGLRendererImpl::RenderGrid(const IRenderableObjectOpenGL& object) const
         {
             if (m_width == 0 || m_height == 0)
@@ -513,6 +542,11 @@ namespace Andromeda
                 spdlog::error("Framebuffer dimensions are zero. Cannot render object.");
                 return;
             }
+
+            glBindFramebuffer(GL_FRAMEBUFFER, m_FBO);
+            glViewport(0, 0, m_width, m_height);
+            glEnable(GL_DEPTH_TEST);
+            glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
             const OpenGLShader& shader = *m_shadersMap.at(ShaderOpenGLTypes::Grid);
             shader.Bind();
@@ -529,28 +563,7 @@ namespace Andromeda
             glDrawElements(GL_LINES, object.GetIndicesCount(), GL_UNSIGNED_INT, 0);
 
             shader.UnBind();
-        }
-
-        void OpenGLRenderer::OpenGLRendererImpl::RenderObjects(const OpenGLScene& scene) const
-        {
-            OpenGLShader& shader = *m_shadersMap.at(ShaderOpenGLTypes::RenderableObjects);
-            shader.Bind();
-            shader.SetUniform("u_view", MathUtils::ToGLM(m_pCamera->GetViewMatrix()));
-            shader.SetUniform("u_projection", m_projectionMatrix);
-
-            for (auto& [id, obj] : scene.GetObjects())
-            {
-                shader.SetUniform("u_model", MathUtils::ToGLM(obj->GetModelMatrix()));
-                glBindVertexArray(obj->GetVAO());
-                glDrawElements(
-                    GL_TRIANGLES,
-                    obj->GetIndicesCount(),
-                    GL_UNSIGNED_INT,
-                    nullptr
-                );
-				Space::Color color = obj->GetColor();
-            }
-            shader.UnBind();
+            glBindFramebuffer(GL_FRAMEBUFFER, 0);
         }
 
         void OpenGLRenderer::OpenGLRendererImpl::InitShaders()
