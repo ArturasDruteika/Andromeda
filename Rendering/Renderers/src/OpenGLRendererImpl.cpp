@@ -53,7 +53,7 @@ namespace Andromeda
             DeInit();
         }
 
-        void OpenGLRenderer::OpenGLRendererImpl::Init(int width, int height)
+        void OpenGLRenderer::OpenGLRendererImpl::Init(int width, int height, bool illuminationMode)
         {
             if (width <= 0 or height <= 0)
             {
@@ -63,9 +63,14 @@ namespace Andromeda
 
 			m_width = width;
 			m_height = height;
-            InitFrameBuffer();
-            InitShadowMap(width, height);
+            m_isIlluminationMode = illuminationMode;
 
+            if (m_isIlluminationMode)
+            {
+                InitFrameBuffer();
+                InitShadowMap(width, height);
+            }
+            
             m_isInitialized = true;
         }
 
@@ -91,13 +96,20 @@ namespace Andromeda
             if (!m_isInitialized)
                 return;
 
-            glm::mat4 lightSpace = ComputeLightSpaceMatrix(scene);
+            if (m_isIlluminationMode)
+            {
+                glm::mat4 lightSpace = ComputeLightSpaceMatrix(scene);
 
-			ShadowMapDepthPass(scene, lightSpace);
-			RenderNonLuminousObjects(scene, lightSpace);
-			RenderLuminousObjects(scene);
+                ShadowMapDepthPass(scene, lightSpace);
+                RenderNonLuminousObjects(scene, lightSpace);
+                RenderLuminousObjects(scene);
+            }
+            else
+            {
+				RenderObjects(scene);
+                //glBindFramebuffer(GL_FRAMEBUFFER, 0);
+            }
 
-            glBindFramebuffer(GL_FRAMEBUFFER, 0);
         }
 
 
@@ -465,6 +477,8 @@ namespace Andromeda
                 }
             }
             nlShader.UnBind();
+
+            glBindFramebuffer(GL_FRAMEBUFFER, 0);
         }
 
         void OpenGLRenderer::OpenGLRendererImpl::RenderLuminousObjects(const OpenGLScene& scene) const
@@ -514,6 +528,28 @@ namespace Andromeda
             glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, object.GetEBO());
             glDrawElements(GL_LINES, object.GetIndicesCount(), GL_UNSIGNED_INT, 0);
 
+            shader.UnBind();
+        }
+
+        void OpenGLRenderer::OpenGLRendererImpl::RenderObjects(const OpenGLScene& scene) const
+        {
+            OpenGLShader& shader = *m_shadersMap.at(ShaderOpenGLTypes::RenderableObjects);
+            shader.Bind();
+            shader.SetUniform("u_view", MathUtils::ToGLM(m_pCamera->GetViewMatrix()));
+            shader.SetUniform("u_projection", m_projectionMatrix);
+
+            for (auto& [id, obj] : scene.GetObjects())
+            {
+                shader.SetUniform("u_model", MathUtils::ToGLM(obj->GetModelMatrix()));
+                glBindVertexArray(obj->GetVAO());
+                glDrawElements(
+                    GL_TRIANGLES,
+                    obj->GetIndicesCount(),
+                    GL_UNSIGNED_INT,
+                    nullptr
+                );
+				Space::Color color = obj->GetColor();
+            }
             shader.UnBind();
         }
 

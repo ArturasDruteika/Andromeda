@@ -51,7 +51,7 @@ namespace Andromeda
 			void SetIlluminationMode(bool mode);
 			void SetCamera(Camera* camera);
 
-			void Init(int width, int height);
+			void Init(int width, int height, bool illuminationMode = false);
 			void DeInit();
 			void RenderFrame(const OpenGLScene& scene) const;
 			void Resize(int width, int height);
