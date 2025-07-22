@@ -39,7 +39,7 @@ namespace Andromeda
 			void SetIlluminationMode(bool mode);
 			void SetCamera(Camera* camera);
 
-			void Init(int width, int height);
+			void Init(int width, int height, bool illuminationMode = false);
 			void DeInit();
 			void RenderFrame(const OpenGLScene& scene) const;
 			void Resize(int width, int height);
@@ -58,9 +58,12 @@ namespace Andromeda
 			void ShadowMapDepthPass(const OpenGLScene& scene, const glm::mat4& lightSpace) const;
 			void RenderNonLuminousObjects(const OpenGLScene& scene, const glm::mat4& lightSpace) const;
 			void RenderLuminousObjects(const OpenGLScene& scene) const;
+			void RenderObjects(const OpenGLScene& scene) const;
 			void RenderGrid(const IRenderableObjectOpenGL& object) const;
 			void InitShaders();
 			void UpdatePerspectiveMatrix(int width, int height);
+			void BeginFrame() const;
+			void EndFrame() const;
 			glm::mat4 ComputeLightSpaceMatrix(const OpenGLScene& scene) const;
 
 		private:
