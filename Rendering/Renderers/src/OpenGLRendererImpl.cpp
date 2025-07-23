@@ -110,16 +110,7 @@ namespace Andromeda
 
             EndFrame();
 
-            // === FPS LOGGING ===
-            auto now = std::chrono::steady_clock::now();
-            auto duration = std::chrono::duration<float>(now - m_lastFrameTime).count();
-            m_lastFrameTime = now;
-
-            if (duration > 0.0f)
-            {
-                float fps = 1.0f / duration;
-                spdlog::info("FPS: {:.2f}", fps);
-            }
+			LogFPS();
         }
 
         void OpenGLRenderer::OpenGLRendererImpl::Resize(int width, int height)
@@ -358,6 +349,7 @@ namespace Andromeda
 
         void OpenGLRenderer::OpenGLRendererImpl::ShadowMapDepthPass(const OpenGLScene& scene, const glm::mat4& lightSpace) const
         {
+			EnableFaceCulling(GL_FRONT, GL_CCW); // Enable front-face culling with counter-clockwise winding
             if (m_width <= 0 || m_height <= 0)
             {
                 spdlog::error("Shadow map dimensions are zero. Cannot render shadow map.");
@@ -387,10 +379,12 @@ namespace Andromeda
             }
             depthShader.UnBind();
             glBindFramebuffer(GL_FRAMEBUFFER, prevFBO);
+			DisableFaceCulling(); // Reset face culling state
         }
 
         void OpenGLRenderer::OpenGLRendererImpl::RenderNonLuminousObjects(const OpenGLScene& scene, const glm::mat4& lightSpace) const
         {
+			EnableFaceCulling(GL_BACK, GL_CCW); // Enable back-face culling with counter-clockwise winding
             // bind the shadow map into texture unit 5
             const int SHADOW_UNIT = 5;
             glActiveTexture(GL_TEXTURE0 + SHADOW_UNIT);
@@ -489,6 +483,8 @@ namespace Andromeda
                 }
             }
             nlShader.UnBind();
+
+			DisableFaceCulling(); // Reset face culling state
         }
 
         void OpenGLRenderer::OpenGLRendererImpl::RenderLuminousObjects(const OpenGLScene& scene) const
@@ -522,6 +518,8 @@ namespace Andromeda
             glEnable(GL_DEPTH_TEST);
             glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
+			EnableFaceCulling(GL_BACK, GL_CCW); // Enable back-face culling with counter-clockwise winding
+
             OpenGLShader& shader = *m_shadersMap.at(ShaderOpenGLTypes::RenderableObjects);
             shader.Bind();
             shader.SetUniform("u_view", MathUtils::ToGLM(m_pCamera->GetViewMatrix()));
@@ -542,6 +540,8 @@ namespace Andromeda
                 }
             }
             shader.UnBind();
+
+			DisableFaceCulling(); // Reset face culling state
         }
 
         void OpenGLRenderer::OpenGLRendererImpl::RenderGrid(const IRenderableObjectOpenGL& object) const
@@ -624,6 +624,38 @@ namespace Andromeda
             glBindFramebuffer(GL_FRAMEBUFFER, 0);
             glViewport(0, 0, m_width, m_height);
             glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+        }
+
+        void OpenGLRenderer::OpenGLRendererImpl::LogFPS() const
+        {
+            std::chrono::steady_clock::time_point now = std::chrono::steady_clock::now();
+            float duration = std::chrono::duration<float>(now - m_lastFrameTime).count();
+            m_lastFrameTime = now;
+
+            if (duration > 0.0f)
+            {
+                float fps = 1.0f / duration;
+                spdlog::info("FPS: {:.2f}", fps);
+            }
+
+            //std::chrono::steady_clock::time_point now = std::chrono::steady_clock::now();
+            //std::chrono::microseconds frameTime = std::chrono::duration_cast<std::chrono::microseconds>(now - m_lastFrameTime);
+            //m_lastFrameTime = now;
+
+            //spdlog::info("Frame time: {} µs", frameTime.count());
+        }
+
+        void OpenGLRenderer::OpenGLRendererImpl::EnableFaceCulling(unsigned int face, unsigned int winding) const
+        {
+            glEnable(GL_CULL_FACE);
+            glCullFace(face);
+			glFrontFace(winding);
+        }
+
+        void OpenGLRenderer::OpenGLRendererImpl::DisableFaceCulling() const
+        {
+            glDisable(GL_CULL_FACE);
+			glFrontFace(GL_CCW); // Reset to default counter-clockwise winding
         }
 
         glm::mat4 OpenGLRenderer::OpenGLRendererImpl::ComputeLightSpaceMatrix(const OpenGLScene& scene) const

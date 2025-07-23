@@ -64,6 +64,9 @@ namespace Andromeda
 			void UpdatePerspectiveMatrix(int width, int height);
 			void BeginFrame() const;
 			void EndFrame() const;
+			void LogFPS() const;
+			void EnableFaceCulling(unsigned int face, unsigned int winding) const;
+			void DisableFaceCulling() const;
 			glm::mat4 ComputeLightSpaceMatrix(const OpenGLScene& scene) const;
 
 		private:
