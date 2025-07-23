@@ -65,7 +65,7 @@ namespace Andromeda
 					m_vertices.emplace_back(Space::Point3D(pos.x, pos.y, pos.z), color, MathUtils::FromGLM(face.normal));
 				}
 
-				// Triangle 1: 0, 1, 2 — Triangle 2: 2, 3, 0
+				// Triangle 1: 0, 1, 2 - Triangle 2: 2, 3, 0
 				m_indices.push_back(indexOffset + 0);
 				m_indices.push_back(indexOffset + 1);
 				m_indices.push_back(indexOffset + 2);
@@ -77,6 +77,5 @@ namespace Andromeda
 				indexOffset += 4;
 			}
 		}
-
 	}
 }

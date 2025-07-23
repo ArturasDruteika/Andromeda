@@ -109,7 +109,6 @@ namespace Andromeda
             }
 
             EndFrame();
-
 			LogFPS();
         }
 
@@ -637,12 +636,6 @@ namespace Andromeda
                 float fps = 1.0f / duration;
                 spdlog::info("FPS: {:.2f}", fps);
             }
-
-            //std::chrono::steady_clock::time_point now = std::chrono::steady_clock::now();
-            //std::chrono::microseconds frameTime = std::chrono::duration_cast<std::chrono::microseconds>(now - m_lastFrameTime);
-            //m_lastFrameTime = now;
-
-            //spdlog::info("Frame time: {} µs", frameTime.count());
         }
 
         void OpenGLRenderer::OpenGLRendererImpl::EnableFaceCulling(unsigned int face, unsigned int winding) const
