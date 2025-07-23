@@ -13,7 +13,6 @@
 #include <glm/gtc/type_ptr.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/matrix_inverse.hpp>
-#include "../../Materials/include/MaterialsLibrary.hpp"
 
 
 namespace Andromeda
@@ -44,8 +43,6 @@ namespace Andromeda
             );
             InitShaders();
             UpdatePerspectiveMatrix(m_width, m_width);
-            MaterialLibrary materialsLibrary = MaterialLibrary("material_properties/material_properties.json");
-            materialsLibrary.SaveToFile("material_properties/material_properties.json");
         }
 
         OpenGLRenderer::OpenGLRendererImpl::~OpenGLRendererImpl()
@@ -112,6 +109,17 @@ namespace Andromeda
             }
 
             EndFrame();
+
+            // === FPS LOGGING ===
+            auto now = std::chrono::steady_clock::now();
+            auto duration = std::chrono::duration<float>(now - m_lastFrameTime).count();
+            m_lastFrameTime = now;
+
+            if (duration > 0.0f)
+            {
+                float fps = 1.0f / duration;
+                spdlog::info("FPS: {:.2f}", fps);
+            }
         }
 
         void OpenGLRenderer::OpenGLRendererImpl::Resize(int width, int height)

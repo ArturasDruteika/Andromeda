@@ -80,6 +80,7 @@ namespace Andromeda
 			std::unordered_map<ShaderOpenGLTypes, OpenGLShader*> m_shadersMap;
 			glm::mat4 m_projectionMatrix;
 			Camera* m_pCamera;
+			mutable std::chrono::steady_clock::time_point m_lastFrameTime = std::chrono::steady_clock::now();
 		};
 	}
 }
