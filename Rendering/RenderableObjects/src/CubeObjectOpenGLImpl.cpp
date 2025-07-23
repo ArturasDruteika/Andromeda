@@ -49,12 +49,12 @@ namespace Andromeda
 			const float h = halfExtent;
 
 			std::vector<CubeFace> faces = {
-				{{0, 0, -1}, {{ {-h, -h, -h}, { h, -h, -h}, { h,  h, -h}, {-h,  h, -h} }}},	// back face (-Z)
-				{{0, 0, 1},  {{ {-h, -h,  h}, { h, -h,  h}, { h,  h,  h}, {-h,  h,  h} }}},	// front face (+Z)
-				{{-1, 0, 0}, {{ {-h, -h, -h}, {-h, -h,  h}, {-h,  h,  h}, {-h,  h, -h} }}}, // left face (-X)
-				{{1, 0, 0},  {{ { h, -h, -h}, { h, -h,  h}, { h,  h,  h}, { h,  h, -h} }}}, // right face (+X)
-				{{0, -1, 0}, {{ {-h, -h, -h}, { h, -h, -h}, { h, -h,  h}, {-h, -h,  h} }}}, // bottom face (-Y)
-				{{0, 1, 0},  {{ {-h,  h, -h}, { h,  h, -h}, { h,  h,  h}, {-h,  h,  h} }}}	// top face (+Y)
+				{{0, 0, -1}, {{ {-h, -h, -h}, {-h,  h, -h}, { h,  h, -h}, { h, -h, -h} }}}, // Back face (-Z)
+				{{0, 0, 1},  {{ {-h, -h,  h}, { h, -h,  h}, { h,  h,  h}, {-h,  h,  h} }}}, // Front face (+Z)
+				{{-1, 0, 0}, {{ {-h, -h, -h}, {-h, -h,  h}, {-h,  h,  h}, {-h,  h, -h} }}}, // Left face (-X)
+				{{1, 0, 0},  {{ { h, -h, -h}, { h,  h, -h}, { h,  h,  h}, { h, -h,  h} }}}, // Right face (+X)
+				{{0, -1, 0}, {{ {-h, -h, -h}, { h, -h, -h}, { h, -h,  h}, {-h, -h,  h} }}}, // Bottom face (-Y)
+				{{0, 1, 0},  {{ {-h,  h,  h}, { h,  h,  h}, { h,  h, -h}, {-h,  h, -h} }}}  // Top face (+Y)
 			};
 
 			unsigned int indexOffset = 0;
@@ -65,10 +65,11 @@ namespace Andromeda
 					m_vertices.emplace_back(Space::Point3D(pos.x, pos.y, pos.z), color, MathUtils::FromGLM(face.normal));
 				}
 
-				// Add indices for two triangles (0,1,2) and (2,3,0) of this face
+				// Triangle 1: 0, 1, 2 — Triangle 2: 2, 3, 0
 				m_indices.push_back(indexOffset + 0);
 				m_indices.push_back(indexOffset + 1);
 				m_indices.push_back(indexOffset + 2);
+
 				m_indices.push_back(indexOffset + 2);
 				m_indices.push_back(indexOffset + 3);
 				m_indices.push_back(indexOffset + 0);
@@ -76,5 +77,6 @@ namespace Andromeda
 				indexOffset += 4;
 			}
 		}
+
 	}
 }
