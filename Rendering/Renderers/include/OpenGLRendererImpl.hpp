@@ -64,6 +64,9 @@ namespace Andromeda
 			void UpdatePerspectiveMatrix(int width, int height);
 			void BeginFrame() const;
 			void EndFrame() const;
+			void LogFPS() const;
+			void EnableFaceCulling(unsigned int face, unsigned int winding) const;
+			void DisableFaceCulling() const;
 			glm::mat4 ComputeLightSpaceMatrix(const OpenGLScene& scene) const;
 
 		private:
@@ -80,6 +83,7 @@ namespace Andromeda
 			std::unordered_map<ShaderOpenGLTypes, OpenGLShader*> m_shadersMap;
 			glm::mat4 m_projectionMatrix;
 			Camera* m_pCamera;
+			mutable std::chrono::steady_clock::time_point m_lastFrameTime = std::chrono::steady_clock::now();
 		};
 	}
 }
