@@ -53,7 +53,7 @@ namespace Andromeda
 
 			void Init(int width, int height, bool illuminationMode = false);
 			void DeInit();
-			void RenderFrame(const OpenGLScene& scene) const;
+			void RenderFrame(OpenGLScene& scene);
 			void Resize(int width, int height);
 
 		private:

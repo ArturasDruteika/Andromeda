@@ -11,6 +11,7 @@ namespace Andromeda
 	{
 		RenderableObjectOpenGLBase::RenderableObjectOpenGLBase(const Math::Vec3& centerPosition, const Space::Color& color, const VertexLayout& vertexLayout)
 			: m_luminous{ false }
+			, m_stateChanged{ false }
 			, m_VBO{ 0 }
 			, m_VAO{ 0 }
 			, m_EBO{ 0 }
@@ -32,6 +33,11 @@ namespace Andromeda
 		bool RenderableObjectOpenGLBase::IsLuminous() const
 		{
 			return m_luminous;
+		}
+
+		bool RenderableObjectOpenGLBase::StateChanged() const
+		{
+			return m_stateChanged;
 		}
 
 		unsigned int RenderableObjectOpenGLBase::GetVBO() const
@@ -74,6 +80,16 @@ namespace Andromeda
 			return MathUtils::FromGLM(m_centerPosition);
 		}
 
+		Math::Vec3 RenderableObjectOpenGLBase::GetRotation() const
+		{
+			return MathUtils::FromGLM(m_rotation);
+		}
+
+		Math::Vec3 RenderableObjectOpenGLBase::GetScale() const
+		{
+			return MathUtils::FromGLM(m_scale);
+		}
+
 		Math::Mat4 RenderableObjectOpenGLBase::GetModelMatrix() const
 		{
 			return MathUtils::FromGLM(m_modelMatrix);
@@ -92,6 +108,7 @@ namespace Andromeda
 		void RenderableObjectOpenGLBase::SetModelMatrix(const Math::Mat4& modelMatrix)
 		{
 			m_modelMatrix = MathUtils::ToGLM(modelMatrix);
+			m_stateChanged = true;
 		}
 
 		void RenderableObjectOpenGLBase::SetLuminousBehavior(ILightBehavior* behavior)
@@ -104,6 +121,12 @@ namespace Andromeda
 			delete m_pILightBehavior;
 			m_pILightBehavior = behavior;
 			m_luminous = dynamic_cast<LuminousBehavior*>(m_pILightBehavior) ? true : false;
+			m_stateChanged = true;
+		}
+
+		void RenderableObjectOpenGLBase::ResetState()
+		{
+			m_stateChanged = false;
 		}
 
 		void RenderableObjectOpenGLBase::Translate(const Math::Vec3& translation)
@@ -146,16 +169,6 @@ namespace Andromeda
 		{
 			m_scale += MathUtils::ToGLM(scale);
 			UpdateModelMatrix(TransformationType::SCALE);
-		}
-
-		Math::Vec3 RenderableObjectOpenGLBase::GetRotation() const
-		{
-			return MathUtils::FromGLM(m_rotation);
-		}
-
-		Math::Vec3 RenderableObjectOpenGLBase::GetScale() const
-		{
-			return MathUtils::FromGLM(m_scale);
 		}
 
 		void RenderableObjectOpenGLBase::Init()
@@ -241,6 +254,7 @@ namespace Andromeda
 			}
 
 			m_modelMatrix = m_translationMatrix * m_rotationMatrix * m_scaleMatrix;
+			m_stateChanged = true;
 		}
 
 		glm::mat4 RenderableObjectOpenGLBase::ConstructTranslationMatrix() const

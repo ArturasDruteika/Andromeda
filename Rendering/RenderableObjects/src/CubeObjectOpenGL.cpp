@@ -21,6 +21,11 @@ namespace Andromeda
 			return m_pCubeObjectOpenGLImpl->IsLuminous();
 		}
 
+		bool CubeObjectOpenGL::StateChanged() const
+		{
+			return m_pCubeObjectOpenGLImpl->StateChanged();
+		}
+
 		unsigned int CubeObjectOpenGL::GetVBO() const
 		{
 			return m_pCubeObjectOpenGLImpl->GetVBO();
@@ -79,6 +84,11 @@ namespace Andromeda
 		void CubeObjectOpenGL::SetLuminousBehavior(ILightBehavior* behavior)
 		{
 			m_pCubeObjectOpenGLImpl->SetLuminousBehavior(behavior);
+		}
+
+		void CubeObjectOpenGL::ResetState()
+		{
+			m_pCubeObjectOpenGLImpl->ResetState();
 		}
 
 		void CubeObjectOpenGL::Translate(const Math::Vec3& translation)

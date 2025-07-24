@@ -33,6 +33,11 @@ namespace Andromeda
             return RenderableObjectOpenGLBase::IsLuminous();
         }
 
+        bool GridOpenGL::StateChanged() const
+        {
+            return RenderableObjectOpenGLBase::StateChanged();
+        }
+
         unsigned int GridOpenGL::GetVBO() const
         {
             return RenderableObjectOpenGLBase::GetVBO();
@@ -91,6 +96,11 @@ namespace Andromeda
         void GridOpenGL::SetLuminousBehavior(ILightBehavior* behavior)
         {
 			// This object does not support luminous behavior, so we do nothing.
+        }
+
+        void GridOpenGL::ResetState()
+        {
+            // This is not needed for this class
         }
 
         void GridOpenGL::Translate(const Math::Vec3& translation)

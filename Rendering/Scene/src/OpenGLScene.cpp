@@ -14,6 +14,11 @@ namespace Andromeda::Rendering
 		delete m_pOpenGLSceneImpl;
 	}
 
+	bool OpenGLScene::StateChanged() const
+	{
+		return m_pOpenGLSceneImpl->StateChanged();
+	}
+
 	float OpenGLScene::GetAmbientStrength() const
 	{
 		return m_pOpenGLSceneImpl->GetAmbientStrength();
@@ -32,6 +37,11 @@ namespace Andromeda::Rendering
 	void OpenGLScene::SetAmbientStrength(float ambientStrength)
 	{
 		m_pOpenGLSceneImpl->SetAmbientStrength(ambientStrength);
+	}
+
+	void OpenGLScene::ResetState()
+	{
+		m_pOpenGLSceneImpl->ResetState();
 	}
 
 	void OpenGLScene::AddObject(int id, IRenderableObjectOpenGL* object)

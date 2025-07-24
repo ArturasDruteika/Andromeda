@@ -86,7 +86,7 @@ namespace Andromeda
 			m_pOpenGLRendererImpl->DeInit();
 		}
 
-		void OpenGLRenderer::RenderFrame(const Rendering::OpenGLScene& scene) const
+		void OpenGLRenderer::RenderFrame(OpenGLScene& scene)
 		{
 			m_pOpenGLRendererImpl->RenderFrame(scene);
 		}

@@ -21,6 +21,11 @@ namespace Andromeda
 			return m_pSphereObjectOpenGLImpl->IsLuminous();
 		}
 
+		bool SphereObjectOpenGL::StateChanged() const
+		{
+			return m_pSphereObjectOpenGLImpl->StateChanged();
+		}
+
 		unsigned int SphereObjectOpenGL::GetVBO() const
 		{
 			return m_pSphereObjectOpenGLImpl->GetVBO();
@@ -79,6 +84,11 @@ namespace Andromeda
 		void SphereObjectOpenGL::SetLuminousBehavior(ILightBehavior* behavior)
 		{
 			m_pSphereObjectOpenGLImpl->SetLuminousBehavior(behavior);
+		}
+
+		void SphereObjectOpenGL::ResetState()
+		{
+			m_pSphereObjectOpenGLImpl->ResetState();
 		}
 
 		void SphereObjectOpenGL::Translate(const Math::Vec3& translation)
