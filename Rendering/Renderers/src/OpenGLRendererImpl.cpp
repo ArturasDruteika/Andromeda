@@ -443,11 +443,6 @@ namespace Andromeda
 
         void OpenGLRenderer::OpenGLRendererImpl::RenderObjects(const OpenGLScene& scene) const
         {
-            glBindFramebuffer(GL_FRAMEBUFFER, m_FBO);
-            glViewport(0, 0, m_width, m_height);
-            glEnable(GL_DEPTH_TEST);
-            glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
 			EnableFaceCulling(GL_BACK, GL_CCW); // Enable back-face culling with counter-clockwise winding
 
             OpenGLShader& shader = *m_shadersMap.at(ShaderOpenGLTypes::RenderableObjects);
