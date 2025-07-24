@@ -35,7 +35,6 @@ namespace Andromeda
             , m_isIlluminationMode{ false }
             , m_shadowFBO{ 0 }
             , m_lightSpace{ glm::mat4(1.0f) }
-			, m_timerQuery{ 0 }
         {
             glClearColor(
                 BACKGROUND_COLOR_DEFAULT.r,
@@ -50,7 +49,6 @@ namespace Andromeda
         OpenGLRenderer::OpenGLRendererImpl::~OpenGLRendererImpl()
         {
             DeInit();
-            glDeleteQueries(1, &m_timerQuery);
         }
 
         void OpenGLRenderer::OpenGLRendererImpl::Init(int width, int height, bool illuminationMode)
@@ -72,7 +70,6 @@ namespace Andromeda
             }
             
             m_isInitialized = true;
-            glGenQueries(1, &m_timerQuery);
         }
 
         void OpenGLRenderer::OpenGLRendererImpl::DeInit()
