@@ -76,9 +76,9 @@ namespace Andromeda
 			m_pOpenGLRendererImpl->SetCamera(camera);
 		}
 		
-		void OpenGLRenderer::Init(int width, int height)
+		void OpenGLRenderer::Init(int width, int height, bool illuminationMode)
 		{
-			m_pOpenGLRendererImpl->Init(width, height);
+			m_pOpenGLRendererImpl->Init(width, height, illuminationMode);
 		}
 
 		void OpenGLRenderer::DeInit()

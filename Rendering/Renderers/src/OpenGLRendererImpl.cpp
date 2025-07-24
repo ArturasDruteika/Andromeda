@@ -13,7 +13,6 @@
 #include <glm/gtc/type_ptr.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/matrix_inverse.hpp>
-#include "../../Materials/include/MaterialsLibrary.hpp"
 
 
 namespace Andromeda
@@ -45,8 +44,7 @@ namespace Andromeda
                 BACKGROUND_COLOR_DEFAULT.a
             );
             InitShaders();
-            UpdatePerspectiveMatrix(m_width, m_height);
-            MaterialLibrary materialsLibrary = MaterialLibrary("material_properties/material_properties.json");
+            UpdatePerspectiveMatrix(m_width, m_width);
         }
 
         OpenGLRenderer::OpenGLRendererImpl::~OpenGLRendererImpl()
@@ -55,7 +53,7 @@ namespace Andromeda
             glDeleteQueries(1, &m_timerQuery);
         }
 
-        void OpenGLRenderer::OpenGLRendererImpl::Init(int width, int height)
+        void OpenGLRenderer::OpenGLRendererImpl::Init(int width, int height, bool illuminationMode)
         {
             if (width <= 0 or height <= 0)
             {
@@ -65,9 +63,14 @@ namespace Andromeda
 
 			m_width = width;
 			m_height = height;
-            InitFrameBuffer();
-            InitShadowMap(width, height);
+            m_isIlluminationMode = illuminationMode;
 
+            if (m_isIlluminationMode)
+            {
+                InitFrameBuffer();
+                InitShadowMap(width, height);
+            }
+            
             m_isInitialized = true;
             glGenQueries(1, &m_timerQuery);
         }
@@ -94,30 +97,23 @@ namespace Andromeda
             if (!m_isInitialized)
                 return;
 
-            if (scene.StateChanged())
+			BeginFrame();
+
+            if (m_isIlluminationMode)
             {
-                m_lightSpace = ComputeLightSpaceMatrix(scene);
-                scene.ResetState();
+                glm::mat4 lightSpace = ComputeLightSpaceMatrix(scene);
+
+                ShadowMapDepthPass(scene, lightSpace);
+                RenderNonLuminousObjects(scene, lightSpace);
+                RenderLuminousObjects(scene);
+            }
+            else
+            {
+				RenderObjects(scene);
             }
 
-            glBeginQuery(GL_TIME_ELAPSED, m_timerQuery);
-
-            ShadowMapDepthPass(scene, m_lightSpace);
-            RenderNonLuminousObjects(scene, m_lightSpace);
-            RenderLuminousObjects(scene);
-
-            glEndQuery(GL_TIME_ELAPSED);
-
-            // Restore framebuffer (for showing to screen)
-            glBindFramebuffer(GL_FRAMEBUFFER, 0);
-
-            GLuint64 elapsedTime = 0;
-            glGetQueryObjectui64v(m_timerQuery, GL_QUERY_RESULT, &elapsedTime); // elapsedTime is in nanoseconds
-
-            double secondsPerFrame = elapsedTime / 1'000'000'000.0;
-            double fps = secondsPerFrame > 0.0 ? 1.0 / secondsPerFrame : 0.0;
-
-            spdlog::info("FPS: {:.2f}", fps);
+            EndFrame();
+			LogFPS();
         }
 
         void OpenGLRenderer::OpenGLRendererImpl::Resize(int width, int height)
@@ -359,6 +355,16 @@ namespace Andromeda
 
         void OpenGLRenderer::OpenGLRendererImpl::ShadowMapDepthPass(const OpenGLScene& scene, const glm::mat4& lightSpace) const
         {
+			EnableFaceCulling(GL_FRONT, GL_CCW); // Enable front-face culling with counter-clockwise winding
+            if (m_width <= 0 || m_height <= 0)
+            {
+                spdlog::error("Shadow map dimensions are zero. Cannot render shadow map.");
+                return;
+			}
+
+            int prevFBO;
+            glGetIntegerv(GL_DRAW_FRAMEBUFFER_BINDING, &prevFBO);
+
             glBindFramebuffer(GL_FRAMEBUFFER, m_shadowFBO);
             glViewport(0, 0, m_width, m_height);
             glEnable(GL_DEPTH_TEST);
@@ -383,19 +389,17 @@ namespace Andromeda
             }
 
             depthShader.UnBind();
-
-            // Restore OpenGL state
-			DisableFaceCulling();
+            glBindFramebuffer(GL_FRAMEBUFFER, prevFBO);
+			DisableFaceCulling(); // Reset face culling state
         }
 
         void OpenGLRenderer::OpenGLRendererImpl::RenderNonLuminousObjects(const OpenGLScene& scene, const glm::mat4& lightSpace) const
         {
-			EnableFaceCulling(GL_BACK, GL_CCW);
-            constexpr int SHADOW_UNIT = 5;
-
-            PrepareFramebufferForNonLuminousPass();
-            BindShadowMap(SHADOW_UNIT);
-            RenderGridIfVisible(scene);
+			EnableFaceCulling(GL_BACK, GL_CCW); // Enable back-face culling with counter-clockwise winding
+            // bind the shadow map into texture unit 5
+            const int SHADOW_UNIT = 5;
+            glActiveTexture(GL_TEXTURE0 + SHADOW_UNIT);
+            glBindTexture(GL_TEXTURE_2D, m_shadowMapTexture);
 
             OpenGLShader& nlShader = *m_shadersMap.at(ShaderOpenGLTypes::RenderableObjectsNonLuminous);
             nlShader.Bind();
@@ -411,14 +415,12 @@ namespace Andromeda
             RenderEachNonLuminousObject(nlShader, scene);
 
             nlShader.UnBind();
-			DisableFaceCulling();
+
+			DisableFaceCulling(); // Reset face culling state
         }
 
         void OpenGLRenderer::OpenGLRendererImpl::RenderLuminousObjects(const OpenGLScene& scene) const
         {
-			EnableFaceCulling(GL_BACK, GL_CCW);
-
-            // --- (b) Luminous objects: unshaded pass-through ---
             OpenGLShader& lumShader = *m_shadersMap.at(ShaderOpenGLTypes::RenderableObjectsLuminous);
             lumShader.Bind();
             lumShader.SetUniform("u_view", MathUtils::ToGLM(m_pCamera->GetViewMatrix()));
@@ -440,6 +442,39 @@ namespace Andromeda
             }
             lumShader.UnBind();
 			DisableFaceCulling();
+        }
+
+        void OpenGLRenderer::OpenGLRendererImpl::RenderObjects(const OpenGLScene& scene) const
+        {
+            glBindFramebuffer(GL_FRAMEBUFFER, m_FBO);
+            glViewport(0, 0, m_width, m_height);
+            glEnable(GL_DEPTH_TEST);
+            glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+			EnableFaceCulling(GL_BACK, GL_CCW); // Enable back-face culling with counter-clockwise winding
+
+            OpenGLShader& shader = *m_shadersMap.at(ShaderOpenGLTypes::RenderableObjects);
+            shader.Bind();
+            shader.SetUniform("u_view", MathUtils::ToGLM(m_pCamera->GetViewMatrix()));
+            shader.SetUniform("u_projection", m_projectionMatrix);
+
+            for (auto& [id, obj] : scene.GetObjects())
+            {
+                if (id >= 0)
+                {
+                    shader.SetUniform("u_model", MathUtils::ToGLM(obj->GetModelMatrix()));
+                    glBindVertexArray(obj->GetVAO());
+                    glDrawElements(
+                        GL_TRIANGLES,
+                        obj->GetIndicesCount(),
+                        GL_UNSIGNED_INT,
+                        nullptr
+                    );
+                }
+            }
+            shader.UnBind();
+
+			DisableFaceCulling(); // Reset face culling state
         }
 
         void OpenGLRenderer::OpenGLRendererImpl::RenderGrid(const IRenderableObjectOpenGL& object) const
@@ -507,6 +542,47 @@ namespace Andromeda
         {
             float aspect = static_cast<float>(m_width) / static_cast<float>(m_height);
             m_projectionMatrix = glm::infinitePerspective(glm::radians(45.0f), aspect, 0.1f);
+        }
+
+        void OpenGLRenderer::OpenGLRendererImpl::BeginFrame() const
+        {
+            glBindFramebuffer(GL_FRAMEBUFFER, m_FBO);
+            glViewport(0, 0, m_width, m_height);
+            glEnable(GL_DEPTH_TEST);
+            glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+        }
+
+        void OpenGLRenderer::OpenGLRendererImpl::EndFrame() const
+        {
+            glBindFramebuffer(GL_FRAMEBUFFER, 0);
+            glViewport(0, 0, m_width, m_height);
+            glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+        }
+
+        void OpenGLRenderer::OpenGLRendererImpl::LogFPS() const
+        {
+            std::chrono::steady_clock::time_point now = std::chrono::steady_clock::now();
+            float duration = std::chrono::duration<float>(now - m_lastFrameTime).count();
+            m_lastFrameTime = now;
+
+            if (duration > 0.0f)
+            {
+                float fps = 1.0f / duration;
+                spdlog::info("FPS: {:.2f}", fps);
+            }
+        }
+
+        void OpenGLRenderer::OpenGLRendererImpl::EnableFaceCulling(unsigned int face, unsigned int winding) const
+        {
+            glEnable(GL_CULL_FACE);
+            glCullFace(face);
+			glFrontFace(winding);
+        }
+
+        void OpenGLRenderer::OpenGLRendererImpl::DisableFaceCulling() const
+        {
+            glDisable(GL_CULL_FACE);
+			glFrontFace(GL_CCW); // Reset to default counter-clockwise winding
         }
 
         void OpenGLRenderer::OpenGLRendererImpl::PrepareFramebufferForNonLuminousPass() const
@@ -595,20 +671,6 @@ namespace Andromeda
                 glDrawElements(GL_TRIANGLES, obj->GetIndicesCount(), GL_UNSIGNED_INT, nullptr);
             }
         }
-
-        void OpenGLRenderer::OpenGLRendererImpl::EnableFaceCulling(unsigned int face, unsigned int winding) const
-        {
-            glEnable(GL_CULL_FACE);
-            glCullFace(face);
-            glFrontFace(winding);
-        }
-
-        void OpenGLRenderer::OpenGLRendererImpl::DisableFaceCulling() const
-        {
-			//glDisable(GL_POLYGON_OFFSET_FILL);
-            glDisable(GL_CULL_FACE);
-        }
-
         glm::mat4 OpenGLRenderer::OpenGLRendererImpl::ComputeLightSpaceMatrix(const OpenGLScene& scene) const
         {
             // 1) Grab the first light's world-space position:

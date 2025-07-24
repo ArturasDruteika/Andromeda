@@ -39,7 +39,7 @@ namespace Andromeda
 			void SetIlluminationMode(bool mode);
 			void SetCamera(Camera* camera);
 
-			void Init(int width, int height);
+			void Init(int width, int height, bool illuminationMode = false);
 			void DeInit();
 			void RenderFrame(OpenGLScene& scene);
 			void Resize(int width, int height);
@@ -58,16 +58,20 @@ namespace Andromeda
 			void ShadowMapDepthPass(const OpenGLScene& scene, const glm::mat4& lightSpace) const;
 			void RenderNonLuminousObjects(const OpenGLScene& scene, const glm::mat4& lightSpace) const;
 			void RenderLuminousObjects(const OpenGLScene& scene) const;
+			void RenderObjects(const OpenGLScene& scene) const;
 			void RenderGrid(const IRenderableObjectOpenGL& object) const;
 			void InitShaders();
 			void UpdatePerspectiveMatrix(int width, int height);
+			void BeginFrame() const;
+			void EndFrame() const;
+			void LogFPS() const;
+			void EnableFaceCulling(unsigned int face, unsigned int winding) const;
+			void DisableFaceCulling() const;
 			void PrepareFramebufferForNonLuminousPass() const;
 			void BindShadowMap(int textureUnit)const;
 			void RenderGridIfVisible(const OpenGLScene& scene) const;
 			void PopulateLightUniforms(OpenGLShader& shader, const OpenGLScene& scene) const;
 			void RenderEachNonLuminousObject(OpenGLShader& shader, const OpenGLScene& scene) const;
-			void EnableFaceCulling(unsigned int face, unsigned int winding) const;
-			void DisableFaceCulling() const;
 			glm::mat4 ComputeLightSpaceMatrix(const OpenGLScene& scene) const;
 
 		private:
@@ -85,7 +89,7 @@ namespace Andromeda
 			glm::mat4 m_projectionMatrix;
 			glm::mat4 m_lightSpace;
 			Camera* m_pCamera;
-			unsigned int m_timerQuery;
+			mutable std::chrono::steady_clock::time_point m_lastFrameTime = std::chrono::steady_clock::now();
 		};
 	}
 }
