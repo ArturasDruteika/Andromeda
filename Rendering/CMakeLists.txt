@@ -22,6 +22,8 @@ add_library(${PROJECT_NAME}
 		Renderers/src/OpenGLRenderer.cpp
         Renderers/include/OpenGLRendererImpl.hpp
 		Renderers/src/OpenGLRendererImpl.cpp
+        Renderers/include/FrameBufferOpenGL.hpp
+		Renderers/src/FrameBufferOpenGL.cpp
 
         Shaders/include/OpenGLShader.hpp
 		Shaders/src/OpenGLShader.cpp
@@ -215,6 +217,8 @@ source_group(
 		Renderers/src/OpenGLRenderer.cpp
         Renderers/include/OpenGLRendererImpl.hpp
 		Renderers/src/OpenGLRendererImpl.cpp
+        Renderers/include/FrameBufferOpenGL.hpp
+		Renderers/src/FrameBufferOpenGL.cpp
 )
 
 source_group(
