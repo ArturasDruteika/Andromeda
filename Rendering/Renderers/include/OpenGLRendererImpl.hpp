@@ -3,6 +3,7 @@
 
 
 #include "../include/OpenGLRenderer.hpp"
+#include "../include/FrameBufferOpenGL.hpp"
 #include "../../Shaders/include/OpenGLShader.hpp"
 #include "../../Shaders/include/ShaderOpenGLTypes.hpp"
 #include "../../Shaders/include/ShaderManager.hpp"
@@ -46,15 +47,6 @@ namespace Andromeda
 			void Resize(int width, int height);
 
 		private:
-			void InitFrameBuffer();
-			void InitShadowMap(int width, int height);
-			void GenerateAndBindFrameBuffer();
-			void CreateColorTexture();
-			void CreateRenderBuffer();
-			void SetDrawBuffer();
-			void CheckFBOStatus();
-			void ConfigureFrameBufferTexture();
-			void UnbindFrameBuffer() const;
 			void ShadowMapDepthPass(const OpenGLScene& scene, const glm::mat4& lightSpace) const;
 			void RenderNonLuminousObjects(const OpenGLScene& scene, const glm::mat4& lightSpace) const;
 			void RenderLuminousObjects(const OpenGLScene& scene) const;
@@ -77,15 +69,12 @@ namespace Andromeda
 			bool m_isInitialized;
 			bool m_isGridVisible;
 			bool m_isIlluminationMode;
-			unsigned int m_FBO;
-			unsigned int m_RBO;
-			unsigned int m_shadowFBO;
-			unsigned int m_FBOTexture;
-			unsigned int m_shadowMapTexture;
 			int m_width;
 			int m_height;
 			glm::mat4 m_projectionMatrix;
 			glm::mat4 m_lightSpace;
+			FrameBufferOpenGL m_mainFBO;
+			FrameBufferOpenGL m_shadowFBO;
 			Camera* m_pCamera;
 			ShaderManager* m_pShaderManager;
 			mutable std::chrono::steady_clock::time_point m_lastFrameTime = std::chrono::steady_clock::now();
