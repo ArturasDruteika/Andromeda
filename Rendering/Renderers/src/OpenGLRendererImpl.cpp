@@ -35,6 +35,7 @@ namespace Andromeda
             , m_isIlluminationMode{ false }
             , m_shadowFBO{ 0 }
             , m_lightSpace{ glm::mat4(1.0f) }
+			, m_pShaderManager{ nullptr }
         {
             glClearColor(
                 BACKGROUND_COLOR_DEFAULT.r,
@@ -42,7 +43,7 @@ namespace Andromeda
                 BACKGROUND_COLOR_DEFAULT.b,
                 BACKGROUND_COLOR_DEFAULT.a
             );
-            InitShaders();
+			m_pShaderManager = new ShaderManager(true);
             UpdatePerspectiveMatrix(m_width, m_width);
         }
 
@@ -74,15 +75,8 @@ namespace Andromeda
 
         void OpenGLRenderer::OpenGLRendererImpl::DeInit()
         {
-            // Cleanup resources
-            for (const auto& [shaderType, shader] : m_shadersMap)
-            {
-                if (shader != nullptr)
-                {
-                    delete shader;
-                }
-            }
-            m_shadersMap.clear();
+			delete m_pShaderManager;
+			m_pShaderManager = nullptr;
             glDeleteFramebuffers(1, &m_FBO);
             glDeleteTextures(1, &m_FBOTexture);
             glDeleteRenderbuffers(1, &m_RBO);
@@ -273,14 +267,6 @@ namespace Andromeda
             glBindFramebuffer(GL_FRAMEBUFFER, 0);
         }
 
-        void OpenGLRenderer::OpenGLRendererImpl::CreateShader(const ShaderOpenGLTypes& shaderType, const std::string& vertexShaderPath, const std::string& fragmentShaderPath)
-        {
-            std::string vertexShaderSource = Utils::FileOperations::LoadFileAsString(vertexShaderPath);
-            std::string fragmentShaderSource = Utils::FileOperations::LoadFileAsString(fragmentShaderPath);
-            OpenGLShader* shader = new OpenGLShader(vertexShaderSource, fragmentShaderSource);
-            m_shadersMap.insert({ shaderType, shader });
-        }
-
         void OpenGLRenderer::OpenGLRendererImpl::GenerateAndBindFrameBuffer()
         {
             // Generate and bind the framebuffer
@@ -374,18 +360,18 @@ namespace Andromeda
             glEnable(GL_POLYGON_OFFSET_FILL);
             glPolygonOffset(2.0f, 4.0f); // Adjust if needed
 
-            OpenGLShader& depthShader = *m_shadersMap.at(ShaderOpenGLTypes::ShadowMap);
-            depthShader.Bind();
-            depthShader.SetUniform("u_lightSpaceMatrix", lightSpace);
+            OpenGLShader* depthShader = m_pShaderManager->GetShader(ShaderOpenGLTypes::ShadowMap);
+            depthShader->Bind();
+            depthShader->SetUniform("u_lightSpaceMatrix", lightSpace);
 
             for (auto& [id, obj] : scene.GetObjects())
             {
-                depthShader.SetUniform("u_model", MathUtils::ToGLM(obj->GetModelMatrix()));
+                depthShader->SetUniform("u_model", MathUtils::ToGLM(obj->GetModelMatrix()));
                 glBindVertexArray(obj->GetVAO());
                 glDrawElements(GL_TRIANGLES, obj->GetIndicesCount(), GL_UNSIGNED_INT, nullptr);
             }
 
-            depthShader.UnBind();
+            depthShader->UnBind();
             glBindFramebuffer(GL_FRAMEBUFFER, prevFBO);
 			DisableFaceCulling(); // Reset face culling state
         }
@@ -398,36 +384,36 @@ namespace Andromeda
             glActiveTexture(GL_TEXTURE0 + SHADOW_UNIT);
             glBindTexture(GL_TEXTURE_2D, m_shadowMapTexture);
 
-            OpenGLShader& nlShader = *m_shadersMap.at(ShaderOpenGLTypes::RenderableObjectsNonLuminous);
-            nlShader.Bind();
+            OpenGLShader* nlShader = m_pShaderManager->GetShader(ShaderOpenGLTypes::RenderableObjectsNonLuminous);
+            nlShader->Bind();
 
             // Camera and shadow uniforms
-            nlShader.SetUniform("u_view", MathUtils::ToGLM(m_pCamera->GetViewMatrix()));
-            nlShader.SetUniform("u_projection", m_projectionMatrix);
-            nlShader.SetUniform("u_viewPos", MathUtils::ToGLM(m_pCamera->GetPosition()));
-            nlShader.SetUniform("u_lightSpaceMatrix", lightSpace);
-            nlShader.SetUniform("u_shadowMap", SHADOW_UNIT);
+            nlShader->SetUniform("u_view", MathUtils::ToGLM(m_pCamera->GetViewMatrix()));
+            nlShader->SetUniform("u_projection", m_projectionMatrix);
+            nlShader->SetUniform("u_viewPos", MathUtils::ToGLM(m_pCamera->GetPosition()));
+            nlShader->SetUniform("u_lightSpaceMatrix", lightSpace);
+            nlShader->SetUniform("u_shadowMap", SHADOW_UNIT);
 
-            PopulateLightUniforms(nlShader, scene);
-            RenderEachNonLuminousObject(nlShader, scene);
+            PopulateLightUniforms(*nlShader, scene);
+            RenderEachNonLuminousObject(*nlShader, scene);
 
-            nlShader.UnBind();
+            nlShader->UnBind();
 
 			DisableFaceCulling(); // Reset face culling state
         }
 
         void OpenGLRenderer::OpenGLRendererImpl::RenderLuminousObjects(const OpenGLScene& scene) const
         {
-            OpenGLShader& lumShader = *m_shadersMap.at(ShaderOpenGLTypes::RenderableObjectsLuminous);
-            lumShader.Bind();
-            lumShader.SetUniform("u_view", MathUtils::ToGLM(m_pCamera->GetViewMatrix()));
-            lumShader.SetUniform("u_projection", m_projectionMatrix);
+            OpenGLShader* lumShader = m_pShaderManager->GetShader(ShaderOpenGLTypes::RenderableObjectsLuminous);
+            lumShader->Bind();
+            lumShader->SetUniform("u_view", MathUtils::ToGLM(m_pCamera->GetViewMatrix()));
+            lumShader->SetUniform("u_projection", m_projectionMatrix);
 
             for (auto& [id, obj] : scene.GetObjects())
             {
                 if (obj->IsLuminous())
                 {
-                    lumShader.SetUniform("u_model", MathUtils::ToGLM(obj->GetModelMatrix()));
+                    lumShader->SetUniform("u_model", MathUtils::ToGLM(obj->GetModelMatrix()));
                     glBindVertexArray(obj->GetVAO());
                     glDrawElements(
                         GL_TRIANGLES,
@@ -437,7 +423,7 @@ namespace Andromeda
                     );
                 }
             }
-            lumShader.UnBind();
+            lumShader->UnBind();
 			DisableFaceCulling();
         }
 
@@ -445,16 +431,16 @@ namespace Andromeda
         {
 			EnableFaceCulling(GL_BACK, GL_CCW); // Enable back-face culling with counter-clockwise winding
 
-            OpenGLShader& shader = *m_shadersMap.at(ShaderOpenGLTypes::RenderableObjects);
-            shader.Bind();
-            shader.SetUniform("u_view", MathUtils::ToGLM(m_pCamera->GetViewMatrix()));
-            shader.SetUniform("u_projection", m_projectionMatrix);
+            OpenGLShader* shader = m_pShaderManager->GetShader(ShaderOpenGLTypes::RenderableObjects);
+            shader->Bind();
+            shader->SetUniform("u_view", MathUtils::ToGLM(m_pCamera->GetViewMatrix()));
+            shader->SetUniform("u_projection", m_projectionMatrix);
 
             for (auto& [id, obj] : scene.GetObjects())
             {
                 if (id >= 0)
                 {
-                    shader.SetUniform("u_model", MathUtils::ToGLM(obj->GetModelMatrix()));
+                    shader->SetUniform("u_model", MathUtils::ToGLM(obj->GetModelMatrix()));
                     glBindVertexArray(obj->GetVAO());
                     glDrawElements(
                         GL_TRIANGLES,
@@ -464,7 +450,7 @@ namespace Andromeda
                     );
                 }
             }
-            shader.UnBind();
+            shader->UnBind();
 
 			DisableFaceCulling(); // Reset face culling state
         }
@@ -477,13 +463,13 @@ namespace Andromeda
                 return;
             }
 
-            const OpenGLShader& shader = *m_shadersMap.at(ShaderOpenGLTypes::Grid);
-            shader.Bind();
+            OpenGLShader* shader = m_pShaderManager->GetShader(ShaderOpenGLTypes::Grid);
+            shader->Bind();
 
             glm::mat4 viewMatrix = MathUtils::ToGLM(m_pCamera->GetViewMatrix());
 
-            shader.SetUniform("u_view", viewMatrix);
-            shader.SetUniform("u_projection", m_projectionMatrix);
+            shader->SetUniform("u_view", viewMatrix);
+            shader->SetUniform("u_projection", m_projectionMatrix);
 
             glBindVertexArray(object.GetVAO());
             glBindBuffer(GL_ARRAY_BUFFER, object.GetVBO());
@@ -491,43 +477,7 @@ namespace Andromeda
             glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, object.GetEBO());
             glDrawElements(GL_LINES, object.GetIndicesCount(), GL_UNSIGNED_INT, 0);
 
-            shader.UnBind();
-        }
-
-        void OpenGLRenderer::OpenGLRendererImpl::InitShaders()
-        {
-            std::vector<ShaderDefinition> shaders = {
-                {
-                    ShaderOpenGLTypes::RenderableObjects,
-                    "shader_program_sources/vertex.glsl",
-                    "shader_program_sources/fragment.glsl"
-                },
-                {
-                    ShaderOpenGLTypes::Grid,
-                    "shader_program_sources/vertex_grid.glsl",
-                    "shader_program_sources/fragment_grid.glsl" 
-                },
-                {
-                    ShaderOpenGLTypes::RenderableObjectsLuminous,
-                    "shader_program_sources/vertex_illumination.glsl",
-                    "shader_program_sources/fragment_luminous_objects.glsl"
-                },
-                {
-                    ShaderOpenGLTypes::RenderableObjectsNonLuminous,
-                    "shader_program_sources/vertex_illumination.glsl",
-                    "shader_program_sources/fragment_non_luminous_objects.glsl"
-                },
-                {
-                    ShaderOpenGLTypes::ShadowMap,
-                    "shader_program_sources/vertex_depth_only.glsl",
-                    "shader_program_sources/fragment_depth_only.glsl"
-                }
-            };
-
-            for (const auto& shader : shaders)
-            {
-                CreateShader(shader.type, shader.vertexPath, shader.fragmentPath);
-            }
+            shader->UnBind();
         }
 
         void OpenGLRenderer::OpenGLRendererImpl::UpdatePerspectiveMatrix(int width, int height)

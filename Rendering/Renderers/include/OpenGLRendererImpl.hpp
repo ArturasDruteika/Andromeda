@@ -5,6 +5,7 @@
 #include "../include/OpenGLRenderer.hpp"
 #include "../../Shaders/include/OpenGLShader.hpp"
 #include "../../Shaders/include/ShaderOpenGLTypes.hpp"
+#include "../../Shaders/include/ShaderManager.hpp"
 #include "../../RenderableObjects/include/IRenderableObjectOpenGL.hpp"
 #include "glm/glm.hpp"
 
@@ -47,7 +48,6 @@ namespace Andromeda
 		private:
 			void InitFrameBuffer();
 			void InitShadowMap(int width, int height);
-			void CreateShader(const ShaderOpenGLTypes& shaderType, const std::string& vertexShaderPath, const std::string& fragmentShaderPath);
 			void GenerateAndBindFrameBuffer();
 			void CreateColorTexture();
 			void CreateRenderBuffer();
@@ -60,7 +60,6 @@ namespace Andromeda
 			void RenderLuminousObjects(const OpenGLScene& scene) const;
 			void RenderObjects(const OpenGLScene& scene) const;
 			void RenderGrid(const IRenderableObjectOpenGL& object) const;
-			void InitShaders();
 			void UpdatePerspectiveMatrix(int width, int height);
 			void BeginFrame() const;
 			void EndFrame() const;
@@ -85,10 +84,10 @@ namespace Andromeda
 			unsigned int m_shadowMapTexture;
 			int m_width;
 			int m_height;
-			std::unordered_map<ShaderOpenGLTypes, OpenGLShader*> m_shadersMap;
 			glm::mat4 m_projectionMatrix;
 			glm::mat4 m_lightSpace;
 			Camera* m_pCamera;
+			ShaderManager* m_pShaderManager;
 			mutable std::chrono::steady_clock::time_point m_lastFrameTime = std::chrono::steady_clock::now();
 		};
 	}
