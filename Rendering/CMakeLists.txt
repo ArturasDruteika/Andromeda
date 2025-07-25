@@ -26,6 +26,8 @@ add_library(${PROJECT_NAME}
         Shaders/include/OpenGLShader.hpp
 		Shaders/src/OpenGLShader.cpp
 		Shaders/include/ShaderOpenGLTypes.hpp
+        Shaders/include/ShaderManager.hpp
+		Shaders/src/ShaderManager.cpp
 
         Scene/include/OpenGLScene.hpp
 		Scene/src/OpenGLScene.cpp
@@ -224,6 +226,8 @@ source_group(
         Shaders/include/OpenGLShader.hpp
 		Shaders/src/OpenGLShader.cpp
         Shaders/include/ShaderOpenGLTypes.hpp
+        Shaders/include/ShaderManager.hpp
+		Shaders/src/ShaderManager.cpp
 )
 
 source_group(
