@@ -21,46 +21,43 @@
 #include "../../Camera/include/Camera.hpp"
 
 
-namespace Andromeda
+namespace Andromeda::Rendering
 {
-	namespace Rendering
+	class RENDERING_API OpenGLRenderer
 	{
-		class RENDERING_API OpenGLRenderer
-		{
-		public:
-			OpenGLRenderer();
-			~OpenGLRenderer();
+	public:
+		OpenGLRenderer();
+		~OpenGLRenderer();
 
-			OpenGLRenderer(const OpenGLRenderer& other) = delete;	// Prevent Copy Constructor
-			OpenGLRenderer& operator=(const OpenGLRenderer& other) = delete;	// Prevent Copy Assignment
-			OpenGLRenderer(OpenGLRenderer&& other) noexcept = delete;	// Prevent Move Constructor
-			OpenGLRenderer& operator=(OpenGLRenderer&& other) noexcept = delete;	// Prevent Move Assignment
+		OpenGLRenderer(const OpenGLRenderer& other) = delete;	// Prevent Copy Constructor
+		OpenGLRenderer& operator=(const OpenGLRenderer& other) = delete;	// Prevent Copy Assignment
+		OpenGLRenderer(OpenGLRenderer&& other) noexcept = delete;	// Prevent Move Constructor
+		OpenGLRenderer& operator=(OpenGLRenderer&& other) noexcept = delete;	// Prevent Move Assignment
 
-			// Getters
-			bool IsInitialized() const;
-			bool IsGridVisible() const;
-			bool IsIlluminationMode() const;
-			unsigned int GetFrameBufferObject() const;
-			unsigned int GetFrameBufferObjectTexture() const;
-			unsigned int GetDepthRenderBuffer() const;
-			unsigned int GetShadowMap() const;
-			int GetWidth() const;
-			int GetHeight() const;
-			// Setters
-			void SetGridVisible(bool visible);
-			void SetIlluminationMode(bool mode);
-			void SetCamera(Camera* camera);
+		// Getters
+		bool IsInitialized() const;
+		bool IsGridVisible() const;
+		bool IsIlluminationMode() const;
+		unsigned int GetFrameBufferObject() const;
+		unsigned int GetFrameBufferObjectTexture() const;
+		unsigned int GetDepthRenderBuffer() const;
+		unsigned int GetShadowMap() const;
+		int GetWidth() const;
+		int GetHeight() const;
+		// Setters
+		void SetGridVisible(bool visible);
+		void SetIlluminationMode(bool mode);
+		void SetCamera(Camera* camera);
 
-			void Init(int width, int height, bool illuminationMode = false);
-			void DeInit();
-			void RenderFrame(OpenGLScene& scene);
-			void Resize(int width, int height);
+		void Init(int width, int height, bool illuminationMode = false);
+		void DeInit();
+		void RenderFrame(OpenGLScene& scene);
+		void Resize(int width, int height);
 
-		private:
-			class OpenGLRendererImpl;
-			OpenGLRendererImpl* m_pOpenGLRendererImpl;
-		};
-	}
+	private:
+		class OpenGLRendererImpl;
+		OpenGLRendererImpl* m_pOpenGLRendererImpl;
+	};
 }
 
 

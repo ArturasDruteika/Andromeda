@@ -3,7 +3,6 @@
 
 
 #include "pch.hpp"
-#include "glad/gl.h"
 
 
 namespace Andromeda::Rendering
