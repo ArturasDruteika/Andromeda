@@ -31,7 +31,7 @@ namespace Andromeda::Rendering
         public ILuminous
     {
     public:
-        virtual ~IRenderableObject() = default;
+        virtual ~IRenderableObject();
 
         // Getters
         virtual bool StateChanged() const = 0;

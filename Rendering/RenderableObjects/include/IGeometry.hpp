@@ -26,7 +26,7 @@ namespace Andromeda::Rendering
 	class RENDERING_API IGeometry
 	{
 	public:
-		virtual ~IGeometry() = default;
+		virtual ~IGeometry();
 
 		// Getters
 		virtual unsigned int GetVertexCount() const = 0;

@@ -18,7 +18,8 @@
 
 
 #include "pch.hpp"
-#include "../../RenderableObjects/incldue/IRenderableObject.hpp"
+#include "../../RenderableObjects/include/IRenderableObject.hpp"
+#include "LinearAlgebraDataTypes.hpp"
 
 
 namespace Andromeda::Rendering
@@ -29,27 +30,27 @@ namespace Andromeda::Rendering
 		virtual ~IScene();
 
 		// Getters
-		virtual bool StateChanged() const;
-		virtual float GetAmbientStrength() const;
-		virtual const std::unordered_map<int, IRenderableObjectOpenGL*>& GetObjects() const;
-		virtual const std::unordered_map<int, IRenderableObjectOpenGL*>& GetLuminousObjects() const;
+		virtual bool StateChanged() const = 0;
+		virtual float GetAmbientStrength() const = 0;
+		virtual const std::unordered_map<int, IRenderableObject*>& GetObjects() const = 0;
+		virtual const std::unordered_map<int, IRenderableObject*>& GetLuminousObjects() const = 0;
 		// Setters
-		virtual void SetAmbientStrength(float ambientStrength);
-		virtual void ResetState();
+		virtual void SetAmbientStrength(float ambientStrength) = 0;
+		virtual void ResetState() = 0;
 
-		virtual void AddObject(int id, IRenderableObjectOpenGL* object);
-		virtual void RemoveObject(int id);
+		virtual void AddObject(int id, IRenderableObject* object) = 0;
+		virtual void RemoveObject(int id) = 0;
 		virtual void AddDirectionalLight(
 			int id,
-			const glm::vec3& direction,
-			const glm::vec3& color = glm::vec3{ 1.0f },
+			const Math::Vec3& direction,
+			const Math::Vec3& color = Math::Vec3( 1.0f, 1.0f, 1.0f ),
 			float intensity = 1.0f,
-			const glm::vec3& ambient = glm::vec3(0.1f),
-			const glm::vec3& diffuse = glm::vec3(0.4f, 0.4f, 0.4f),
-			const glm::vec3& specular = glm::vec3(0.4f, 0.4f, 0.4f)
-		);
-		virtual void RemoveDrectionalLight(int id);
-		virtual void ResizeGrid(float resizeFactor);
+			const Math::Vec3& ambient = Math::Vec3(0.1f, 0.1f, 0.1f),
+			const Math::Vec3& diffuse = Math::Vec3(0.4f, 0.4f, 0.4f),
+			const Math::Vec3& specular = Math::Vec3(0.4f, 0.4f, 0.4f)
+		) = 0;
+		virtual void RemoveDrectionalLight(int id) = 0;
+		virtual void ResizeGrid(float resizeFactor) = 0;
 	};
 }
 

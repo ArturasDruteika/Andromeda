@@ -24,7 +24,7 @@ namespace Andromeda::Rendering
 	class RENDERING_API ILuminous
 	{
 	public:
-		virtual ~ILuminous() = default;
+		virtual ~ILuminous();
 		
 		// Getters
 		virtual bool IsLuminous() const = 0;

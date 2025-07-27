@@ -25,10 +25,11 @@ namespace Andromeda::Rendering
     class RENDERING_API ITransformable
     {
     public:
-        virtual ~ITransformable() = default;
+        virtual ~ITransformable();
 
 		// Getters
         virtual Math::Mat4 GetModelMatrix() const = 0;
+		// Setters
         virtual void SetModelMatrix(const Math::Mat4& modelMatrix) = 0;
 
         virtual void Translate(const Math::Vec3& translation) = 0;
