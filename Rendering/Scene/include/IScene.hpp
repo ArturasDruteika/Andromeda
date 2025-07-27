@@ -18,6 +18,7 @@
 
 
 #include "pch.hpp"
+#include "../../RenderableObjects/incldue/IRenderableObject.hpp"
 
 
 namespace Andromeda::Rendering
@@ -26,7 +27,29 @@ namespace Andromeda::Rendering
 	{
 	public:
 		virtual ~IScene();
-		
+
+		// Getters
+		virtual bool StateChanged() const;
+		virtual float GetAmbientStrength() const;
+		virtual const std::unordered_map<int, IRenderableObjectOpenGL*>& GetObjects() const;
+		virtual const std::unordered_map<int, IRenderableObjectOpenGL*>& GetLuminousObjects() const;
+		// Setters
+		virtual void SetAmbientStrength(float ambientStrength);
+		virtual void ResetState();
+
+		virtual void AddObject(int id, IRenderableObjectOpenGL* object);
+		virtual void RemoveObject(int id);
+		virtual void AddDirectionalLight(
+			int id,
+			const glm::vec3& direction,
+			const glm::vec3& color = glm::vec3{ 1.0f },
+			float intensity = 1.0f,
+			const glm::vec3& ambient = glm::vec3(0.1f),
+			const glm::vec3& diffuse = glm::vec3(0.4f, 0.4f, 0.4f),
+			const glm::vec3& specular = glm::vec3(0.4f, 0.4f, 0.4f)
+		);
+		virtual void RemoveDrectionalLight(int id);
+		virtual void ResizeGrid(float resizeFactor);
 	};
 }
 

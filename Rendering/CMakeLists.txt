@@ -60,6 +60,14 @@ add_library(${PROJECT_NAME}
 		RenderableObjects/include/RenderableObjectOpenGLBase.hpp
         RenderableObjects/src/GridOpenGL.cpp
 		RenderableObjects/include/GridOpenGL.hpp
+        RenderableObjects/include/IRenderableObject.hpp
+		RenderableObjects/src/IRenderableObject.cpp
+        RenderableObjects/include/IGeometry.hpp
+		RenderableObjects/src/IGeometry.cpp
+        RenderableObjects/include/ITransformable.hpp
+		RenderableObjects/src/ITransformable.cpp
+        RenderableObjects/include/ILuminous.hpp
+		RenderableObjects/src/ILuminous.cpp
 
 		Vertices/include/VertexAttributes.hpp
         Vertices/include/VertexLayouts.hpp
@@ -284,6 +292,14 @@ source_group(
 		RenderableObjects/include/RenderableObjectOpenGLBase.hpp
         RenderableObjects/src/GridOpenGL.cpp
 		RenderableObjects/include/GridOpenGL.hpp
+        RenderableObjects/include/IRenderableObject.hpp
+		RenderableObjects/src/IRenderableObject.cpp
+        RenderableObjects/include/IGeometry.hpp
+		RenderableObjects/src/IGeometry.cpp
+        RenderableObjects/include/ITransformable.hpp
+		RenderableObjects/src/ITransformable.cpp
+        RenderableObjects/include/ILuminous.hpp
+		RenderableObjects/src/ILuminous.cpp
 )
 
 source_group(
