@@ -24,6 +24,12 @@ add_library(${PROJECT_NAME}
 		Renderers/src/OpenGLRendererImpl.cpp
         Renderers/include/FrameBufferOpenGL.hpp
 		Renderers/src/FrameBufferOpenGL.cpp
+        Renderers/include/IRenderer.hpp
+        Renderers/src/IRenderer.cpp
+        Renderers/include/IGridControl.hpp
+        Renderers/src/IGridControl.cpp
+        Renderers/include/IIlluminationControl.hpp
+        Renderers/src/IIlluminationControl.cpp
 
         Shaders/include/OpenGLShader.hpp
 		Shaders/src/OpenGLShader.cpp
@@ -219,6 +225,12 @@ source_group(
 		Renderers/src/OpenGLRendererImpl.cpp
         Renderers/include/FrameBufferOpenGL.hpp
 		Renderers/src/FrameBufferOpenGL.cpp
+        Renderers/include/IRenderer.hpp
+        Renderers/src/IRenderer.cpp
+        Renderers/include/IGridControl.hpp
+        Renderers/src/IGridControl.cpp
+        Renderers/include/IIlluminationControl.hpp
+        Renderers/src/IIlluminationControl.cpp
 )
 
 source_group(
