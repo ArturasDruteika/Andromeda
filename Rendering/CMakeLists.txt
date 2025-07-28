@@ -44,6 +44,14 @@ add_library(${PROJECT_NAME}
         Scene/include/SpecialIndices.hpp
         Scene/include/IScene.hpp
 		Scene/src/IScene.cpp
+        Scene/include/ISceneObjects.hpp
+		Scene/src/ISceneObjects.cpp
+        Scene/include/ISceneLighting.hpp
+		Scene/src/ISceneLighting.cpp
+        Scene/include/ISceneEnvironment.hpp
+		Scene/src/ISceneEnvironment.cpp
+        Scene/include/ISceneState.hpp
+		Scene/src/ISceneState.cpp
 
 		RenderableObjects/include/IRenderableObjectOpenGL.hpp
 		RenderableObjects/src/IRenderableObjectOpenGL.cpp
@@ -269,6 +277,14 @@ source_group(
         Scene/include/SpecialIndices.hpp
         Scene/include/IScene.hpp
 		Scene/src/IScene.cpp
+        Scene/include/ISceneObjects.hpp
+		Scene/src/ISceneObjects.cpp
+        Scene/include/ISceneLighting.hpp
+		Scene/src/ISceneLighting.cpp
+        Scene/include/ISceneEnvironment.hpp
+		Scene/src/ISceneEnvironment.cpp
+        Scene/include/ISceneState.hpp
+		Scene/src/ISceneState.cpp
 )
 
 source_group(
