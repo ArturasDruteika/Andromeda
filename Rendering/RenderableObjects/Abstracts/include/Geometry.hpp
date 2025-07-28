@@ -15,12 +15,12 @@ namespace Andromeda::Rendering
 		~Geometry();
 
 		// Getters
-		unsigned int GetVertexCount() const;
 		unsigned int GetIndicesCount() const;
-		const std::vector<unsigned int> GetIndices() const;
+		unsigned int GetVerticesCount() const;
+		std::vector<unsigned int> GetIndices() const;
 		std::vector<Vertex> GetVertices() const;
 
-	private:
+	protected:
 		unsigned int m_vertexCount;
 		unsigned int m_indicesCount;
 		std::vector<unsigned int> m_indices;

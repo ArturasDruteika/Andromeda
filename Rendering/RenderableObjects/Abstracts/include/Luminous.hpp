@@ -18,7 +18,7 @@ namespace Andromeda::Rendering
 		// Setters
 		void SetLuminousBehavior(ILightBehavior* behavior);
 
-	private:
+	protected:
 		bool m_luminous;
 		ILightBehavior* m_pILightBehavior;
 	};

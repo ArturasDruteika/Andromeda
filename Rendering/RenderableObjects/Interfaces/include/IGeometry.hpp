@@ -29,8 +29,9 @@ namespace Andromeda::Rendering
 		virtual ~IGeometry();
 
 		// Getters
-		virtual unsigned int GetVertexCount() const = 0;
 		virtual unsigned int GetIndicesCount() const = 0;
+		virtual unsigned int GetVerticesCount() const = 0;
+		virtual std::vector<unsigned int> GetIndices() const = 0;
 		virtual std::vector<Vertex> GetVertices() const = 0;
 	};
 }

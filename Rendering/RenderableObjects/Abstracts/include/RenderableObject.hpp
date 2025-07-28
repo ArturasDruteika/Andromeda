@@ -24,7 +24,7 @@ namespace Andromeda::Rendering
 		// Setters
 		void SetColor(const Space::Color& color);
 
-    private:
+    protected:
         Space::Color m_color;
 
     };

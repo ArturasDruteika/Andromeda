@@ -39,7 +39,7 @@ namespace Andromeda::Rendering
         glm::mat4 ConstructRotationMatrix() const;
         glm::mat4 ConstructScaleMatrix() const;
 
-    private:
+    protected:
         bool m_stateChanged;
         // Transform components
         glm::vec3 m_centerPosition;
