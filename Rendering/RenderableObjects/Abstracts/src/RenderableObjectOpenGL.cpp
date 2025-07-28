@@ -1,7 +1,7 @@
-#include "../include/RenderableObjectOpenGLBase.hpp"
-#include "../../Light/include/LuminousBehavior.hpp"
-#include "../../Light/include/NonLuminousBehavior.hpp"
-#include "../../Utils/include/MathUtils.hpp"
+#include "../include/RenderableObjectOpenGL.hpp"
+#include "../../../Light/include/LuminousBehavior.hpp"
+#include "../../../Light/include/NonLuminousBehavior.hpp"
+#include "../../../Utils/include/MathUtils.hpp"
 #include "glad/gl.h"
 
 
@@ -9,7 +9,7 @@ namespace Andromeda
 {
 	namespace Rendering
 	{
-		RenderableObjectOpenGLBase::RenderableObjectOpenGLBase(const Math::Vec3& centerPosition, const Space::Color& color, const VertexLayout& vertexLayout)
+		RenderableObjectOpenGL::RenderableObjectOpenGL(const Math::Vec3& centerPosition, const Space::Color& color, const VertexLayout& vertexLayout)
 			: m_luminous{ false }
 			, m_stateChanged{ false }
 			, m_VBO{ 0 }
@@ -28,90 +28,90 @@ namespace Andromeda
 		{
 		}
 
-		RenderableObjectOpenGLBase::~RenderableObjectOpenGLBase() = default;
+		RenderableObjectOpenGL::~RenderableObjectOpenGL() = default;
 
-		bool RenderableObjectOpenGLBase::IsLuminous() const
+		bool RenderableObjectOpenGL::IsLuminous() const
 		{
 			return m_luminous;
 		}
 
-		bool RenderableObjectOpenGLBase::StateChanged() const
+		bool RenderableObjectOpenGL::StateChanged() const
 		{
 			return m_stateChanged;
 		}
 
-		unsigned int RenderableObjectOpenGLBase::GetVBO() const
+		unsigned int RenderableObjectOpenGL::GetVBO() const
 		{
 			return m_VBO;
 		}
 
-		unsigned int RenderableObjectOpenGLBase::GetVAO() const
+		unsigned int RenderableObjectOpenGL::GetVAO() const
 		{
 			return m_VAO;
 		}
 
-		unsigned int RenderableObjectOpenGLBase::GetEBO() const
+		unsigned int RenderableObjectOpenGL::GetEBO() const
 		{
 			return m_EBO;
 		}
 
-		unsigned int RenderableObjectOpenGLBase::GetVertexCount() const
+		unsigned int RenderableObjectOpenGL::GetVertexCount() const
 		{
 			return m_vertices.size();
 		}
 
-		unsigned int RenderableObjectOpenGLBase::GetIndicesCount() const
+		unsigned int RenderableObjectOpenGL::GetIndicesCount() const
 		{
 			return m_indices.size();
 		}
 
-		std::vector<Vertex> RenderableObjectOpenGLBase::GetVertices() const
+		std::vector<Vertex> RenderableObjectOpenGL::GetVertices() const
 		{
 			return m_vertices;
 		}
 
-		std::vector<unsigned int> RenderableObjectOpenGLBase::GetIndices() const
+		std::vector<unsigned int> RenderableObjectOpenGL::GetIndices() const
 		{
 			return m_indices;
 		}
 
-		Math::Vec3 RenderableObjectOpenGLBase::GetCenterPosition() const
+		Math::Vec3 RenderableObjectOpenGL::GetCenterPosition() const
 		{
 			return MathUtils::FromGLM(m_centerPosition);
 		}
 
-		Math::Vec3 RenderableObjectOpenGLBase::GetRotation() const
+		Math::Vec3 RenderableObjectOpenGL::GetRotation() const
 		{
 			return MathUtils::FromGLM(m_rotation);
 		}
 
-		Math::Vec3 RenderableObjectOpenGLBase::GetScale() const
+		Math::Vec3 RenderableObjectOpenGL::GetScale() const
 		{
 			return MathUtils::FromGLM(m_scale);
 		}
 
-		Math::Mat4 RenderableObjectOpenGLBase::GetModelMatrix() const
+		Math::Mat4 RenderableObjectOpenGL::GetModelMatrix() const
 		{
 			return MathUtils::FromGLM(m_modelMatrix);
 		}
 
-		Space::Color RenderableObjectOpenGLBase::GetColor() const
+		Space::Color RenderableObjectOpenGL::GetColor() const
 		{
 			return m_color;
 		}
 
-		ILightBehavior* RenderableObjectOpenGLBase::GetLightBehavior() const
+		ILightBehavior* RenderableObjectOpenGL::GetLightBehavior() const
 		{
 			return m_pILightBehavior;
 		}
 
-		void RenderableObjectOpenGLBase::SetModelMatrix(const Math::Mat4& modelMatrix)
+		void RenderableObjectOpenGL::SetModelMatrix(const Math::Mat4& modelMatrix)
 		{
 			m_modelMatrix = MathUtils::ToGLM(modelMatrix);
 			m_stateChanged = true;
 		}
 
-		void RenderableObjectOpenGLBase::SetLuminousBehavior(ILightBehavior* behavior)
+		void RenderableObjectOpenGL::SetLuminousBehavior(ILightBehavior* behavior)
 		{
 			if (behavior == nullptr)
 			{
@@ -124,54 +124,54 @@ namespace Andromeda
 			m_stateChanged = true;
 		}
 
-		void RenderableObjectOpenGLBase::ResetState()
+		void RenderableObjectOpenGL::ResetState()
 		{
 			m_stateChanged = false;
 		}
 
-		void RenderableObjectOpenGLBase::Translate(const Math::Vec3& translation)
+		void RenderableObjectOpenGL::Translate(const Math::Vec3& translation)
 		{
 			m_centerPosition = MathUtils::ToGLM(translation);
 			UpdateModelMatrix(TransformationType::TRANSLATE);
 		}
 
-		void RenderableObjectOpenGLBase::TranslateDelta(const Math::Vec3& translationDelta)
+		void RenderableObjectOpenGL::TranslateDelta(const Math::Vec3& translationDelta)
 		{
 			m_centerPosition += MathUtils::ToGLM(translationDelta);
 			UpdateModelMatrix(TransformationType::TRANSLATE);
 		}
 
-		void RenderableObjectOpenGLBase::Rotate(const Math::Vec3& rotation)
+		void RenderableObjectOpenGL::Rotate(const Math::Vec3& rotation)
 		{
 			m_rotation += MathUtils::ToGLM(rotation);
 			UpdateModelMatrix(TransformationType::ROTATE);
 		}
 
-		void RenderableObjectOpenGLBase::RotateX(float angle)
+		void RenderableObjectOpenGL::RotateX(float angle)
 		{
 			m_rotation += glm::vec3(angle, 0.0f, 0.0f);
 			UpdateModelMatrix(TransformationType::ROTATE);
 		}
 
-		void RenderableObjectOpenGLBase::RotateY(float angle)
+		void RenderableObjectOpenGL::RotateY(float angle)
 		{
 			m_rotation += glm::vec3(0.0f, angle, 0.0f);
 			UpdateModelMatrix(TransformationType::ROTATE);
 		}
 
-		void RenderableObjectOpenGLBase::RotateZ(float angle)
+		void RenderableObjectOpenGL::RotateZ(float angle)
 		{
 			m_rotation += glm::vec3(0.0f, 0.0f, angle);
 			UpdateModelMatrix(TransformationType::ROTATE);
 		}
 
-		void RenderableObjectOpenGLBase::Scale(const Math::Vec3& scale)
+		void RenderableObjectOpenGL::Scale(const Math::Vec3& scale)
 		{
 			m_scale += MathUtils::ToGLM(scale);
 			UpdateModelMatrix(TransformationType::SCALE);
 		}
 
-		void RenderableObjectOpenGLBase::Init()
+		void RenderableObjectOpenGL::Init()
 		{
 			CreateAndBindVertexAttributes();
 			CreateAndBindVertexBuffers(m_vertices);
@@ -180,14 +180,14 @@ namespace Andromeda
 			UnbindVertexAttributes();
 		}
 
-		void RenderableObjectOpenGLBase::CreateAndBindVertexAttributes()
+		void RenderableObjectOpenGL::CreateAndBindVertexAttributes()
 		{
 			// Generate and bind VAO
 			glGenVertexArrays(1, &m_VAO);
 			glBindVertexArray(m_VAO);
 		}
 
-		void RenderableObjectOpenGLBase::CreateAndBindVertexBuffers(const std::vector<Vertex>& vertices)
+		void RenderableObjectOpenGL::CreateAndBindVertexBuffers(const std::vector<Vertex>& vertices)
 		{
 			// Generate and bind VBO
 			glCreateBuffers(1, &m_VBO);
@@ -195,7 +195,7 @@ namespace Andromeda
 			glBufferData(GL_ARRAY_BUFFER, vertices.size() * sizeof(Vertex), vertices.data(), GL_STATIC_DRAW);
 		}
 
-		void RenderableObjectOpenGLBase::GenerateAndBindElementBuffer(const std::vector<unsigned int>& indices)
+		void RenderableObjectOpenGL::GenerateAndBindElementBuffer(const std::vector<unsigned int>& indices)
 		{
 			// Generate and bind EBO
 			glCreateBuffers(1, &m_EBO);
@@ -203,7 +203,7 @@ namespace Andromeda
 			glBufferData(GL_ELEMENT_ARRAY_BUFFER, indices.size() * sizeof(unsigned int), indices.data(), GL_STATIC_DRAW);
 		}
 
-		void RenderableObjectOpenGLBase::SetVertexAttributePointers()
+		void RenderableObjectOpenGL::SetVertexAttributePointers()
 		{
 			const std::vector<VertexAttributes>& attributes = m_vertexLayout.GetVerticesAttributesVec();
 			size_t stride = m_vertexLayout.GetStride();
@@ -214,13 +214,13 @@ namespace Andromeda
 			}
 		}
 
-		void RenderableObjectOpenGLBase::UnbindVertexAttributes()
+		void RenderableObjectOpenGL::UnbindVertexAttributes()
 		{
 			// Unbind VAO
 			glBindVertexArray(0);
 		}
 
-		void RenderableObjectOpenGLBase::UpdateModelMatrix(const TransformationType& transformationType)
+		void RenderableObjectOpenGL::UpdateModelMatrix(const TransformationType& transformationType)
 		{
 			switch (transformationType)
 			{
@@ -257,19 +257,19 @@ namespace Andromeda
 			m_stateChanged = true;
 		}
 
-		glm::mat4 RenderableObjectOpenGLBase::ConstructTranslationMatrix() const
+		glm::mat4 RenderableObjectOpenGL::ConstructTranslationMatrix() const
 		{
 			return glm::translate(glm::mat4(1.0f), m_centerPosition);
 		}
 
-		glm::mat4 RenderableObjectOpenGLBase::ConstructRotationMatrix() const
+		glm::mat4 RenderableObjectOpenGL::ConstructRotationMatrix() const
 		{
 			return glm::rotate(glm::mat4(1.0f), m_rotation.z, glm::vec3(0.0f, 0.0f, 1.0f)) * // Z rotation
 				glm::rotate(glm::mat4(1.0f), m_rotation.y, glm::vec3(0.0f, 1.0f, 0.0f)) * // Y rotation
 				glm::rotate(glm::mat4(1.0f), m_rotation.x, glm::vec3(1.0f, 0.0f, 0.0f)); // X rotation;
 		}
 
-		glm::mat4 RenderableObjectOpenGLBase::ConstructScaleMatrix() const
+		glm::mat4 RenderableObjectOpenGL::ConstructScaleMatrix() const
 		{
 			return glm::scale(glm::mat4(1.0f), m_scale);
 		}

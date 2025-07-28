@@ -1,12 +1,12 @@
-#ifndef RENDERING__RENDERABLE_OBJECT_OPENGL_BASE__HPP
-#define RENDERING__RENDERABLE_OBJECT_OPENGL_BASE__HPP
+#ifndef RENDERING__ABSTRACTS__RENDERABLE_OBJECT_OPENGL_BASE__HPP
+#define RENDERING__ABSTRACTS__RENDERABLE_OBJECT_OPENGL_BASE__HPP
 
 
 #include "pch.hpp"
-#include "TransformationTypes.hpp"
-#include "../../Vertices/include/VertexLayouts.hpp"
-#include "../../Vertices/include/Vertex.hpp"
-#include "../../Light/include/ILightBehavior.hpp"
+#include "../../Support/include/TransformationTypes.hpp"
+#include "../../../Vertices/include/VertexLayouts.hpp"
+#include "../../../Vertices/include/Vertex.hpp"
+#include "../../../Light/include/ILightBehavior.hpp"
 #include "Colors.hpp"
 #include "LinearAlgebraDataTypes.hpp"
 #include "glm/glm.hpp"
@@ -17,16 +17,16 @@ namespace Andromeda
 {
 	namespace Rendering
 	{
-		class RenderableObjectOpenGLBase
+		class RenderableObjectOpenGL
 		{	
 		public:
-			RenderableObjectOpenGLBase(const Math::Vec3& centerPosition, const Space::Color& color, const VertexLayout& vertexLayout);
-			~RenderableObjectOpenGLBase();
+			RenderableObjectOpenGL(const Math::Vec3& centerPosition, const Space::Color& color, const VertexLayout& vertexLayout);
+			~RenderableObjectOpenGL();
 
-			RenderableObjectOpenGLBase(const RenderableObjectOpenGLBase& other) = delete;	// Prevent Copy Constructor
-			RenderableObjectOpenGLBase& operator=(const RenderableObjectOpenGLBase& other) = delete;	// Prevent Copy Assignment
-			RenderableObjectOpenGLBase(RenderableObjectOpenGLBase&& other) noexcept = delete;	// Prevent Move Constructor
-			RenderableObjectOpenGLBase& operator=(RenderableObjectOpenGLBase&& other) noexcept = delete;	// Prevent Move Assignment
+			RenderableObjectOpenGL(const RenderableObjectOpenGL& other) = delete;	// Prevent Copy Constructor
+			RenderableObjectOpenGL& operator=(const RenderableObjectOpenGL& other) = delete;	// Prevent Copy Assignment
+			RenderableObjectOpenGL(RenderableObjectOpenGL&& other) noexcept = delete;	// Prevent Move Constructor
+			RenderableObjectOpenGL& operator=(RenderableObjectOpenGL&& other) noexcept = delete;	// Prevent Move Assignment
 
 			// Getters
 			bool IsLuminous() const;
@@ -96,4 +96,4 @@ namespace Andromeda
 }
 
 
-#endif // RENDERING__RENDERABLE_OBJECT_OPENGL_BASE__HPP
+#endif // RENDERING__ABSTRACTS__RENDERABLE_OBJECT_OPENGL_BASE__HPP

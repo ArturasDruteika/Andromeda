@@ -1,5 +1,5 @@
-#ifndef RENDERING__I_GEOMETRY__HPP
-#define RENDERING__I_GEOMETRY__HPP
+#ifndef RENDERING__INTERFACES__I_GEOMETRY__HPP
+#define RENDERING__INTERFACES__I_GEOMETRY__HPP
 
 
 #if defined(_WIN32)
@@ -18,7 +18,7 @@
 
 
 #include "pch.hpp"
-#include "../../Vertices/include/Vertex.hpp"
+#include "../../../Vertices/include/Vertex.hpp"
 
 
 namespace Andromeda::Rendering
@@ -36,4 +36,4 @@ namespace Andromeda::Rendering
 }
 
 
-#endif // RENDERING__I_GEOMETRY__HPP
+#endif // RENDERING__INTERFACES__I_GEOMETRY__HPP

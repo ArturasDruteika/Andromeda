@@ -41,7 +41,7 @@ target_include_directories(${PROJECT_NAME}
         ..//Window//GLFWWindow//include//
         ..//Context//GLFWContext//include//
         ..//Rendering//Renderers//include//
-        ..//Rendering//RenderableObjects//include//
+        ..//Rendering//RenderableObjects//Interfaces//include//
         ..//Rendering//Vertices//include//
         ..//Rendering//Scene//include//
         ..//Rendering//OpenGLLoader//include//

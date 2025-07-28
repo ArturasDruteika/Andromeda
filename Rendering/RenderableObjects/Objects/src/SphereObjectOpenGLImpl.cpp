@@ -1,5 +1,5 @@
 #include "../include/SphereObjectOpenGLImpl.hpp"
-#include "../../Utils/include/MathUtils.hpp"
+#include "../../../Utils/include/MathUtils.hpp"
 #include "Constants.hpp"
 #include "Points.hpp"
 #include "glad/gl.h"
@@ -11,7 +11,7 @@ namespace Andromeda
 	{
 		SphereObjectOpenGL::SphereObjectOpenGLImpl::SphereObjectOpenGLImpl(const Math::Vec3& centerPosition, float radius, const Space::Color& color)
 			: m_radius{ radius }
-			, RenderableObjectOpenGLBase(
+			, RenderableObjectOpenGL(
 				centerPosition,
 				color,
 				std::vector {

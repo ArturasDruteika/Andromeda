@@ -1,9 +1,9 @@
-#ifndef RENDERING__GRID_OPENGL__HPP
-#define RENDERING__GRID_OPENGL__HPP
+#ifndef RENDERING__OBJECTS__GRID_OPENGL__HPP
+#define RENDERING__OBJECTS__GRID_OPENGL__HPP
 
 
-#include "IRenderableObjectOpenGL.hpp"
-#include "RenderableObjectOpenGLBase.hpp"
+#include "../../Interfaces/include/IRenderableObjectOpenGL.hpp"
+#include "../../Abstracts/include/RenderableObjectOpenGL.hpp"
 #include "Colors.hpp"
 
 
@@ -13,7 +13,7 @@ namespace Andromeda
 	{
 		class GridOpenGL
 			: public IRenderableObjectOpenGL
-			, private RenderableObjectOpenGLBase
+			, private RenderableObjectOpenGL
 		{	
 		public:
 			GridOpenGL(
@@ -55,6 +55,7 @@ namespace Andromeda
 			void RotateY(float angle) override;
 			void RotateZ(float angle) override;
 			void Scale(const Math::Vec3& scale) override;
+			void SetColor(const Space::Color& color) override;
 
 			// Getters
 			int GetGridSize() const;
@@ -77,4 +78,4 @@ namespace Andromeda
 }
 
 
-#endif // RENDERING__GRID_OPENGL__HPP
+#endif // RENDERING__OBJECTS__GRID_OPENGL__HPP

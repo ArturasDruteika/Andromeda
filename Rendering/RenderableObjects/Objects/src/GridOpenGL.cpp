@@ -1,5 +1,5 @@
 #include "../include/GridOpenGL.hpp"
-#include "../../Utils/include/MathUtils.hpp"
+#include "../../../Utils/include/MathUtils.hpp"
 #include "glad/gl.h"
 
 
@@ -11,7 +11,7 @@ namespace Andromeda
 			: m_gridSize{ gridSize }
             , m_spacing{ spacing }
             , m_densityFactor{ densityFactor }
-            , RenderableObjectOpenGLBase(
+            , RenderableObjectOpenGL(
 				Math::Vec3(0.0f, 0.0f, 0.0f),
 				color,
 				std::vector{
@@ -30,27 +30,27 @@ namespace Andromeda
 
         bool GridOpenGL::IsLuminous() const
         {
-            return RenderableObjectOpenGLBase::IsLuminous();
+            return RenderableObjectOpenGL::IsLuminous();
         }
 
         bool GridOpenGL::StateChanged() const
         {
-            return RenderableObjectOpenGLBase::StateChanged();
+            return RenderableObjectOpenGL::StateChanged();
         }
 
         unsigned int GridOpenGL::GetVBO() const
         {
-            return RenderableObjectOpenGLBase::GetVBO();
+            return RenderableObjectOpenGL::GetVBO();
         }
 
         unsigned int GridOpenGL::GetVAO() const
         {
-            return RenderableObjectOpenGLBase::GetVAO();
+            return RenderableObjectOpenGL::GetVAO();
         }
 
         unsigned int GridOpenGL::GetEBO() const
         {
-            return RenderableObjectOpenGLBase::GetEBO();
+            return RenderableObjectOpenGL::GetEBO();
         }
 
         unsigned int GridOpenGL::GetVertexCount() const
@@ -105,37 +105,41 @@ namespace Andromeda
 
         void GridOpenGL::Translate(const Math::Vec3& translation)
         {
-            RenderableObjectOpenGLBase::Translate(translation);
+            RenderableObjectOpenGL::Translate(translation);
         }
 
         void GridOpenGL::TranslateDelta(const Math::Vec3& translationDelta)
         {
-            RenderableObjectOpenGLBase::TranslateDelta(translationDelta);
+            RenderableObjectOpenGL::TranslateDelta(translationDelta);
         }
 
         void GridOpenGL::Rotate(const Math::Vec3& rotation)
         {
-            RenderableObjectOpenGLBase::Rotate(rotation);
+            RenderableObjectOpenGL::Rotate(rotation);
         }
 
         void GridOpenGL::RotateX(float angle)
         {
-            RenderableObjectOpenGLBase::RotateX(angle);
+            RenderableObjectOpenGL::RotateX(angle);
         }
 
         void GridOpenGL::RotateY(float angle)
         {
-            RenderableObjectOpenGLBase::RotateY(angle);
+            RenderableObjectOpenGL::RotateY(angle);
         }
 
         void GridOpenGL::RotateZ(float angle)
         {
-            RenderableObjectOpenGLBase::RotateZ(angle);
+            RenderableObjectOpenGL::RotateZ(angle);
         }
 
         void GridOpenGL::Scale(const Math::Vec3& scale)
         {
-            RenderableObjectOpenGLBase::Scale(scale);
+            RenderableObjectOpenGL::Scale(scale);
+        }
+
+        void GridOpenGL::SetColor(const Space::Color& color)
+        {
         }
 
         int GridOpenGL::GetGridSize() const

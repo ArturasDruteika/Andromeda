@@ -1,5 +1,5 @@
-#ifndef RENDERING__I_TRANSFORMABLE__HPP
-#define RENDERING__I_TRANSFORMABLE__HPP
+#ifndef RENDERING__INTERFACES__I_TRANSFORMABLE__HPP
+#define RENDERING__INTERFACES__I_TRANSFORMABLE__HPP
 
 
 #if defined(_WIN32)
@@ -28,11 +28,13 @@ namespace Andromeda::Rendering
         virtual ~ITransformable();
 
 		// Getters
+		virtual bool StateChanged() const = 0;
 		virtual Math::Vec3 GetCenterPosition() const = 0;
         virtual Math::Mat4 GetModelMatrix() const = 0;
 		// Setters
         virtual void SetModelMatrix(const Math::Mat4& modelMatrix) = 0;
 
+		virtual void ResetState() = 0;
         virtual void Translate(const Math::Vec3& translation) = 0;
         virtual void TranslateDelta(const Math::Vec3& translationDelta) = 0;
         virtual void Rotate(const Math::Vec3& rotation) = 0;
@@ -44,4 +46,4 @@ namespace Andromeda::Rendering
 }
 
 
-#endif // RENDERING__I_TRANSFORMABLE__HPP
+#endif // RENDERING__INTERFACES__I_TRANSFORMABLE__HPP

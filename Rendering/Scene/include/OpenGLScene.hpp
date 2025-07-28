@@ -18,7 +18,7 @@
 
 
 #include "pch.hpp"
-#include "../../RenderableObjects/include/IRenderableObjectOpenGL.hpp"
+#include "../../RenderableObjects/Interfaces/include/IRenderableObjectOpenGL.hpp"
 #include "../../Light/include/LuminousBehavior.hpp"
 
 

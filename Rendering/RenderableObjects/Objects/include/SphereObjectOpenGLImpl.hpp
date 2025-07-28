@@ -1,9 +1,9 @@
-#ifndef RENDERING__SPHERE_OBJECT_OPENGL_IMPL__HPP
-#define RENDERING__SPHERE_OBJECT_OPENGL_IMPL__HPP
+#ifndef RENDERING__OBJECTS__SPHERE_OBJECT_OPENGL_IMPL__HPP
+#define RENDERING__OBJECTS__SPHERE_OBJECT_OPENGL_IMPL__HPP
 
 
 #include "SphereObjectOpenGL.hpp"
-#include "RenderableObjectOpenGLBase.hpp"
+#include "../../Abstracts/include/RenderableObjectOpenGL.hpp"
 
 
 namespace Andromeda
@@ -11,7 +11,7 @@ namespace Andromeda
 	namespace Rendering
 	{
 		class SphereObjectOpenGL::SphereObjectOpenGLImpl
-			: public RenderableObjectOpenGLBase
+			: public RenderableObjectOpenGL
 		{	
 		public:
 			SphereObjectOpenGLImpl(const Math::Vec3& centerPosition, float radius, const Space::Color& color);
@@ -36,4 +36,4 @@ namespace Andromeda
 }
 
 
-#endif // RENDERING__SPHERE_OBJECT_OPENGL_IMPL__HPP
+#endif // RENDERING__OBJECTS__SPHERE_OBJECT_OPENGL_IMPL__HPP

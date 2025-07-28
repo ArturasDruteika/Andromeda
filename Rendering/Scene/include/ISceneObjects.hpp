@@ -18,7 +18,7 @@
 
 
 #include "pch.hpp"
-#include "../../RenderableObjects/include/IRenderableObject.hpp"
+#include "../../RenderableObjects/Interfaces/include/IRenderableObject.hpp"
 
 
 namespace Andromeda::Rendering

@@ -126,6 +126,10 @@ namespace Andromeda
 			m_pSphereObjectOpenGLImpl->Scale(scale);
 		}
 
+		void SphereObjectOpenGL::SetColor(const Space::Color& color)
+		{
+		}
+
 		float SphereObjectOpenGL::GetRadius() const
 		{
 			return m_pSphereObjectOpenGLImpl->GetRadius();

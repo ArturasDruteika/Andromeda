@@ -1,5 +1,5 @@
 #include "../include/CubeObjectOpenGLImpl.hpp"
-#include "../../Utils/include/MathUtils.hpp"
+#include "../../../Utils/include/MathUtils.hpp"
 #include "Constants.hpp"
 #include "Points.hpp"
 #include "glad/gl.h"
@@ -18,7 +18,7 @@ namespace Andromeda
 
 		CubeObjectOpenGL::CubeObjectOpenGLImpl::CubeObjectOpenGLImpl(const Math::Vec3& centerPosition, float halfExtent, const Space::Color& color)
 			: m_halfExtent{ halfExtent }
-			, RenderableObjectOpenGLBase(
+			, RenderableObjectOpenGL(
 				centerPosition,
 				color,
 				std::vector {

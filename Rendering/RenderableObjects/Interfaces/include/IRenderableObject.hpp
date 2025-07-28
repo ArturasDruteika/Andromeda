@@ -1,5 +1,5 @@
-#ifndef RENDERING__I_RENDERABLE_OBJECT__HPP
-#define RENDERING__I_RENDERABLE_OBJECT__HPP
+#ifndef RENDERING__INTERFACES__I_RENDERABLE_OBJECT__HPP
+#define RENDERING__INTERFACES__I_RENDERABLE_OBJECT__HPP
 
 
 #if defined(_WIN32)
@@ -34,12 +34,11 @@ namespace Andromeda::Rendering
         virtual ~IRenderableObject();
 
         // Getters
-        virtual bool StateChanged() const = 0;
         virtual Space::Color GetColor() const = 0;
-
-        virtual void ResetState() = 0;
+		// Setters
+        virtual void SetColor(const Space::Color& color) = 0;
     };
 }
 
 
-#endif // RENDERING__I_RENDERABLE_OBJECT__HPP
+#endif // RENDERING__INTERFACES__I_RENDERABLE_OBJECT__HPP

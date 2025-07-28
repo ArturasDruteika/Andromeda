@@ -53,29 +53,37 @@ add_library(${PROJECT_NAME}
         Scene/include/ISceneState.hpp
 		Scene/src/ISceneState.cpp
 
-		RenderableObjects/include/IRenderableObjectOpenGL.hpp
-		RenderableObjects/src/IRenderableObjectOpenGL.cpp
-        RenderableObjects/include/SphereObjectOpenGL.hpp
-		RenderableObjects/src/SphereObjectOpenGL.cpp
-        RenderableObjects/include/SphereObjectOpenGLImpl.hpp
-		RenderableObjects/src/SphereObjectOpenGLImpl.cpp
-        RenderableObjects/include/CubeObjectOpenGL.hpp
-		RenderableObjects/src/CubeObjectOpenGL.cpp
-        RenderableObjects/include/CubeObjectOpenGLImpl.hpp
-		RenderableObjects/src/CubeObjectOpenGLImpl.cpp
-		RenderableObjects/include/TransformationTypes.hpp
-        RenderableObjects/src/RenderableObjectOpenGLBase.cpp
-		RenderableObjects/include/RenderableObjectOpenGLBase.hpp
-        RenderableObjects/src/GridOpenGL.cpp
-		RenderableObjects/include/GridOpenGL.hpp
-        RenderableObjects/include/IRenderableObject.hpp
-		RenderableObjects/src/IRenderableObject.cpp
-        RenderableObjects/include/IGeometry.hpp
-		RenderableObjects/src/IGeometry.cpp
-        RenderableObjects/include/ITransformable.hpp
-		RenderableObjects/src/ITransformable.cpp
-        RenderableObjects/include/ILuminous.hpp
-		RenderableObjects/src/ILuminous.cpp
+        RenderableObjects/Abstracts/include/Geometry.hpp
+		RenderableObjects/Abstracts/src/Geometry.cpp
+        RenderableObjects/Abstracts/include/Luminous.hpp
+		RenderableObjects/Abstracts/src/Luminous.cpp
+        RenderableObjects/Abstracts/include/Transformable.hpp
+		RenderableObjects/Abstracts/src/Transformable.cpp
+        RenderableObjects/Abstracts/include/RenderableObject.hpp
+		RenderableObjects/Abstracts/src/RenderableObject.cpp
+        RenderableObjects/Abstracts/include/RenderableObjectOpenGL.hpp
+		RenderableObjects/Abstracts/src/RenderableObjectOpenGL.cpp
+        RenderableObjects/Interfaces/include/IGeometry.hpp
+		RenderableObjects/Interfaces/src/IGeometry.cpp
+        RenderableObjects/Interfaces/include/ILuminous.hpp
+		RenderableObjects/Interfaces/src/ILuminous.cpp
+        RenderableObjects/Interfaces/include/ITransformable.hpp
+		RenderableObjects/Interfaces/src/ITransformable.cpp
+        RenderableObjects/Interfaces/include/IRenderableObject.hpp
+		RenderableObjects/Interfaces/src/IRenderableObject.cpp
+        RenderableObjects/Interfaces/include/IRenderableObjectOpenGL.hpp
+		RenderableObjects/Interfaces/src/IRenderableObjectOpenGL.cpp
+        RenderableObjects/Objects/include/CubeObjectOpenGL.hpp
+		RenderableObjects/Objects/src/CubeObjectOpenGL.cpp
+        RenderableObjects/Objects/include/CubeObjectOpenGLImpl.hpp
+		RenderableObjects/Objects/src/CubeObjectOpenGLImpl.cpp
+		RenderableObjects/Objects/include/GridOpenGL.hpp
+        RenderableObjects/Objects/src/GridOpenGL.cpp
+        RenderableObjects/Objects/include/SphereObjectOpenGL.hpp
+		RenderableObjects/Objects/src/SphereObjectOpenGL.cpp
+        RenderableObjects/Objects/include/SphereObjectOpenGLImpl.hpp
+		RenderableObjects/Objects/src/SphereObjectOpenGLImpl.cpp
+		RenderableObjects/Support/include/TransformationTypes.hpp
 
 		Vertices/include/VertexAttributes.hpp
         Vertices/include/VertexLayouts.hpp
@@ -293,30 +301,42 @@ source_group(
     PREFIX
         "RenderableObjects"
     FILES
-        RenderableObjects/include/SphereObjectOpenGL.hpp
-		RenderableObjects/src/SphereObjectOpenGL.cpp
-        RenderableObjects/include/SphereObjectOpenGLImpl.hpp
-		RenderableObjects/src/SphereObjectOpenGLImpl.cpp
-		RenderableObjects/include/IRenderableObjectOpenGL.hpp
-        RenderableObjects/src/IRenderableObjectOpenGL.cpp
-        RenderableObjects/include/CubeObjectOpenGL.hpp
-		RenderableObjects/src/CubeObjectOpenGL.cpp
-        RenderableObjects/include/CubeObjectOpenGLImpl.hpp
-		RenderableObjects/src/CubeObjectOpenGLImpl.cpp
-        RenderableObjects/include/TransformationTypes.hpp
-        RenderableObjects/src/RenderableObjectOpenGLBase.cpp
-		RenderableObjects/include/RenderableObjectOpenGLBase.hpp
-        RenderableObjects/src/GridOpenGL.cpp
-		RenderableObjects/include/GridOpenGL.hpp
-        RenderableObjects/include/IRenderableObject.hpp
-		RenderableObjects/src/IRenderableObject.cpp
-        RenderableObjects/include/IGeometry.hpp
-		RenderableObjects/src/IGeometry.cpp
-        RenderableObjects/include/ITransformable.hpp
-		RenderableObjects/src/ITransformable.cpp
-        RenderableObjects/include/ILuminous.hpp
-		RenderableObjects/src/ILuminous.cpp
+        RenderableObjects/Abstracts/include/Geometry.hpp
+        RenderableObjects/Abstracts/src/Geometry.cpp
+        RenderableObjects/Abstracts/include/Luminous.hpp
+        RenderableObjects/Abstracts/src/Luminous.cpp
+        RenderableObjects/Abstracts/include/Transformable.hpp
+        RenderableObjects/Abstracts/src/Transformable.cpp
+        RenderableObjects/Abstracts/include/RenderableObject.hpp
+        RenderableObjects/Abstracts/src/RenderableObject.cpp
+        RenderableObjects/Abstracts/include/RenderableObjectOpenGL.hpp
+        RenderableObjects/Abstracts/src/RenderableObjectOpenGL.cpp
+
+        RenderableObjects/Interfaces/include/IGeometry.hpp
+        RenderableObjects/Interfaces/src/IGeometry.cpp
+        RenderableObjects/Interfaces/include/ILuminous.hpp
+        RenderableObjects/Interfaces/src/ILuminous.cpp
+        RenderableObjects/Interfaces/include/ITransformable.hpp
+        RenderableObjects/Interfaces/src/ITransformable.cpp
+        RenderableObjects/Interfaces/include/IRenderableObject.hpp
+        RenderableObjects/Interfaces/src/IRenderableObject.cpp
+        RenderableObjects/Interfaces/include/IRenderableObjectOpenGL.hpp
+        RenderableObjects/Interfaces/src/IRenderableObjectOpenGL.cpp
+
+        RenderableObjects/Objects/include/CubeObjectOpenGL.hpp
+        RenderableObjects/Objects/src/CubeObjectOpenGL.cpp
+        RenderableObjects/Objects/include/CubeObjectOpenGLImpl.hpp
+        RenderableObjects/Objects/src/CubeObjectOpenGLImpl.cpp
+        RenderableObjects/Objects/include/GridOpenGL.hpp
+        RenderableObjects/Objects/src/GridOpenGL.cpp
+        RenderableObjects/Objects/include/SphereObjectOpenGL.hpp
+        RenderableObjects/Objects/src/SphereObjectOpenGL.cpp
+        RenderableObjects/Objects/include/SphereObjectOpenGLImpl.hpp
+        RenderableObjects/Objects/src/SphereObjectOpenGLImpl.cpp
+
+        RenderableObjects/Support/include/TransformationTypes.hpp
 )
+
 
 source_group(
     TREE 

@@ -1,5 +1,5 @@
-#ifndef RENDERING__CUBE_OBJECT_OPENGL__HPP
-#define RENDERING__CUBE_OBJECT_OPENGL__HPP
+#ifndef RENDERING__OBJECTS__CUBE_OBJECT_OPENGL__HPP
+#define RENDERING__OBJECTS__CUBE_OBJECT_OPENGL__HPP
 
 
 #if defined(_WIN32)
@@ -17,7 +17,7 @@
 #endif
 
 
-#include "IRenderableObjectOpenGL.hpp"
+#include "../../Interfaces/include/IRenderableObjectOpenGL.hpp"
 #include "Colors.hpp"
 
 
@@ -63,6 +63,7 @@ namespace Andromeda
 			void RotateY(float angle) override;
 			void RotateZ(float angle) override;
 			void Scale(const Math::Vec3& scale) override;
+			void SetColor(const Space::Color& color) override;
 
 			// Getters
 			float GetHalfExtent() const;
@@ -77,4 +78,4 @@ namespace Andromeda
 }
 
 
-#endif // RENDERING__CUBE_OBJECT_OPENGL__HPP
+#endif // RENDERING__OBJECTS__CUBE_OBJECT_OPENGL__HPP

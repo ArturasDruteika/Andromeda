@@ -126,6 +126,10 @@ namespace Andromeda
 			m_pCubeObjectOpenGLImpl->Scale(scale);
 		}
 
+		void CubeObjectOpenGL::SetColor(const Space::Color& color)
+		{
+		}
+
 		float CubeObjectOpenGL::GetHalfExtent() const
 		{
 			return m_pCubeObjectOpenGLImpl->GetHalfExtent();

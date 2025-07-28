@@ -1,5 +1,5 @@
-#ifndef RENDERING__I_LUMINOUS__HPP
-#define RENDERING__I_LUMINOUS__HPP
+#ifndef RENDERING__INTERFACES__I_LUMINOUS__HPP
+#define RENDERING__INTERFACES__I_LUMINOUS__HPP
 
 
 #if defined(_WIN32)
@@ -16,7 +16,7 @@
 	#define RENDERING_API __attribute__((visibility("default")))
 #endif
 
-#include "../../Light/include/ILightBehavior.hpp"
+#include "../../../Light/include/ILightBehavior.hpp"
 
 
 namespace Andromeda::Rendering
@@ -35,4 +35,4 @@ namespace Andromeda::Rendering
 }
 
 
-#endif // RENDERING__I_LUMINOUS__HPP
+#endif // RENDERING__INTERFACES__I_LUMINOUS__HPP
