@@ -13,7 +13,7 @@ namespace Andromeda::Rendering
     class Transformable
     {
     public:
-        Transformable();
+        Transformable(const Math::Vec3& centerPosition);
         ~Transformable();
 
 		// Getters
@@ -31,10 +31,10 @@ namespace Andromeda::Rendering
         void RotateY(float angle);
         void RotateZ(float angle);
         void Scale(const Math::Vec3& scale);
+        void UpdateModelMatrix(const TransformationType& transformationType);
 
     private:
         // Transformation matrices
-        void UpdateModelMatrix(const TransformationType& transformationType);
         glm::mat4 ConstructTranslationMatrix() const;
         glm::mat4 ConstructRotationMatrix() const;
         glm::mat4 ConstructScaleMatrix() const;

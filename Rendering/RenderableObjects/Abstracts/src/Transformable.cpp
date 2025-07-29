@@ -4,9 +4,9 @@
 
 namespace Andromeda::Rendering
 {
-	Transformable::Transformable()
+	Transformable::Transformable(const Math::Vec3& centerPosition)
 		: m_stateChanged{ false }
-		, m_centerPosition{ 0.0f, 0.0f, 0.0f }
+		, m_centerPosition{ MathUtils::ToGLM(centerPosition) }
 		, m_rotation{ 0.0f, 0.0f, 0.0f }
 		, m_scale{ 1.0f, 1.0f, 1.0f }
 		, m_translationMatrix{ glm::mat4(1.0f) }

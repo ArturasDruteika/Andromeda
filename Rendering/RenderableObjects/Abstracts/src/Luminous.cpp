@@ -5,6 +5,8 @@
 namespace Andromeda::Rendering
 {
 	Luminous::Luminous()
+		: m_luminous{ false }
+		, m_pILightBehavior{ nullptr }
 	{
 	}
 

@@ -16,7 +16,7 @@ namespace Andromeda::Rendering
         public Luminous
     {
     public:
-        RenderableObject();
+        RenderableObject(const Math::Vec3& centerPosition, const Space::Color& color);
         ~RenderableObject();
 
         // Getters

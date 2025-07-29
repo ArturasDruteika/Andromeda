@@ -2,7 +2,9 @@
 
 namespace Andromeda::Rendering
 {
-	RenderableObject::RenderableObject()
+	RenderableObject::RenderableObject(const Math::Vec3& centerPosition, const Space::Color& color)
+		: Transformable(centerPosition)
+		, m_color{ color }
 	{
 	}
 
