@@ -3,20 +3,18 @@
 
 namespace Andromeda::Rendering
 {
-	Geometry::Geometry()
-	{
-	}
+	Geometry::Geometry() = default;
 
 	Geometry::~Geometry() = default;
 
 	unsigned int Geometry::GetIndicesCount() const
 	{
-		return m_indicesCount;
+		return m_indices.size();
 	}
 
 	unsigned int Geometry::GetVerticesCount() const
 	{
-		return m_vertexCount;
+		return m_vertices.size();
 	}
 
 	std::vector<unsigned int> Geometry::GetIndices() const

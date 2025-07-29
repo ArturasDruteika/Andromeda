@@ -53,7 +53,7 @@ namespace Andromeda
 
 		std::vector<unsigned int> CubeObjectOpenGL::GetIndices() const
 		{
-			return std::vector<unsigned int>();
+			return m_pCubeObjectOpenGLImpl->GetIndices();
 		}
 
 		std::vector<Vertex> CubeObjectOpenGL::GetVertices() const

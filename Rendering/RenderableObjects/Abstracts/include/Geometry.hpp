@@ -21,8 +21,6 @@ namespace Andromeda::Rendering
 		std::vector<Vertex> GetVertices() const;
 
 	protected:
-		unsigned int m_vertexCount;
-		unsigned int m_indicesCount;
 		std::vector<unsigned int> m_indices;
 		std::vector<Vertex> m_vertices;
 	};
