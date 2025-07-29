@@ -41,14 +41,19 @@ namespace Andromeda
 			return m_pCubeObjectOpenGLImpl->GetEBO();
 		}
 
-		unsigned int CubeObjectOpenGL::GetVertexCount() const
+		unsigned int CubeObjectOpenGL::GetVerticesCount() const
 		{
-			return m_pCubeObjectOpenGLImpl->GetVertexCount();
+			return m_pCubeObjectOpenGLImpl->GetVerticesCount();
 		}
 
 		unsigned int CubeObjectOpenGL::GetIndicesCount() const
 		{
 			return m_pCubeObjectOpenGLImpl->GetIndicesCount();
+		}
+
+		std::vector<unsigned int> CubeObjectOpenGL::GetIndices() const
+		{
+			return std::vector<unsigned int>();
 		}
 
 		std::vector<Vertex> CubeObjectOpenGL::GetVertices() const
@@ -133,16 +138,6 @@ namespace Andromeda
 		float CubeObjectOpenGL::GetHalfExtent() const
 		{
 			return m_pCubeObjectOpenGLImpl->GetHalfExtent();
-		}
-
-		Math::Vec3 CubeObjectOpenGL::GetRotation() const
-		{
-			return m_pCubeObjectOpenGLImpl->GetRotation();
-		}
-
-		Math::Vec3 CubeObjectOpenGL::GetScale() const
-		{
-			return m_pCubeObjectOpenGLImpl->GetScale();
 		}
 	}
 }

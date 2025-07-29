@@ -41,14 +41,19 @@ namespace Andromeda
 			return m_pSphereObjectOpenGLImpl->GetEBO();
 		}
 
-		unsigned int SphereObjectOpenGL::GetVertexCount() const
+		unsigned int SphereObjectOpenGL::GetVerticesCount() const
 		{
-			return m_pSphereObjectOpenGLImpl->GetVertexCount();
+			return m_pSphereObjectOpenGLImpl->GetVerticesCount();
 		}
 
 		unsigned int SphereObjectOpenGL::GetIndicesCount() const
 		{
 			return m_pSphereObjectOpenGLImpl->GetIndicesCount();
+		}
+
+		std::vector<unsigned int> SphereObjectOpenGL::GetIndices() const
+		{
+			return std::vector<unsigned int>();
 		}
 
 		std::vector<Vertex> SphereObjectOpenGL::GetVertices() const
@@ -133,16 +138,6 @@ namespace Andromeda
 		float SphereObjectOpenGL::GetRadius() const
 		{
 			return m_pSphereObjectOpenGLImpl->GetRadius();
-		}
-
-		Math::Vec3 SphereObjectOpenGL::GetRotation() const
-		{
-			return m_pSphereObjectOpenGLImpl->GetRotation();
-		}
-
-		Math::Vec3 SphereObjectOpenGL::GetScale() const
-		{
-			return m_pSphereObjectOpenGLImpl->GetScale();
 		}
 
 		void SphereObjectOpenGL::SetRadius(float radius)

@@ -23,14 +23,14 @@ namespace Andromeda
 		{
             ConstructGrid(100, spacing, color);
             Init();
-            UpdateModelMatrix(TransformationType::ALL);
+            RenderableObject::UpdateModelMatrix(TransformationType::ALL);
 		}
 
 		GridOpenGL::~GridOpenGL() = default;
 
         bool GridOpenGL::IsLuminous() const
         {
-            return RenderableObjectOpenGL::IsLuminous();
+            return RenderableObject::IsLuminous();
         }
 
         bool GridOpenGL::StateChanged() const
@@ -53,7 +53,7 @@ namespace Andromeda
             return RenderableObjectOpenGL::GetEBO();
         }
 
-        unsigned int GridOpenGL::GetVertexCount() const
+        unsigned int GridOpenGL::GetVerticesCount() const
         {
             return m_vertices.size();
         }
@@ -61,6 +61,11 @@ namespace Andromeda
         unsigned int GridOpenGL::GetIndicesCount() const
         {
             return m_indices.size();
+        }
+
+        std::vector<unsigned int> GridOpenGL::GetIndices() const
+        {
+            return std::vector<unsigned int>();
         }
 
         std::vector<Vertex> GridOpenGL::GetVertices() const
@@ -161,21 +166,21 @@ namespace Andromeda
         {
 			m_gridSize = size;
 			ConstructGrid(size, m_spacing, m_color); // Reconstruct grid with new size
-			UpdateModelMatrix(TransformationType::ALL);
+            RenderableObjectOpenGL::UpdateModelMatrix(TransformationType::ALL);
         }
 
         void GridOpenGL::SetSpacing(float spacing)
         {
 			m_spacing = spacing;
 			ConstructGrid(100, spacing, m_color); // Reconstruct grid with new spacing
-			UpdateModelMatrix(TransformationType::ALL);
+            UpdateModelMatrix(TransformationType::ALL);
         }
 
         void GridOpenGL::SetDensityFactor(float densityFactor)
         {
 			m_densityFactor = densityFactor;
 			ConstructGrid(100, m_spacing, m_color); // Reconstruct grid with new density factor
-			UpdateModelMatrix(TransformationType::ALL);
+            UpdateModelMatrix(TransformationType::ALL);
         }
 
         void GridOpenGL::ConstructGrid(int size, float spacing, const Space::Color& gridColor)

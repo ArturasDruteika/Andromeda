@@ -44,8 +44,9 @@ namespace Andromeda
 			unsigned int GetVBO() const override;
 			unsigned int GetVAO() const override;
 			unsigned int GetEBO() const override;
-			unsigned int GetVertexCount() const override;
+			unsigned int GetVerticesCount() const override;
 			unsigned int GetIndicesCount() const override;
+			std::vector<unsigned int> GetIndices() const override;
 			std::vector<Vertex> GetVertices() const override;
 			Math::Vec3 GetCenterPosition() const override;
 			Math::Mat4 GetModelMatrix() const override;
