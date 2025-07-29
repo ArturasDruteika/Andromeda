@@ -19,6 +19,7 @@
 
 #include "pch.hpp"
 #include "IRenderableObject.hpp"
+#include "../../../Vertices/include/VertexLayouts.hpp"
 
 
 namespace Andromeda
@@ -29,7 +30,6 @@ namespace Andromeda
 			: public IRenderableObject
 		{	
 		public:
-			IRenderableObjectOpenGL();
 			virtual ~IRenderableObjectOpenGL();
 
 			// Getters

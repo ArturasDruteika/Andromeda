@@ -4,10 +4,6 @@ namespace Andromeda
 {
 	namespace Rendering
 	{
-		IRenderableObjectOpenGL::IRenderableObjectOpenGL()
-		{
-		}
-
 		IRenderableObjectOpenGL::~IRenderableObjectOpenGL() = default;
 	}
 }
