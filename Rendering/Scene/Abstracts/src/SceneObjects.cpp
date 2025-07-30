@@ -14,9 +14,18 @@ namespace Andromeda::Rendering
 		m_objects.clear();
 	};
 
+	const std::unordered_map<int, IRenderableObject*>& SceneObjects::GetObjects() const
+	{
+		return m_objects;
+	}
+
 	void SceneObjects::AddObject(int id, IRenderableObject* object)
 	{
 		m_objects.insert({ id, object });
+		if (object->IsLuminous())
+		{
+			m_luminousObjects.insert({ id, object });
+		}
 	}
 
 	void SceneObjects::RemoveObject(int id)

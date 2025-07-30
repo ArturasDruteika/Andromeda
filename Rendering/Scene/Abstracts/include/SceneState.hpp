@@ -2,6 +2,9 @@
 #define ENVIRONMENT__ABSTRACTS_SCENE_STATE__HPP
 
 
+#include "../../../RenderableObjects/Interfaces/include/IRenderableObject.hpp"
+
+
 namespace Andromeda::Rendering
 {
 	class SceneState
@@ -10,11 +13,7 @@ namespace Andromeda::Rendering
 		SceneState();
 		~SceneState();
 
-		bool StateChanged() const;
-		void ResetState();
-
-	protected:
-		bool m_stateChanged;
+		bool StateChanged(const std::unordered_map<int, IRenderableObject*>& objects) const;
 	};
 }
 

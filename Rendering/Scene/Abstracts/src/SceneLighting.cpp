@@ -8,6 +8,11 @@ namespace Andromeda::Rendering
 
 	SceneLighting::~SceneLighting() = default;
 
+	const std::unordered_map<int, IRenderableObject*>& SceneLighting::GetLuminousObjects() const
+	{
+		return m_luminousObjects;
+	}
+
 	void SceneLighting::AddDirectionalLight(
 		int id, 
 		const Math::Vec3& direction, 

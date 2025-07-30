@@ -3,12 +3,14 @@
 
 
 #include "pch.hpp"
+#include "SceneLighting.hpp"
 #include "../../../RenderableObjects/Interfaces/include/IRenderableObject.hpp"
 
 
 namespace Andromeda::Rendering
 {
 	class SceneObjects
+		: public SceneLighting
 	{
 	public:
 		SceneObjects();

@@ -20,4 +20,16 @@ namespace Andromeda::Rendering
 	{
 		m_ambientStrength = ambientStrength;
 	}
+
+	void SceneEnvironment::ResizeGrid(float resizeFactor)
+	{
+		if (resizeFactor > 0.0f)
+		{
+			m_gridSpacing *= resizeFactor;
+		}
+		else
+		{
+			throw std::invalid_argument("Resize factor must be greater than zero.");
+		}
+	}
 }
