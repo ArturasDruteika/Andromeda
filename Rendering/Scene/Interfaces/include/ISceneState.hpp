@@ -17,6 +17,9 @@
 #endif
 
 
+#include "../../../RenderableObjects/Interfaces/include/IRenderableObject.hpp"
+
+
 namespace Andromeda::Rendering
 {
 	class RENDERING_API ISceneState
@@ -24,8 +27,7 @@ namespace Andromeda::Rendering
 	public:
 		virtual ~ISceneState();
 
-		virtual bool StateChanged() const = 0;
-		virtual void ResetState() = 0;
+		virtual bool StateChanged(const std::unordered_map<int, IRenderableObject*>& objects) const = 0;
 	};
 }
 
