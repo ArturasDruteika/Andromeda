@@ -16,129 +16,215 @@ if (APPLE)
     target_compile_definitions(${EXEC_NAME} PRIVATE GL_SILENCE_DEPRECATION)
 endif ()
 
+# ==== Camera ====
+set(CAMERA_HEADERS
+    Camera/include/Camera.hpp
+    Camera/include/CameraImpl.hpp
+)
+
+set(CAMERA_SOURCES
+    Camera/src/Camera.cpp
+    Camera/src/CameraImpl.cpp
+)
+
+# ==== Light ====
+set(LIGHT_HEADERS
+    Light/include/ILightBehavior.hpp
+    Light/include/LuminousBehavior.hpp
+    Light/include/NonLuminousBehavior.hpp
+    Light/include/LightProperties.hpp
+    Light/include/LightData.hpp
+    Light/include/DirectionalLight.hpp
+    Light/include/SpotLight.hpp
+    Light/include/PointLight.hpp
+    Light/include/Light.hpp
+)
+
+set(LIGHT_SOURCES
+    Light/src/ILightBehavior.cpp
+    Light/src/LuminousBehavior.cpp
+    Light/src/NonLuminousBehavior.cpp
+    Light/src/LightData.cpp
+    Light/src/DirectionalLight.cpp
+    Light/src/SpotLight.cpp
+    Light/src/PointLight.cpp
+    Light/src/Light.cpp
+)
+
+# ==== Materials ====
+set(MATERIALS_HEADERS
+    Materials/include/Materials.hpp
+    Materials/include/MaterialsLibrary.hpp
+    Materials/include/MaterialTypes.hpp
+)
+
+set(MATERIALS_SOURCES
+    Materials/src/Materials.cpp
+    Materials/src/MaterialsLibrary.cpp
+)
+
+# ==== OpenGLLoader ====
+set(LOADER_HEADERS
+    OpenGLLoader/include/OpenGLLoader.hpp
+    OpenGLLoader/include/OpenGLLoaderImpl.hpp
+)
+
+set(LOADER_SOURCES
+    OpenGLLoader/src/OpenGLLoader.cpp
+    OpenGLLoader/src/OpenGLLoaderImpl.cpp
+)
+
+# ==== RayTracing ====
+set(RAYTRACING_HEADERS
+    RayTracing/include/Ray.hpp
+)
+
+# ==== RenderableObjects ====
+set(RO_HEADERS
+    RenderableObjects/Abstracts/include/Geometry.hpp
+    RenderableObjects/Abstracts/include/Luminous.hpp
+    RenderableObjects/Abstracts/include/Transformable.hpp
+    RenderableObjects/Abstracts/include/RenderableObject.hpp
+    RenderableObjects/Abstracts/include/RenderableObjectOpenGL.hpp
+    RenderableObjects/Interfaces/include/IGeometry.hpp
+    RenderableObjects/Interfaces/include/ILuminous.hpp
+    RenderableObjects/Interfaces/include/ITransformable.hpp
+    RenderableObjects/Interfaces/include/IRenderableObject.hpp
+    RenderableObjects/Interfaces/include/IRenderableObjectOpenGL.hpp
+    RenderableObjects/Objects/include/CubeObjectOpenGL.hpp
+    RenderableObjects/Objects/include/CubeObjectOpenGLImpl.hpp
+    RenderableObjects/Objects/include/GridOpenGL.hpp
+    RenderableObjects/Objects/include/SphereObjectOpenGL.hpp
+    RenderableObjects/Objects/include/SphereObjectOpenGLImpl.hpp
+    RenderableObjects/Support/include/TransformationTypes.hpp
+)
+
+set(RO_SOURCES
+    RenderableObjects/Abstracts/src/Geometry.cpp
+    RenderableObjects/Abstracts/src/Luminous.cpp
+    RenderableObjects/Abstracts/src/Transformable.cpp
+    RenderableObjects/Abstracts/src/RenderableObject.cpp
+    RenderableObjects/Abstracts/src/RenderableObjectOpenGL.cpp
+    RenderableObjects/Interfaces/src/IGeometry.cpp
+    RenderableObjects/Interfaces/src/ILuminous.cpp
+    RenderableObjects/Interfaces/src/ITransformable.cpp
+    RenderableObjects/Interfaces/src/IRenderableObject.cpp
+    RenderableObjects/Interfaces/src/IRenderableObjectOpenGL.cpp
+    RenderableObjects/Objects/src/CubeObjectOpenGL.cpp
+    RenderableObjects/Objects/src/CubeObjectOpenGLImpl.cpp
+    RenderableObjects/Objects/src/GridOpenGL.cpp
+    RenderableObjects/Objects/src/SphereObjectOpenGL.cpp
+    RenderableObjects/Objects/src/SphereObjectOpenGLImpl.cpp
+)
+
+# ==== Renderers ====
+set(RENDERERS_HEADERS
+    Renderers/include/OpenGLRenderer.hpp
+    Renderers/include/OpenGLRendererImpl.hpp
+    Renderers/include/FrameBufferOpenGL.hpp
+    Renderers/include/IRenderer.hpp
+    Renderers/include/IGridControl.hpp
+    Renderers/include/IIlluminationControl.hpp
+)
+
+set(RENDERERS_SOURCES
+    Renderers/src/OpenGLRenderer.cpp
+    Renderers/src/OpenGLRendererImpl.cpp
+    Renderers/src/FrameBufferOpenGL.cpp
+    Renderers/src/IRenderer.cpp
+    Renderers/src/IGridControl.cpp
+    Renderers/src/IIlluminationControl.cpp
+)
+
+# ==== Scene ====
+set(SCENE_HEADERS
+    Scene/Abstracts/include/Scene.hpp
+    Scene/Abstracts/include/SceneObjects.hpp
+    Scene/Abstracts/include/SceneLighting.hpp
+    Scene/Abstracts/include/SceneEnvironment.hpp
+    Scene/Abstracts/include/SceneState.hpp
+    Scene/Interfaces/include/IScene.hpp
+    Scene/Interfaces/include/ISceneObjects.hpp
+    Scene/Interfaces/include/ISceneLighting.hpp
+    Scene/Interfaces/include/ISceneEnvironment.hpp
+    Scene/Interfaces/include/ISceneState.hpp
+    Scene/Scenes/include/OpenGLScene.hpp
+    Scene/Scenes/include/OpenGLSceneImpl.hpp
+    Scene/Support/include/SpecialIndices.hpp
+)
+
+set(SCENE_SOURCES
+    Scene/Abstracts/src/Scene.cpp
+    Scene/Abstracts/src/SceneObjects.cpp
+    Scene/Abstracts/src/SceneLighting.cpp
+    Scene/Abstracts/src/SceneEnvironment.cpp
+    Scene/Abstracts/src/SceneState.cpp
+    Scene/Interfaces/src/IScene.cpp
+    Scene/Interfaces/src/ISceneObjects.cpp
+    Scene/Interfaces/src/ISceneLighting.cpp
+    Scene/Interfaces/src/ISceneEnvironment.cpp
+    Scene/Interfaces/src/ISceneState.cpp
+    Scene/Scenes/src/OpenGLScene.cpp
+    Scene/Scenes/src/OpenGLSceneImpl.cpp
+)
+
+# ==== Shaders ====
+set(SHADERS_HEADERS
+    Shaders/include/OpenGLShader.hpp
+    Shaders/include/ShaderOpenGLTypes.hpp
+    Shaders/include/ShaderManager.hpp
+)
+
+set(SHADERS_SOURCES
+    Shaders/src/OpenGLShader.cpp
+    Shaders/src/ShaderManager.cpp
+)
+
+# ==== Utilities ====
+set(UTILS_HEADERS
+    Utils/include/MathUtils.hpp
+)
+
+set(UTILS_SOURCES
+    Utils/src/MathUtils.cpp
+)
+
+# ==== Vertices ====
+set(VERTEX_HEADERS
+    Vertices/include/VertexAttributes.hpp
+    Vertices/include/VertexLayouts.hpp
+    Vertices/include/Vertex.hpp
+)
+
+set(VERTEX_SOURCES
+    Vertices/src/VertexLayouts.cpp
+)
+
 add_library(${PROJECT_NAME} 
     SHARED
-	    Renderers/include/OpenGLRenderer.hpp
-		Renderers/src/OpenGLRenderer.cpp
-        Renderers/include/OpenGLRendererImpl.hpp
-		Renderers/src/OpenGLRendererImpl.cpp
-        Renderers/include/FrameBufferOpenGL.hpp
-		Renderers/src/FrameBufferOpenGL.cpp
-        Renderers/include/IRenderer.hpp
-        Renderers/src/IRenderer.cpp
-        Renderers/include/IGridControl.hpp
-        Renderers/src/IGridControl.cpp
-        Renderers/include/IIlluminationControl.hpp
-        Renderers/src/IIlluminationControl.cpp
-
-        Shaders/include/OpenGLShader.hpp
-		Shaders/src/OpenGLShader.cpp
-		Shaders/include/ShaderOpenGLTypes.hpp
-        Shaders/include/ShaderManager.hpp
-		Shaders/src/ShaderManager.cpp
-
-        Scene/Abstracts/include/Scene.hpp
-		Scene/Abstracts/src/Scene.cpp
-        Scene/Abstracts/include/SceneObjects.hpp
-		Scene/Abstracts/src/SceneObjects.cpp
-        Scene/Abstracts/include/SceneLighting.hpp
-		Scene/Abstracts/src/SceneLighting.cpp
-        Scene/Abstracts/include/SceneEnvironment.hpp
-		Scene/Abstracts/src/SceneEnvironment.cpp
-        Scene/Abstracts/include/SceneState.hpp
-		Scene/Abstracts/src/SceneState.cpp
-        Scene/Interfaces/include/IScene.hpp
-		Scene/Interfaces/src/IScene.cpp
-        Scene/Interfaces/include/ISceneObjects.hpp
-		Scene/Interfaces/src/ISceneObjects.cpp
-        Scene/Interfaces/include/ISceneLighting.hpp
-		Scene/Interfaces/src/ISceneLighting.cpp
-        Scene/Interfaces/include/ISceneEnvironment.hpp
-		Scene/Interfaces/src/ISceneEnvironment.cpp
-        Scene/Interfaces/include/ISceneState.hpp
-		Scene/Interfaces/src/ISceneState.cpp
-        Scene/Scenes/include/OpenGLScene.hpp
-		Scene/Scenes/src/OpenGLScene.cpp
-        Scene/Scenes/include/OpenGLSceneImpl.hpp
-		Scene/Scenes/src/OpenGLSceneImpl.cpp
-        Scene/Support/include/SpecialIndices.hpp
-
-        RenderableObjects/Abstracts/include/Geometry.hpp
-		RenderableObjects/Abstracts/src/Geometry.cpp
-        RenderableObjects/Abstracts/include/Luminous.hpp
-		RenderableObjects/Abstracts/src/Luminous.cpp
-        RenderableObjects/Abstracts/include/Transformable.hpp
-		RenderableObjects/Abstracts/src/Transformable.cpp
-        RenderableObjects/Abstracts/include/RenderableObject.hpp
-		RenderableObjects/Abstracts/src/RenderableObject.cpp
-        RenderableObjects/Abstracts/include/RenderableObjectOpenGL.hpp
-		RenderableObjects/Abstracts/src/RenderableObjectOpenGL.cpp
-        RenderableObjects/Interfaces/include/IGeometry.hpp
-		RenderableObjects/Interfaces/src/IGeometry.cpp
-        RenderableObjects/Interfaces/include/ILuminous.hpp
-		RenderableObjects/Interfaces/src/ILuminous.cpp
-        RenderableObjects/Interfaces/include/ITransformable.hpp
-		RenderableObjects/Interfaces/src/ITransformable.cpp
-        RenderableObjects/Interfaces/include/IRenderableObject.hpp
-		RenderableObjects/Interfaces/src/IRenderableObject.cpp
-        RenderableObjects/Interfaces/include/IRenderableObjectOpenGL.hpp
-		RenderableObjects/Interfaces/src/IRenderableObjectOpenGL.cpp
-        RenderableObjects/Objects/include/CubeObjectOpenGL.hpp
-		RenderableObjects/Objects/src/CubeObjectOpenGL.cpp
-        RenderableObjects/Objects/include/CubeObjectOpenGLImpl.hpp
-		RenderableObjects/Objects/src/CubeObjectOpenGLImpl.cpp
-		RenderableObjects/Objects/include/GridOpenGL.hpp
-        RenderableObjects/Objects/src/GridOpenGL.cpp
-        RenderableObjects/Objects/include/SphereObjectOpenGL.hpp
-		RenderableObjects/Objects/src/SphereObjectOpenGL.cpp
-        RenderableObjects/Objects/include/SphereObjectOpenGLImpl.hpp
-		RenderableObjects/Objects/src/SphereObjectOpenGLImpl.cpp
-		RenderableObjects/Support/include/TransformationTypes.hpp
-
-		Vertices/include/VertexAttributes.hpp
-        Vertices/include/VertexLayouts.hpp
-		Vertices/src/VertexLayouts.cpp
-		Vertices/include/Vertex.hpp
-
-        OpenGLLoader/include/OpenGLLoader.hpp
-		OpenGLLoader/src/OpenGLLoader.cpp
-        OpenGLLoader/include/OpenGLLoaderImpl.hpp
-		OpenGLLoader/src/OpenGLLoaderImpl.cpp
-        
-        Utils/include/MathUtils.hpp
-		Utils/src/MathUtils.cpp
-
-        Camera/include/Camera.hpp
-		Camera/src/Camera.cpp
-        Camera/include/CameraImpl.hpp
-		Camera/src/CameraImpl.cpp
-
-        Light/include/ILightBehavior.hpp
-		Light/src/ILightBehavior.cpp
-        Light/include/LuminousBehavior.hpp
-		Light/src/LuminousBehavior.cpp
-        Light/include/NonLuminousBehavior.hpp
-		Light/src/NonLuminousBehavior.cpp
-        Light/include/LightProperties.hpp
-        Light/include/LightData.hpp
-		Light/src/LightData.cpp
-        Light/include/DirectionalLight.hpp
-        Light/src/DirectionalLight.cpp
-        Light/include/SpotLight.hpp
-        Light/src/SpotLight.cpp
-        Light/include/PointLight.hpp
-        Light/src/PointLight.cpp
-        Light/include/Light.hpp
-        Light/src/Light.cpp
-
-        RayTracing/include/Ray.hpp
-
-        Materials/include/Materials.hpp
-        Materials/src/Materials.cpp
-        Materials/include/MaterialsLibrary.hpp
-        Materials/src/MaterialsLibrary.cpp
-        Materials/include/MaterialTypes.hpp
+        ${CAMERA_HEADERS}
+        ${CAMERA_SOURCES}
+        ${LIGHT_HEADERS}
+        ${LIGHT_SOURCES}
+        ${LOADER_HEADERS}
+        ${LOADER_SOURCES}
+        ${MATERIALS_HEADERS}
+        ${MATERIALS_SOURCES}
+        ${RAYTRACING_HEADERS}
+        ${RENDERERS_HEADERS}
+        ${RENDERERS_SOURCES}
+        ${RO_HEADERS}
+        ${RO_SOURCES}
+        ${SCENE_HEADERS}
+        ${SCENE_SOURCES}
+        ${SHADERS_HEADERS}
+        ${SHADERS_SOURCES}
+        ${UTILS_HEADERS}
+        ${UTILS_SOURCES}
+        ${VERTEX_HEADERS}
+        ${VERTEX_SOURCES}
 )
+
 
 target_include_directories(${PROJECT_NAME} 
     PRIVATE
@@ -251,162 +337,12 @@ add_custom_command(
 # Organize files into Solution Explorer folders
 source_group(
     TREE 
-        ${CMAKE_CURRENT_SOURCE_DIR}/Renderers
-    PREFIX
-        "Renderers"
-    FILES
-        Renderers/include/OpenGLRenderer.hpp
-		Renderers/src/OpenGLRenderer.cpp
-        Renderers/include/OpenGLRendererImpl.hpp
-		Renderers/src/OpenGLRendererImpl.cpp
-        Renderers/include/FrameBufferOpenGL.hpp
-		Renderers/src/FrameBufferOpenGL.cpp
-        Renderers/include/IRenderer.hpp
-        Renderers/src/IRenderer.cpp
-        Renderers/include/IGridControl.hpp
-        Renderers/src/IGridControl.cpp
-        Renderers/include/IIlluminationControl.hpp
-        Renderers/src/IIlluminationControl.cpp
-)
-
-source_group(
-    TREE 
-        ${CMAKE_CURRENT_SOURCE_DIR}/Shaders
-    PREFIX
-        "Shaders"
-    FILES
-        Shaders/include/OpenGLShader.hpp
-		Shaders/src/OpenGLShader.cpp
-        Shaders/include/ShaderOpenGLTypes.hpp
-        Shaders/include/ShaderManager.hpp
-		Shaders/src/ShaderManager.cpp
-)
-
-source_group(
-    TREE 
-        ${CMAKE_CURRENT_SOURCE_DIR}/Scene
-    PREFIX
-        "Scene"
-    FILES
-        Scene/Abstracts/include/Scene.hpp
-		Scene/Abstracts/src/Scene.cpp
-        Scene/Abstracts/include/SceneObjects.hpp
-		Scene/Abstracts/src/SceneObjects.cpp
-        Scene/Abstracts/include/SceneLighting.hpp
-		Scene/Abstracts/src/SceneLighting.cpp
-        Scene/Abstracts/include/SceneEnvironment.hpp
-		Scene/Abstracts/src/SceneEnvironment.cpp
-        Scene/Abstracts/include/SceneState.hpp
-		Scene/Abstracts/src/SceneState.cpp
-
-        Scene/Interfaces/include/IScene.hpp
-		Scene/Interfaces/src/IScene.cpp
-        Scene/Interfaces/include/ISceneObjects.hpp
-		Scene/Interfaces/src/ISceneObjects.cpp
-        Scene/Interfaces/include/ISceneLighting.hpp
-		Scene/Interfaces/src/ISceneLighting.cpp
-        Scene/Interfaces/include/ISceneEnvironment.hpp
-		Scene/Interfaces/src/ISceneEnvironment.cpp
-        Scene/Interfaces/include/ISceneState.hpp
-		Scene/Interfaces/src/ISceneState.cpp
-
-        Scene/Scenes/include/OpenGLScene.hpp
-		Scene/Scenes/src/OpenGLScene.cpp
-        Scene/Scenes/include/OpenGLSceneImpl.hpp
-		Scene/Scenes/src/OpenGLSceneImpl.cpp
-
-        Scene/Support/include/SpecialIndices.hpp
-)
-
-source_group(
-    TREE 
-        ${CMAKE_CURRENT_SOURCE_DIR}/RenderableObjects
-    PREFIX
-        "RenderableObjects"
-    FILES
-        RenderableObjects/Abstracts/include/Geometry.hpp
-        RenderableObjects/Abstracts/src/Geometry.cpp
-        RenderableObjects/Abstracts/include/Luminous.hpp
-        RenderableObjects/Abstracts/src/Luminous.cpp
-        RenderableObjects/Abstracts/include/Transformable.hpp
-        RenderableObjects/Abstracts/src/Transformable.cpp
-        RenderableObjects/Abstracts/include/RenderableObject.hpp
-        RenderableObjects/Abstracts/src/RenderableObject.cpp
-        RenderableObjects/Abstracts/include/RenderableObjectOpenGL.hpp
-        RenderableObjects/Abstracts/src/RenderableObjectOpenGL.cpp
-
-        RenderableObjects/Interfaces/include/IGeometry.hpp
-        RenderableObjects/Interfaces/src/IGeometry.cpp
-        RenderableObjects/Interfaces/include/ILuminous.hpp
-        RenderableObjects/Interfaces/src/ILuminous.cpp
-        RenderableObjects/Interfaces/include/ITransformable.hpp
-        RenderableObjects/Interfaces/src/ITransformable.cpp
-        RenderableObjects/Interfaces/include/IRenderableObject.hpp
-        RenderableObjects/Interfaces/src/IRenderableObject.cpp
-        RenderableObjects/Interfaces/include/IRenderableObjectOpenGL.hpp
-        RenderableObjects/Interfaces/src/IRenderableObjectOpenGL.cpp
-
-        RenderableObjects/Objects/include/CubeObjectOpenGL.hpp
-        RenderableObjects/Objects/src/CubeObjectOpenGL.cpp
-        RenderableObjects/Objects/include/CubeObjectOpenGLImpl.hpp
-        RenderableObjects/Objects/src/CubeObjectOpenGLImpl.cpp
-        RenderableObjects/Objects/include/GridOpenGL.hpp
-        RenderableObjects/Objects/src/GridOpenGL.cpp
-        RenderableObjects/Objects/include/SphereObjectOpenGL.hpp
-        RenderableObjects/Objects/src/SphereObjectOpenGL.cpp
-        RenderableObjects/Objects/include/SphereObjectOpenGLImpl.hpp
-        RenderableObjects/Objects/src/SphereObjectOpenGLImpl.cpp
-
-        RenderableObjects/Support/include/TransformationTypes.hpp
-)
-
-
-source_group(
-    TREE 
-        ${CMAKE_CURRENT_SOURCE_DIR}/Vertices
-    PREFIX
-        "Vertices"
-    FILES
-		Vertices/include/VertexAttributes.hpp
-        Vertices/include/VertexLayouts.hpp
-		Vertices/src/VertexLayouts.cpp
-        Vertices/include/VertexLayoutsImpl.hpp
-		Vertices/src/VertexLayoutsImpl.cpp
-        Vertices/include/Vertex.hpp
-)
-
-source_group(
-    TREE 
-        ${CMAKE_CURRENT_SOURCE_DIR}/OpenGLLoader
-    PREFIX
-        "OpenGLLoader"
-    FILES
-        OpenGLLoader/include/OpenGLLoader.hpp
-		OpenGLLoader/src/OpenGLLoader.cpp
-        OpenGLLoader/include/OpenGLLoaderImpl.hpp
-		OpenGLLoader/src/OpenGLLoaderImpl.cpp
-)
-
-source_group(
-    TREE 
-        ${CMAKE_CURRENT_SOURCE_DIR}/Utils
-    PREFIX
-        "Utils"
-    FILES
-        Utils/include/MathUtils.hpp
-		Utils/src/MathUtils.cpp
-)
-
-source_group(
-    TREE 
         ${CMAKE_CURRENT_SOURCE_DIR}/Camera
     PREFIX
         "Camera"
     FILES
-        Camera/include/Camera.hpp
-		Camera/src/Camera.cpp
-        Camera/include/CameraImpl.hpp
-		Camera/src/CameraImpl.cpp
+        ${CAMERA_HEADERS}
+        ${CAMERA_SOURCES}
 )
 
 source_group(
@@ -415,32 +351,8 @@ source_group(
     PREFIX
         "Light"
     FILES
-        Light/include/ILightBehavior.hpp
-		Light/src/ILightBehavior.cpp
-        Light/include/LuminousBehavior.hpp
-		Light/src/LuminousBehavior.cpp
-        Light/include/NonLuminousBehavior.hpp
-		Light/src/NonLuminousBehavior.cpp
-        Light/include/LightProperties.hpp
-        Light/include/LightData.hpp
-		Light/src/LightData.cpp
-        Light/include/DirectionalLight.hpp
-        Light/src/DirectionalLight.cpp
-        Light/include/SpotLight.hpp
-        Light/src/SpotLight.cpp
-        Light/include/PointLight.hpp
-        Light/src/PointLight.cpp
-        Light/include/Light.hpp
-        Light/src/Light.cpp
-)
-
-source_group(
-    TREE 
-        ${CMAKE_CURRENT_SOURCE_DIR}/RayTracing
-    PREFIX
-        "RayTracing"
-    FILES
-        RayTracing/include/Ray.hpp
+        ${LIGHT_HEADERS}
+        ${LIGHT_SOURCES}
 )
 
 source_group(
@@ -449,9 +361,85 @@ source_group(
     PREFIX
         "Materials"
     FILES
-        Materials/include/Materials.hpp
-        Materials/src/Materials.cpp
-        Materials/include/MaterialsLibrary.hpp
-        Materials/src/MaterialsLibrary.cpp
-        Materials/include/MaterialTypes.hpp
+        ${MATERIALS_HEADERS}
+        ${MATERIALS_SOURCES}
+)
+
+source_group(
+    TREE 
+        ${CMAKE_CURRENT_SOURCE_DIR}/OpenGLLoader
+    PREFIX
+        "OpenGLLoader"
+    FILES
+        ${LOADER_HEADERS}
+        ${LOADER_SOURCES}
+)
+
+source_group(
+    TREE 
+        ${CMAKE_CURRENT_SOURCE_DIR}/RayTracing
+    PREFIX
+        "RayTracing"
+    FILES
+        ${RAYTRACING_HEADERS}
+)
+
+source_group(
+    TREE 
+        ${CMAKE_CURRENT_SOURCE_DIR}/RenderableObjects
+    PREFIX
+        "RenderableObjects"
+    FILES
+        ${RO_HEADERS}
+        ${RO_SOURCES}
+)
+
+source_group(
+    TREE 
+        ${CMAKE_CURRENT_SOURCE_DIR}/Renderers
+    PREFIX
+        "Renderers"
+    FILES
+        ${RENDERERS_HEADERS}
+        ${RENDERERS_SOURCES}
+)
+
+source_group(
+    TREE 
+        ${CMAKE_CURRENT_SOURCE_DIR}/Scene
+    PREFIX
+        "Scene"
+    FILES
+        ${SCENE_HEADERS}
+        ${SCENE_SOURCES}
+)
+
+source_group(
+    TREE 
+        ${CMAKE_CURRENT_SOURCE_DIR}/Shaders
+    PREFIX
+        "Shaders"
+    FILES
+        ${SHADERS_HEADERS}
+        ${SHADERS_SOURCES}
+)
+
+source_group(
+    TREE 
+        ${CMAKE_CURRENT_SOURCE_DIR}/Utils
+    PREFIX
+        "Utils"
+    FILES
+        ${UTILS_HEADERS}
+        ${UTILS_SOURCES}
+)
+
+source_group(
+    TREE 
+        ${CMAKE_CURRENT_SOURCE_DIR}/Vertices
+    PREFIX
+        "Vertices"
+    FILES
+        ${VERTEX_HEADERS}
+        ${VERTEX_SOURCES}
 )
