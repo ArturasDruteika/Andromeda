@@ -19,7 +19,7 @@
 
 #include "../include/IGridControl.hpp"
 #include "../include/IIlluminationControl.hpp"
-#include "../../Scene/include/IScene.hpp"
+#include "../../Scene/Interfaces/include/IScene.hpp"
 
 
 namespace Andromeda::Rendering

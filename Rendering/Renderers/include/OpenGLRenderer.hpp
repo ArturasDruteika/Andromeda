@@ -17,7 +17,7 @@
 #endif
 
 
-#include "../../Scene/include/OpenGLScene.hpp"
+#include "../../Scene/Scenes/include/OpenGLScene.hpp"
 #include "../../Camera/include/Camera.hpp"
 
 

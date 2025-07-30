@@ -1,5 +1,5 @@
 #include "../include/OpenGLRendererImpl.hpp"
-#include "../../Scene/include/SpecialIndices.hpp"
+#include "../../Scene/Support/include/SpecialIndices.hpp"
 #include "../../Utils/include/MathUtils.hpp"
 #include "../../Light/include/LuminousBehavior.hpp"
 #include "../../Light/include/NonLuminousBehavior.hpp"
