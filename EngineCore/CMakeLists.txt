@@ -43,7 +43,8 @@ target_include_directories(${PROJECT_NAME}
         ..//Rendering//Renderers//include//
         ..//Rendering//RenderableObjects//Interfaces//include//
         ..//Rendering//Vertices//include//
-        ..//Rendering//Scene//include//
+        ..//Rendering//Scene//Interfaces//include//
+        ..//Rendering//Scene//Scenes//include//
         ..//Rendering//OpenGLLoader//include//
         ..//Rendering//Attributes//include//
         ..//Rendering//Camera//include//
