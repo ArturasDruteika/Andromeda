@@ -18,6 +18,7 @@
 
 
 #include "pch.hpp"
+#include "../../Interfaces/include/IScene.hpp"
 #include "../../../RenderableObjects/Interfaces/include/IRenderableObjectOpenGL.hpp"
 #include "../../../Light/include/LuminousBehavior.hpp"
 
@@ -25,6 +26,7 @@
 namespace Andromeda::Rendering
 {
 	class RENDERING_API OpenGLScene
+		: public IScene
 	{
 	public:
 		OpenGLScene();
@@ -35,28 +37,31 @@ namespace Andromeda::Rendering
 		OpenGLScene(OpenGLScene&& other) noexcept = delete;	// Prevent Move Constructor
 		OpenGLScene& operator=(OpenGLScene&& other) noexcept = delete;	// Prevent Move Assignment
 
-		// Getters
-		bool StateChanged() const;
-		float GetAmbientStrength() const;
-		const std::unordered_map<int, IRenderableObjectOpenGL*>& GetObjects() const;
-		const std::unordered_map<int, IRenderableObjectOpenGL*>& GetLuminousObjects() const;
-		// Setters
-		void SetAmbientStrength(float ambientStrength);
-		void ResetState();
+		// === From ISceneState ===
+		bool StateChanged(const std::unordered_map<int, IRenderableObject*>& objects) const override;
 
-		void AddObject(int id, IRenderableObjectOpenGL* object);
-		void RemoveObject(int id);
+		// === From ISceneEnvironment ===
+		float GetAmbientStrength() const override;
+		void SetAmbientStrength(float ambientStrength) override;
+		void ResizeGrid(float resizeFactor) override;
+
+		// === From ISceneObjects ===
+		const std::unordered_map<int, IRenderableObject*>& GetObjects() const override;
+		void AddObject(int id, IRenderableObject* object) override;
+		void RemoveObject(int id) override;
+
+		// === From ISceneLighting ===
+		const std::unordered_map<int, IRenderableObject*>& GetLuminousObjects() const override;
 		void AddDirectionalLight(
-			int id, 
-			const glm::vec3& direction,
-			const glm::vec3& color = glm::vec3{ 1.0f },
+			int id,
+			const Math::Vec3& direction,
+			const Math::Vec3& color = Math::Vec3(1.0f, 1.0f, 1.0f),
 			float intensity = 1.0f,
-			const glm::vec3& ambient = glm::vec3(0.1f),
-			const glm::vec3& diffuse = glm::vec3(0.4f, 0.4f, 0.4f),
-			const glm::vec3& specular = glm::vec3(0.4f, 0.4f, 0.4f)
-		);
-		void RemoveDrectionalLight(int id);
-		void ResizeGrid(float resizeFactor);
+			const Math::Vec3& ambient = Math::Vec3(0.1f, 0.1f, 0.1f),
+			const Math::Vec3& diffuse = Math::Vec3(0.4f, 0.4f, 0.4f),
+			const Math::Vec3& specular = Math::Vec3(0.4f, 0.4f, 0.4f)
+		) override;
+		void RemoveDirectionalLight(int id) override;
 
 	private:
 		class OpenGLSceneImpl;

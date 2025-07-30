@@ -14,9 +14,14 @@ namespace Andromeda::Rendering
 		delete m_pOpenGLSceneImpl;
 	}
 
-	bool OpenGLScene::StateChanged() const
+	const std::unordered_map<int, IRenderableObject*>& OpenGLScene::GetObjects() const
 	{
-		return m_pOpenGLSceneImpl->StateChanged();
+		return m_pOpenGLSceneImpl->GetObjects();
+	}
+
+	bool OpenGLScene::StateChanged(const std::unordered_map<int, IRenderableObject*>& objects) const
+	{
+		return m_pOpenGLSceneImpl->StateChanged(objects);
 	}
 
 	float OpenGLScene::GetAmbientStrength() const
@@ -24,12 +29,12 @@ namespace Andromeda::Rendering
 		return m_pOpenGLSceneImpl->GetAmbientStrength();
 	}
 
-	const std::unordered_map<int, IRenderableObjectOpenGL*>& OpenGLScene::GetObjects() const
+	void OpenGLScene::AddObject(int id, IRenderableObject* object)
 	{
-		return m_pOpenGLSceneImpl->GetObjects();
+		m_pOpenGLSceneImpl->AddObject(id, object);
 	}
 
-	const std::unordered_map<int, IRenderableObjectOpenGL*>& OpenGLScene::GetLuminousObjects() const
+	const std::unordered_map<int, IRenderableObject*>& OpenGLScene::GetLuminousObjects() const
 	{
 		return m_pOpenGLSceneImpl->GetLuminousObjects();
 	}
@@ -39,16 +44,6 @@ namespace Andromeda::Rendering
 		m_pOpenGLSceneImpl->SetAmbientStrength(ambientStrength);
 	}
 
-	void OpenGLScene::ResetState()
-	{
-		m_pOpenGLSceneImpl->ResetState();
-	}
-
-	void OpenGLScene::AddObject(int id, IRenderableObjectOpenGL* object)
-	{
-		m_pOpenGLSceneImpl->AddObject(id, object);
-	}
-
 	void OpenGLScene::RemoveObject(int id)
 	{
 		m_pOpenGLSceneImpl->RemoveObject(id);
@@ -56,12 +51,12 @@ namespace Andromeda::Rendering
 
 	void OpenGLScene::AddDirectionalLight(
 		int id, 
-		const glm::vec3& direction, 
-		const glm::vec3& color, 
+		const Math::Vec3& direction, 
+		const Math::Vec3& color, 
 		float intensity, 
-		const glm::vec3& ambient, 
-		const glm::vec3& diffuse, 
-		const glm::vec3& specular
+		const Math::Vec3& ambient, 
+		const Math::Vec3& diffuse, 
+		const Math::Vec3& specular
 	)
 	{
 		m_pOpenGLSceneImpl->AddDirectionalLight(
@@ -75,9 +70,9 @@ namespace Andromeda::Rendering
 		);
 	}
 
-	void OpenGLScene::RemoveDrectionalLight(int id)
+	void OpenGLScene::RemoveDirectionalLight(int id)
 	{
-		m_pOpenGLSceneImpl->RemoveDrectionalLight(id);
+		m_pOpenGLSceneImpl->RemoveDirectionalLight(id);
 	}
 
 	void OpenGLScene::ResizeGrid(float resizeFactor)
