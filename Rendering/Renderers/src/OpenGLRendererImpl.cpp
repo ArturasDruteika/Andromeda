@@ -229,7 +229,8 @@ namespace Andromeda::Rendering
         for (auto& [id, obj] : scene.GetObjects())
         {
             depthShader->SetUniform("u_model", MathUtils::ToGLM(obj->GetModelMatrix()));
-            glBindVertexArray(obj->GetVAO());
+			IRenderableObjectOpenGL* renderableObj = dynamic_cast<IRenderableObjectOpenGL*>(obj);
+            glBindVertexArray(renderableObj->GetVAO());
             glDrawElements(GL_TRIANGLES, obj->GetIndicesCount(), GL_UNSIGNED_INT, nullptr);
         }
 
@@ -274,7 +275,8 @@ namespace Andromeda::Rendering
             if (obj->IsLuminous())
             {
                 lumShader->SetUniform("u_model", MathUtils::ToGLM(obj->GetModelMatrix()));
-                glBindVertexArray(obj->GetVAO());
+                IRenderableObjectOpenGL* renderableObj = dynamic_cast<IRenderableObjectOpenGL*>(obj);
+                glBindVertexArray(renderableObj->GetVAO());
                 glDrawElements(GL_TRIANGLES, obj->GetIndicesCount(), GL_UNSIGNED_INT, nullptr);
             }
         }
@@ -295,7 +297,8 @@ namespace Andromeda::Rendering
             if (id >= 0)
             {
                 shader->SetUniform("u_model", MathUtils::ToGLM(obj->GetModelMatrix()));
-                glBindVertexArray(obj->GetVAO());
+                IRenderableObjectOpenGL* renderableObj = dynamic_cast<IRenderableObjectOpenGL*>(obj);
+                glBindVertexArray(renderableObj->GetVAO());
                 glDrawElements(GL_TRIANGLES, obj->GetIndicesCount(), GL_UNSIGNED_INT, nullptr);
             }
         }
@@ -396,7 +399,8 @@ namespace Andromeda::Rendering
             auto it = objects.find(static_cast<int>(SpecialIndices::Grid));
             if (it != objects.end())
             {
-                RenderGrid(*it->second);
+                IRenderableObjectOpenGL* renderableObj = dynamic_cast<IRenderableObjectOpenGL*>(it->second);
+                RenderGrid(*renderableObj);
             }
         }
     }
@@ -456,7 +460,8 @@ namespace Andromeda::Rendering
             shader.SetUniform("u_model", MathUtils::ToGLM(obj->GetModelMatrix()));
             shader.SetUniform("u_normalMatrix", normalMatrix);
 
-            glBindVertexArray(obj->GetVAO());
+            IRenderableObjectOpenGL* renderableObj = dynamic_cast<IRenderableObjectOpenGL*>(obj);
+            glBindVertexArray(renderableObj->GetVAO());
             glDrawElements(GL_TRIANGLES, obj->GetIndicesCount(), GL_UNSIGNED_INT, nullptr);
         }
     }
@@ -464,7 +469,7 @@ namespace Andromeda::Rendering
     glm::mat4 OpenGLRenderer::OpenGLRendererImpl::ComputeLightSpaceMatrix(const OpenGLScene& scene) const
     {
         std::unordered_map<int, Math::Vec3> lightCoords;
-        const std::unordered_map<int, IRenderableObjectOpenGL*>& luminousObjsMap = scene.GetLuminousObjects();
+        const std::unordered_map<int, IRenderableObject*>& luminousObjsMap = scene.GetLuminousObjects();
         lightCoords.reserve(luminousObjsMap.size());
 
         for (const auto& [id, lightCaster] : luminousObjsMap)
