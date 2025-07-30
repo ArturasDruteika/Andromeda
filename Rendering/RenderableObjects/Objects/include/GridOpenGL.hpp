@@ -29,26 +29,17 @@ namespace Andromeda
 			GridOpenGL(GridOpenGL&& other) noexcept = delete;	// Prevent Move Constructor
 			GridOpenGL& operator=(GridOpenGL&& other) noexcept = delete;	// Prevent Move Assignment
 
-			// Overrides from IRenderableObjectOpenGL
-			// Getters
+			// === Overrides from ILuminous ===
 			bool IsLuminous() const override;
+			ILightBehavior* GetLightBehavior() const override;
+			void SetLuminousBehavior(ILightBehavior* behavior) override;
+
+			// === Overrides from ITransformable ===
 			bool StateChanged() const override;
-			unsigned int GetVBO() const override;
-			unsigned int GetVAO() const override;
-			unsigned int GetEBO() const override;
-			unsigned int GetVerticesCount() const override;
-			unsigned int GetIndicesCount() const override;
-			std::vector<unsigned int> GetIndices() const override;
-			std::vector<Vertex> GetVertices() const override;
 			Math::Vec3 GetCenterPosition() const override;
 			Math::Mat4 GetModelMatrix() const override;
-			Space::Color GetColor() const override;
-			ILightBehavior* GetLightBehavior() const override;	// Method not needed for this object
-			// Setters
 			void SetModelMatrix(const Math::Mat4& modelMatrix) override;
-			void SetLuminousBehavior(ILightBehavior* behavior) override;
 			void ResetState() override;
-			// Transformation operations
 			void Translate(const Math::Vec3& translation) override;
 			void TranslateDelta(const Math::Vec3& translationDelta) override;
 			void Rotate(const Math::Vec3& rotation) override;
@@ -56,7 +47,21 @@ namespace Andromeda
 			void RotateY(float angle) override;
 			void RotateZ(float angle) override;
 			void Scale(const Math::Vec3& scale) override;
+
+			// === Overrides from IGeometry ===
+			unsigned int GetVerticesCount() const override;
+			unsigned int GetIndicesCount() const override;
+			std::vector<unsigned int> GetIndices() const override;
+			std::vector<Vertex> GetVertices() const override;
+
+			// === Overrides from IRenderableObject ===
+			Space::Color GetColor() const override;
 			void SetColor(const Space::Color& color) override;
+
+			// === Overrides from IRenderableObjectOpenGL ===
+			unsigned int GetVBO() const override;
+			unsigned int GetVAO() const override;
+			unsigned int GetEBO() const override;
 
 			// Getters
 			int GetGridSize() const;
