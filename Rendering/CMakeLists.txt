@@ -37,21 +37,31 @@ add_library(${PROJECT_NAME}
         Shaders/include/ShaderManager.hpp
 		Shaders/src/ShaderManager.cpp
 
-        Scene/include/OpenGLScene.hpp
-		Scene/src/OpenGLScene.cpp
-        Scene/include/OpenGLSceneImpl.hpp
-		Scene/src/OpenGLSceneImpl.cpp
-        Scene/include/SpecialIndices.hpp
-        Scene/include/IScene.hpp
-		Scene/src/IScene.cpp
-        Scene/include/ISceneObjects.hpp
-		Scene/src/ISceneObjects.cpp
-        Scene/include/ISceneLighting.hpp
-		Scene/src/ISceneLighting.cpp
-        Scene/include/ISceneEnvironment.hpp
-		Scene/src/ISceneEnvironment.cpp
-        Scene/include/ISceneState.hpp
-		Scene/src/ISceneState.cpp
+        Scene/Abstracts/include/Scene.hpp
+		Scene/Abstracts/src/Scene.cpp
+        Scene/Abstracts/include/SceneObjects.hpp
+		Scene/Abstracts/src/SceneObjects.cpp
+        Scene/Abstracts/include/SceneLighting.hpp
+		Scene/Abstracts/src/SceneLighting.cpp
+        Scene/Abstracts/include/SceneEnvironment.hpp
+		Scene/Abstracts/src/SceneEnvironment.cpp
+        Scene/Abstracts/include/SceneState.hpp
+		Scene/Abstracts/src/SceneState.cpp
+        Scene/Interfaces/include/IScene.hpp
+		Scene/Interfaces/src/IScene.cpp
+        Scene/Interfaces/include/ISceneObjects.hpp
+		Scene/Interfaces/src/ISceneObjects.cpp
+        Scene/Interfaces/include/ISceneLighting.hpp
+		Scene/Interfaces/src/ISceneLighting.cpp
+        Scene/Interfaces/include/ISceneEnvironment.hpp
+		Scene/Interfaces/src/ISceneEnvironment.cpp
+        Scene/Interfaces/include/ISceneState.hpp
+		Scene/Interfaces/src/ISceneState.cpp
+        Scene/Scenes/include/OpenGLScene.hpp
+		Scene/Scenes/src/OpenGLScene.cpp
+        Scene/Scenes/include/OpenGLSceneImpl.hpp
+		Scene/Scenes/src/OpenGLSceneImpl.cpp
+        Scene/Support/include/SpecialIndices.hpp
 
         RenderableObjects/Abstracts/include/Geometry.hpp
 		RenderableObjects/Abstracts/src/Geometry.cpp
@@ -278,21 +288,34 @@ source_group(
     PREFIX
         "Scene"
     FILES
-        Scene/include/OpenGLScene.hpp
-		Scene/src/OpenGLScene.cpp
-        Scene/include/OpenGLSceneImpl.hpp
-		Scene/src/OpenGLSceneImpl.cpp
-        Scene/include/SpecialIndices.hpp
-        Scene/include/IScene.hpp
-		Scene/src/IScene.cpp
-        Scene/include/ISceneObjects.hpp
-		Scene/src/ISceneObjects.cpp
-        Scene/include/ISceneLighting.hpp
-		Scene/src/ISceneLighting.cpp
-        Scene/include/ISceneEnvironment.hpp
-		Scene/src/ISceneEnvironment.cpp
-        Scene/include/ISceneState.hpp
-		Scene/src/ISceneState.cpp
+        Scene/Abstracts/include/Scene.hpp
+		Scene/Abstracts/src/Scene.cpp
+        Scene/Abstracts/include/SceneObjects.hpp
+		Scene/Abstracts/src/SceneObjects.cpp
+        Scene/Abstracts/include/SceneLighting.hpp
+		Scene/Abstracts/src/SceneLighting.cpp
+        Scene/Abstracts/include/SceneEnvironment.hpp
+		Scene/Abstracts/src/SceneEnvironment.cpp
+        Scene/Abstracts/include/SceneState.hpp
+		Scene/Abstracts/src/SceneState.cpp
+
+        Scene/Interfaces/include/IScene.hpp
+		Scene/Interfaces/src/IScene.cpp
+        Scene/Interfaces/include/ISceneObjects.hpp
+		Scene/Interfaces/src/ISceneObjects.cpp
+        Scene/Interfaces/include/ISceneLighting.hpp
+		Scene/Interfaces/src/ISceneLighting.cpp
+        Scene/Interfaces/include/ISceneEnvironment.hpp
+		Scene/Interfaces/src/ISceneEnvironment.cpp
+        Scene/Interfaces/include/ISceneState.hpp
+		Scene/Interfaces/src/ISceneState.cpp
+
+        Scene/Scenes/include/OpenGLScene.hpp
+		Scene/Scenes/src/OpenGLScene.cpp
+        Scene/Scenes/include/OpenGLSceneImpl.hpp
+		Scene/Scenes/src/OpenGLSceneImpl.cpp
+
+        Scene/Support/include/SpecialIndices.hpp
 )
 
 source_group(
