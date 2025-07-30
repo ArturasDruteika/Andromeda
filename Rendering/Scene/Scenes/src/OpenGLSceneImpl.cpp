@@ -1,6 +1,6 @@
 #include "../include/OpenGLSceneImpl.hpp"
-#include "../include/SpecialIndices.hpp"
-#include "../../RenderableObjects/Objects/include/GridOpenGL.hpp"
+#include "../../Support/include/SpecialIndices.hpp"
+#include "../../../RenderableObjects/Objects/include/GridOpenGL.hpp"
 
 
 

@@ -18,8 +18,8 @@
 
 
 #include "pch.hpp"
-#include "../../RenderableObjects/Interfaces/include/IRenderableObjectOpenGL.hpp"
-#include "../../Light/include/LuminousBehavior.hpp"
+#include "../../../RenderableObjects/Interfaces/include/IRenderableObjectOpenGL.hpp"
+#include "../../../Light/include/LuminousBehavior.hpp"
 
 
 namespace Andromeda::Rendering

@@ -3,8 +3,8 @@
 
 
 #include "../include/OpenGLScene.hpp"
-#include "../../Light/include/LuminousBehavior.hpp"
-#include "../../Light/include/DirectionalLight.hpp"
+#include "../../../Light/include/LuminousBehavior.hpp"
+#include "../../../Light/include/DirectionalLight.hpp"
 
 
 namespace Andromeda::Rendering
