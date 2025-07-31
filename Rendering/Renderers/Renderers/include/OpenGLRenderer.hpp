@@ -17,8 +17,8 @@
 #endif
 
 
-#include "../../Scene/Scenes/include/OpenGLScene.hpp"
-#include "../../Camera/include/Camera.hpp"
+#include "../../../Scene/Scenes/include/OpenGLScene.hpp"
+#include "../../../Camera/include/Camera.hpp"
 
 
 namespace Andromeda::Rendering

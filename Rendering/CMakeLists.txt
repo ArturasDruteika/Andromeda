@@ -119,21 +119,21 @@ set(RO_SOURCES
 
 # ==== Renderers ====
 set(RENDERERS_HEADERS
-    Renderers/include/OpenGLRenderer.hpp
-    Renderers/include/OpenGLRendererImpl.hpp
-    Renderers/include/FrameBufferOpenGL.hpp
-    Renderers/include/IRenderer.hpp
-    Renderers/include/IGridControl.hpp
-    Renderers/include/IIlluminationControl.hpp
+    Renderers/Renderers/include/OpenGLRenderer.hpp
+    Renderers/Renderers/include/OpenGLRendererImpl.hpp
+    Renderers/Renderers/include/FrameBufferOpenGL.hpp
+    Renderers/Renderers/include/IRenderer.hpp
+    Renderers/Renderers/include/IGridControl.hpp
+    Renderers/Renderers/include/IIlluminationControl.hpp
 )
 
 set(RENDERERS_SOURCES
-    Renderers/src/OpenGLRenderer.cpp
-    Renderers/src/OpenGLRendererImpl.cpp
-    Renderers/src/FrameBufferOpenGL.cpp
-    Renderers/src/IRenderer.cpp
-    Renderers/src/IGridControl.cpp
-    Renderers/src/IIlluminationControl.cpp
+    Renderers/Renderers/src/OpenGLRenderer.cpp
+    Renderers/Renderers/src/OpenGLRendererImpl.cpp
+    Renderers/Renderers/src/FrameBufferOpenGL.cpp
+    Renderers/Renderers/src/IRenderer.cpp
+    Renderers/Renderers/src/IGridControl.cpp
+    Renderers/Renderers/src/IIlluminationControl.cpp
 )
 
 # ==== Scene ====
