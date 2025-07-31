@@ -4,6 +4,7 @@
 
 #include "../include/OpenGLRenderer.hpp"
 #include "../include/FrameBufferOpenGL.hpp"
+#include "../../../RenderableObjects/Interfaces/include/IRenderableObjectOpenGL.hpp"
 #include "../../../Shaders/include/ShaderManager.hpp"
 #include "glm/glm.hpp"
 
@@ -38,14 +39,14 @@ namespace Andromeda::Rendering
 
 		void Init(int width, int height, bool illuminationMode = false);
 		void DeInit();
-		void RenderFrame(OpenGLScene& scene);
+		void RenderFrame(IScene& scene);
 		void Resize(int width, int height);
 
 	private:
-		void ShadowMapDepthPass(const OpenGLScene& scene, const glm::mat4& lightSpace) const;
-		void RenderNonLuminousObjects(const OpenGLScene& scene, const glm::mat4& lightSpace) const;
-		void RenderLuminousObjects(const OpenGLScene& scene) const;
-		void RenderObjects(const OpenGLScene& scene) const;
+		void ShadowMapDepthPass(const IScene& scene, const glm::mat4& lightSpace) const;
+		void RenderNonLuminousObjects(const IScene& scene, const glm::mat4& lightSpace) const;
+		void RenderLuminousObjects(const IScene& scene) const;
+		void RenderObjects(const IScene& scene) const;
 		void RenderGrid(const IRenderableObjectOpenGL& object) const;
 		void UpdatePerspectiveMatrix(int width, int height);
 		void BeginFrame() const;
@@ -54,11 +55,11 @@ namespace Andromeda::Rendering
 		void EnableFaceCulling(unsigned int face, unsigned int winding) const;
 		void DisableFaceCulling() const;
 		void PrepareFramebufferForNonLuminousPass() const;
-		void BindShadowMap(int textureUnit)const;
-		void RenderGridIfVisible(const OpenGLScene& scene) const;
-		void PopulateLightUniforms(OpenGLShader& shader, const OpenGLScene& scene) const;
-		void RenderEachNonLuminousObject(OpenGLShader& shader, const OpenGLScene& scene) const;
-		glm::mat4 ComputeLightSpaceMatrix(const OpenGLScene& scene) const;
+		void BindShadowMap(int textureUnit) const;
+		void RenderGridIfVisible(const IScene& scene) const;
+		void PopulateLightUniforms(OpenGLShader& shader, const IScene& scene) const;
+		void RenderEachNonLuminousObject(OpenGLShader& shader, const IScene& scene) const;
+		glm::mat4 ComputeLightSpaceMatrix(const IScene& scene) const;
 
 	private:
 		bool m_isInitialized;

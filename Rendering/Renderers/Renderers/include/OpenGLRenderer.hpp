@@ -17,13 +17,15 @@
 #endif
 
 
-#include "../../../Scene/Scenes/include/OpenGLScene.hpp"
+#include "../../Interfaces/include/IRenderer.hpp"
+#include "../../../Scene/Interfaces/include/IScene.hpp"
 #include "../../../Camera/include/Camera.hpp"
 
 
 namespace Andromeda::Rendering
 {
 	class RENDERING_API OpenGLRenderer
+		: public IRenderer
 	{
 	public:
 		OpenGLRenderer();
@@ -35,9 +37,9 @@ namespace Andromeda::Rendering
 		OpenGLRenderer& operator=(OpenGLRenderer&& other) noexcept = delete;	// Prevent Move Assignment
 
 		// Getters
-		bool IsInitialized() const;
-		bool IsGridVisible() const;
-		bool IsIlluminationMode() const;
+		bool IsInitialized() const override;
+		bool IsGridVisible() const override;
+		bool IsIlluminationMode() const override;
 		unsigned int GetFrameBufferObject() const;
 		unsigned int GetFrameBufferObjectTexture() const;
 		unsigned int GetDepthRenderBuffer() const;
@@ -45,14 +47,14 @@ namespace Andromeda::Rendering
 		int GetWidth() const;
 		int GetHeight() const;
 		// Setters
-		void SetGridVisible(bool visible);
-		void SetIlluminationMode(bool mode);
+		void SetGridVisible(bool visible) override;
+		void SetIlluminationMode(bool mode) override;
 		void SetCamera(Camera* camera);
 
-		void Init(int width, int height, bool illuminationMode = false);
-		void DeInit();
-		void RenderFrame(OpenGLScene& scene);
-		void Resize(int width, int height);
+		void Init(int width, int height, bool illuminationMode = false) override;
+		void DeInit() override;
+		void RenderFrame(IScene& scene) override;
+		void Resize(int width, int height) override;
 
 	private:
 		class OpenGLRendererImpl;

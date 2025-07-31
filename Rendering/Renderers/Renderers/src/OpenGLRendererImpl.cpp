@@ -110,7 +110,7 @@ namespace Andromeda::Rendering
             m_shadowFBO.Resize(width, height);
     }
 
-    void OpenGLRenderer::OpenGLRendererImpl::RenderFrame(OpenGLScene& scene)
+    void OpenGLRenderer::OpenGLRendererImpl::RenderFrame(IScene& scene)
     {
         if (!m_isInitialized)
             return;
@@ -199,7 +199,7 @@ namespace Andromeda::Rendering
         m_pCamera = camera;
     }
 
-    void OpenGLRenderer::OpenGLRendererImpl::ShadowMapDepthPass(const OpenGLScene& scene, const glm::mat4& lightSpace) const
+    void OpenGLRenderer::OpenGLRendererImpl::ShadowMapDepthPass(const IScene& scene, const glm::mat4& lightSpace) const
     {
         EnableFaceCulling(GL_FRONT, GL_CCW);
 
@@ -240,7 +240,7 @@ namespace Andromeda::Rendering
         DisableFaceCulling();
     }
 
-    void OpenGLRenderer::OpenGLRendererImpl::RenderNonLuminousObjects(const OpenGLScene& scene, const glm::mat4& lightSpace) const
+    void OpenGLRenderer::OpenGLRendererImpl::RenderNonLuminousObjects(const IScene& scene, const glm::mat4& lightSpace) const
     {
         EnableFaceCulling(GL_BACK, GL_CCW);
         const int SHADOW_UNIT = 5;
@@ -263,7 +263,7 @@ namespace Andromeda::Rendering
         DisableFaceCulling();
     }
 
-    void OpenGLRenderer::OpenGLRendererImpl::RenderLuminousObjects(const OpenGLScene& scene) const
+    void OpenGLRenderer::OpenGLRendererImpl::RenderLuminousObjects(const IScene& scene) const
     {
         OpenGLShader* lumShader = m_pShaderManager->GetShader(ShaderOpenGLTypes::RenderableObjectsLuminous);
         lumShader->Bind();
@@ -284,7 +284,7 @@ namespace Andromeda::Rendering
         DisableFaceCulling();
     }
 
-    void OpenGLRenderer::OpenGLRendererImpl::RenderObjects(const OpenGLScene& scene) const
+    void OpenGLRenderer::OpenGLRendererImpl::RenderObjects(const IScene& scene) const
     {
         EnableFaceCulling(GL_BACK, GL_CCW);
         OpenGLShader* shader = m_pShaderManager->GetShader(ShaderOpenGLTypes::RenderableObjects);
@@ -391,7 +391,7 @@ namespace Andromeda::Rendering
         glBindTexture(GL_TEXTURE_2D, m_shadowFBO.GetDepthTexture());
     }
 
-    void OpenGLRenderer::OpenGLRendererImpl::RenderGridIfVisible(const OpenGLScene& scene) const
+    void OpenGLRenderer::OpenGLRendererImpl::RenderGridIfVisible(const IScene& scene) const
     {
         if (m_isGridVisible)
         {
@@ -405,7 +405,7 @@ namespace Andromeda::Rendering
         }
     }
 
-    void OpenGLRenderer::OpenGLRendererImpl::PopulateLightUniforms(OpenGLShader& shader, const OpenGLScene& scene) const
+    void OpenGLRenderer::OpenGLRendererImpl::PopulateLightUniforms(OpenGLShader& shader, const IScene& scene) const
     {
         const auto& luminousObjsMap = scene.GetLuminousObjects();
 
@@ -439,7 +439,7 @@ namespace Andromeda::Rendering
         shader.SetUniform("u_specularLight", lightSpecularValues);
     }
 
-    void OpenGLRenderer::OpenGLRendererImpl::RenderEachNonLuminousObject(OpenGLShader& shader, const OpenGLScene& scene) const
+    void OpenGLRenderer::OpenGLRendererImpl::RenderEachNonLuminousObject(OpenGLShader& shader, const IScene& scene) const
     {
         for (const auto& [id, obj] : scene.GetObjects())
         {
@@ -466,7 +466,7 @@ namespace Andromeda::Rendering
         }
     }
 
-    glm::mat4 OpenGLRenderer::OpenGLRendererImpl::ComputeLightSpaceMatrix(const OpenGLScene& scene) const
+    glm::mat4 OpenGLRenderer::OpenGLRendererImpl::ComputeLightSpaceMatrix(const IScene& scene) const
     {
         std::unordered_map<int, Math::Vec3> lightCoords;
         const std::unordered_map<int, IRenderableObject*>& luminousObjsMap = scene.GetLuminousObjects();
