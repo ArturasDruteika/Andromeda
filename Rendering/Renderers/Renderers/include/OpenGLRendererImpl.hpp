@@ -35,7 +35,7 @@ namespace Andromeda::Rendering
 		// Setters
 		void SetGridVisible(bool visible);
 		void SetIlluminationMode(bool mode);
-		void SetCamera(Camera* camera);
+		void SetCamera(ICamera* camera);
 
 		void Init(int width, int height, bool illuminationMode = false);
 		void DeInit();
@@ -71,7 +71,7 @@ namespace Andromeda::Rendering
 		glm::mat4 m_lightSpace;
 		FrameBufferOpenGL m_mainFBO;
 		FrameBufferOpenGL m_shadowFBO;
-		Camera* m_pCamera;
+		ICamera* m_pCamera;
 		ShaderManager* m_pShaderManager;
 		mutable std::chrono::steady_clock::time_point m_lastFrameTime = std::chrono::steady_clock::now();
 	};

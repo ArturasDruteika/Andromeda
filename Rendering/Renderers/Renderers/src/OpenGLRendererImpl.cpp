@@ -189,7 +189,7 @@ namespace Andromeda::Rendering
         m_isIlluminationMode = mode;
     }
 
-    void OpenGLRenderer::OpenGLRendererImpl::SetCamera(Camera* camera)
+    void OpenGLRenderer::OpenGLRendererImpl::SetCamera(ICamera* camera)
     {
         if (camera == nullptr)
         {

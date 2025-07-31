@@ -20,11 +20,13 @@ endif ()
 set(CAMERA_HEADERS
     Camera/include/Camera.hpp
     Camera/include/CameraImpl.hpp
+    Camera/include/ICamera.hpp
 )
 
 set(CAMERA_SOURCES
     Camera/src/Camera.cpp
     Camera/src/CameraImpl.cpp
+    Camera/src/ICamera.cpp
 )
 
 # ==== Light ====
@@ -128,6 +130,7 @@ set(RENDERERS_HEADERS
     Renderers/Interfaces/include/ISizeControl.hpp
     Renderers/Interfaces/include/IRendererOpenGL.hpp
     Renderers/Interfaces/include/IFrameBufferProvider.hpp
+    Renderers/Interfaces/include/ICameraControl.hpp
 )
 
 set(RENDERERS_SOURCES
@@ -140,6 +143,7 @@ set(RENDERERS_SOURCES
     Renderers/Interfaces/src/ISizeControl.cpp
     Renderers/Interfaces/src/IRendererOpenGL.cpp
     Renderers/Interfaces/src/IFrameBufferProvider.cpp
+    Renderers/Interfaces/src/ICameraControl.cpp
 )
 
 # ==== Scene ====

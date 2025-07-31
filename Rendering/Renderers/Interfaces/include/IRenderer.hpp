@@ -17,6 +17,7 @@
 #endif
 
 
+#include "../include/ICameraControl.hpp"
 #include "../include/IGridControl.hpp"
 #include "../include/IIlluminationControl.hpp"
 #include "../include/ISizeControl.hpp"
@@ -26,7 +27,8 @@
 namespace Andromeda::Rendering
 {
 	class RENDERING_API IRenderer
-		: public IGridControl
+		: public ICameraControl
+		, public IGridControl
 		, public IIlluminationControl
 		, public ISizeControl
 	{

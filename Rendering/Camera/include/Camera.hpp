@@ -18,6 +18,7 @@
 
 
 #include "pch.hpp"
+#include "ICamera.hpp"
 #include "LinearAlgebraDataTypes.hpp"
 
 
@@ -25,14 +26,13 @@ namespace Andromeda
 {
 	namespace Rendering
 	{
-        using OnDistanceChange = std::function<void(float)>;
-
         class RENDERING_API Camera
+			: public ICamera
         {
         public:
             Camera();
             Camera(const Math::Vec3& position, float yawRadians, float pitchRadians);
-			~Camera();
+			~Camera() override;
 
             Camera(const Camera& other);
             Camera& operator=(const Camera& other);
@@ -40,15 +40,15 @@ namespace Andromeda
             Camera& operator=(Camera&& other) noexcept;
 
             // Getters
-            Math::Mat4 GetViewMatrix() const;
-            Math::Vec3 GetPosition() const;
-            Math::Vec3 GetForward() const;
-            Math::Vec3 GetRight() const;
-            Math::Vec3 GetUp() const;
+            Math::Mat4 GetViewMatrix() const override;
+            Math::Vec3 GetPosition() const override;
+            Math::Vec3 GetForward() const override;
+            Math::Vec3 GetRight() const override;
+            Math::Vec3 GetUp() const override;
 
-            void Rotate(float yaw, float pitch, float roll);
-            void Zoom(float deltaDistance);
-            void SetOnDistanceChange(OnDistanceChange callback);
+            void Rotate(float yaw, float pitch, float roll) override;
+            void Zoom(float deltaDistance) override;
+            void SetOnDistanceChange(OnDistanceChange callback) override;
 
         private:
             class CameraImpl;
