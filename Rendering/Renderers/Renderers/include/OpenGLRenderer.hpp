@@ -44,8 +44,8 @@ namespace Andromeda::Rendering
 		unsigned int GetFrameBufferObjectTexture() const;
 		unsigned int GetDepthRenderBuffer() const;
 		unsigned int GetShadowMap() const;
-		int GetWidth() const;
-		int GetHeight() const;
+		int GetWidth() const override;
+		int GetHeight() const override;
 		// Setters
 		void SetGridVisible(bool visible) override;
 		void SetIlluminationMode(bool mode) override;

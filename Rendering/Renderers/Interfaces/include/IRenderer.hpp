@@ -19,6 +19,7 @@
 
 #include "../include/IGridControl.hpp"
 #include "../include/IIlluminationControl.hpp"
+#include "../include/ISizeControl.hpp"
 #include "../../../Scene/Interfaces/include/IScene.hpp"
 
 
@@ -27,6 +28,7 @@ namespace Andromeda::Rendering
 	class RENDERING_API IRenderer
 		: public IGridControl
 		, public IIlluminationControl
+		, public ISizeControl
 	{
 	public:
 		virtual ~IRenderer();
@@ -37,7 +39,6 @@ namespace Andromeda::Rendering
 		virtual void Init(int width, int height, bool illuminationMode = false) = 0;
 		virtual void DeInit() = 0;
 		virtual void RenderFrame(IScene& scene) = 0;
-		virtual void Resize(int width, int height) = 0;
 	};
 }
 

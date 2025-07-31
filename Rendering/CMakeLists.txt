@@ -125,6 +125,7 @@ set(RENDERERS_HEADERS
     Renderers/Interfaces/include/IRenderer.hpp
     Renderers/Interfaces/include/IGridControl.hpp
     Renderers/Interfaces/include/IIlluminationControl.hpp
+    Renderers/Interfaces/include/ISizeControl.hpp
 )
 
 set(RENDERERS_SOURCES
@@ -134,6 +135,7 @@ set(RENDERERS_SOURCES
     Renderers/Interfaces/src/IRenderer.cpp
     Renderers/Interfaces/src/IGridControl.cpp
     Renderers/Interfaces/src/IIlluminationControl.cpp
+    Renderers/Interfaces/src/ISizeControl.cpp
 )
 
 # ==== Scene ====
