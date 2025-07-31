@@ -154,7 +154,7 @@ namespace Andromeda::Rendering
         return m_mainFBO.GetId();
     }
 
-    unsigned int OpenGLRenderer::OpenGLRendererImpl::GetFrameBufferObjectTexture() const
+    unsigned int OpenGLRenderer::OpenGLRendererImpl::GetFrameBufferTexture() const
     {
         return m_mainFBO.GetColorTexture();
     }

@@ -27,7 +27,7 @@ namespace Andromeda::Rendering
 		bool IsGridVisible() const;
 		bool IsIlluminationMode() const;
 		unsigned int GetFrameBufferObject() const;
-		unsigned int GetFrameBufferObjectTexture() const;
+		unsigned int GetFrameBufferTexture() const;
 		unsigned int GetDepthRenderBuffer() const;
 		unsigned int GetShadowMap() const;
 		int GetWidth() const;

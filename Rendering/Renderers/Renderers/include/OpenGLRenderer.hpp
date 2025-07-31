@@ -17,7 +17,7 @@
 #endif
 
 
-#include "../../Interfaces/include/IRenderer.hpp"
+#include "../../Interfaces/include/IRendererOpenGL.hpp"
 #include "../../../Scene/Interfaces/include/IScene.hpp"
 #include "../../../Camera/include/Camera.hpp"
 
@@ -25,7 +25,7 @@
 namespace Andromeda::Rendering
 {
 	class RENDERING_API OpenGLRenderer
-		: public IRenderer
+		: public IRendererOpenGL
 	{
 	public:
 		OpenGLRenderer();
@@ -40,8 +40,8 @@ namespace Andromeda::Rendering
 		bool IsInitialized() const override;
 		bool IsGridVisible() const override;
 		bool IsIlluminationMode() const override;
-		unsigned int GetFrameBufferObject() const;
-		unsigned int GetFrameBufferObjectTexture() const;
+		unsigned int GetFrameBufferID() const override;
+		unsigned int GetFrameBufferTexture() const override;
 		unsigned int GetDepthRenderBuffer() const;
 		unsigned int GetShadowMap() const;
 		int GetWidth() const override;
