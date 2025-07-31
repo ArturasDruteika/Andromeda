@@ -39,16 +39,6 @@ namespace Andromeda::Rendering
 		return m_pOpenGLRendererImpl->GetFrameBufferTexture();
 	}
 
-	unsigned int OpenGLRenderer::GetDepthRenderBuffer() const
-	{
-		return m_pOpenGLRendererImpl->GetDepthRenderBuffer();
-	}
-
-	unsigned int OpenGLRenderer::GetShadowMap() const
-	{
-		return m_pOpenGLRendererImpl->GetShadowMap();
-	}
-
 	int OpenGLRenderer::GetWidth() const
 	{
 		return m_pOpenGLRendererImpl->GetWidth();

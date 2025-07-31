@@ -42,8 +42,6 @@ namespace Andromeda::Rendering
 		bool IsIlluminationMode() const override;
 		unsigned int GetFrameBufferID() const override;
 		unsigned int GetFrameBufferTexture() const override;
-		unsigned int GetDepthRenderBuffer() const;
-		unsigned int GetShadowMap() const;
 		int GetWidth() const override;
 		int GetHeight() const override;
 		// Setters
