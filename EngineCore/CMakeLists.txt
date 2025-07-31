@@ -40,7 +40,7 @@ target_include_directories(${PROJECT_NAME}
         ..//glfw//
         ..//Window//GLFWWindow//include//
         ..//Context//GLFWContext//include//
-        ..//Rendering//Renderers//include//
+        ..//Rendering//Renderers//Renderers//include//
         ..//Rendering//RenderableObjects//Interfaces//include//
         ..//Rendering//Vertices//include//
         ..//Rendering//Scene//Interfaces//include//
