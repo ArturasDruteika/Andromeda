@@ -123,7 +123,13 @@ set(RO_SOURCES
 set(RENDERERS_HEADERS
     Renderers/Renderers/include/OpenGLRenderer.hpp
     Renderers/Renderers/include/OpenGLRendererImpl.hpp
-    Renderers/Renderers/include/FrameBufferOpenGL.hpp
+    # Renderers/Abstracts/include/Renderer.hpp
+    # Renderers/Abstracts/include/GridControl.hpp
+    # Renderers/Abstracts/include/IlluminationControl.hpp
+    # Renderers/Abstracts/include/SizeControl.hpp
+    # Renderers/Abstracts/include/RendererOpenGL.hpp
+    # Renderers/Abstracts/include/FrameBufferProvider.hpp
+    # Renderers/Abstracts/include/CameraControl.hpp
     Renderers/Interfaces/include/IRenderer.hpp
     Renderers/Interfaces/include/IGridControl.hpp
     Renderers/Interfaces/include/IIlluminationControl.hpp
@@ -131,12 +137,19 @@ set(RENDERERS_HEADERS
     Renderers/Interfaces/include/IRendererOpenGL.hpp
     Renderers/Interfaces/include/IFrameBufferProvider.hpp
     Renderers/Interfaces/include/ICameraControl.hpp
+    Renderers/Support/include/FrameBufferOpenGL.hpp
 )
 
 set(RENDERERS_SOURCES
     Renderers/Renderers/src/OpenGLRenderer.cpp
     Renderers/Renderers/src/OpenGLRendererImpl.cpp
-    Renderers/Renderers/src/FrameBufferOpenGL.cpp
+    # Renderers/Abstracts/src/Renderer.cpp
+    # Renderers/Abstracts/src/GridControl.cpp
+    # Renderers/Abstracts/src/IlluminationControl.cpp
+    # Renderers/Abstracts/src/SizeControl.cpp
+    # Renderers/Abstracts/src/RendererOpenGL.cpp
+    # Renderers/Abstracts/src/FrameBufferProvider.cpp
+    # Renderers/Abstracts/src/CameraControl.cpp
     Renderers/Interfaces/src/IRenderer.cpp
     Renderers/Interfaces/src/IGridControl.cpp
     Renderers/Interfaces/src/IIlluminationControl.cpp
@@ -144,6 +157,7 @@ set(RENDERERS_SOURCES
     Renderers/Interfaces/src/IRendererOpenGL.cpp
     Renderers/Interfaces/src/IFrameBufferProvider.cpp
     Renderers/Interfaces/src/ICameraControl.cpp
+    Renderers/Support/src/FrameBufferOpenGL.cpp
 )
 
 # ==== Scene ====
