@@ -1,29 +1,34 @@
 #ifndef RENDERER__SHADER_OPENGL__HPP
 #define RENDERER__SHADER_OPENGL__HPP
 
-
-#include "pch.hpp"
+#include "ShaderProgramOpenGL.hpp"
+#include "UniformSetterOpenGL.hpp"
+#include "IShader.hpp"
 #include "glm/glm.hpp"
-
 
 namespace Andromeda::Rendering
 {
 	class ShaderOpenGL
+		: public ShaderProgramOpenGL
+		, public IShader
 	{
 	public:
 		ShaderOpenGL(const std::string& vertexCode, const std::string& fragmentCode);
-		~ShaderOpenGL();
+		~ShaderOpenGL() = default;
 
 		// Getters
 		unsigned int GetProgram() const;
 		std::string GetVertexShaderSourceCode() const;
 		std::string GetFragmentShaderSourceCode() const;
+
 		// Setters
 		void SetVertexShaderProgramSource(const std::string& filepath);
 		void SetFragmentShaderProgramSource(const std::string& filepath);
 
-		void Bind() const;
-		void UnBind() const;
+		void Bind() const override;
+		void UnBind() const override;
+
+		// Uniform setters
 		void SetUniform(const std::string& name, int value) const;
 		void SetUniform(const std::string& name, float value) const;
 		void SetUniform(const std::string& name, const glm::vec3& vector) const;
@@ -35,19 +40,8 @@ namespace Andromeda::Rendering
 		void SetUniform(const std::string& name, const std::vector<glm::vec4>& vectors) const;
 
 	private:
-		unsigned int CompileShader(unsigned int type, const std::string& shaderSource);
-		unsigned int CreateShaderProgram(const std::string& vertexCode, const std::string& fragmentCode);
-		int GetUniformLocation(const std::string& name);
-		void CheckCompileErrors(unsigned int shader, int type);
-		void CheckProgramErrors(unsigned int program);
-		
-	private:
-		unsigned int m_program;
-		std::string m_vertexShaderSourceCode;
-		std::string m_fragmentShaderSourceCode;
-		std::unordered_map<std::string, int> m_uniformLocationCache;
+		UniformSetterOpenGL m_uniformSetter;
 	};
 }
-
 
 #endif // RENDERER__SHADER_OPENGL__HPP

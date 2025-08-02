@@ -195,21 +195,21 @@ set(SHADERS_HEADERS
     Shaders/include/ShaderOpenGL.hpp
     Shaders/include/ShaderOpenGLTypes.hpp
     Shaders/include/ShaderManager.hpp
-    # Shaders/include/IShader.hpp
-    # Shaders/include/ShaderCompilerOpenGL.hpp
-    # Shaders/include/ShaderProgramOpenGL.hpp
-    # Shaders/include/ShaderSourceManagerOpenGL.hpp
-    # Shaders/include/UniformSetterOpenGL.hpp
+    Shaders/include/IShader.hpp
+    Shaders/include/ShaderCompilerOpenGL.hpp
+    Shaders/include/ShaderProgramOpenGL.hpp
+    Shaders/include/ShaderSourceManagerOpenGL.hpp
+    Shaders/include/UniformSetterOpenGL.hpp
 )
 
 set(SHADERS_SOURCES
     Shaders/src/ShaderOpenGL.cpp
     Shaders/src/ShaderManager.cpp
-    # Shaders/src/IShader.cpp
-    # Shaders/src/ShaderCompilerOpenGL.cpp
-    # Shaders/src/ShaderProgramOpenGL.cpp
-    # Shaders/src/ShaderSourceManagerOpenGL.cpp
-    # Shaders/src/UniformSetterOpenGL.cpp
+    Shaders/src/IShader.cpp
+    Shaders/src/ShaderCompilerOpenGL.cpp
+    Shaders/src/ShaderProgramOpenGL.cpp
+    Shaders/src/ShaderSourceManagerOpenGL.cpp
+    Shaders/src/UniformSetterOpenGL.cpp
 )
 
 # ==== Utilities ====
