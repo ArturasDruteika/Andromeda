@@ -57,8 +57,8 @@ namespace Andromeda::Rendering
 		void PrepareFramebufferForNonLuminousPass() const;
 		void BindShadowMap(int textureUnit) const;
 		void RenderGridIfVisible(const IScene& scene) const;
-		void PopulateLightUniforms(OpenGLShader& shader, const IScene& scene) const;
-		void RenderEachNonLuminousObject(OpenGLShader& shader, const IScene& scene) const;
+		void PopulateLightUniforms(ShaderOpenGL& shader, const IScene& scene) const;
+		void RenderEachNonLuminousObject(ShaderOpenGL& shader, const IScene& scene) const;
 		glm::mat4 ComputeLightSpaceMatrix(const IScene& scene) const;
 
 	private:

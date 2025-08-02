@@ -6,7 +6,7 @@
 #include "../../../Light/include/LightData.hpp"
 #include "../../../RenderableObjects/Objects/include/GridOpenGL.hpp"
 #include "../../../Light/include/PointLight.hpp"
-#include "../../../Shaders/include/OpenGLShader.hpp"
+#include "../../../Shaders/include/ShaderOpenGL.hpp"
 #include "../../../Shaders/include/ShaderOpenGLTypes.hpp"
 #include "../../../RenderableObjects/Interfaces/include/IRenderableObjectOpenGL.hpp"
 #include "FileOperations.hpp"
@@ -222,7 +222,7 @@ namespace Andromeda::Rendering
         glEnable(GL_POLYGON_OFFSET_FILL);
         glPolygonOffset(2.0f, 4.0f);
 
-        OpenGLShader* depthShader = m_pShaderManager->GetShader(ShaderOpenGLTypes::ShadowMap);
+        ShaderOpenGL* depthShader = m_pShaderManager->GetShader(ShaderOpenGLTypes::ShadowMap);
         depthShader->Bind();
         depthShader->SetUniform("u_lightSpaceMatrix", lightSpace);
 
@@ -247,7 +247,7 @@ namespace Andromeda::Rendering
         glActiveTexture(GL_TEXTURE0 + SHADOW_UNIT);
         glBindTexture(GL_TEXTURE_2D, m_shadowFBO.GetDepthTexture());
 
-        OpenGLShader* nlShader = m_pShaderManager->GetShader(ShaderOpenGLTypes::RenderableObjectsNonLuminous);
+        ShaderOpenGL* nlShader = m_pShaderManager->GetShader(ShaderOpenGLTypes::RenderableObjectsNonLuminous);
         nlShader->Bind();
 
         nlShader->SetUniform("u_view", MathUtils::ToGLM(m_pCamera->GetViewMatrix()));
@@ -265,7 +265,7 @@ namespace Andromeda::Rendering
 
     void OpenGLRenderer::OpenGLRendererImpl::RenderLuminousObjects(const IScene& scene) const
     {
-        OpenGLShader* lumShader = m_pShaderManager->GetShader(ShaderOpenGLTypes::RenderableObjectsLuminous);
+        ShaderOpenGL* lumShader = m_pShaderManager->GetShader(ShaderOpenGLTypes::RenderableObjectsLuminous);
         lumShader->Bind();
         lumShader->SetUniform("u_view", MathUtils::ToGLM(m_pCamera->GetViewMatrix()));
         lumShader->SetUniform("u_projection", m_projectionMatrix);
@@ -287,7 +287,7 @@ namespace Andromeda::Rendering
     void OpenGLRenderer::OpenGLRendererImpl::RenderObjects(const IScene& scene) const
     {
         EnableFaceCulling(GL_BACK, GL_CCW);
-        OpenGLShader* shader = m_pShaderManager->GetShader(ShaderOpenGLTypes::RenderableObjects);
+        ShaderOpenGL* shader = m_pShaderManager->GetShader(ShaderOpenGLTypes::RenderableObjects);
         shader->Bind();
         shader->SetUniform("u_view", MathUtils::ToGLM(m_pCamera->GetViewMatrix()));
         shader->SetUniform("u_projection", m_projectionMatrix);
@@ -314,7 +314,7 @@ namespace Andromeda::Rendering
             return;
         }
 
-        OpenGLShader* shader = m_pShaderManager->GetShader(ShaderOpenGLTypes::Grid);
+        ShaderOpenGL* shader = m_pShaderManager->GetShader(ShaderOpenGLTypes::Grid);
         shader->Bind();
 
         glm::mat4 viewMatrix = MathUtils::ToGLM(m_pCamera->GetViewMatrix());
@@ -405,7 +405,7 @@ namespace Andromeda::Rendering
         }
     }
 
-    void OpenGLRenderer::OpenGLRendererImpl::PopulateLightUniforms(OpenGLShader& shader, const IScene& scene) const
+    void OpenGLRenderer::OpenGLRendererImpl::PopulateLightUniforms(ShaderOpenGL& shader, const IScene& scene) const
     {
         const auto& luminousObjsMap = scene.GetLuminousObjects();
 
@@ -439,7 +439,7 @@ namespace Andromeda::Rendering
         shader.SetUniform("u_specularLight", lightSpecularValues);
     }
 
-    void OpenGLRenderer::OpenGLRendererImpl::RenderEachNonLuminousObject(OpenGLShader& shader, const IScene& scene) const
+    void OpenGLRenderer::OpenGLRendererImpl::RenderEachNonLuminousObject(ShaderOpenGL& shader, const IScene& scene) const
     {
         for (const auto& [id, obj] : scene.GetObjects())
         {
