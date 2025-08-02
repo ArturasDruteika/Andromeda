@@ -17,7 +17,7 @@ namespace Andromeda::Rendering
 	{
         for (auto& pair : m_shadersMap)
         {
-            delete pair.second; // Clean up dynamically allocated OpenGLShader objects
+            delete pair.second; // Clean up dynamically allocated ShaderOpenGL objects
         }
         m_shadersMap.clear(); // Clear the map
 		spdlog::info("ShaderManager destroyed and all shaders cleaned up.");
@@ -28,7 +28,7 @@ namespace Andromeda::Rendering
         return m_isInitialized;
 	}
 
-    OpenGLShader* ShaderManager::GetShader(const ShaderOpenGLTypes& shaderType) const
+    ShaderOpenGL* ShaderManager::GetShader(const ShaderOpenGLTypes& shaderType) const
     {
         auto it = m_shadersMap.find(shaderType);
         if (it == m_shadersMap.end() || it->second == nullptr)
@@ -40,7 +40,7 @@ namespace Andromeda::Rendering
         return it->second; // assuming the map stores raw pointers
     }
 
-    const std::unordered_map<ShaderOpenGLTypes, OpenGLShader*>& ShaderManager::GetShadersMap() const
+    const std::unordered_map<ShaderOpenGLTypes, ShaderOpenGL*>& ShaderManager::GetShadersMap() const
     {
         return m_shadersMap;
     }
@@ -111,7 +111,7 @@ namespace Andromeda::Rendering
             return false;
         }
 
-        OpenGLShader* shader = new OpenGLShader(vertexShaderSource, fragmentShaderSource);
+        ShaderOpenGL* shader = new ShaderOpenGL(vertexShaderSource, fragmentShaderSource);
         auto result = m_shadersMap.insert({ shaderType, shader });
 
         // If insertion fails (shaderType already exists), free memory and return false

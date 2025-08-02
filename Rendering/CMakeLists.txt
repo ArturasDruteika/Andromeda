@@ -128,7 +128,6 @@ set(RENDERERS_HEADERS
     # Renderers/Abstracts/include/IlluminationControl.hpp
     # Renderers/Abstracts/include/SizeControl.hpp
     # Renderers/Abstracts/include/RendererOpenGL.hpp
-    # Renderers/Abstracts/include/FrameBufferProvider.hpp
     # Renderers/Abstracts/include/CameraControl.hpp
     Renderers/Interfaces/include/IRenderer.hpp
     Renderers/Interfaces/include/IGridControl.hpp
@@ -148,7 +147,6 @@ set(RENDERERS_SOURCES
     # Renderers/Abstracts/src/IlluminationControl.cpp
     # Renderers/Abstracts/src/SizeControl.cpp
     # Renderers/Abstracts/src/RendererOpenGL.cpp
-    # Renderers/Abstracts/src/FrameBufferProvider.cpp
     # Renderers/Abstracts/src/CameraControl.cpp
     Renderers/Interfaces/src/IRenderer.cpp
     Renderers/Interfaces/src/IGridControl.cpp
@@ -194,14 +192,24 @@ set(SCENE_SOURCES
 
 # ==== Shaders ====
 set(SHADERS_HEADERS
-    Shaders/include/OpenGLShader.hpp
+    Shaders/include/ShaderOpenGL.hpp
     Shaders/include/ShaderOpenGLTypes.hpp
     Shaders/include/ShaderManager.hpp
+    # Shaders/include/IShader.hpp
+    # Shaders/include/ShaderCompilerOpenGL.hpp
+    # Shaders/include/ShaderProgramOpenGL.hpp
+    # Shaders/include/ShaderSourceManagerOpenGL.hpp
+    # Shaders/include/UniformSetterOpenGL.hpp
 )
 
 set(SHADERS_SOURCES
-    Shaders/src/OpenGLShader.cpp
+    Shaders/src/ShaderOpenGL.cpp
     Shaders/src/ShaderManager.cpp
+    # Shaders/src/IShader.cpp
+    # Shaders/src/ShaderCompilerOpenGL.cpp
+    # Shaders/src/ShaderProgramOpenGL.cpp
+    # Shaders/src/ShaderSourceManagerOpenGL.cpp
+    # Shaders/src/UniformSetterOpenGL.cpp
 )
 
 # ==== Utilities ====

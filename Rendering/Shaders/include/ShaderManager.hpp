@@ -4,7 +4,7 @@
 
 #include "pch.hpp"
 #include "ShaderOpenGLTypes.hpp"
-#include "OpenGLShader.hpp"
+#include "ShaderOpenGL.hpp"
 
 
 namespace Andromeda::Rendering
@@ -17,8 +17,8 @@ namespace Andromeda::Rendering
 
 		// Getters
 		bool IsInitialized() const;
-		OpenGLShader* GetShader(const ShaderOpenGLTypes& shaderType) const;
-		const std::unordered_map<ShaderOpenGLTypes, OpenGLShader*>& GetShadersMap() const;
+		ShaderOpenGL* GetShader(const ShaderOpenGLTypes& shaderType) const;
+		const std::unordered_map<ShaderOpenGLTypes, ShaderOpenGL*>& GetShadersMap() const;
 
 		bool InitShaders();
 		bool LoadShader(const ShaderOpenGLTypes& shaderType, const std::string& vertexShaderPath, const std::string& fragmentShaderPath);
@@ -28,7 +28,7 @@ namespace Andromeda::Rendering
 
 	private:
 		bool m_isInitialized;
-		std::unordered_map<ShaderOpenGLTypes, OpenGLShader*> m_shadersMap;
+		std::unordered_map<ShaderOpenGLTypes, ShaderOpenGL*> m_shadersMap;
 	};
 }
 
