@@ -13,6 +13,7 @@ namespace Andromeda
 		{
 		public:
 			static std::string LoadFileAsString(const std::string& filePath);
+			static std::string LoadFileAsString(const std::filesystem::path& filePath);
 		};
 	}
 }

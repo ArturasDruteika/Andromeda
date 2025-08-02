@@ -17,5 +17,18 @@ namespace Andromeda
 			shaderStream << file.rdbuf();
 			return shaderStream.str();
 		}
+
+		std::string FileOperations::LoadFileAsString(const std::filesystem::path& filePath)
+		{
+			std::ifstream file(filePath);
+			if (!file.is_open())
+			{
+				throw std::runtime_error("Failed to open file: " + filePath.string());
+			}
+
+			std::stringstream shaderStream;
+			shaderStream << file.rdbuf();
+			return shaderStream.str();
+		}
 	}
 }
