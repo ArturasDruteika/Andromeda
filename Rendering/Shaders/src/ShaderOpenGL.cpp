@@ -10,11 +10,6 @@ namespace Andromeda::Rendering
 		ShaderProgramOpenGL::CreateShaderProgram(GetVertexCode(), GetFragmentCode());
 	}
 
-	unsigned int ShaderOpenGL::GetProgram() const
-	{
-		return GetId();
-	}
-
 	void ShaderOpenGL::Bind() const
 	{
 		ShaderProgramOpenGL::Bind();
@@ -28,7 +23,7 @@ namespace Andromeda::Rendering
 	template<typename T>
 	void ShaderOpenGL::SetUniform(const std::string& name, const T& value) const
 	{
-		m_uniformSetter.SetUniform(GetId(), name, value);
+		m_uniformSetter.SetUniform(GetProgramId(), name, value);
 	}
 
 	// Explicit template instantiations for allowed types

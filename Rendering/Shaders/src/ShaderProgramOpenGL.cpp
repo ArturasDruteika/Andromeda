@@ -45,7 +45,7 @@ namespace Andromeda::Rendering
 		glUseProgram(0);
 	}
 
-	unsigned int ShaderProgramOpenGL::GetId() const
+	unsigned int ShaderProgramOpenGL::GetProgramId() const
 	{
 		return m_programId;
 	}

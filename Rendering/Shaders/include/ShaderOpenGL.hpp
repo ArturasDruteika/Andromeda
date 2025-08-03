@@ -18,11 +18,6 @@ namespace Andromeda::Rendering
 		ShaderOpenGL(const std::filesystem::path& vertexCodeFilePath, const std::filesystem::path& fragmentCodeFilePath);
 		~ShaderOpenGL() = default;
 
-		// Getters
-		unsigned int GetProgram() const;
-		std::string GetVertexShaderSourceCode() const;
-		std::string GetFragmentShaderSourceCode() const;
-
 		void Bind() const override;
 		void UnBind() const override;
 

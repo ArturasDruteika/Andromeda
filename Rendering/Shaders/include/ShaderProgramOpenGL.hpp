@@ -13,9 +13,11 @@ namespace Andromeda::Rendering
 		ShaderProgramOpenGL();
 		~ShaderProgramOpenGL();
 
+		// Getters
+		unsigned int GetProgramId() const;
+
 		void Bind() const;
 		void UnBind() const;
-		unsigned int GetId() const;
 
 	protected:
 		void CreateShaderProgram(const std::string& vertexCode, const std::string& fragmentCode);
