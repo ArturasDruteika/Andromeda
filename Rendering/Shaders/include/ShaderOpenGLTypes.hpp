@@ -5,26 +5,23 @@
 #include "pch.hpp"
 
 
-namespace Andromeda
+namespace Andromeda::Rendering
 {
-	namespace Rendering
+	enum class ShaderOpenGLTypes
 	{
-		enum class ShaderOpenGLTypes
-		{
-			RenderableObjects,
-			RenderableObjectsLuminous,
-			RenderableObjectsNonLuminous,
-			ShadowMap,
-			Grid,
-		};
+		RenderableObjects,
+		RenderableObjectsLuminous,
+		RenderableObjectsNonLuminous,
+		ShadowMap,
+		Grid,
+	};
 
-		struct ShaderDefinition
-		{
-			ShaderOpenGLTypes type;
-			std::string vertexPath;
-			std::string fragmentPath;
-		};
-	}
+	struct ShaderDefinition
+	{
+		ShaderOpenGLTypes type;
+		std::filesystem::path vertexPath;
+		std::filesystem::path fragmentPath;
+	};
 }
 
 
