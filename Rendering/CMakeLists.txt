@@ -200,6 +200,7 @@ set(SHADERS_HEADERS
     Shaders/include/ShaderProgramOpenGL.hpp
     Shaders/include/ShaderSourceManagerOpenGL.hpp
     Shaders/include/UniformSetterOpenGL.hpp
+    Shaders/include/ShaderTypes.hpp
 )
 
 set(SHADERS_SOURCES
