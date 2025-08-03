@@ -116,6 +116,7 @@ namespace Andromeda::Rendering
         ShaderOpenGL* shader = new ShaderOpenGL(vertexShaderPath, fragmentShaderPath);
         m_shadersMap.insert({ shaderType, shader });
 
+		// TODO: Add error handling for shader creation
         return true;
     }
 

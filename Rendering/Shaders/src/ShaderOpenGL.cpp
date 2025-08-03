@@ -1,37 +1,18 @@
 #include "../include/ShaderOpenGL.hpp"
 #include "FileOperations.hpp"
 
+
 namespace Andromeda::Rendering
 {
-	ShaderOpenGL::ShaderOpenGL(const std::string& vertexCode, const std::string& fragmentCode)
-		: ShaderProgramOpenGL()
+	ShaderOpenGL::ShaderOpenGL(const std::filesystem::path& vertexCodeFilePath, const std::filesystem::path& fragmentCodeFilePath)
+		: ShaderSourceManagerOpenGL(vertexCodeFilePath, fragmentCodeFilePath, true)
 	{
-		CreateShaderProgram(vertexCode, fragmentCode);
+		ShaderProgramOpenGL::CreateShaderProgram(GetVertexCode(), GetFragmentCode());
 	}
 
 	unsigned int ShaderOpenGL::GetProgram() const
 	{
-		return GetId();  // From ShaderProgramOpenGL
-	}
-
-	std::string ShaderOpenGL::GetVertexShaderSourceCode() const
-	{
-		return GetVertexCode();  // From ShaderSourceManagerOpenGL
-	}
-
-	std::string ShaderOpenGL::GetFragmentShaderSourceCode() const
-	{
-		return GetFragmentCode();  // From ShaderSourceManagerOpenGL
-	}
-
-	void ShaderOpenGL::SetVertexShaderProgramSource(const std::string& filepath)
-	{
-		LoadVertexShaderFromFile(filepath);  // From ShaderSourceManagerOpenGL
-	}
-
-	void ShaderOpenGL::SetFragmentShaderProgramSource(const std::string& filepath)
-	{
-		LoadFragmentShaderFromFile(filepath);  // From ShaderSourceManagerOpenGL
+		return GetId();
 	}
 
 	void ShaderOpenGL::Bind() const
@@ -44,48 +25,20 @@ namespace Andromeda::Rendering
 		ShaderProgramOpenGL::UnBind();
 	}
 
-	void ShaderOpenGL::SetUniform(const std::string& name, int value) const
+	template<typename T>
+	void ShaderOpenGL::SetUniform(const std::string& name, const T& value) const
 	{
 		m_uniformSetter.SetUniform(GetId(), name, value);
 	}
 
-	void ShaderOpenGL::SetUniform(const std::string& name, float value) const
-	{
-		m_uniformSetter.SetUniform(GetId(), name, value);
-	}
-
-	void ShaderOpenGL::SetUniform(const std::string& name, const glm::vec3& vector) const
-	{
-		m_uniformSetter.SetUniform(GetId(), name, vector);
-	}
-
-	void ShaderOpenGL::SetUniform(const std::string& name, const glm::vec4& vector) const
-	{
-		m_uniformSetter.SetUniform(GetId(), name, vector);
-	}
-
-	void ShaderOpenGL::SetUniform(const std::string& name, const glm::mat3& matrix) const
-	{
-		m_uniformSetter.SetUniform(GetId(), name, matrix);
-	}
-
-	void ShaderOpenGL::SetUniform(const std::string& name, const glm::mat4& matrix) const
-	{
-		m_uniformSetter.SetUniform(GetId(), name, matrix);
-	}
-
-	void ShaderOpenGL::SetUniform(const std::string& name, const std::vector<float>& values) const
-	{
-		m_uniformSetter.SetUniform(GetId(), name, values);
-	}
-
-	void ShaderOpenGL::SetUniform(const std::string& name, const std::vector<glm::vec3>& vectors) const
-	{
-		m_uniformSetter.SetUniform(GetId(), name, vectors);
-	}
-
-	void ShaderOpenGL::SetUniform(const std::string& name, const std::vector<glm::vec4>& vectors) const
-	{
-		m_uniformSetter.SetUniform(GetId(), name, vectors);
-	}
+	// Explicit template instantiations for allowed types
+	template void ShaderOpenGL::SetUniform<int>(const std::string&, const int&) const;
+	template void ShaderOpenGL::SetUniform<float>(const std::string&, const float&) const;
+	template void ShaderOpenGL::SetUniform<glm::vec3>(const std::string&, const glm::vec3&) const;
+	template void ShaderOpenGL::SetUniform<glm::vec4>(const std::string&, const glm::vec4&) const;
+	template void ShaderOpenGL::SetUniform<glm::mat3>(const std::string&, const glm::mat3&) const;
+	template void ShaderOpenGL::SetUniform<glm::mat4>(const std::string&, const glm::mat4&) const;
+	template void ShaderOpenGL::SetUniform<std::vector<float>>(const std::string&, const std::vector<float>&) const;
+	template void ShaderOpenGL::SetUniform<std::vector<glm::vec3>>(const std::string&, const std::vector<glm::vec3>&) const;
+	template void ShaderOpenGL::SetUniform<std::vector<glm::vec4>>(const std::string&, const std::vector<glm::vec4>&) const;
 }
