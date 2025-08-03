@@ -88,8 +88,20 @@ namespace Andromeda::Rendering
         return true;
     }
 
-    bool ShaderManager::LoadShader(const ShaderOpenGLTypes& shaderType, const std::string& vertexShaderPath, const std::string& fragmentShaderPath)
+    bool ShaderManager::LoadShader(const ShaderOpenGLTypes& shaderType, const std::filesystem::path& vertexShaderPath, const std::filesystem::path& fragmentShaderPath)
     {
+        if (!ValidateShaderPaths(vertexShaderPath, fragmentShaderPath))
+        {
+            return false;
+        }
+
+        if (m_shadersMap.find(shaderType) != m_shadersMap.end())
+        {
+            spdlog::warn("Shader of type {} already exists. Overwriting.", static_cast<int>(shaderType));
+            delete m_shadersMap[shaderType];
+            m_shadersMap.erase(shaderType);
+        }
+
         if (m_shadersMap.find(shaderType) != m_shadersMap.end())
         {
             spdlog::warn("Shader of type {} already exists. Overwriting.", static_cast<int>(shaderType));
@@ -99,26 +111,30 @@ namespace Andromeda::Rendering
         return CreateShader(shaderType, vertexShaderPath, fragmentShaderPath);
     }
 
-    bool ShaderManager::CreateShader(const ShaderOpenGLTypes& shaderType, const std::string& vertexShaderPath, const std::string& fragmentShaderPath)
+    bool ShaderManager::CreateShader(const ShaderOpenGLTypes& shaderType, const std::filesystem::path& vertexShaderPath, const std::filesystem::path& fragmentShaderPath)
     {
-        std::string vertexShaderSource = Utils::FileOperations::LoadFileAsString(vertexShaderPath);
-        std::string fragmentShaderSource = Utils::FileOperations::LoadFileAsString(fragmentShaderPath);
+        ShaderOpenGL* shader = new ShaderOpenGL(vertexShaderPath, fragmentShaderPath);
+        m_shadersMap.insert({ shaderType, shader });
 
-        if (vertexShaderSource.empty() || fragmentShaderSource.empty())
+        return true;
+    }
+
+    bool ShaderManager::ValidateShaderPaths(const std::filesystem::path& vertexPath, const std::filesystem::path& fragmentPath)
+    {
+        return CheckShaderPath(vertexPath, "Vertex") && CheckShaderPath(fragmentPath, "Fragment");
+    }
+
+    bool ShaderManager::CheckShaderPath(const std::filesystem::path& path, const std::string& type)
+    {
+        if (!std::filesystem::exists(path))
         {
-            // Failed to load shader files
-			spdlog::error("Failed to load shader files for type {}. Check file paths: {}, {}", static_cast<int>(shaderType), vertexShaderPath, fragmentShaderPath);
+            spdlog::error("{} shader file does not exist: {}", type, path.string());
             return false;
         }
 
-        ShaderOpenGL* shader = new ShaderOpenGL(vertexShaderSource, fragmentShaderSource);
-        auto result = m_shadersMap.insert({ shaderType, shader });
-
-        // If insertion fails (shaderType already exists), free memory and return false
-        if (!result.second)
+        if (path.extension() != ".glsl")
         {
-			spdlog::error("Failed to create shader of type {}. It may already exist.", static_cast<int>(shaderType));
-            delete shader;
+            spdlog::error("{} shader file must have .glsl extension: {}", type, path.string());
             return false;
         }
 
