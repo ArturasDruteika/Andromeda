@@ -6,8 +6,7 @@
 namespace Andromeda::Rendering
 {
 	ShaderProgramOpenGL::ShaderProgramOpenGL()
-		: ShaderSourceManagerOpenGL("", "", false) // no auto-load
-		, m_programId{ 0 }
+		: m_programId{ 0 }
 	{
 	}
 

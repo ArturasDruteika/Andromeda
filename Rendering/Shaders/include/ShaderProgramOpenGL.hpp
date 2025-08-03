@@ -3,13 +3,11 @@
 
 
 #include "pch.hpp"
-#include "ShaderSourceManagerOpenGL.hpp"
 
 
 namespace Andromeda::Rendering
 {
 	class ShaderProgramOpenGL
-		: public ShaderSourceManagerOpenGL
 	{
 	public:
 		ShaderProgramOpenGL();
