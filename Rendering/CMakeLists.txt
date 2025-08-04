@@ -194,25 +194,25 @@ set(SCENE_SOURCES
 
 # ==== Shaders ====
 set(SHADERS_HEADERS
-    Shaders/include/ShaderOpenGL.hpp
-    Shaders/include/ShaderOpenGLTypes.hpp
-    Shaders/include/ShaderManager.hpp
-    Shaders/include/IShader.hpp
-    Shaders/include/ShaderCompilerOpenGL.hpp
-    Shaders/include/ShaderProgramOpenGL.hpp
-    Shaders/include/ShaderSourceManagerOpenGL.hpp
-    Shaders/include/UniformSetterOpenGL.hpp
-    Shaders/include/ShaderTypes.hpp
+    Shaders/Interfaces/include/IShader.hpp
+    Shaders/Shaders/include/ShaderOpenGL.hpp
+    Shaders/Shaders/include/ShaderOpenGLTypes.hpp
+    Shaders/Shaders/include/ShaderManager.hpp
+    Shaders/Shaders/include/ShaderCompilerOpenGL.hpp
+    Shaders/Shaders/include/ShaderProgramOpenGL.hpp
+    Shaders/Shaders/include/ShaderSourceManagerOpenGL.hpp
+    Shaders/Shaders/include/UniformSetterOpenGL.hpp
+    Shaders/Shaders/include/ShaderTypes.hpp
 )
 
 set(SHADERS_SOURCES
-    Shaders/src/ShaderOpenGL.cpp
-    Shaders/src/ShaderManager.cpp
-    Shaders/src/IShader.cpp
-    Shaders/src/ShaderCompilerOpenGL.cpp
-    Shaders/src/ShaderProgramOpenGL.cpp
-    Shaders/src/ShaderSourceManagerOpenGL.cpp
-    Shaders/src/UniformSetterOpenGL.cpp
+    Shaders/Interfaces/src/IShader.cpp
+    Shaders/Shaders/src/ShaderOpenGL.cpp
+    Shaders/Shaders/src/ShaderManager.cpp
+    Shaders/Shaders/src/ShaderCompilerOpenGL.cpp
+    Shaders/Shaders/src/ShaderProgramOpenGL.cpp
+    Shaders/Shaders/src/ShaderSourceManagerOpenGL.cpp
+    Shaders/Shaders/src/UniformSetterOpenGL.cpp
 )
 
 # ==== Utilities ====

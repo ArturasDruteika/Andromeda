@@ -2,9 +2,6 @@
 #define RENDERER__SHADER_TYPES__HPP
 
 
-#include "pch.hpp"
-
-
 namespace Andromeda::Rendering
 {
 	enum class ShaderType

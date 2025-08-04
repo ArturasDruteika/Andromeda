@@ -5,7 +5,7 @@
 #include "ShaderProgramOpenGL.hpp"
 #include "UniformSetterOpenGL.hpp"
 #include "ShaderSourceManagerOpenGL.hpp"
-#include "IShader.hpp"
+#include "../../Interfaces/include/IShader.hpp"
 
 namespace Andromeda::Rendering
 {
