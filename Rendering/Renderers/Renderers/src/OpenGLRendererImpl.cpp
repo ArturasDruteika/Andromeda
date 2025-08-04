@@ -24,11 +24,6 @@ namespace Andromeda::Rendering
 
     OpenGLRenderer::OpenGLRendererImpl::OpenGLRendererImpl()
         : m_isInitialized{ false }
-        , m_width{ 0 }
-        , m_height{ 0 }
-        , m_pCamera{ nullptr }
-        , m_isGridVisible{ false }
-        , m_isIlluminationMode{ false }
         , m_lightSpace{ glm::mat4(1.0f) }
         , m_pShaderManager{ nullptr }
     {
@@ -89,20 +84,8 @@ namespace Andromeda::Rendering
 
     void OpenGLRenderer::OpenGLRendererImpl::Resize(int width, int height)
     {
-        if (width <= 0 || height <= 0)
-        {
-            spdlog::error("Invalid dimensions for resizing: {}x{}", width, height);
-            return;
-        }
-        if (width == m_width && height == m_height)
-        {
-            spdlog::warn("Resize called with same dimensions: {}x{}", width, height);
-            return;
-        }
+        SizeControl::Resize(width, height);
 
-        m_width = width;
-        m_height = height;
-        glViewport(0, 0, width, height);
         UpdatePerspectiveMatrix(width, height);
 
         m_mainFBO.Resize(width, height);
@@ -144,11 +127,6 @@ namespace Andromeda::Rendering
         return m_isGridVisible;
     }
 
-    bool OpenGLRenderer::OpenGLRendererImpl::IsIlluminationMode() const
-    {
-        return m_isIlluminationMode;
-    }
-
     unsigned int OpenGLRenderer::OpenGLRendererImpl::GetFrameBufferObject() const
     {
         return m_mainFBO.GetId();
@@ -167,36 +145,6 @@ namespace Andromeda::Rendering
     unsigned int OpenGLRenderer::OpenGLRendererImpl::GetShadowMap() const
     {
         return m_shadowFBO.GetDepthTexture();
-    }
-
-    int OpenGLRenderer::OpenGLRendererImpl::GetWidth() const
-    {
-        return m_width;
-    }
-
-    int OpenGLRenderer::OpenGLRendererImpl::GetHeight() const
-    {
-        return m_height;
-    }
-
-    void OpenGLRenderer::OpenGLRendererImpl::SetGridVisible(bool visible)
-    {
-        m_isGridVisible = visible;
-    }
-
-    void OpenGLRenderer::OpenGLRendererImpl::SetIlluminationMode(bool mode)
-    {
-        m_isIlluminationMode = mode;
-    }
-
-    void OpenGLRenderer::OpenGLRendererImpl::SetCamera(ICamera* camera)
-    {
-        if (camera == nullptr)
-        {
-            spdlog::error("Camera is nullptr.");
-            return;
-        }
-        m_pCamera = camera;
     }
 
     void OpenGLRenderer::OpenGLRendererImpl::ShadowMapDepthPass(const IScene& scene, const glm::mat4& lightSpace) const
@@ -362,19 +310,6 @@ namespace Andromeda::Rendering
             float fps = 1.0f / duration;
             spdlog::info("FPS: {:.2f}", fps);
         }
-    }
-
-    void OpenGLRenderer::OpenGLRendererImpl::EnableFaceCulling(unsigned int face, unsigned int winding) const
-    {
-        glEnable(GL_CULL_FACE);
-        glCullFace(face);
-        glFrontFace(winding);
-    }
-
-    void OpenGLRenderer::OpenGLRendererImpl::DisableFaceCulling() const
-    {
-        glDisable(GL_CULL_FACE);
-        glFrontFace(GL_CCW);
     }
 
     void OpenGLRenderer::OpenGLRendererImpl::PrepareFramebufferForNonLuminousPass() const

@@ -3,6 +3,8 @@
 
 
 #include "../include/OpenGLRenderer.hpp"
+#include "../../Abstracts/include/Renderer.hpp"
+#include "../../Abstracts/include/FaceCullingControlOpenGL.hpp"
 #include "../../Support/include/FrameBufferOpenGL.hpp"
 #include "../../../RenderableObjects/Interfaces/include/IRenderableObjectOpenGL.hpp"
 #include "../../../Shaders/include/ShaderManager.hpp"
@@ -12,6 +14,8 @@
 namespace Andromeda::Rendering
 {
 	class OpenGLRenderer::OpenGLRendererImpl
+		: public Renderer
+		, public FaceCullingControlOpenGL
 	{
 	public:
 		OpenGLRendererImpl();
@@ -25,17 +29,10 @@ namespace Andromeda::Rendering
 		// Getters
 		bool IsInitialized() const;
 		bool IsGridVisible() const;
-		bool IsIlluminationMode() const;
 		unsigned int GetFrameBufferObject() const;
 		unsigned int GetFrameBufferTexture() const;
 		unsigned int GetDepthRenderBuffer() const;
 		unsigned int GetShadowMap() const;
-		int GetWidth() const;
-		int GetHeight() const;
-		// Setters
-		void SetGridVisible(bool visible);
-		void SetIlluminationMode(bool mode);
-		void SetCamera(ICamera* camera);
 
 		void Init(int width, int height, bool illuminationMode = false);
 		void DeInit();
@@ -52,8 +49,6 @@ namespace Andromeda::Rendering
 		void BeginFrame() const;
 		void EndFrame() const;
 		void LogFPS() const;
-		void EnableFaceCulling(unsigned int face, unsigned int winding) const;
-		void DisableFaceCulling() const;
 		void PrepareFramebufferForNonLuminousPass() const;
 		void BindShadowMap(int textureUnit) const;
 		void RenderGridIfVisible(const IScene& scene) const;
@@ -63,15 +58,10 @@ namespace Andromeda::Rendering
 
 	private:
 		bool m_isInitialized;
-		bool m_isGridVisible;
-		bool m_isIlluminationMode;
-		int m_width;
-		int m_height;
 		glm::mat4 m_projectionMatrix;
 		glm::mat4 m_lightSpace;
 		FrameBufferOpenGL m_mainFBO;
 		FrameBufferOpenGL m_shadowFBO;
-		ICamera* m_pCamera;
 		ShaderManager* m_pShaderManager;
 		mutable std::chrono::steady_clock::time_point m_lastFrameTime = std::chrono::steady_clock::now();
 	};
