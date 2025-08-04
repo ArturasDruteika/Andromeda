@@ -194,25 +194,26 @@ set(SCENE_SOURCES
 
 # ==== Shaders ====
 set(SHADERS_HEADERS
+    Shaders/Abstracts/include/ShaderCompilerOpenGL.hpp
+    Shaders/Abstracts/include/ShaderProgramOpenGL.hpp
+    Shaders/Abstracts/include/ShaderSourceManagerOpenGL.hpp
+    Shaders/Abstracts/include/UniformSetterOpenGL.hpp
     Shaders/Interfaces/include/IShader.hpp
     Shaders/Shaders/include/ShaderOpenGL.hpp
-    Shaders/Shaders/include/ShaderOpenGLTypes.hpp
     Shaders/Shaders/include/ShaderManager.hpp
-    Shaders/Shaders/include/ShaderCompilerOpenGL.hpp
-    Shaders/Shaders/include/ShaderProgramOpenGL.hpp
-    Shaders/Shaders/include/ShaderSourceManagerOpenGL.hpp
-    Shaders/Shaders/include/UniformSetterOpenGL.hpp
-    Shaders/Shaders/include/ShaderTypes.hpp
+    Shaders/Support/include/ShaderOpenGLTypes.hpp
+    Shaders/Support/include/ShaderTypes.hpp
 )
 
 set(SHADERS_SOURCES
+    Shaders/Abstracts/src/ShaderCompilerOpenGL.cpp
+    Shaders/Abstracts/src/ShaderProgramOpenGL.cpp
+    Shaders/Abstracts/src/ShaderSourceManagerOpenGL.cpp
+    Shaders/Abstracts/src/UniformSetterOpenGL.cpp
     Shaders/Interfaces/src/IShader.cpp
     Shaders/Shaders/src/ShaderOpenGL.cpp
     Shaders/Shaders/src/ShaderManager.cpp
-    Shaders/Shaders/src/ShaderCompilerOpenGL.cpp
-    Shaders/Shaders/src/ShaderProgramOpenGL.cpp
-    Shaders/Shaders/src/ShaderSourceManagerOpenGL.cpp
-    Shaders/Shaders/src/UniformSetterOpenGL.cpp
+
 )
 
 # ==== Utilities ====

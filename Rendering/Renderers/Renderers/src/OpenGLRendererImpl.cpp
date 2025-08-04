@@ -7,7 +7,7 @@
 #include "../../../RenderableObjects/Objects/include/GridOpenGL.hpp"
 #include "../../../Light/include/PointLight.hpp"
 #include "../../../Shaders/Shaders/include/ShaderOpenGL.hpp"
-#include "../../../Shaders/Shaders/include/ShaderOpenGLTypes.hpp"
+#include "../../../Shaders/Support/include/ShaderOpenGLTypes.hpp"
 #include "../../../RenderableObjects/Interfaces/include/IRenderableObjectOpenGL.hpp"
 #include "FileOperations.hpp"
 #include "Colors.hpp"

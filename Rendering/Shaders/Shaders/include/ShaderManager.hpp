@@ -3,7 +3,7 @@
 
 
 #include "pch.hpp"
-#include "ShaderOpenGLTypes.hpp"
+#include "../../Support/include/ShaderOpenGLTypes.hpp"
 #include "ShaderOpenGL.hpp"
 
 

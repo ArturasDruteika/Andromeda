@@ -2,9 +2,9 @@
 #define RENDERER__SHADER_OPENGL__HPP
 
 
-#include "ShaderProgramOpenGL.hpp"
-#include "UniformSetterOpenGL.hpp"
-#include "ShaderSourceManagerOpenGL.hpp"
+#include "../../Abstracts/include/ShaderProgramOpenGL.hpp"
+#include "../../Abstracts/include/UniformSetterOpenGL.hpp"
+#include "../../Abstracts/include/ShaderSourceManagerOpenGL.hpp"
 #include "../../Interfaces/include/IShader.hpp"
 
 namespace Andromeda::Rendering
