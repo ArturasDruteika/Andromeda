@@ -29,11 +29,6 @@ namespace Andromeda::Rendering
 		return m_pOpenGLRendererImpl->IsIlluminationMode();
 	}
 
-	unsigned int OpenGLRenderer::GetFrameBufferID() const
-	{
-		return m_pOpenGLRendererImpl->GetFrameBufferObject();
-	}
-
 	unsigned int OpenGLRenderer::GetFrameBufferTexture() const
 	{
 		return m_pOpenGLRendererImpl->GetFrameBufferTexture();

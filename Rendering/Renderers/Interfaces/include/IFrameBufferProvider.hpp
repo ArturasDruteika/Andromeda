@@ -26,7 +26,6 @@ namespace Andromeda::Rendering
 
 		// Getters
 		virtual unsigned int GetFrameBufferTexture() const = 0;
-		virtual unsigned int GetFrameBufferID() const = 0;
 	};
 }
 
