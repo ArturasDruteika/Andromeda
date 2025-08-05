@@ -2,7 +2,7 @@
 #define RENDERING__LIGHT_DATA__HPP
 
 
-#include "LightProperties.hpp"
+#include "LightTypes.hpp"
 #include "glm/glm.hpp"
 
 

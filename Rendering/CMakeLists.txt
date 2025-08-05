@@ -31,26 +31,26 @@ set(CAMERA_SOURCES
 
 # ==== Light ====
 set(LIGHT_HEADERS
+    Light/include/DirectionalLight.hpp
     Light/include/ILightBehavior.hpp
+    Light/include/Light.hpp
+    Light/include/LightData.hpp
+    Light/include/LightTypes.hpp
     Light/include/LuminousBehavior.hpp
     Light/include/NonLuminousBehavior.hpp
-    Light/include/LightProperties.hpp
-    Light/include/LightData.hpp
-    Light/include/DirectionalLight.hpp
-    Light/include/SpotLight.hpp
     Light/include/PointLight.hpp
-    Light/include/Light.hpp
+    Light/include/SpotLight.hpp
 )
 
 set(LIGHT_SOURCES
+    Light/src/DirectionalLight.cpp
     Light/src/ILightBehavior.cpp
+    Light/src/Light.cpp
+    Light/src/LightData.cpp
     Light/src/LuminousBehavior.cpp
     Light/src/NonLuminousBehavior.cpp
-    Light/src/LightData.cpp
-    Light/src/DirectionalLight.cpp
-    Light/src/SpotLight.cpp
     Light/src/PointLight.cpp
-    Light/src/Light.cpp
+    Light/src/SpotLight.cpp
 )
 
 # ==== Materials ====
@@ -85,14 +85,14 @@ set(RAYTRACING_HEADERS
 set(RO_HEADERS
     RenderableObjects/Abstracts/include/Geometry.hpp
     RenderableObjects/Abstracts/include/Luminous.hpp
-    RenderableObjects/Abstracts/include/Transformable.hpp
     RenderableObjects/Abstracts/include/RenderableObject.hpp
     RenderableObjects/Abstracts/include/RenderableObjectOpenGL.hpp
+    RenderableObjects/Abstracts/include/Transformable.hpp
     RenderableObjects/Interfaces/include/IGeometry.hpp
     RenderableObjects/Interfaces/include/ILuminous.hpp
-    RenderableObjects/Interfaces/include/ITransformable.hpp
     RenderableObjects/Interfaces/include/IRenderableObject.hpp
     RenderableObjects/Interfaces/include/IRenderableObjectOpenGL.hpp
+    RenderableObjects/Interfaces/include/ITransformable.hpp
     RenderableObjects/Objects/include/CubeObjectOpenGL.hpp
     RenderableObjects/Objects/include/CubeObjectOpenGLImpl.hpp
     RenderableObjects/Objects/include/GridOpenGL.hpp
@@ -104,14 +104,14 @@ set(RO_HEADERS
 set(RO_SOURCES
     RenderableObjects/Abstracts/src/Geometry.cpp
     RenderableObjects/Abstracts/src/Luminous.cpp
-    RenderableObjects/Abstracts/src/Transformable.cpp
     RenderableObjects/Abstracts/src/RenderableObject.cpp
     RenderableObjects/Abstracts/src/RenderableObjectOpenGL.cpp
+    RenderableObjects/Abstracts/src/Transformable.cpp
     RenderableObjects/Interfaces/src/IGeometry.cpp
     RenderableObjects/Interfaces/src/ILuminous.cpp
-    RenderableObjects/Interfaces/src/ITransformable.cpp
     RenderableObjects/Interfaces/src/IRenderableObject.cpp
     RenderableObjects/Interfaces/src/IRenderableObjectOpenGL.cpp
+    RenderableObjects/Interfaces/src/ITransformable.cpp
     RenderableObjects/Objects/src/CubeObjectOpenGL.cpp
     RenderableObjects/Objects/src/CubeObjectOpenGLImpl.cpp
     RenderableObjects/Objects/src/GridOpenGL.cpp
@@ -121,40 +121,40 @@ set(RO_SOURCES
 
 # ==== Renderers ====
 set(RENDERERS_HEADERS
-    Renderers/Abstracts/include/Renderer.hpp
-    Renderers/Abstracts/include/GridControl.hpp
-    Renderers/Abstracts/include/IlluminationControl.hpp
-    Renderers/Abstracts/include/SizeControl.hpp
-    Renderers/Abstracts/include/RendererOpenGL.hpp
     Renderers/Abstracts/include/CameraControl.hpp
     Renderers/Abstracts/include/FaceCullingControlOpenGL.hpp
-    Renderers/Interfaces/include/IRenderer.hpp
+    Renderers/Abstracts/include/GridControl.hpp
+    Renderers/Abstracts/include/IlluminationControl.hpp
+    Renderers/Abstracts/include/Renderer.hpp
+    Renderers/Abstracts/include/RendererOpenGL.hpp
+    Renderers/Abstracts/include/SizeControl.hpp
+    Renderers/Interfaces/include/ICameraControl.hpp
+    Renderers/Interfaces/include/IFrameBufferProvider.hpp
     Renderers/Interfaces/include/IGridControl.hpp
     Renderers/Interfaces/include/IIlluminationControl.hpp
-    Renderers/Interfaces/include/ISizeControl.hpp
+    Renderers/Interfaces/include/IRenderer.hpp
     Renderers/Interfaces/include/IRendererOpenGL.hpp
-    Renderers/Interfaces/include/IFrameBufferProvider.hpp
-    Renderers/Interfaces/include/ICameraControl.hpp
+    Renderers/Interfaces/include/ISizeControl.hpp
     Renderers/Renderers/include/OpenGLRenderer.hpp
     Renderers/Renderers/include/OpenGLRendererImpl.hpp
     Renderers/Support/include/FrameBufferOpenGL.hpp
 )
 
 set(RENDERERS_SOURCES
-    Renderers/Abstracts/src/Renderer.cpp
-    Renderers/Abstracts/src/GridControl.cpp
-    Renderers/Abstracts/src/IlluminationControl.cpp
-    Renderers/Abstracts/src/SizeControl.cpp
-    Renderers/Abstracts/src/RendererOpenGL.cpp
     Renderers/Abstracts/src/CameraControl.cpp
     Renderers/Abstracts/src/FaceCullingControlOpenGL.cpp
-    Renderers/Interfaces/src/IRenderer.cpp
+    Renderers/Abstracts/src/GridControl.cpp
+    Renderers/Abstracts/src/IlluminationControl.cpp
+    Renderers/Abstracts/src/Renderer.cpp
+    Renderers/Abstracts/src/RendererOpenGL.cpp
+    Renderers/Abstracts/src/SizeControl.cpp
+    Renderers/Interfaces/src/ICameraControl.cpp
+    Renderers/Interfaces/src/IFrameBufferProvider.cpp
     Renderers/Interfaces/src/IGridControl.cpp
     Renderers/Interfaces/src/IIlluminationControl.cpp
-    Renderers/Interfaces/src/ISizeControl.cpp
+    Renderers/Interfaces/src/IRenderer.cpp
     Renderers/Interfaces/src/IRendererOpenGL.cpp
-    Renderers/Interfaces/src/IFrameBufferProvider.cpp
-    Renderers/Interfaces/src/ICameraControl.cpp
+    Renderers/Interfaces/src/ISizeControl.cpp
     Renderers/Renderers/src/OpenGLRenderer.cpp
     Renderers/Renderers/src/OpenGLRendererImpl.cpp
     Renderers/Support/src/FrameBufferOpenGL.cpp
@@ -163,14 +163,14 @@ set(RENDERERS_SOURCES
 # ==== Scene ====
 set(SCENE_HEADERS
     Scene/Abstracts/include/Scene.hpp
-    Scene/Abstracts/include/SceneObjects.hpp
-    Scene/Abstracts/include/SceneLighting.hpp
     Scene/Abstracts/include/SceneEnvironment.hpp
+    Scene/Abstracts/include/SceneLighting.hpp
+    Scene/Abstracts/include/SceneObjects.hpp
     Scene/Abstracts/include/SceneState.hpp
     Scene/Interfaces/include/IScene.hpp
-    Scene/Interfaces/include/ISceneObjects.hpp
-    Scene/Interfaces/include/ISceneLighting.hpp
     Scene/Interfaces/include/ISceneEnvironment.hpp
+    Scene/Interfaces/include/ISceneLighting.hpp
+    Scene/Interfaces/include/ISceneObjects.hpp
     Scene/Interfaces/include/ISceneState.hpp
     Scene/Scenes/include/OpenGLScene.hpp
     Scene/Scenes/include/OpenGLSceneImpl.hpp
@@ -179,14 +179,14 @@ set(SCENE_HEADERS
 
 set(SCENE_SOURCES
     Scene/Abstracts/src/Scene.cpp
-    Scene/Abstracts/src/SceneObjects.cpp
-    Scene/Abstracts/src/SceneLighting.cpp
     Scene/Abstracts/src/SceneEnvironment.cpp
+    Scene/Abstracts/src/SceneLighting.cpp
+    Scene/Abstracts/src/SceneObjects.cpp
     Scene/Abstracts/src/SceneState.cpp
     Scene/Interfaces/src/IScene.cpp
-    Scene/Interfaces/src/ISceneObjects.cpp
-    Scene/Interfaces/src/ISceneLighting.cpp
     Scene/Interfaces/src/ISceneEnvironment.cpp
+    Scene/Interfaces/src/ISceneLighting.cpp
+    Scene/Interfaces/src/ISceneObjects.cpp
     Scene/Interfaces/src/ISceneState.cpp
     Scene/Scenes/src/OpenGLScene.cpp
     Scene/Scenes/src/OpenGLSceneImpl.cpp
@@ -199,8 +199,8 @@ set(SHADERS_HEADERS
     Shaders/Abstracts/include/ShaderSourceManagerOpenGL.hpp
     Shaders/Abstracts/include/UniformSetterOpenGL.hpp
     Shaders/Interfaces/include/IShader.hpp
-    Shaders/Shaders/include/ShaderOpenGL.hpp
     Shaders/Shaders/include/ShaderManager.hpp
+    Shaders/Shaders/include/ShaderOpenGL.hpp
     Shaders/Support/include/ShaderOpenGLTypes.hpp
     Shaders/Support/include/ShaderTypes.hpp
 )
@@ -211,9 +211,8 @@ set(SHADERS_SOURCES
     Shaders/Abstracts/src/ShaderSourceManagerOpenGL.cpp
     Shaders/Abstracts/src/UniformSetterOpenGL.cpp
     Shaders/Interfaces/src/IShader.cpp
-    Shaders/Shaders/src/ShaderOpenGL.cpp
     Shaders/Shaders/src/ShaderManager.cpp
-
+    Shaders/Shaders/src/ShaderOpenGL.cpp
 )
 
 # ==== Utilities ====
