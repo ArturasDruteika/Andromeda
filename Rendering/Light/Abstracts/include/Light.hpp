@@ -17,7 +17,7 @@
 #endif
 
 
-#include "LightProperties.hpp"
+#include "../../Support/include/LightTypes.hpp"
 #include "glm/glm.hpp"
 
 

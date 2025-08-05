@@ -17,7 +17,8 @@ target_include_directories(${PROJECT_NAME}
         ../Space/Scene/include/
         ../Space/Attributes/include/
         ../Space/DataTypes/include/
-        ../Rendering/Light/include/
+        ../Rendering/Light/LightTypes/include/
+        ../Rendering/Light/Abstracts/include/
         ../Rendering/RenderableObjects/Interfaces/include/
         ../Rendering/RenderableObjects/Objects/include/
         ../Rendering/Materials/include/

@@ -16,7 +16,7 @@
 	#define RENDERING_API __attribute__((visibility("default")))
 #endif
 
-#include "../../../Light/include/ILightBehavior.hpp"
+#include "../../../Light/Interfaces/include/ILightBehavior.hpp"
 
 
 namespace Andromeda::Rendering

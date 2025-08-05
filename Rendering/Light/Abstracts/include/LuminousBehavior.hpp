@@ -18,7 +18,7 @@
 
 
 #include "pch.hpp"
-#include "ILightBehavior.hpp"
+#include "../../Interfaces/include/ILightBehavior.hpp"
 #include "Light.hpp"
 
 

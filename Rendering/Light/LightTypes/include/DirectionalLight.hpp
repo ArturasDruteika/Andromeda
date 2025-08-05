@@ -2,7 +2,7 @@
 #define RENDERING__DIRECTIONAL_LIGHT__HPP
 
 
-#include "Light.hpp"
+#include "../../Abstracts/include/Light.hpp"
 #include "glm/glm.hpp"
 
 

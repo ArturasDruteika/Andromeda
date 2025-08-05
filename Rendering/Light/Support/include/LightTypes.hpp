@@ -1,5 +1,5 @@
-#ifndef RENDERING__LIGHT_PROPERTIES__HPP
-#define RENDERING__LIGHT_PROPERTIES__HPP
+#ifndef RENDERING__LIGHT_TYPES__HPP
+#define RENDERING__LIGHT_TYPES__HPP
 
 
 #include "glm/glm.hpp"
@@ -20,4 +20,4 @@ namespace Andromeda
 }
 
 
-#endif // RENDERING__LIGHT_PROPERTIES__HPP
+#endif // RENDERING__LIGHT_TYPES__HPP

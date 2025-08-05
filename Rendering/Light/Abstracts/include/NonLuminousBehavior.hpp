@@ -18,8 +18,8 @@
 
 
 #include "pch.hpp"
-#include "ILightBehavior.hpp"
-#include "../../Materials/include/Materials.hpp"
+#include "../../Interfaces/include/ILightBehavior.hpp"
+#include "../../../Materials/include/Materials.hpp"
 
 
 
