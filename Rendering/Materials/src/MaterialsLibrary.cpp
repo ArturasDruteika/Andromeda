@@ -42,7 +42,7 @@ namespace Andromeda
 		{
 		}
 
-		MaterialLibrary::MaterialLibrary(const std::string& filePath)
+		MaterialLibrary::MaterialLibrary(const std::filesystem::path& filePath)
 			: m_materialsConfigFilePath{ filePath }
 		{
 			LoadFromFile(filePath);
@@ -60,7 +60,7 @@ namespace Andromeda
 			return m_materials.size();
 		}
 
-		std::string MaterialLibrary::GetMaterialsConfigFilePath() const
+		std::filesystem::path MaterialLibrary::GetMaterialsConfigFilePath() const
 		{
 			return m_materialsConfigFilePath;
 		}
@@ -86,12 +86,12 @@ namespace Andromeda
 		}
 
 
-		bool MaterialLibrary::LoadFromFile(const std::string& filePath)
+		bool MaterialLibrary::LoadFromFile(const std::filesystem::path& filePath)
 		{
 			std::ifstream in(filePath);
 			if (!in.is_open()) 
 			{
-				spdlog::error("File {} is open.", filePath.c_str());
+				spdlog::error("File {} is open.", filePath.string());
 				return false;
 			}
 
@@ -131,9 +131,9 @@ namespace Andromeda
 			return true;
 		}
 
-		bool MaterialLibrary::SaveToFile(const std::string& filePath) const
+		bool MaterialLibrary::SaveToFile(const std::filesystem::path& filePath) const
 		{
-			spdlog::info("Saving {} materials to \"{}\"", m_materials.size(), filePath);
+			spdlog::info("Saving {} materials to \"{}\"", m_materials.size(), filePath.string());
 
 			// Build a JSON array
 			nlohmann::json j = nlohmann::json::array();
@@ -156,7 +156,7 @@ namespace Andromeda
 			std::ofstream out(filePath);
 			if (!out.is_open()) 
 			{
-				spdlog::error("MaterialLibrary::SaveToFile - failed to open \"{}\" for writing", filePath);
+				spdlog::error("MaterialLibrary::SaveToFile - failed to open \"{}\" for writing", filePath.string());
 				return false;
 			}
 
@@ -166,11 +166,11 @@ namespace Andromeda
 				<< j << std::endl;
 			if (!out.good()) 
 			{
-				spdlog::error("MaterialLibrary::SaveToFile - error occurred while writing to \"{}\"", filePath);
+				spdlog::error("MaterialLibrary::SaveToFile - error occurred while writing to \"{}\"", filePath.string());
 				return false;
 			}
 
-			spdlog::info("Successfully wrote material data to \"{}\"", filePath);
+			spdlog::info("Successfully wrote material data to \"{}\"", filePath.string());
 			return true;
 		}
 	}

@@ -84,7 +84,7 @@ namespace Andromeda
 			{
                 glfwPollEvents();
                 m_pRenderer->RenderFrame(*m_pScene);
-                m_pRendererWindowOpenGL->SetTextureID(m_pRenderer->GetFrameBufferObjectTexture());
+                m_pRendererWindowOpenGL->SetTextureID(m_pRenderer->GetFrameBufferTexture());
                 m_pImGuiDockspaceManager->Render();
 				glfwSwapBuffers(m_pWindow->GetWindow());
 			}
