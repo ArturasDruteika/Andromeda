@@ -4,7 +4,7 @@
 
 #include "pch.hpp"
 #include "../../../RenderableObjects/Interfaces/include/IRenderableObject.hpp"
-#include "../../../Light/include/DirectionalLight.hpp"
+#include "../../../Light/LightTypes/include/DirectionalLight.hpp"
 #include "LinearAlgebraDataTypes.hpp"
 
 

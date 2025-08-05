@@ -1,6 +1,6 @@
 #include "../include/RenderableObjectOpenGL.hpp"
-#include "../../../Light/include/LuminousBehavior.hpp"
-#include "../../../Light/include/NonLuminousBehavior.hpp"
+#include "../../../Light/Abstracts/include/LuminousBehavior.hpp"
+#include "../../../Light/Abstracts/include/NonLuminousBehavior.hpp"
 #include "../../../Utils/include/MathUtils.hpp"
 #include "glad/gl.h"
 

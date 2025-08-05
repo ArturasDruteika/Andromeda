@@ -20,7 +20,7 @@
 #include "pch.hpp"
 #include "../../Interfaces/include/IScene.hpp"
 #include "../../../RenderableObjects/Interfaces/include/IRenderableObjectOpenGL.hpp"
-#include "../../../Light/include/LuminousBehavior.hpp"
+#include "../../../Light/Abstracts/include/LuminousBehavior.hpp"
 
 
 namespace Andromeda::Rendering

@@ -1,5 +1,5 @@
 #include "../include/Luminous.hpp"
-#include "../../../Light/include/LuminousBehavior.hpp"
+#include "../../../Light/Abstracts/include/LuminousBehavior.hpp"
 
 
 namespace Andromeda::Rendering

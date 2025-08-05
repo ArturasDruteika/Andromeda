@@ -1,7 +1,7 @@
 #ifndef RENDERING__ABSTRACTS__LUMINOUS__HPP
 #define RENDERING__ABSTRACTS__LUMINOUS__HPP
 
-#include "../../../Light/include/ILightBehavior.hpp"
+#include "../../../Light/Interfaces/include/ILightBehavior.hpp"
 
 
 namespace Andromeda::Rendering

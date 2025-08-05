@@ -31,26 +31,26 @@ set(CAMERA_SOURCES
 
 # ==== Light ====
 set(LIGHT_HEADERS
-    Light/include/DirectionalLight.hpp
-    Light/include/ILightBehavior.hpp
-    Light/include/Light.hpp
-    Light/include/LightData.hpp
-    Light/include/LightTypes.hpp
-    Light/include/LuminousBehavior.hpp
-    Light/include/NonLuminousBehavior.hpp
-    Light/include/PointLight.hpp
-    Light/include/SpotLight.hpp
+    Light/LightTypes/include/DirectionalLight.hpp
+    Light/Interfaces/include/ILightBehavior.hpp
+    Light/Abstracts/include/Light.hpp
+    Light/Support/include/LightData.hpp
+    Light/Support/include/LightTypes.hpp
+    Light/Abstracts/include/LuminousBehavior.hpp
+    Light/Abstracts/include/NonLuminousBehavior.hpp
+    Light/LightTypes/include/PointLight.hpp
+    Light/LightTypes/include/SpotLight.hpp
 )
 
 set(LIGHT_SOURCES
-    Light/src/DirectionalLight.cpp
-    Light/src/ILightBehavior.cpp
-    Light/src/Light.cpp
-    Light/src/LightData.cpp
-    Light/src/LuminousBehavior.cpp
-    Light/src/NonLuminousBehavior.cpp
-    Light/src/PointLight.cpp
-    Light/src/SpotLight.cpp
+    Light/LightTypes/src/DirectionalLight.cpp
+    Light/Interfaces/src/ILightBehavior.cpp
+    Light/Abstracts/src/Light.cpp
+    Light/Support/src/LightData.cpp
+    Light/Abstracts/src/LuminousBehavior.cpp
+    Light/Abstracts/src/NonLuminousBehavior.cpp
+    Light/LightTypes/src/PointLight.cpp
+    Light/LightTypes/src/SpotLight.cpp
 )
 
 # ==== Materials ====
