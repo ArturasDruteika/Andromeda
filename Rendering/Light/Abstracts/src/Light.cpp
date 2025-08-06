@@ -13,7 +13,6 @@ namespace Andromeda::Rendering
 	)
 		: m_intensity{ intensity }
 		, m_color{ color }
-		, m_type{ type }
 		, m_ambient{ ambient }
 		, m_diffuse{ diffuse }
 		, m_specular{ specular }
@@ -45,11 +44,6 @@ namespace Andromeda::Rendering
 	glm::vec3 Light::GetSpecular() const
 	{
 		return m_specular;
-	}
-
-	LightType Light::GetType() const
-	{
-		return m_type;
 	}
 
 	void Light::SetIntensity(float intensity)

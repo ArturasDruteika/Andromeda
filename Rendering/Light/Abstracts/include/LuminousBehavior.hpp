@@ -19,6 +19,7 @@
 
 #include "pch.hpp"
 #include "../../Interfaces/include/ILightBehavior.hpp"
+#include "../../Support/include/LightTypes.hpp"
 #include "Light.hpp"
 
 
@@ -30,13 +31,17 @@ namespace Andromeda
 			: public ILightBehavior
 		{
 		public:
-			//LuminousBehavior();
 			LuminousBehavior(Light* light);
 			~LuminousBehavior();
 
+			LightType GetType() const;
 			Light* GetLight() const;
 
 		private:
+			void AssignLightType(const Light* light);
+
+		private:
+			LightType m_type;
 			Light* m_light;
 		};
 	}

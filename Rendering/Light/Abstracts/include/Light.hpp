@@ -42,7 +42,6 @@ namespace Andromeda::Rendering
 		glm::vec3 GeAmbient() const;
 		glm::vec3 GetDiffuse() const;
 		glm::vec3 GetSpecular() const;
-		LightType GetType() const;
 		// Setters
 		void SetIntensity(float intensity);
 		void SetColor(const glm::vec3& color);
@@ -56,7 +55,6 @@ namespace Andromeda::Rendering
 		glm::vec3 m_ambient;
 		glm::vec3 m_diffuse;
 		glm::vec3 m_specular;
-		LightType m_type;
 	};
 }
 
