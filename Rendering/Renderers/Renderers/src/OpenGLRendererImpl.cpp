@@ -352,8 +352,8 @@ namespace Andromeda::Rendering
             glm::vec3 lightPosGLM = MathUtils::ToGLM(lightCaster->GetCenterPosition());
             lightPositions.push_back(lightPosGLM);
 
-            auto* luminousBehavior = dynamic_cast<LuminousBehavior*>(lightCaster->GetLightBehavior());
-            auto* pointLight = dynamic_cast<PointLight*>(luminousBehavior->GetLight());
+            LuminousBehavior* luminousBehavior = dynamic_cast<LuminousBehavior*>(lightCaster->GetLightBehavior());
+            PointLight* pointLight = dynamic_cast<PointLight*>(luminousBehavior->GetLight());
 
             lightConstants.push_back(pointLight->GetAttenuationConstant());
             lightLinears.push_back(pointLight->GetAttenuationLinear());
@@ -381,7 +381,7 @@ namespace Andromeda::Rendering
             if (id < 0 || obj->IsLuminous())
                 continue;
 
-            auto* nonLum = dynamic_cast<NonLuminousBehavior*>(obj->GetLightBehavior());
+            NonLuminousBehavior* nonLum = dynamic_cast<NonLuminousBehavior*>(obj->GetLightBehavior());
             if (!nonLum)
                 continue;
 
