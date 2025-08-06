@@ -1,5 +1,5 @@
-#ifndef ENVIRONMENT__SCENE_IMPL__HPP
-#define ENVIRONMENT__SCENE_IMPL__HPP
+#ifndef RENDERING__SCENE_IMPL__HPP
+#define RENDERING__SCENE_IMPL__HPP
 
 
 #include "../include/OpenGLScene.hpp"
@@ -23,4 +23,4 @@ namespace Andromeda::Rendering
 }
 
 
-#endif // ENVIRONMENT__ENVIRONMENT__HPP
+#endif // RENDERING__RENDERING__HPP
