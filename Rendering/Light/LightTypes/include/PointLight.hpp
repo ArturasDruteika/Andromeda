@@ -18,12 +18,15 @@
 
 
 #include "../../Abstracts/include/Light.hpp"
+#include "../../Abstracts/include/LuminousBehavior.hpp"
 #include "glm/glm.hpp"
 
 
 namespace Andromeda::Rendering
 {
-	class RENDERING_API PointLight : public Light
+	class RENDERING_API PointLight
+		: public Light
+		, public LuminousBehavior
 	{
 	public:
 		PointLight(
