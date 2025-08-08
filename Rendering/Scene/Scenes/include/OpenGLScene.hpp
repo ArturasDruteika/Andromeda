@@ -55,6 +55,9 @@ namespace Andromeda::Rendering
 		const std::unordered_map<int, const PointLight*> GetPointLights() const override;
 		const std::unordered_map<int, LuminousBehavior*>& GetLuminousObjects() const override;
 
+		// === From IScene ===
+		glm::vec3 GetSceneCenter() const override;
+
 	private:
 		class OpenGLSceneImpl;
 		OpenGLSceneImpl* m_pOpenGLSceneImpl;

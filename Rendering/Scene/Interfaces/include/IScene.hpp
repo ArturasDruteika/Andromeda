@@ -34,6 +34,9 @@ namespace Andromeda::Rendering
     {
     public:
         virtual ~IScene();
+
+		// Getters
+        virtual glm::vec3 GetSceneCenter() const = 0;
     };
 }
 

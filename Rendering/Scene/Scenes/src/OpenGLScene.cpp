@@ -63,4 +63,9 @@ namespace Andromeda::Rendering
 	{
 		return m_pOpenGLSceneImpl->GetLuminousObjects();
 	}
+
+	glm::vec3 OpenGLScene::GetSceneCenter() const
+	{
+		return m_pOpenGLSceneImpl->GetSceneCenter();;
+	}
 }
