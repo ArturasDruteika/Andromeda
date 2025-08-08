@@ -3,6 +3,7 @@
 
 
 #include "pch.hpp"
+#include "../../../Light/Abstracts/include/LuminousBehavior.hpp"
 #include "../../../RenderableObjects/Interfaces/include/IRenderableObject.hpp"
 #include "../../../Light/LightTypes/include/DirectionalLight.hpp"
 #include "../../../Light/LightTypes/include/PointLight.hpp"
@@ -21,10 +22,10 @@ namespace Andromeda::Rendering
         // Getters
         const std::unordered_map<int, const DirectionalLight*> GetDirectionalLights() const;
         const std::unordered_map<int, const PointLight*> GetPointLights() const;
-        const std::unordered_map<int, IRenderableObject*>& GetLuminousObjects() const;
+        const std::unordered_map<int, LuminousBehavior*>& GetLuminousObjects() const;
 
     protected:
-        std::unordered_map<int, IRenderableObject*> m_luminousObjects;
+        std::unordered_map<int, LuminousBehavior*> m_luminousObjects;
 
     private:
         // Fixed: return map of pointers, not objects

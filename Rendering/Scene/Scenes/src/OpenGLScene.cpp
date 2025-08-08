@@ -59,7 +59,7 @@ namespace Andromeda::Rendering
 		return m_pOpenGLSceneImpl->GetPointLights();
 	}
 
-	const std::unordered_map<int, IRenderableObject*>& OpenGLScene::GetLuminousObjects() const
+	const std::unordered_map<int, LuminousBehavior*>& OpenGLScene::GetLuminousObjects() const
 	{
 		return m_pOpenGLSceneImpl->GetLuminousObjects();
 	}

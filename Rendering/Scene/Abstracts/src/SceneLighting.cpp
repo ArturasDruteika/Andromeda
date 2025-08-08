@@ -8,7 +8,7 @@ namespace Andromeda::Rendering
     SceneLighting::SceneLighting() = default;
     SceneLighting::~SceneLighting() = default;
 
-    const std::unordered_map<int, IRenderableObject*>& SceneLighting::GetLuminousObjects() const
+    const std::unordered_map<int, LuminousBehavior*>& SceneLighting::GetLuminousObjects() const
     {
         return m_luminousObjects;
     }
@@ -31,11 +31,7 @@ namespace Andromeda::Rendering
 
         for (const auto& [id, obj] : m_luminousObjects)
         {
-            if (!obj)
-                continue;
-
-            LuminousBehavior* luminousBehavior = dynamic_cast<LuminousBehavior*>(obj->GetLightBehavior());
-            if (luminousBehavior && luminousBehavior->GetType() == type)
+            if (obj && obj->GetType() == type)
             {
                 if (auto* casted = dynamic_cast<const TLight*>(obj)) // cast to const TLight*
                 {

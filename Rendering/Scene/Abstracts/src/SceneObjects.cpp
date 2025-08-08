@@ -24,7 +24,8 @@ namespace Andromeda::Rendering
 		m_objects.insert({ id, object });
 		if (object->IsLuminous())
 		{
-			m_luminousObjects.insert({ id, object });
+			LuminousBehavior* luminousObject = dynamic_cast<LuminousBehavior*>(object);
+			m_luminousObjects.insert({ id, luminousObject });
 		}
 	}
 

@@ -53,7 +53,7 @@ namespace Andromeda::Rendering
 		// === From ISceneLighting ===
 		const std::unordered_map<int, const DirectionalLight*> GetDirectionalLights() const override;
 		const std::unordered_map<int, const PointLight*> GetPointLights() const override;
-		const std::unordered_map<int, IRenderableObject*>& GetLuminousObjects() const override;
+		const std::unordered_map<int, LuminousBehavior*>& GetLuminousObjects() const override;
 
 	private:
 		class OpenGLSceneImpl;

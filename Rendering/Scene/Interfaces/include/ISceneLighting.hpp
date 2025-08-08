@@ -33,7 +33,7 @@ namespace Andromeda::Rendering
         // Getters
         virtual const std::unordered_map<int, const DirectionalLight*> GetDirectionalLights() const = 0;
         virtual const std::unordered_map<int, const PointLight*> GetPointLights() const = 0;
-        virtual const std::unordered_map<int, IRenderableObject*>& GetLuminousObjects() const = 0;
+        virtual const std::unordered_map<int, LuminousBehavior*>& GetLuminousObjects() const = 0;
     };
 }
 
