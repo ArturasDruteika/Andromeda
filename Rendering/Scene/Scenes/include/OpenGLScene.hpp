@@ -49,6 +49,7 @@ namespace Andromeda::Rendering
 		const std::unordered_map<int, IRenderableObject*>& GetObjects() const override;
 		void AddObject(int id, IRenderableObject* object) override;
 		void RemoveObject(int id) override;
+		void AddDirectionaLight(int id, DirectionalLight* pDirectionalLight) override;
 
 		// === From ISceneLighting ===
 		const std::unordered_map<int, const DirectionalLight*> GetDirectionalLights() const override;

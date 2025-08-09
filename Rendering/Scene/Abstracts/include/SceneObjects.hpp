@@ -21,6 +21,7 @@ namespace Andromeda::Rendering
 		
 		void AddObject(int id, IRenderableObject* object);
 		void RemoveObject(int id);
+		void AddDirectionaLight(int id, DirectionalLight* pDirectionalLight);
 
 	protected:
 		std::unordered_map<int, IRenderableObject*> m_objects;

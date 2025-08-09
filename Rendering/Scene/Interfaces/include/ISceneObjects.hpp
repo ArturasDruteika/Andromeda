@@ -18,6 +18,7 @@
 
 
 #include "pch.hpp"
+#include "../../../Light/LightTypes/include/DirectionalLight.hpp"
 #include "../../../RenderableObjects/Interfaces/include/IRenderableObject.hpp"
 
 
@@ -33,6 +34,7 @@ namespace Andromeda::Rendering
 		
 		virtual void AddObject(int id, IRenderableObject* object) = 0;
 		virtual void RemoveObject(int id) = 0;
+		virtual void AddDirectionaLight(int id, DirectionalLight* pDirectionalLight) = 0;
 	};
 }
 
