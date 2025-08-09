@@ -13,7 +13,12 @@ namespace Andromeda
 			AssignLightType(light);
 		}
 
-		LuminousBehavior::~LuminousBehavior() = default;
+		LuminousBehavior::~LuminousBehavior()
+		{
+			delete m_light;
+			m_light = nullptr;
+			m_type = LightType::None;
+		};
 
 		LightType LuminousBehavior::GetType() const
 		{
