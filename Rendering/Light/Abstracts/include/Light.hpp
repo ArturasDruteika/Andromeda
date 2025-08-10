@@ -31,8 +31,7 @@ namespace Andromeda::Rendering
 			float intensity,
 			const glm::vec3& ambient,
 			const glm::vec3& diffuse,
-			const glm::vec3& specular,
-			const LightType& type
+			const glm::vec3& specular
 		);
 		virtual ~Light();
 
