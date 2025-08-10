@@ -19,10 +19,9 @@ namespace Andromeda::Rendering
             intensity,
             ambient,
             diffuse,
-            specular,
-            LightType::Point
+            specular
         }
-        , LuminousBehavior{ this }
+        , LuminousBehavior{ this, LightType::Point }
         , m_attenuationConstant{ attenuationConstant }
         , m_attenuationLinear{ attenuationLinear }
         , m_attenuationQuadratic{ attenuationQuadratic }

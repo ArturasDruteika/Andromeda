@@ -7,10 +7,10 @@ namespace Andromeda
 {
 	namespace Rendering
 	{
-		LuminousBehavior::LuminousBehavior(Light* light)
+		LuminousBehavior::LuminousBehavior(Light* light, const LightType& type)
 			: m_light{ light }
+			, m_type{ type }
 		{
-			AssignLightType(light);
 		}
 
 		LuminousBehavior::~LuminousBehavior()
@@ -28,22 +28,6 @@ namespace Andromeda
 		Light* LuminousBehavior::GetLight() const
 		{
 			return m_light;
-		}
-
-		void LuminousBehavior::AssignLightType(const Light* light)
-		{
-			if (dynamic_cast<const DirectionalLight*>(light))
-			{
-				m_type = LightType::Directional;
-			}
-			else if (dynamic_cast<const PointLight*>(light))
-			{
-				m_type = LightType::Point;
-			}
-			else
-			{
-				m_type = LightType::None;
-			}
 		}
 	}
 }

@@ -27,7 +27,7 @@ namespace Andromeda::Rendering
 	{
 	public:
 		Light(
-			const glm::vec3 color,
+			const glm::vec3& color,
 			float intensity,
 			const glm::vec3& ambient,
 			const glm::vec3& diffuse,

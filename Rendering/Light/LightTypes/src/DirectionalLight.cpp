@@ -16,10 +16,9 @@ namespace Andromeda::Rendering
 			intensity,
 			ambient,
 			diffuse,
-			specular,
-			LightType::Directional
+			specular
 		}
-		, LuminousBehavior{ this }
+		, LuminousBehavior{ this, LightType::Directional }
 		, m_direction{ glm::normalize(direction) }
 	{
 	}

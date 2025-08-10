@@ -31,14 +31,11 @@ namespace Andromeda
 			: public ILightBehavior
 		{
 		public:
-			LuminousBehavior(Light* light);
+			LuminousBehavior(Light* light, const LightType& type);
 			~LuminousBehavior();
 
 			LightType GetType() const;
 			Light* GetLight() const;
-
-		private:
-			void AssignLightType(const Light* light);
 
 		private:
 			LightType m_type;
