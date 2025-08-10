@@ -342,37 +342,30 @@ namespace Andromeda::Rendering
 
     void OpenGLRenderer::OpenGLRendererImpl::PopulateLightUniforms(ShaderOpenGL& shader, const IScene& scene) const
     {
-        const auto& luminousObjsMap = scene.GetLuminousObjects();
+        const auto& directionalLightMap = scene.GetDirectionalLights();
 
-        std::vector<float> lightConstants, lightLinears, lightQuadratics;
-        std::vector<glm::vec3> lightPositions, lightAmbientValues, lightDiffuseValues, lightSpecularValues;
+        std::vector<glm::vec3> lightDirections;
+        std::vector<glm::vec3> lightAmbientValues;
+        std::vector<glm::vec3> lightDiffuseValues;
+        std::vector<glm::vec3> lightSpecularValues;
 
-        for (const auto& [id, lightCaster] : luminousObjsMap)
+        for (const auto& [id, light] : directionalLightMap)
         {
-            glm::vec3 lightPosGLM = MathUtils::ToGLM(lightCaster->GetCenterPosition());
-            lightPositions.push_back(lightPosGLM);
+            glm::vec3 lightDirGLM = light->GetDirection();
+            lightDirections.push_back(lightDirGLM);
 
-            LuminousBehavior* luminousBehavior = dynamic_cast<LuminousBehavior*>(lightCaster->GetLightBehavior());
-            PointLight* pointLight = dynamic_cast<PointLight*>(luminousBehavior->GetLight());
-
-            lightConstants.push_back(pointLight->GetAttenuationConstant());
-            lightLinears.push_back(pointLight->GetAttenuationLinear());
-            lightQuadratics.push_back(pointLight->GetAttenuationQuadratic());
-
-            lightAmbientValues.push_back({ 0.9f, 0.9f, 0.9f });
-            lightDiffuseValues.push_back(pointLight->GetDiffuse());
-            lightSpecularValues.push_back(pointLight->GetSpecular());
+            lightAmbientValues.push_back(glm::vec3(0.9f));  // optional: could be fetched from light
+            lightDiffuseValues.push_back(light->GetDiffuse());
+            lightSpecularValues.push_back(light->GetSpecular());
         }
 
-        shader.SetUniform("u_numLights", static_cast<int>(lightPositions.size()));
-        shader.SetUniform("u_positionLight", lightPositions);
-        shader.SetUniform("u_constantLight", lightConstants);
-        shader.SetUniform("u_linearLight", lightLinears);
-        shader.SetUniform("u_quadraticLight", lightQuadratics);
+        shader.SetUniform("u_numLights", static_cast<int>(lightDirections.size()));
+        shader.SetUniform("u_directionLight", lightDirections);
         shader.SetUniform("u_ambientLight", lightAmbientValues);
         shader.SetUniform("u_diffuseLight", lightDiffuseValues);
         shader.SetUniform("u_specularLight", lightSpecularValues);
     }
+
 
     void OpenGLRenderer::OpenGLRendererImpl::RenderEachNonLuminousObject(ShaderOpenGL& shader, const IScene& scene) const
     {
@@ -404,23 +397,14 @@ namespace Andromeda::Rendering
     glm::mat4 OpenGLRenderer::OpenGLRendererImpl::ComputeLightSpaceMatrix(const IScene& scene) const
     {
         std::unordered_map<int, Math::Vec3> lightCoords;
-        const std::unordered_map<int, IRenderableObject*>& luminousObjsMap = scene.GetLuminousObjects();
-        lightCoords.reserve(luminousObjsMap.size());
+        const std::unordered_map<int, const DirectionalLight*> directionalLightMap = scene.GetDirectionalLights();
+        const DirectionalLight* light = directionalLightMap.begin()->second;
+        glm::vec3 lightDirection = light->GetDirection();
 
-        for (const auto& [id, lightCaster] : luminousObjsMap)
-        {
-            lightCoords[id] = lightCaster->GetCenterPosition();
-        }
-
-        if (lightCoords.empty())
-            return glm::mat4(1.0f);
-
-        glm::vec3 lightPos = MathUtils::ToGLM(lightCoords.begin()->second);
-
-        glm::vec3 sceneCenter(0.0f);
         glm::vec3 up(0.0f, 1.0f, 0.0f);
+		glm::vec3 lightPos = scene.GetSceneCenter() - lightDirection * 20.0f;
 
-        glm::mat4 lightView = glm::lookAt(lightPos, sceneCenter, up);
+        glm::mat4 lightView = glm::lookAt(lightPos, scene.GetSceneCenter(), up);
 
         float orthoHalfSize = 10.0f;
         float nearPlane = 1.0f;
