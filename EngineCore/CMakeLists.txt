@@ -10,110 +10,137 @@ add_definitions(-DENGINECORE_EXPORT)
 
 # OpenGL
 find_package(OpenGL REQUIRED)
-target_link_libraries(${EXEC_NAME} OpenGL::GL)
-
 if (APPLE)
     # Ignore macOS OpenGL deprecation warnings
-    target_compile_definitions(${EXEC_NAME} PRIVATE GL_SILENCE_DEPRECATION)
+    target_compile_definitions(${PROJECT_NAME} PRIVATE GL_SILENCE_DEPRECATION)
 endif ()
 
-add_library(${PROJECT_NAME} 
-    SHARED
-	    Application/include/Application.hpp
-        Application/src/Application.cpp
-        Application/include/ApplicationImpl.hpp
-        Application/src/ApplicationImpl.cpp
-        Application/include/CameraInputMapper.hpp
-        Application/src/CameraInputMapper.cpp
-        RenderingWindows/include/GraphicalModalWindow.hpp
-        RenderingWindows/src/GraphicalModalWindow.cpp
-        RenderingWindows/include/RendererWindowOpenGL.hpp
-        RenderingWindows/src/RendererWindowOpenGL.cpp
-        RenderingWindows/include/ImGuiDockspaceManager.hpp
-        RenderingWindows/src/ImGuiDockspaceManager.cpp
+
+# ==== Application ====
+set(APPLICATION_HEADERS
+    Application/include/Application.hpp
+    Application/include/ApplicationImpl.hpp
+    Application/include/CameraInputMapper.hpp
 )
 
-target_include_directories(${PROJECT_NAME} 
+set(APPLICATION_SOURCES
+    Application/src/Application.cpp
+    Application/src/ApplicationImpl.cpp
+    Application/src/CameraInputMapper.cpp
+)
+
+# ==== Macro Exports ====
+set(MACRO_EXPORTS_HEADERS
+    MacroExports/include/MacroExports.hpp
+)
+
+# ==== RenderingWindows ====
+set(RENDERING_WINDOWS_HEADERS
+    RenderingWindows/include/GraphicalModalWindow.hpp
+    RenderingWindows/include/ImGuiDockspaceManager.hpp
+    RenderingWindows/include/RendererWindowOpenGL.hpp
+)
+
+set(RENDERING_WINDOWS_SOURCES
+    RenderingWindows/src/GraphicalModalWindow.cpp
+    RenderingWindows/src/ImGuiDockspaceManager.cpp
+    RenderingWindows/src/RendererWindowOpenGL.cpp
+)
+
+
+# ==== Target ====
+add_library(${PROJECT_NAME}
+    SHARED
+        ${APPLICATION_HEADERS}
+        ${APPLICATION_SOURCES}
+        ${MACRO_EXPORTS_HEADERS}
+        ${RENDERING_WINDOWS_HEADERS}
+        ${RENDERING_WINDOWS_SOURCES}
+)
+
+# Include dirs (alphabetical)
+target_include_directories(${PROJECT_NAME}
     PRIVATE
-        ..//Utils//PrecompiledHeaders//include//
-        ..//glfw//include//
-        ..//glfw//
-        ..//Window//GLFWWindow//include//
         ..//Context//GLFWContext//include//
-        ..//Rendering//Renderers//Renderers//include//
-        ..//Rendering//RenderableObjects//Interfaces//include//
-        ..//Rendering//Vertices//include//
-        ..//Rendering//Scene//Interfaces//include//
-        ..//Rendering//Scene//Scenes//include//
-        ..//Rendering//OpenGLLoader//include//
+        ..//Math//Constants//include//
+        ..//Math//Trigonometry//include//
         ..//Rendering//Attributes//include//
         ..//Rendering//Camera//include//
         ..//Rendering//Light//LightTypes//include//
+        ..//Rendering//OpenGLLoader//include//
+        ..//Rendering//RenderableObjects//Interfaces//include//
+        ..//Rendering//Renderers//Renderers//include//
+        ..//Rendering//Scene//Interfaces//include//
+        ..//Rendering//Scene//Scenes//include//
+        ..//Rendering//Vertices//include//
+        ..//Utils//PrecompiledHeaders//include//
+        ..//Window//GLFWWindow//include//
+        ..//glfw//
+        ..//glfw//include//
         ..//imgui//imgui//
-	    ..//imgui//imgui//backends//
-        ..//Space//DataTypes//include//
-        ..//Space//Attributes//include//
-        ..//Math//Constants//include//
-        ..//Math//Trigonometry//include//
+        ..//imgui//imgui//backends//
 )
 
-# Link GLFW and OpenGL to the executable
-target_link_libraries(${PROJECT_NAME} 
+# Link libraries (alphabetical)
+target_link_libraries(${PROJECT_NAME}
     PRIVATE
-        Utils
-        glfw
-        OpenGL::GL
-        ExternalGraphicsLibs
-        Window
         Context
-        Rendering
-        imgui
+        ExternalGraphicsLibs
         Math
+        OpenGL::GL
+        Rendering
+        Utils
+        Window
+        glfw
+        imgui
 )
 
-add_dependencies(${PROJECT_NAME} 
-    Utils
-    glfw
-	ExternalGraphicsLibs
-    Window
+# Explicit build ordering (alphabetical)
+add_dependencies(${PROJECT_NAME}
     Context
-    Rendering
-    imgui
+    ExternalGraphicsLibs
     Math
+    Rendering
+    Utils
+    Window
+    glfw
+    imgui
 )
+
 
 # Enable precompiled headers
-target_precompile_headers(${PROJECT_NAME} 
+target_precompile_headers(${PROJECT_NAME}
     REUSE_FROM
         Utils
 )
 
 
-# Organize files into Solution Explorer folders
+# ==== IDE Organization ====
 source_group(
-    TREE 
-        ${CMAKE_CURRENT_SOURCE_DIR}/Application 
-    PREFIX 
-        "Application" 
+    TREE
+        ${CMAKE_CURRENT_SOURCE_DIR}/Application
+    PREFIX
+        "Application"
     FILES
-	    Application/include/Application.hpp
-        Application/src/Application.cpp
-        Application/include/ApplicationImpl.hpp
-        Application/src/ApplicationImpl.cpp
-        Application/include/CameraInputMapper.hpp
-        Application/src/CameraInputMapper.cpp
+        ${APPLICATION_HEADERS}
+        ${APPLICATION_SOURCES}
 )
 
 source_group(
-    TREE 
-        ${CMAKE_CURRENT_SOURCE_DIR}/RenderingWindows 
-    PREFIX 
-        "RenderingWindows" 
+    TREE
+        ${CMAKE_CURRENT_SOURCE_DIR}/MacroExports
+    PREFIX
+        "MacroExports"
     FILES
-        RenderingWindows/include/GraphicalModalWindow.hpp
-        RenderingWindows/src/GraphicalModalWindow.cpp
-        RenderingWindows/include/RendererWindowOpenGL.hpp
-        RenderingWindows/src/RendererWindowOpenGL.cpp
-        RenderingWindows/include/ImGuiDockspaceManager.hpp
-        RenderingWindows/src/ImGuiDockspaceManager.cpp
+        ${MACRO_EXPORTS_HEADERS}
+)
+
+source_group(
+    TREE
+        ${CMAKE_CURRENT_SOURCE_DIR}/RenderingWindows
+    PREFIX
+        "RenderingWindows"
+    FILES
+        ${RENDERING_WINDOWS_HEADERS}
+        ${RENDERING_WINDOWS_SOURCES}
 )
