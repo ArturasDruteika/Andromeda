@@ -8,68 +8,108 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 add_definitions(-DMATH_EXPORT)
 
-add_library(${PROJECT_NAME} 
-    SHARED
-        LinearAlgebra/include/LinearAlgebraDataTypes.hpp
-        LinearAlgebra/include/LinearAlgebraOperations.hpp
-        LinearAlgebra/src/LinearAlgebraOperations.cpp
 
-        Constants/include/Constants.hpp
-
-        Trigonometry/include/Trigonometry.hpp
-        Trigonometry/src/Trigonometry.cpp
+# ==== Constants ====
+set(CONSTANTS_HEADERS
+    Constants/include/Constants.hpp
 )
 
-target_include_directories(${PROJECT_NAME} 
+# ==== Linear Algebra ====
+set(LINEAR_ALGEBRA_HEADERS
+    LinearAlgebra/include/LinearAlgebraDataTypes.hpp
+    LinearAlgebra/include/LinearAlgebraOperations.hpp
+)
+
+set(LINEAR_ALGEBRA_SOURCES
+    LinearAlgebra/src/LinearAlgebraOperations.cpp
+)
+
+# ==== Macro Exports ====
+set(MACRO_EXPORTS_HEADERS
+    MacroExports/include/MacroExports.hpp
+)
+
+# ==== Trigonometry ====
+set(TRIGONOMETRY_HEADERS
+    Trigonometry/include/Trigonometry.hpp
+)
+
+set(TRIGONOMETRY_SOURCES
+    Trigonometry/src/Trigonometry.cpp
+)
+
+
+# ==== Target ====
+add_library(${PROJECT_NAME}
+    SHARED
+        ${CONSTANTS_HEADERS}
+        ${LINEAR_ALGEBRA_HEADERS}
+        ${LINEAR_ALGEBRA_SOURCES}
+        ${MACRO_EXPORTS_HEADERS}
+        ${TRIGONOMETRY_HEADERS}
+        ${TRIGONOMETRY_SOURCES}
+)
+
+# ==== Include Directories ====
+target_include_directories(${PROJECT_NAME}
     PRIVATE
         ..//Utils//PrecompiledHeaders//include//
 )
 
-# Link GLFW and OpenGL to the executable
-target_link_libraries(${PROJECT_NAME} 
+# ==== Link Libraries ====
+target_link_libraries(${PROJECT_NAME}
     PRIVATE
         Utils
 )
 
-add_dependencies(${PROJECT_NAME} 
+# ==== Dependencies ====
+add_dependencies(${PROJECT_NAME}
     Utils
 )
 
-# Enable precompiled headers
-target_precompile_headers(${PROJECT_NAME} 
+
+# ==== Precompiled Headers ====
+target_precompile_headers(${PROJECT_NAME}
     REUSE_FROM
         Utils
 )
 
 
-# Organize files into Solution Explorer folders
+# ==== IDE Organization ====
 source_group(
-    TREE 
-        ${CMAKE_CURRENT_SOURCE_DIR}/LinearAlgebra 
-    PREFIX 
-        "LinearAlgebra" 
+    TREE
+        ${CMAKE_CURRENT_SOURCE_DIR}/Constants
+    PREFIX
+        "Constants"
     FILES
-        LinearAlgebra/include/LinearAlgebraDataTypes.hpp
-        LinearAlgebra/include/LinearAlgebraOperations.hpp
-        LinearAlgebra/src/LinearAlgebraOperations.cpp
+        ${CONSTANTS_HEADERS}
 )
 
 source_group(
-    TREE 
-        ${CMAKE_CURRENT_SOURCE_DIR}/Constants 
-    PREFIX 
-        "Constants" 
+    TREE
+        ${CMAKE_CURRENT_SOURCE_DIR}/LinearAlgebra
+    PREFIX
+        "LinearAlgebra"
     FILES
-        Constants/include/Constants.hpp
+        ${LINEAR_ALGEBRA_HEADERS}
+        ${LINEAR_ALGEBRA_SOURCES}
 )
 
 source_group(
-    TREE 
-        ${CMAKE_CURRENT_SOURCE_DIR}/Trigonometry 
-    PREFIX 
-        "Trigonometry" 
+    TREE
+        ${CMAKE_CURRENT_SOURCE_DIR}/MacroExports
+    PREFIX
+        "MacroExports"
     FILES
-        Trigonometry/include/Trigonometry.hpp
-        Trigonometry/src/Trigonometry.cpp
+        ${MACRO_EXPORTS_HEADERS}
 )
 
+source_group(
+    TREE
+        ${CMAKE_CURRENT_SOURCE_DIR}/Trigonometry
+    PREFIX
+        "Trigonometry"
+    FILES
+        ${TRIGONOMETRY_HEADERS}
+        ${TRIGONOMETRY_SOURCES}
+)

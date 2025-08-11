@@ -9,101 +9,134 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 add_definitions(-DSPACE_EXPORT)
 
 
-add_library(${PROJECT_NAME} 
+# ==== Attributes ====
+set(ATTRIBUTES_HEADERS
+    Attributes/include/Colors.hpp
+)
+
+# ==== DataTypes ====
+set(DATATYPES_HEADERS
+    DataTypes/include/Points.hpp
+)
+
+# ==== Macro Exports ====
+set(MACRO_EXPORTS_HEADERS
+    MacroExports/include/MacroExports.hpp
+)
+
+# ==== Objects ====
+set(OBJECTS_HEADERS
+    Objects/include/Cube.hpp
+    Objects/include/CubeImpl.hpp
+    Objects/include/ObjectBase.hpp
+    Objects/include/ObjectTypes.hpp
+    Objects/include/Sphere.hpp
+    Objects/include/SphereImpl.hpp
+)
+
+set(OBJECTS_SOURCES
+    Objects/src/Cube.cpp
+    Objects/src/CubeImpl.cpp
+    Objects/src/ObjectBase.cpp
+    Objects/src/Sphere.cpp
+    Objects/src/SphereImpl.cpp
+)
+
+# ==== Scene ====
+set(SCENE_HEADERS
+    Scene/include/Scene.hpp
+    Scene/include/SceneImpl.hpp
+)
+
+set(SCENE_SOURCES
+    Scene/src/Scene.cpp
+    Scene/src/SceneImpl.cpp
+)
+
+# ==== Target ====
+add_library(${PROJECT_NAME}
     SHARED
-        Scene/include/Scene.hpp
-        Scene/src/Scene.cpp
-        Scene/include/SceneImpl.hpp
-        Scene/src/SceneImpl.cpp
-
-        DataTypes/include/Points.hpp
-
-        Objects/include/ObjectBase.hpp
-        Objects/src/ObjectBase.cpp
-        Objects/include/ObjectTypes.hpp
-        Objects/include/Sphere.hpp
-        Objects/src/Sphere.cpp
-        Objects/include/SphereImpl.hpp
-        Objects/src/SphereImpl.cpp
-        Objects/include/Cube.hpp
-        Objects/src/Cube.cpp
-        Objects/include/CubeImpl.hpp
-        Objects/src/CubeImpl.cpp
-
-        Attributes/include/Colors.hpp
+        ${ATTRIBUTES_HEADERS}
+        ${DATATYPES_HEADERS}
+        ${MACRO_EXPORTS_HEADERS}
+        ${OBJECTS_HEADERS}
+        ${OBJECTS_SOURCES}
+        ${SCENE_HEADERS}
+        ${SCENE_SOURCES}
 )
 
-target_include_directories(${PROJECT_NAME} 
+# ==== Include Directories ====
+target_include_directories(${PROJECT_NAME}
     PRIVATE
-        ..//Utils//PrecompiledHeaders//include//
         ..//Math//LinearAlgebra//include//
+        ..//Utils//PrecompiledHeaders//include//
 )
 
-# Link GLFW and OpenGL to the executable
-target_link_libraries(${PROJECT_NAME} 
+# ==== Link Libraries ====
+target_link_libraries(${PROJECT_NAME}
     PRIVATE
-        Utils
         Math
+        Utils
 )
 
-add_dependencies(${PROJECT_NAME} 
-    Utils
+# ==== Dependencies ====
+add_dependencies(${PROJECT_NAME}
     Math
+    Utils
 )
 
-# Enable precompiled headers
-target_precompile_headers(${PROJECT_NAME} 
+
+# ==== Precompiled Headers ====
+target_precompile_headers(${PROJECT_NAME}
     REUSE_FROM
         Utils
 )
 
 
-# Organize files into Solution Explorer folders
+# ==== IDE Organization ====
 source_group(
-    TREE 
-        ${CMAKE_CURRENT_SOURCE_DIR}/Scene 
-    PREFIX 
-        "Scene" 
+    TREE
+        ${CMAKE_CURRENT_SOURCE_DIR}/Attributes
+    PREFIX
+        "Attributes"
     FILES
-        Scene/include/Scene.hpp
-        Scene/src/Scene.cpp
-        Scene/include/SceneImpl.hpp
-        Scene/src/SceneImpl.cpp
+        ${ATTRIBUTES_HEADERS}
 )
 
 source_group(
-    TREE 
-        ${CMAKE_CURRENT_SOURCE_DIR}/DataTypes 
-    PREFIX 
-        "DataTypes" 
+    TREE
+        ${CMAKE_CURRENT_SOURCE_DIR}/DataTypes
+    PREFIX
+        "DataTypes"
     FILES
-        DataTypes/include/Points.hpp
+        ${DATATYPES_HEADERS}
 )
 
 source_group(
-    TREE 
-        ${CMAKE_CURRENT_SOURCE_DIR}/Objects 
-    PREFIX 
-        "Objects" 
+    TREE
+        ${CMAKE_CURRENT_SOURCE_DIR}/MacroExports
+    PREFIX
+        "MacroExports"
     FILES
-        Objects/include/ObjectBase.hpp
-        Objects/src/ObjectBase.cpp
-        Objects/include/ObjectTypes.hpp
-        Objects/include/Sphere.hpp
-        Objects/src/Sphere.cpp
-        Objects/include/SphereImpl.hpp
-        Objects/src/SphereImpl.cpp
-        Objects/include/Cube.hpp
-        Objects/src/Cube.cpp
-        Objects/include/CubeImpl.hpp
-        Objects/src/CubeImpl.cpp
+        ${MACRO_EXPORTS_HEADERS}
 )
 
 source_group(
-    TREE 
-        ${CMAKE_CURRENT_SOURCE_DIR}/Attributes 
-    PREFIX 
-        "Attributes" 
+    TREE
+        ${CMAKE_CURRENT_SOURCE_DIR}/Objects
+    PREFIX
+        "Objects"
     FILES
-        Attributes/include/Colors.hpp
+        ${OBJECTS_HEADERS}
+        ${OBJECTS_SOURCES}
+)
+
+source_group(
+    TREE
+        ${CMAKE_CURRENT_SOURCE_DIR}/Scene
+    PREFIX
+        "Scene"
+    FILES
+        ${SCENE_HEADERS}
+        ${SCENE_SOURCES}
 )
