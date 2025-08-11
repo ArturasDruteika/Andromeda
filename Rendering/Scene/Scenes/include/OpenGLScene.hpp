@@ -1,5 +1,5 @@
-#ifndef ENVIRONMENT__SCENE__HPP
-#define ENVIRONMENT__SCENE__HPP
+#ifndef RENDERING__SCENE__HPP
+#define RENDERING__SCENE__HPP
 
 
 #if defined(_WIN32)
@@ -49,19 +49,15 @@ namespace Andromeda::Rendering
 		const std::unordered_map<int, IRenderableObject*>& GetObjects() const override;
 		void AddObject(int id, IRenderableObject* object) override;
 		void RemoveObject(int id) override;
+		void AddDirectionaLight(int id, DirectionalLight* pDirectionalLight) override;
 
 		// === From ISceneLighting ===
-		const std::unordered_map<int, IRenderableObject*>& GetLuminousObjects() const override;
-		void AddDirectionalLight(
-			int id,
-			const Math::Vec3& direction,
-			const Math::Vec3& color = Math::Vec3(1.0f, 1.0f, 1.0f),
-			float intensity = 1.0f,
-			const Math::Vec3& ambient = Math::Vec3(0.1f, 0.1f, 0.1f),
-			const Math::Vec3& diffuse = Math::Vec3(0.4f, 0.4f, 0.4f),
-			const Math::Vec3& specular = Math::Vec3(0.4f, 0.4f, 0.4f)
-		) override;
-		void RemoveDirectionalLight(int id) override;
+		const std::unordered_map<int, const DirectionalLight*> GetDirectionalLights() const override;
+		const std::unordered_map<int, const PointLight*> GetPointLights() const override;
+		const std::unordered_map<int, LuminousBehavior*>& GetLuminousObjects() const override;
+
+		// === From IScene ===
+		glm::vec3 GetSceneCenter() const override;
 
 	private:
 		class OpenGLSceneImpl;
@@ -70,4 +66,4 @@ namespace Andromeda::Rendering
 }
 
 
-#endif // ENVIRONMENT__ENVIRONMENT__HPP
+#endif // RENDERING__RENDERING__HPP

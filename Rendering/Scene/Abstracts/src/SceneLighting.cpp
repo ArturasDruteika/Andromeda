@@ -1,47 +1,50 @@
 #include "../include/SceneLighting.hpp"
-#include "../../../Utils/include/MathUtils.hpp"
+#include "../../../Light/Abstracts/include/Light.hpp"
+#include "../../../Light/Abstracts/include/LuminousBehavior.hpp"
 
 
 namespace Andromeda::Rendering
 {
-	SceneLighting::SceneLighting() = default;
+    SceneLighting::SceneLighting() = default;
+    SceneLighting::~SceneLighting() = default;
 
-	SceneLighting::~SceneLighting() = default;
+    const std::unordered_map<int, LuminousBehavior*>& SceneLighting::GetLuminousObjects() const
+    {
+        return m_luminousObjects;
+    }
 
-	const std::unordered_map<int, IRenderableObject*>& SceneLighting::GetLuminousObjects() const
-	{
-		return m_luminousObjects;
-	}
+    const std::unordered_map<int, const DirectionalLight*> SceneLighting::GetDirectionalLights() const
+    {
+        return ExtractLightsOfType<DirectionalLight>(LightType::Directional);
+    }
 
-	void SceneLighting::AddDirectionalLight(
-		int id, 
-		const Math::Vec3& direction, 
-		const Math::Vec3& color, 
-		float intensity, 
-		const Math::Vec3& ambient, 
-		const Math::Vec3& diffuse, 
-		const Math::Vec3& specular
-	)
-	{
-		m_directionalLights.emplace(
-			id, 
-			DirectionalLight(
-				MathUtils::ToGLM(direction),
-				MathUtils::ToGLM(color),
-				intensity,
-				MathUtils::ToGLM(ambient),
-				MathUtils::ToGLM(diffuse),
-				MathUtils::ToGLM(specular)
-			)
-		);
-	}
+    const std::unordered_map<int, const PointLight*> SceneLighting::GetPointLights() const
+    {
+        return ExtractLightsOfType<PointLight>(LightType::Point);
+    }
 
-	void SceneLighting::RemoveDirectionalLight(int id)
-	{
-		auto it = m_directionalLights.find(id);
-		if (it != m_directionalLights.end())
-		{
-			m_directionalLights.erase(it);
-		}
-	}
+    // Fixed Template: returns map of POINTERS to TLight
+    template <typename TLight>
+    std::unordered_map<int, const TLight*> SceneLighting::ExtractLightsOfType(LightType type) const
+    {
+        std::unordered_map<int, const TLight*> result;
+
+        for (const auto& [id, obj] : m_luminousObjects)
+        {
+            if (obj && obj->GetType() == type)
+            {
+                if (auto* casted = dynamic_cast<const TLight*>(obj)) // cast to const TLight*
+                {
+                    result.emplace(id, casted);
+                }
+            }
+        }
+
+        return result;
+    }
+
+
+    // Explicit instantiations with pointers (note the asterisk *)
+    template std::unordered_map<int, const DirectionalLight*> SceneLighting::ExtractLightsOfType<DirectionalLight>(LightType type) const;
+    template std::unordered_map<int, const PointLight*> SceneLighting::ExtractLightsOfType<PointLight>(LightType type) const;
 }

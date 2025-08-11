@@ -18,6 +18,14 @@ namespace Andromeda::Rendering
     public:
         Scene();
         ~Scene();
+
+		// Getters
+		glm::vec3 GetSceneCenter() const;
+		// Setters
+		// TODO: Consider adding a method to set the scene center if needed
+
+    protected:
+		glm::vec3 m_sceneCenter;
     };
 }
 

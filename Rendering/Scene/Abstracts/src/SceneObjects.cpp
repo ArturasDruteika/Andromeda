@@ -24,7 +24,8 @@ namespace Andromeda::Rendering
 		m_objects.insert({ id, object });
 		if (object->IsLuminous())
 		{
-			m_luminousObjects.insert({ id, object });
+			LuminousBehavior* luminousObject = dynamic_cast<LuminousBehavior*>(object);
+			m_luminousObjects.insert({ id, luminousObject });
 		}
 	}
 
@@ -32,5 +33,10 @@ namespace Andromeda::Rendering
 	{
 		delete m_objects[id];
 		m_objects.erase(id);
+	}
+
+	void SceneObjects::AddDirectionaLight(int id, DirectionalLight* pDirectionalLight)
+	{
+		m_luminousObjects.insert({ id, pDirectionalLight });
 	}
 }

@@ -49,34 +49,28 @@ namespace Andromeda::Rendering
 		m_pOpenGLSceneImpl->RemoveObject(id);
 	}
 
-	const std::unordered_map<int, IRenderableObject*>& OpenGLScene::GetLuminousObjects() const
+	void OpenGLScene::AddDirectionaLight(int id, DirectionalLight* pDirectionalLight)
+	{
+		m_pOpenGLSceneImpl->AddDirectionaLight(id, pDirectionalLight);
+	}
+
+	const std::unordered_map<int, const DirectionalLight*> OpenGLScene::GetDirectionalLights() const
+	{
+		return m_pOpenGLSceneImpl->GetDirectionalLights();
+	}
+
+	const std::unordered_map<int, const PointLight*> OpenGLScene::GetPointLights() const
+	{
+		return m_pOpenGLSceneImpl->GetPointLights();
+	}
+
+	const std::unordered_map<int, LuminousBehavior*>& OpenGLScene::GetLuminousObjects() const
 	{
 		return m_pOpenGLSceneImpl->GetLuminousObjects();
 	}
 
-	void OpenGLScene::AddDirectionalLight(
-		int id,
-		const Math::Vec3& direction,
-		const Math::Vec3& color,
-		float intensity,
-		const Math::Vec3& ambient,
-		const Math::Vec3& diffuse,
-		const Math::Vec3& specular
-	)
+	glm::vec3 OpenGLScene::GetSceneCenter() const
 	{
-		m_pOpenGLSceneImpl->AddDirectionalLight(
-			id,
-			direction,
-			color,
-			intensity,
-			ambient,
-			diffuse,
-			specular
-		);
-	}
-
-	void OpenGLScene::RemoveDirectionalLight(int id)
-	{
-		m_pOpenGLSceneImpl->RemoveDirectionalLight(id);
+		return m_pOpenGLSceneImpl->GetSceneCenter();;
 	}
 }

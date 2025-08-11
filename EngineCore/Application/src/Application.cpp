@@ -33,6 +33,11 @@ namespace Andromeda
 			m_pApplicationImpl->AddToScene(id, object);
 		}
 
+		void Application::AddToScene(int id, Rendering::DirectionalLight* object)
+		{
+			m_pApplicationImpl->AddToScene(id, object);
+		}
+
 		void Application::RemoveFromScene(int id)
 		{
 			m_pApplicationImpl->RemoveFromScene(id);

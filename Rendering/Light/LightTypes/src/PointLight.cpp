@@ -14,14 +14,14 @@ namespace Andromeda::Rendering
         float attenuationLinear, 
         float attenuationQuadratic
     )
-        : Light(
-            color, 
-            intensity, 
+        : Light{
+            color,
+            intensity,
             ambient,
             diffuse,
-            specular,
-            LightType::Point
-        )
+            specular
+        }
+        , LuminousBehavior{ this, LightType::Point }
         , m_attenuationConstant{ attenuationConstant }
         , m_attenuationLinear{ attenuationLinear }
         , m_attenuationQuadratic{ attenuationQuadratic }

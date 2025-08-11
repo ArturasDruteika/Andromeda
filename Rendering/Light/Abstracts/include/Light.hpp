@@ -27,12 +27,11 @@ namespace Andromeda::Rendering
 	{
 	public:
 		Light(
-			const glm::vec3 color,
+			const glm::vec3& color,
 			float intensity,
 			const glm::vec3& ambient,
 			const glm::vec3& diffuse,
-			const glm::vec3& specular,
-			const LightType& type
+			const glm::vec3& specular
 		);
 		virtual ~Light();
 
@@ -42,7 +41,6 @@ namespace Andromeda::Rendering
 		glm::vec3 GeAmbient() const;
 		glm::vec3 GetDiffuse() const;
 		glm::vec3 GetSpecular() const;
-		LightType GetType() const;
 		// Setters
 		void SetIntensity(float intensity);
 		void SetColor(const glm::vec3& color);
@@ -56,7 +54,6 @@ namespace Andromeda::Rendering
 		glm::vec3 m_ambient;
 		glm::vec3 m_diffuse;
 		glm::vec3 m_specular;
-		LightType m_type;
 	};
 }
 

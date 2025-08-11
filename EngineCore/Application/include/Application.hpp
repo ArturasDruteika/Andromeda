@@ -18,6 +18,7 @@
 
 
 #include "IRenderableObjectOpenGL.hpp"
+#include "DirectionalLight.hpp"
 
 
 namespace Andromeda
@@ -39,6 +40,7 @@ namespace Andromeda
 			void RunMainLoop();
 			void DeInit();
 			void AddToScene(int id, Rendering::IRenderableObjectOpenGL* object);
+			void AddToScene(int id, Rendering::DirectionalLight* object);
 			void RemoveFromScene(int id);
 
 		private:
