@@ -53,6 +53,11 @@ set(LIGHT_SOURCES
     Light/Support/src/LightData.cpp
 )
 
+# ==== Macro Exports ====
+set(MACRO_EXPORTS_HEADERS
+    MacroExports/include/MacroExports.hpp
+)
+
 
 # ==== Materials ====
 set(MATERIALS_HEADERS
@@ -242,6 +247,7 @@ add_library(${PROJECT_NAME}
         ${CAMERA_SOURCES}
         ${LIGHT_HEADERS}
         ${LIGHT_SOURCES}
+        ${MACRO_EXPORTS_HEADERS}
         ${LOADER_HEADERS}
         ${LOADER_SOURCES}
         ${MATERIALS_HEADERS}
@@ -389,6 +395,15 @@ source_group(
     FILES
         ${LIGHT_HEADERS}
         ${LIGHT_SOURCES}
+)
+
+source_group(
+    TREE 
+        ${CMAKE_CURRENT_SOURCE_DIR}/MacroExports
+    PREFIX
+        "MacroExports"
+    FILES
+        ${MACRO_EXPORTS_HEADERS}
 )
 
 source_group(
