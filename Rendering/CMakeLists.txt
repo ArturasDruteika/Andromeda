@@ -356,12 +356,16 @@ set(MATERIAL_JSON_FILENAME "material_properties.json")
 set(MATERIAL_JSON_SOURCE
     "${CMAKE_CURRENT_SOURCE_DIR}/MaterialProperties/${MATERIAL_JSON_FILENAME}"
 )
-set(MATERIAL_JSON_OUTPUT_DIR
-    "${CMAKE_BINARY_DIR}/${CMAKE_CFG_INTDIR}/material_properties"
-)
-set(MATERIAL_JSON_OUTPUT
-    "${MATERIAL_JSON_OUTPUT_DIR}/${MATERIAL_JSON_FILENAME}"
-)
+
+# Put materials next to shaders (same assets root)
+if (CMAKE_SYSTEM_NAME STREQUAL "Windows")
+    set(MATERIAL_JSON_OUTPUT_DIR "${CMAKE_ASSETS_OUTPUT_DIRECTORY}/$<CONFIG>/material_properties")
+else()
+    set(MATERIAL_JSON_OUTPUT_DIR "${CMAKE_ASSETS_OUTPUT_DIRECTORY}/material_properties")
+endif()
+
+set(MATERIAL_JSON_OUTPUT "${MATERIAL_JSON_OUTPUT_DIR}/${MATERIAL_JSON_FILENAME}")
+
 add_custom_command(
     TARGET ${PROJECT_NAME} POST_BUILD
 
