@@ -69,12 +69,13 @@ add_library(${PROJECT_NAME}
 target_include_directories(${PROJECT_NAME}
     PRIVATE
         ..//Math//LinearAlgebra//include//
-        ..//Utils//PrecompiledHeaders//include//
+        # ..//Utils//PrecompiledHeaders//include//
 )
 
 # ==== Link Libraries ====
 target_link_libraries(${PROJECT_NAME}
     PRIVATE
+        PrecompiledHeaders
         Math
         Utils
 )
@@ -83,13 +84,6 @@ target_link_libraries(${PROJECT_NAME}
 add_dependencies(${PROJECT_NAME}
     Math
     Utils
-)
-
-
-# ==== Precompiled Headers ====
-target_precompile_headers(${PROJECT_NAME}
-    REUSE_FROM
-        Utils
 )
 
 

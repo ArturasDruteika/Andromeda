@@ -24,7 +24,6 @@ set_target_properties(${PROJECT_NAME} PROPERTIES POSITION_INDEPENDENT_CODE ON)
 
 target_include_directories(${PROJECT_NAME} 
     PRIVATE
-        ..//Utils//PrecompiledHeaders//include//
         ..//glfw//include//
         ..//glfw//
 )
@@ -32,20 +31,13 @@ target_include_directories(${PROJECT_NAME}
 # Link GLFW and OpenGL to the executable
 target_link_libraries(${PROJECT_NAME} 
     PRIVATE
-        Utils
+        PrecompiledHeaders
         glfw
         OpenGL::GL
 )
 
 add_dependencies(${PROJECT_NAME} 
-    Utils
 	glfw
-)
-
-# Enable precompiled headers
-target_precompile_headers(${PROJECT_NAME} 
-    REUSE_FROM
-        Utils
 )
 
 

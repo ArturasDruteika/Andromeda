@@ -15,8 +15,8 @@ find_package(spdlog REQUIRED)
 # Create a library target
 add_library(${PROJECT_NAME} 
     STATIC
-        PrecompiledHeaders/include/pch.hpp
-        PrecompiledHeaders/src/pch.cpp
+        # PrecompiledHeaders/include/pch.hpp
+        # PrecompiledHeaders/src/pch.cpp
         FileOperations/include/FileOperations.hpp
         FileOperations/src/FileOperations.cpp
         nlohmann_json/include/json.hpp
@@ -25,15 +25,9 @@ add_library(${PROJECT_NAME}
 set_target_properties(${PROJECT_NAME} PROPERTIES POSITION_INDEPENDENT_CODE ON)
 
 # Link spdlog
-target_link_libraries(${PROJECT_NAME} 
-    PUBLIC
-        spdlog::spdlog
-)
-
-# Enable precompiled headers
-target_precompile_headers(${PROJECT_NAME} 
-    PUBLIC
-        PrecompiledHeaders/include/pch.hpp
+target_link_libraries(${PROJECT_NAME}
+    PRIVATE
+        PrecompiledHeaders
 )
 
 
@@ -70,17 +64,6 @@ elseif (CMAKE_SYSTEM_NAME STREQUAL "Linux")
     )
 endif()
 
-
-# Organize files in Solution Explorer
-source_group(
-    TREE 
-        ${CMAKE_CURRENT_SOURCE_DIR}/PrecompiledHeaders
-    PREFIX
-        "PrecompiledHeaders"
-    FILES
-        PrecompiledHeaders/include/pch.hpp
-        PrecompiledHeaders/src/pch.cpp
-)
 
 source_group(
     TREE 

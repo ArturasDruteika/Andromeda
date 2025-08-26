@@ -61,35 +61,34 @@ add_library(${PROJECT_NAME}
 # Include dirs (alphabetical)
 target_include_directories(${PROJECT_NAME}
     PRIVATE
-        ..//Context//GLFWContext//include//
-        ..//Math//Constants//include//
-        ..//Math//Trigonometry//include//
-        ..//Rendering//Attributes//include//
-        ..//Rendering//Camera//include//
-        ..//Rendering//Light//LightTypes//include//
-        ..//Rendering//OpenGLLoader//include//
-        ..//Rendering//RenderableObjects//Interfaces//include//
-        ..//Rendering//Renderers//Renderers//include//
-        ..//Rendering//Scene//Interfaces//include//
-        ..//Rendering//Scene//Scenes//include//
-        ..//Rendering//Vertices//include//
-        ..//Utils//PrecompiledHeaders//include//
-        ..//Window//GLFWWindow//include//
-        ..//glfw//
-        ..//glfw//include//
-        ..//imgui//imgui//
-        ..//imgui//imgui//backends//
+        ../Context/GLFWContext/include/
+        ../Math/Constants/include/
+        ../Math/Trigonometry/include/
+        ../Rendering/Attributes/include/
+        ../Rendering/Camera/include/
+        ../Rendering/Light/LightTypes/include/
+        ../Rendering/OpenGLLoader/include/
+        ../Rendering/RenderableObjects/Interfaces/include/
+        ../Rendering/Renderers/Renderers/include/
+        ../Rendering/Scene/Interfaces/include/
+        ../Rendering/Scene/Scenes/include/
+        ../Rendering/Vertices/include/
+        ../Window/GLFWWindow/include/
+        ../glfw/
+        ../glfw/include/
+        ../imgui/imgui/
+        ../imgui/imgui/backends/
 )
 
 # Link libraries (alphabetical)
 target_link_libraries(${PROJECT_NAME}
     PRIVATE
+        PrecompiledHeaders
+        Math
         Context
         ExternalGraphicsLibs
-        Math
         OpenGL::GL
         Rendering
-        Utils
         Window
         glfw
         imgui
@@ -105,13 +104,6 @@ add_dependencies(${PROJECT_NAME}
     Window
     glfw
     imgui
-)
-
-
-# Enable precompiled headers
-target_precompile_headers(${PROJECT_NAME}
-    REUSE_FROM
-        Utils
 )
 
 

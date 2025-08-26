@@ -270,7 +270,7 @@ add_library(${PROJECT_NAME}
 
 target_include_directories(${PROJECT_NAME} 
     PRIVATE
-        ..//Utils//PrecompiledHeaders//include//
+        # ..//Utils//PrecompiledHeaders//include//
         ..//Utils//FileOperations//include//
         ..//Utils//nlohmann_json//include//
         ..//ExternalGraphicsLibs//glad//include//
@@ -286,6 +286,7 @@ target_include_directories(${PROJECT_NAME}
 # Link GLFW and OpenGL to the executable
 target_link_libraries(${PROJECT_NAME} 
     PRIVATE
+        PrecompiledHeaders
         Utils
         ExternalGraphicsLibs
         Math
@@ -295,12 +296,6 @@ add_dependencies(${PROJECT_NAME}
     Utils
     ExternalGraphicsLibs
     Math
-)
-
-# Enable precompiled headers
-target_precompile_headers(${PROJECT_NAME} 
-    REUSE_FROM
-        Utils
 )
 
 

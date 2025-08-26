@@ -50,28 +50,10 @@ add_library(${PROJECT_NAME}
         ${TRIGONOMETRY_SOURCES}
 )
 
-# ==== Include Directories ====
-target_include_directories(${PROJECT_NAME}
-    PRIVATE
-        ..//Utils//PrecompiledHeaders//include//
-)
-
 # ==== Link Libraries ====
 target_link_libraries(${PROJECT_NAME}
     PRIVATE
-        Utils
-)
-
-# ==== Dependencies ====
-add_dependencies(${PROJECT_NAME}
-    Utils
-)
-
-
-# ==== Precompiled Headers ====
-target_precompile_headers(${PROJECT_NAME}
-    REUSE_FROM
-        Utils
+        PrecompiledHeaders
 )
 
 
