@@ -1,5 +1,6 @@
 #include "../include/ShaderCompilerOpenGL.hpp"
 #include "glad/gl.h"
+#include "spdlog/spdlog.h"
 
 
 namespace Andromeda::Rendering

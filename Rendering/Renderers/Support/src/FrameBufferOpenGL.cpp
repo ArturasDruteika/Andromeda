@@ -1,5 +1,6 @@
 #include "../include/FrameBufferOpenGL.hpp"
 #include "glad/gl.h"
+#include "spdlog/spdlog.h"
 
 
 

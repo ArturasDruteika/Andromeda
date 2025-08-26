@@ -15,6 +15,12 @@ if (APPLE)
     target_compile_definitions(${PROJECT_NAME} PRIVATE GL_SILENCE_DEPRECATION)
 endif ()
 
+# SPDLog
+file(TO_CMAKE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/../../3rdParty/spdlog/ spdlog_root_path)
+file(TO_CMAKE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/../../3rdParty/spdlog/lib/cmake/spdlog/ spdlog_path)
+set(spdlog_DIR ${spdlog_path})
+find_package(spdlog REQUIRED)
+
 
 # ==== Application ====
 set(APPLICATION_HEADERS
@@ -92,6 +98,7 @@ target_link_libraries(${PROJECT_NAME}
         Window
         glfw
         imgui
+        spdlog::spdlog
 )
 
 # Explicit build ordering (alphabetical)
@@ -105,6 +112,40 @@ add_dependencies(${PROJECT_NAME}
     glfw
     imgui
 )
+
+
+### Post builds
+# SPDLog
+if (CMAKE_SYSTEM_NAME STREQUAL "Windows")
+    if(MSVC)
+        add_custom_command(
+            TARGET 
+                ${PROJECT_NAME} POST_BUILD 
+            COMMAND 
+                ${CMAKE_COMMAND} ARGS -E copy_if_different
+                ${spdlog_root_path}//bin//$<$<CONFIG:debug>:spdlogd.dll>$<$<CONFIG:release>:spdlog.dll>
+                $<TARGET_FILE_DIR:${PROJECT_NAME}>
+        )
+    else()
+        add_custom_command(
+            TARGET 
+                ${PROJECT_NAME} POST_BUILD 
+            COMMAND 
+                ${CMAKE_COMMAND} ARGS -E copy_if_different
+                ${spdlog_root_path}//bin//$<$<CONFIG:debug>:spdlogd.dll>$<$<CONFIG:release>:spdlog.dll>
+                $<TARGET_FILE_DIR:${PROJECT_NAME}>
+        )
+    endif()
+elseif (CMAKE_SYSTEM_NAME STREQUAL "Linux")
+    add_custom_command(
+        TARGET 
+            ${PROJECT_NAME} POST_BUILD 
+        COMMAND 
+            ${CMAKE_COMMAND} ARGS -E copy_if_different
+            ${spdlog_root_path}/bin/$<$<CONFIG:debug>:libspdlogd.so.1.15.1>$<$<CONFIG:release>:libspdlog.so.1.15.1>
+            $<TARGET_FILE_DIR:${PROJECT_NAME}>
+    )
+endif()
 
 
 # ==== IDE Organization ====

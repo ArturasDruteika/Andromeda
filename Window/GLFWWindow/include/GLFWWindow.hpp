@@ -7,7 +7,6 @@
 #include "../../Events/include/KeyEvents.hpp"
 #include "../../Events/include/MouseEvents.hpp"
 #include "../../Events/include/EventDispatcher.hpp"
-#include "spdlog/spdlog.h"
 
 
 constexpr int DEFAULT_WINDOW_WIDTH = 640;

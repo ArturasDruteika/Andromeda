@@ -1,4 +1,5 @@
 #include "../include/GLFWContext.hpp"
+#include "spdlog/spdlog.h"
 
 
 namespace Andromeda

@@ -9,6 +9,13 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 add_definitions(-DSPACE_EXPORT)
 
 
+# SPDLog
+file(TO_CMAKE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/../../3rdParty/spdlog/ spdlog_root_path)
+file(TO_CMAKE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/../../3rdParty/spdlog/lib/cmake/spdlog/ spdlog_path)
+set(spdlog_DIR ${spdlog_path})
+find_package(spdlog REQUIRED)
+
+
 # ==== Attributes ====
 set(ATTRIBUTES_HEADERS
     Attributes/include/Colors.hpp
@@ -69,7 +76,6 @@ add_library(${PROJECT_NAME}
 target_include_directories(${PROJECT_NAME}
     PRIVATE
         ..//Math//LinearAlgebra//include//
-        # ..//Utils//PrecompiledHeaders//include//
 )
 
 # ==== Link Libraries ====
@@ -78,6 +84,7 @@ target_link_libraries(${PROJECT_NAME}
         PrecompiledHeaders
         Math
         Utils
+        spdlog::spdlog
 )
 
 # ==== Dependencies ====

@@ -3,6 +3,7 @@
 #include <glad/gl.h>
 #include <spdlog/spdlog.h>
 
+
 namespace Andromeda::Rendering
 {
 	ShaderProgramOpenGL::ShaderProgramOpenGL()

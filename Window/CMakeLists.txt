@@ -14,6 +14,12 @@ if (APPLE)
     target_compile_definitions(${EXEC_NAME} PRIVATE GL_SILENCE_DEPRECATION)
 endif ()
 
+# SPDLog
+file(TO_CMAKE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/../../3rdParty/spdlog/ spdlog_root_path)
+file(TO_CMAKE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/../../3rdParty/spdlog/lib/cmake/spdlog/ spdlog_path)
+set(spdlog_DIR ${spdlog_path})
+find_package(spdlog REQUIRED)
+
 add_library(${PROJECT_NAME} 
     STATIC
         GLFWWindow/include/GLFWWindow.hpp
@@ -37,7 +43,6 @@ set_target_properties(${PROJECT_NAME} PROPERTIES POSITION_INDEPENDENT_CODE ON)
 
 target_include_directories(${PROJECT_NAME} 
     PRIVATE
-        # ..//Utils//PrecompiledHeaders//include//
         ..//glfw//include//
         ..//glfw//src//
 
@@ -50,6 +55,7 @@ target_link_libraries(${PROJECT_NAME}
         Utils
         glfw
         OpenGL::GL
+        spdlog::spdlog
 )
 
 add_dependencies(${PROJECT_NAME} 

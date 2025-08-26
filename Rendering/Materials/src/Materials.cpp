@@ -1,4 +1,5 @@
 #include "../include/Materials.hpp"
+#include "spdlog/spdlog.h"
 
 
 namespace Andromeda

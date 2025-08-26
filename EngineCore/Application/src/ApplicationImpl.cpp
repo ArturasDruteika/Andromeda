@@ -5,6 +5,7 @@
 #include "Points.hpp"
 #include "Colors.hpp"
 #include "Constants.hpp"
+#include "spdlog/spdlog.h"
 
 
 namespace Andromeda::EngineCore

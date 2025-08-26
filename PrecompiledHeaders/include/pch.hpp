@@ -20,7 +20,5 @@
 #include <array>
 #include <limits>
 
-#include "spdlog/spdlog.h"
-
 
 #endif // PRECOMPILED_HEADERS__PCH__HPP
