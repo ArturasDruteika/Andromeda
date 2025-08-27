@@ -1,4 +1,5 @@
 #include "../include/SizeControl.hpp"
+#include "spdlog/spdlog.h"
 
 
 namespace Andromeda::Rendering

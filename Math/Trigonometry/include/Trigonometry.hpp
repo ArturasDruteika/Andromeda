@@ -8,17 +8,14 @@
 #include "../../MacroExports/include/MacroExports.hpp"
 
 
-namespace Andromeda
+namespace Andromeda::Math
 {
-	namespace Math
+	class MATH_API Trigonometry
 	{
-		class MATH_API Trigonometry
-		{
-		public:
-			static float Deg2Rad(float deg);
-			static float Rad2Deg(float rad);
-		};
-	}
+	public:
+		static float Deg2Rad(float deg);
+		static float Rad2Deg(float rad);
+	};
 }
 
 

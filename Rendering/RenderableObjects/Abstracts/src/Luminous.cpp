@@ -1,5 +1,6 @@
 #include "../include/Luminous.hpp"
 #include "../../../Light/Abstracts/include/LuminousBehavior.hpp"
+#include "spdlog/spdlog.h"
 
 
 namespace Andromeda::Rendering

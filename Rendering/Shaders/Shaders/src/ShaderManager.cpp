@@ -1,5 +1,6 @@
 #include "../include/ShaderManager.hpp"
 #include "FileOperations.hpp"
+#include "spdlog/spdlog.h"
 
 
 namespace Andromeda::Rendering

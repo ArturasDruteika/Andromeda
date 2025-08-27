@@ -1,5 +1,6 @@
 #include "../include/Transformable.hpp"
 #include "../../../Utils/include/MathUtils.hpp"
+#include "spdlog/spdlog.h"
 
 
 namespace Andromeda::Rendering

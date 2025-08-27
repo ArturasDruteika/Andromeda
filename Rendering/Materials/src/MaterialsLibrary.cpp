@@ -1,6 +1,7 @@
 #include "../include/MaterialsLibrary.hpp"
 #include "../../Utils/include/MathUtils.hpp"
 #include "json.hpp"
+#include "spdlog/spdlog.h"
 
 
 namespace Andromeda

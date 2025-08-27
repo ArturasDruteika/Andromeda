@@ -1,5 +1,5 @@
-#ifndef UTILS__PCH__HPP
-#define UTILS__PCH__HPP
+#ifndef PRECOMPILED_HEADERS__PCH__HPP
+#define PRECOMPILED_HEADERS__PCH__HPP
 
 
 // Standard library headers
@@ -20,7 +20,5 @@
 #include <array>
 #include <limits>
 
-#include "spdlog/spdlog.h"
 
-
-#endif // UTILS__PCH__HPP
+#endif // PRECOMPILED_HEADERS__PCH__HPP

@@ -15,6 +15,12 @@ if (APPLE)
     target_compile_definitions(${PROJECT_NAME} PRIVATE GL_SILENCE_DEPRECATION)
 endif ()
 
+# SPDLog
+file(TO_CMAKE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/../../3rdParty/spdlog/ spdlog_root_path)
+file(TO_CMAKE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/../../3rdParty/spdlog/lib/cmake/spdlog/ spdlog_path)
+set(spdlog_DIR ${spdlog_path})
+find_package(spdlog REQUIRED)
+
 
 # ==== Application ====
 set(APPLICATION_HEADERS
@@ -61,38 +67,38 @@ add_library(${PROJECT_NAME}
 # Include dirs (alphabetical)
 target_include_directories(${PROJECT_NAME}
     PRIVATE
-        ..//Context//GLFWContext//include//
-        ..//Math//Constants//include//
-        ..//Math//Trigonometry//include//
-        ..//Rendering//Attributes//include//
-        ..//Rendering//Camera//include//
-        ..//Rendering//Light//LightTypes//include//
-        ..//Rendering//OpenGLLoader//include//
-        ..//Rendering//RenderableObjects//Interfaces//include//
-        ..//Rendering//Renderers//Renderers//include//
-        ..//Rendering//Scene//Interfaces//include//
-        ..//Rendering//Scene//Scenes//include//
-        ..//Rendering//Vertices//include//
-        ..//Utils//PrecompiledHeaders//include//
-        ..//Window//GLFWWindow//include//
-        ..//glfw//
-        ..//glfw//include//
-        ..//imgui//imgui//
-        ..//imgui//imgui//backends//
+        ../Context/GLFWContext/include/
+        ../Math/Constants/include/
+        ../Math/Trigonometry/include/
+        ../Rendering/Attributes/include/
+        ../Rendering/Camera/include/
+        ../Rendering/Light/LightTypes/include/
+        ../Rendering/OpenGLLoader/include/
+        ../Rendering/RenderableObjects/Interfaces/include/
+        ../Rendering/Renderers/Renderers/include/
+        ../Rendering/Scene/Interfaces/include/
+        ../Rendering/Scene/Scenes/include/
+        ../Rendering/Vertices/include/
+        ../Window/GLFWWindow/include/
+        ../glfw/
+        ../glfw/include/
+        ../imgui/imgui/
+        ../imgui/imgui/backends/
 )
 
 # Link libraries (alphabetical)
 target_link_libraries(${PROJECT_NAME}
     PRIVATE
+        PrecompiledHeaders
+        Math
         Context
         ExternalGraphicsLibs
-        Math
         OpenGL::GL
         Rendering
-        Utils
         Window
         glfw
         imgui
+        spdlog::spdlog
 )
 
 # Explicit build ordering (alphabetical)
@@ -108,11 +114,38 @@ add_dependencies(${PROJECT_NAME}
 )
 
 
-# Enable precompiled headers
-target_precompile_headers(${PROJECT_NAME}
-    REUSE_FROM
-        Utils
-)
+### Post builds
+# SPDLog
+if (CMAKE_SYSTEM_NAME STREQUAL "Windows")
+    if(MSVC)
+        add_custom_command(
+            TARGET 
+                ${PROJECT_NAME} POST_BUILD 
+            COMMAND 
+                ${CMAKE_COMMAND} ARGS -E copy_if_different
+                ${spdlog_root_path}//bin//$<$<CONFIG:debug>:spdlogd.dll>$<$<CONFIG:release>:spdlog.dll>
+                $<TARGET_FILE_DIR:${PROJECT_NAME}>
+        )
+    else()
+        add_custom_command(
+            TARGET 
+                ${PROJECT_NAME} POST_BUILD 
+            COMMAND 
+                ${CMAKE_COMMAND} ARGS -E copy_if_different
+                ${spdlog_root_path}//bin//$<$<CONFIG:debug>:spdlogd.dll>$<$<CONFIG:release>:spdlog.dll>
+                $<TARGET_FILE_DIR:${PROJECT_NAME}>
+        )
+    endif()
+elseif (CMAKE_SYSTEM_NAME STREQUAL "Linux")
+    add_custom_command(
+        TARGET 
+            ${PROJECT_NAME} POST_BUILD 
+        COMMAND 
+            ${CMAKE_COMMAND} ARGS -E copy_if_different
+            ${spdlog_root_path}/bin/$<$<CONFIG:debug>:libspdlogd.so.1.15.1>$<$<CONFIG:release>:libspdlog.so.1.15.1>
+            $<TARGET_FILE_DIR:${PROJECT_NAME}>
+    )
+endif()
 
 
 # ==== IDE Organization ====
