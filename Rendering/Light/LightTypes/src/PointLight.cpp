@@ -1,4 +1,5 @@
 #include "../include/PointLight.hpp"
+#include "spdlog/spdlog.h"
 
 
 namespace Andromeda::Rendering

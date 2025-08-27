@@ -1,6 +1,7 @@
 #include "../include/UniformSetterOpenGL.hpp"
 #include "glad/gl.h"
 #include <glm/gtc/type_ptr.hpp>
+#include "spdlog/spdlog.h"
 
 
 namespace Andromeda::Rendering

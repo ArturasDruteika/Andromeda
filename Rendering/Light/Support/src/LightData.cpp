@@ -1,5 +1,6 @@
 #include "../include/LightData.hpp"
 #include <glm/gtc/epsilon.hpp>
+#include "spdlog/spdlog.h"
 
 
 namespace Andromeda

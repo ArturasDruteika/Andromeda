@@ -2,18 +2,15 @@
 #include "../../Constants/include/Constants.hpp"
 
 
-namespace Andromeda
+namespace Andromeda::Math
 {
-	namespace Math
+	float Trigonometry::Deg2Rad(float deg)
 	{
-		float Trigonometry::Deg2Rad(float deg)
-		{
-			return deg * (Math::PI / 180.0f);
-		}
+		return deg * (Math::PI / 180.0f);
+	}
 
-		float Trigonometry::Rad2Deg(float rad)
-		{
-			return rad * (180.0f / Math::PI);
-		}
+	float Trigonometry::Rad2Deg(float rad)
+	{
+		return rad * (180.0f / Math::PI);
 	}
 }

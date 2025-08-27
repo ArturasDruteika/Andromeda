@@ -10,8 +10,7 @@ add_executable(${PROJECT_NAME} main.cpp)
 
 target_include_directories(${PROJECT_NAME} 
     PRIVATE
-        ..//Utils//PrecompiledHeaders//include//
-	    ..//ExternalGraphicsLibs//glm//
+	    ../ExternalGraphicsLibs/glm/
         ../Math/LinearAlgebra/include/
         ../Space/Objects/include/
         ../Space/Scene/include/
@@ -29,17 +28,14 @@ target_include_directories(${PROJECT_NAME}
 # Ensure EngineCore is linked
 target_link_libraries(${PROJECT_NAME} 
     PRIVATE 
-        Utils
+        PrecompiledHeaders
         Math
-        Space
-        ExternalGraphicsLibs
         Rendering
         EngineCore
 )
 
 # Ensure Example waits for EngineCore to build
 add_dependencies(${PROJECT_NAME} 
-    Utils
     Math
     Space
     ExternalGraphicsLibs
@@ -47,11 +43,6 @@ add_dependencies(${PROJECT_NAME}
     EngineCore
 )
 
-# Enable precompiled headers
-target_precompile_headers(${PROJECT_NAME} 
-    REUSE_FROM
-        Utils
-)
 
 # Set working directory only for Visual Studio
 if(MSVC)
