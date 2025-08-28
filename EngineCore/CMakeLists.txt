@@ -142,7 +142,7 @@ elseif (CMAKE_SYSTEM_NAME STREQUAL "Linux")
             ${PROJECT_NAME} POST_BUILD 
         COMMAND 
             ${CMAKE_COMMAND} ARGS -E copy_if_different
-            ${spdlog_root_path}/bin/$<$<CONFIG:debug>:libspdlogd.so.1.15.1>$<$<CONFIG:release>:libspdlog.so.1.15.1>
+            ${spdlog_root_path}/bin/$<$<CONFIG:debug>:libspdlogd.so.1.15.3>$<$<CONFIG:release>:libspdlog.so.1.15.3>
             $<TARGET_FILE_DIR:${PROJECT_NAME}>
     )
 endif()
