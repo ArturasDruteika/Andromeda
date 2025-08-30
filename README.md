@@ -4,7 +4,7 @@ An engine made to display solar system.
 ![Andromeda demo](Assets/cube_rotation.gif)
 
 ### 1. Set Up
-1. Download [ Windows 3rdParty ](https://drive.google.com/uc?export=download&id=1CbJFaeBoZ4pq-H0yntpZoCXKWiHACtNd) or [ Linux 3rdParty ](https://drive.google.com/uc?export=download&id=1mtiRU8ziRtXmCIO7GqssA3aqhSSW4yEu) and place the extracted catalog next to andromeda src code like this:
+1. Download [ Windows 3rdParty ](https://drive.google.com/uc?export=download&id=1CbJFaeBoZ4pq-H0yntpZoCXKWiHACtNd) or [ Linux 3rdParty ](https://drive.google.com/uc?export=download&id=1b5R6c7nuvfmYPTNzSP9x8lnMcWa5L1EI) and place the extracted catalog next to andromeda src code like this:
     ```
         path/to/catalog/
             ├── andromeda
