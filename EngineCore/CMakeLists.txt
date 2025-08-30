@@ -137,16 +137,13 @@ if (CMAKE_SYSTEM_NAME STREQUAL "Windows")
         )
     endif()
 elseif (CMAKE_SYSTEM_NAME STREQUAL "Linux")
-    add_custom_command(
-        TARGET 
-            ${PROJECT_NAME} POST_BUILD 
-        COMMAND 
-            ${CMAKE_COMMAND} ARGS -E copy_if_different
-            ${spdlog_root_path}/bin/$<$<CONFIG:debug>:libspdlogd.so.1.15.1>$<$<CONFIG:release>:libspdlog.so.1.15.1>
-            $<TARGET_FILE_DIR:${PROJECT_NAME}>
+    add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
+        # Copy and rename directly to the SONAME the loader expects
+        COMMAND ${CMAKE_COMMAND} -E copy_if_different
+            ${spdlog_root_path}/bin/$<$<CONFIG:Debug>:libspdlogd.so.1.15.3>$<$<CONFIG:Release>:libspdlog.so.1.15.3>
+            $<TARGET_FILE_DIR:${PROJECT_NAME}>/$<$<CONFIG:Debug>:libspdlogd.so.1.15>$<$<CONFIG:Release>:libspdlog.so.1.15>
     )
 endif()
-
 
 # ==== IDE Organization ====
 source_group(

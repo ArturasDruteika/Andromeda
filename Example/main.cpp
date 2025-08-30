@@ -1,7 +1,5 @@
 #include "Application.hpp"
 #include "LinearAlgebraDataTypes.hpp"
-#include "Sphere.hpp"
-#include "Cube.hpp"
 #include "SphereObjectOpenGL.hpp"
 #include "CubeObjectOpenGL.hpp"
 #include "Constants.hpp"

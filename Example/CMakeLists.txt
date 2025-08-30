@@ -12,17 +12,13 @@ target_include_directories(${PROJECT_NAME}
     PRIVATE
 	    ../ExternalGraphicsLibs/glm/
         ../Math/LinearAlgebra/include/
-        ../Space/Objects/include/
-        ../Space/Scene/include/
         ../Space/Attributes/include/
-        ../Space/DataTypes/include/
         ../Rendering/Light/LightTypes/include/
         ../Rendering/Light/Abstracts/include/
         ../Rendering/RenderableObjects/Interfaces/include/
         ../Rendering/RenderableObjects/Objects/include/
         ../Rendering/Materials/include/
         ../EngineCore/Application/include/
-
 )
 
 # Ensure EngineCore is linked
