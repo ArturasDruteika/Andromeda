@@ -19,15 +19,51 @@ namespace Andromeda::Rendering
 			specular
 		}
 		, LuminousBehavior{ this, LightType::Directional }
+		, m_orthographicHalfSize{ 10.0f }
+		, m_nearPlane{ 1.0f }
+		, m_farPlane{ 30.0f }
 		, m_direction{ glm::normalize(direction) }
 	{
 	}
 
 	DirectionalLight::~DirectionalLight() = default;
 
+	float DirectionalLight::GetLightOrthographicHalfSize() const
+	{
+		return m_orthographicHalfSize;
+	}
+
+	float DirectionalLight::GetLightNearPlane() const
+	{
+		return m_nearPlane;
+	}
+
+	float DirectionalLight::GetLightFarPlane() const
+	{
+		return m_farPlane;
+	}
+
 	glm::vec3 DirectionalLight::GetDirection() const
 	{
 		return m_direction;
+	}
+
+	void DirectionalLight::SetLightOrthographicHalfSize(float halfSize)
+	{
+		if (halfSize > 0.0f)
+			m_orthographicHalfSize = halfSize;
+	}
+
+	void DirectionalLight::SetLightNearPlane(float nearPlane)
+	{
+		if (nearPlane > 0.0f)
+			m_nearPlane = nearPlane;
+	}
+
+	void DirectionalLight::SetLightFarPlane(float farPlane)
+	{
+		if (farPlane > m_nearPlane)
+			m_farPlane = farPlane;
 	}
 
 	void DirectionalLight::SetDirection(const glm::vec3& direction)

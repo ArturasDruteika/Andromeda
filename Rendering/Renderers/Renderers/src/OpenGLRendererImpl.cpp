@@ -25,9 +25,6 @@ namespace Andromeda::Rendering
 
     OpenGLRenderer::OpenGLRendererImpl::OpenGLRendererImpl()
         : m_isInitialized{ false }
-		, m_lightOrthographicHalfSize{ 10.0f }
-		, m_lightNearPlane{ 1.0f }
-		, m_lightFarPlane{ 30.0f }
         , m_lightSpace{ glm::mat4(1.0f) }
         , m_pShaderManager{ nullptr }
     {
@@ -149,39 +146,6 @@ namespace Andromeda::Rendering
     unsigned int OpenGLRenderer::OpenGLRendererImpl::GetShadowMap() const
     {
         return m_shadowFBO.GetDepthTexture();
-    }
-
-    float OpenGLRenderer::OpenGLRendererImpl::GetLightOrthographicHalfSize() const
-    {
-        return m_lightOrthographicHalfSize;
-    }
-
-    float OpenGLRenderer::OpenGLRendererImpl::GetLightNearPlane() const
-    {
-        return m_lightNearPlane;
-    }
-
-    float OpenGLRenderer::OpenGLRendererImpl::GetLightFarPlane() const
-    {
-        return m_lightFarPlane;
-    }
-
-    void OpenGLRenderer::OpenGLRendererImpl::SetLightOrthographicHalfSize(float halfSize)
-    {
-        if (halfSize > 0.0f)
-			m_lightOrthographicHalfSize = halfSize;
-    }
-
-    void OpenGLRenderer::OpenGLRendererImpl::SetLightNearPlane(float nearPlane)
-    {
-		if (nearPlane > 0.0f)
-			m_lightNearPlane = nearPlane;
-    }
-
-    void OpenGLRenderer::OpenGLRendererImpl::SetLightFarPlane(float farPlane)
-    {
-		if (farPlane > m_lightNearPlane)
-			m_lightFarPlane = farPlane;
     }
 
     void OpenGLRenderer::OpenGLRendererImpl::ShadowMapDepthPass(const IScene& scene, const glm::mat4& lightSpace) const
@@ -444,12 +408,12 @@ namespace Andromeda::Rendering
         glm::mat4 lightView = glm::lookAt(lightPos, scene.GetSceneCenter(), up);
 
         glm::mat4 lightProj = glm::ortho(
-            -m_lightOrthographicHalfSize, 
-            m_lightOrthographicHalfSize,
-            -m_lightOrthographicHalfSize, 
-            m_lightOrthographicHalfSize,
-            m_lightNearPlane, 
-            m_lightFarPlane
+            -light->GetLightOrthographicHalfSize(),
+            light->GetLightOrthographicHalfSize(),
+            -light->GetLightOrthographicHalfSize(),
+            light->GetLightOrthographicHalfSize(),
+            light->GetLightNearPlane(),
+            light->GetLightFarPlane()
         );
 
         return lightProj * lightView;

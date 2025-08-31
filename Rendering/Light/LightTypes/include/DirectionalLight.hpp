@@ -26,11 +26,20 @@ namespace Andromeda::Rendering
 		~DirectionalLight();
 
 		// Getters
+		float GetLightOrthographicHalfSize() const;
+		float GetLightNearPlane() const;
+		float GetLightFarPlane() const;
 		glm::vec3 GetDirection() const;
 		// Setters
+		void SetLightOrthographicHalfSize(float halfSize);
+		void SetLightNearPlane(float nearPlane);
+		void SetLightFarPlane(float farPlane);
 		void SetDirection(const glm::vec3& direction);
 
 	private:
+		float m_orthographicHalfSize;
+		float m_nearPlane;
+		float m_farPlane;
 		glm::vec3 m_direction;
 	};
 }
