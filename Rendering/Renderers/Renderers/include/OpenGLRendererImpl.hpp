@@ -33,6 +33,13 @@ namespace Andromeda::Rendering
 		unsigned int GetFrameBufferTexture() const;
 		unsigned int GetDepthRenderBuffer() const;
 		unsigned int GetShadowMap() const;
+		float GetLightOrthographicHalfSize() const;
+		float GetLightNearPlane() const;
+		float GetLightFarPlane() const;
+		// Setters
+		void SetLightOrthographicHalfSize(float halfSize);
+		void SetLightNearPlane(float nearPlane);
+		void SetLightFarPlane(float farPlane);
 
 		void Init(int width, int height, bool illuminationMode = false);
 		void DeInit();
@@ -58,6 +65,9 @@ namespace Andromeda::Rendering
 
 	private:
 		bool m_isInitialized;
+		float m_lightOrthographicHalfSize;
+		float m_lightNearPlane;
+		float m_lightFarPlane;
 		glm::mat4 m_projectionMatrix;
 		glm::mat4 m_lightSpace;
 		FrameBufferOpenGL m_mainFBO;
