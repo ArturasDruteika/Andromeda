@@ -1,5 +1,5 @@
 #include "../include/CameraImpl.hpp"
-#include "../../Utils/include/MathUtils.hpp"
+#include "../../../Utils/include/MathUtils.hpp"
 #include "Constants.hpp"
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/constants.hpp>
@@ -38,6 +38,11 @@ namespace Andromeda
         Math::Mat4 Camera::CameraImpl::GetViewMatrix() const
         {
             return MathUtils::FromGLM(m_viewMatrix);
+        }
+
+        Math::Mat4 Camera::CameraImpl::GetProjectionMatrix() const
+        {
+            return MathUtils::FromGLM(m_projectionMatrix);
         }
 
         Math::Vec3 Camera::CameraImpl::GetPosition() const

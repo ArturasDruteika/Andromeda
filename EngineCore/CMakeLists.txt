@@ -71,7 +71,7 @@ target_include_directories(${PROJECT_NAME}
         ../Math/Constants/include/
         ../Math/Trigonometry/include/
         ../Rendering/Attributes/include/
-        ../Rendering/Camera/include/
+        ../Rendering/Camera/Cameras/include/
         ../Rendering/Light/LightTypes/include/
         ../Rendering/OpenGLLoader/include/
         ../Rendering/RenderableObjects/Interfaces/include/

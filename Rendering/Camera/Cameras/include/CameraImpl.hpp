@@ -21,6 +21,7 @@ namespace Andromeda
             // Getters
             float GetDistance() const;
             Math::Mat4 GetViewMatrix() const;
+            Math::Mat4 GetProjectionMatrix() const;
             Math::Vec3 GetPosition() const;
             Math::Vec3 GetForward() const;
             Math::Vec3 GetRight() const;
@@ -48,6 +49,7 @@ namespace Andromeda
             glm::vec3 m_worldUp;
             glm::vec3 m_targetCoords;
             glm::mat4 m_viewMatrix;
+            glm::mat4 m_projectionMatrix;
             glm::quat m_orientation;
 
             OnDistanceChange m_onDistanceChangeCallback;

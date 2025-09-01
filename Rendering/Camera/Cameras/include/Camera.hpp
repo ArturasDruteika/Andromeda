@@ -4,7 +4,7 @@
 
 #include "../../MacroExports/include/MacroExports.hpp"
 #include "pch.hpp"
-#include "ICamera.hpp"
+#include "../../Interfaces/include/ICamera.hpp"
 #include "LinearAlgebraDataTypes.hpp"
 
 

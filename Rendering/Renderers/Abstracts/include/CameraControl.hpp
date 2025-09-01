@@ -2,7 +2,7 @@
 #define RENDERER__CAMERA_CONTROL__HPP
 
 
-#include "../../../Camera/include/ICamera.hpp"
+#include "../../../Camera/Interfaces/include/ICamera.hpp"
 
 
 namespace Andromeda::Rendering

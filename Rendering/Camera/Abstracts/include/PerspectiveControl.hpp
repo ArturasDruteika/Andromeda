@@ -1,0 +1,8 @@
+#ifndef RENDERING__CAMERA__HPP
+#define RENDERING__CAMERA__HPP
+
+
+
+
+
+#endif // RENDERING__CAMERA__HPP
