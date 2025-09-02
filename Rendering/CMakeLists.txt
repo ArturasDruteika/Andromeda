@@ -28,6 +28,7 @@ set(CAMERA_HEADERS
     Camera/Cameras/include/Camera.hpp
     Camera/Cameras/include/CameraImpl.hpp
     Camera/Interfaces/include/ICamera.hpp
+    Camera/Interfaces/include/IPerspectiveControl.hpp
 )
 
 set(CAMERA_SOURCES
@@ -35,6 +36,7 @@ set(CAMERA_SOURCES
     Camera/Cameras/src/Camera.cpp
     Camera/Cameras/src/CameraImpl.cpp
     Camera/Interfaces/src/ICamera.cpp
+    Camera/Interfaces/src/IPerspectiveControl.cpp
 )
 
 # ==== Light ====

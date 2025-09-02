@@ -3,6 +3,7 @@
 
 
 #include "../../../MacroExports/include/MacroExports.hpp"
+#include "IPerspectiveControl.hpp"
 #include "pch.hpp"
 #include "LinearAlgebraDataTypes.hpp"
 
@@ -12,6 +13,7 @@ namespace Andromeda::Rendering
     using OnDistanceChange = std::function<void(float)>;
 
     class RENDERING_API ICamera
+        : public IPerspectiveControl
     {
     public:
         virtual ~ICamera();
