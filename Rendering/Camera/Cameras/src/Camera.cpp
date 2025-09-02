@@ -53,6 +53,31 @@ namespace Andromeda
             return *this;
         }
 
+        float Camera::GetFieldOfViewDegrees() const
+        {
+            return m_pCameraImpl->GetFieldOfViewDegrees();
+        }
+
+        float Camera::GetNearPlane() const
+        {
+            return m_pCameraImpl->GetNearPlane();
+        }
+
+        float Camera::GetFarPlane() const
+        {
+            return m_pCameraImpl->GetFarPlane();
+        }
+
+        float Camera::GetAspect() const
+        {
+            return m_pCameraImpl->GetAspect();
+        }
+
+        const glm::mat4& Camera::GetProjection() const
+        {
+            return m_pCameraImpl->GetProjection();
+        }
+
         Math::Mat4 Camera::GetViewMatrix() const
         {
 			return m_pCameraImpl->GetViewMatrix();
@@ -76,6 +101,26 @@ namespace Andromeda
         Math::Vec3 Camera::GetUp() const
         {
 			return m_pCameraImpl->GetUp();
+        }
+
+        void Camera::SetFieldOfViewDegrees(float fovDeg)
+        {
+            m_pCameraImpl->SetFieldOfViewDegrees(fovDeg);
+        }
+
+        void Camera::SetNearPlane(float nearPlane)
+        {
+            m_pCameraImpl->SetNearPlane(nearPlane);
+        }
+
+        void Camera::SetFarPlane(float farPlane)
+        {
+            m_pCameraImpl->SetFarPlane(farPlane);
+        }
+
+        void Camera::SetAspect(float aspect)
+        {
+            m_pCameraImpl->SetAspect(aspect);
         }
 
         void Camera::Rotate(float yaw, float pitch, float roll)

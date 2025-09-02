@@ -4,14 +4,17 @@
 #define GLM_ENABLE_EXPERIMENTAL
 
 #include "Camera.hpp"
+#include "../../Abstracts/include/PerspectiveControl.hpp"
 #include "glm/glm.hpp"
 #include "glm/gtc/quaternion.hpp"
+
 
 namespace Andromeda
 {
     namespace Rendering
     {
         class Camera::CameraImpl
+            : public PerspectiveControl
         {
         public:
             CameraImpl();

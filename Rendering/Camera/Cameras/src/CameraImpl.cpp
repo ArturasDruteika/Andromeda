@@ -24,6 +24,7 @@ namespace Andromeda
             , m_xAxis{ 1.0f, 0.0f, 0.0f }
             , m_yAxis{ 0.0f, 1.0f, 0.0f }
             , m_zAxis{ 0.0f, 0.0f, 1.0f }
+            , PerspectiveControl()
         {
             UpdateDirection();
         }
