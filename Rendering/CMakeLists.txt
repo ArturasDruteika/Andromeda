@@ -25,18 +25,26 @@ find_package(spdlog REQUIRED)
 # ==== Camera ====
 set(CAMERA_HEADERS
     Camera/Abstracts/include/PerspectiveControl.hpp
+    Camera/Abstracts/include/CameraView.hpp
+    Camera/Abstracts/include/CameraController.hpp
     Camera/Cameras/include/Camera.hpp
     Camera/Cameras/include/CameraImpl.hpp
     Camera/Interfaces/include/ICamera.hpp
     Camera/Interfaces/include/IPerspectiveControl.hpp
+    Camera/Interfaces/include/ICameraView.hpp
+    Camera/Interfaces/include/ICameraController.hpp
 )
 
 set(CAMERA_SOURCES
     Camera/Abstracts/src/PerspectiveControl.cpp
+    Camera/Abstracts/src/CameraView.cpp
+    Camera/Abstracts/src/CameraController.cpp
     Camera/Cameras/src/Camera.cpp
     Camera/Cameras/src/CameraImpl.cpp
     Camera/Interfaces/src/ICamera.cpp
     Camera/Interfaces/src/IPerspectiveControl.cpp
+    Camera/Interfaces/src/ICameraView.cpp
+    Camera/Interfaces/src/ICameraController.cpp
 )
 
 # ==== Light ====
