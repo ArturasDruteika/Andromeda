@@ -3,7 +3,7 @@
 #include "Constants.hpp"
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/constants.hpp>
-#include <glm/gtx/quaternion.hpp>
+
 #include <glm/common.hpp>
 
 namespace Andromeda
@@ -113,7 +113,6 @@ namespace Andromeda
         {
             m_onDistanceChangeCallback = std::move(callback);
 		}
-
 
         void Camera::CameraImpl::UpdateDirection()
         {
