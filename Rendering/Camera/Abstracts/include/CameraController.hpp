@@ -3,7 +3,6 @@
 
 
 #include "CameraView.hpp"
-#include "PerspectiveControl.hpp"
 #include "glm/glm.hpp"
 
 #define GLM_ENABLE_EXPERIMENTAL
@@ -15,7 +14,6 @@ namespace Andromeda::Rendering
 {
 	class CameraController
 		: public CameraView
-		, public PerspectiveControl
 	{
 	public:
 		CameraController(const glm::vec3& position, const glm::vec3& targetCoords = glm::vec3(0.0f));

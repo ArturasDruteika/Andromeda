@@ -5,6 +5,7 @@
 
 #include "Camera.hpp"
 #include "../../Abstracts/include/PerspectiveControl.hpp"
+#include "../../Abstracts/include/CameraController.hpp"
 #include "glm/glm.hpp"
 #include "glm/gtx/quaternion.hpp"
 
@@ -15,46 +16,17 @@ namespace Andromeda
     {
         class Camera::CameraImpl
             : public PerspectiveControl
+            , public CameraController
         {
         public:
             CameraImpl();
             CameraImpl(const Math::Vec3& position, float yawRadians, float pitchRadians);
             ~CameraImpl();
 
-            // Getters
-            float GetDistance() const;
-            Math::Mat4 GetViewMatrix() const;
-            Math::Mat4 GetProjectionMatrix() const;
-            Math::Vec3 GetPosition() const;
-            Math::Vec3 GetForward() const;
-            Math::Vec3 GetRight() const;
-            Math::Vec3 GetUp() const;
-            Math::Vec3 GetTarget() const;
-
-            void Rotate(float deltaYawRad = 0.0f, float deltaPitchRad = 0.0f, float roll = 0.0f);
             void Zoom(float deltaDistance);
             void SetOnDistanceChange(OnDistanceChange callback);
 
         private:
-            void UpdateDirection();
-            void CalculateViewMatrix();
-
-        private:
-            float m_distance;
-
-            glm::vec3 m_xAxis;
-            glm::vec3 m_yAxis;
-            glm::vec3 m_zAxis;
-            glm::vec3 m_position;
-            glm::vec3 m_forward;
-            glm::vec3 m_right;
-            glm::vec3 m_up;
-            glm::vec3 m_worldUp;
-            glm::vec3 m_targetCoords;
-            glm::mat4 m_viewMatrix;
-            glm::mat4 m_projectionMatrix;
-            glm::quat m_orientation;
-
             OnDistanceChange m_onDistanceChangeCallback;
         };
     }

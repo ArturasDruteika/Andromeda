@@ -1,4 +1,5 @@
 #include "../include/CameraView.hpp"
+#include "../../../Utils/include/MathUtils.hpp"
 #include <glm/gtc/matrix_transform.hpp>
 
 
@@ -13,54 +14,51 @@ namespace Andromeda::Rendering
 		, m_forward{ glm::normalize(m_targetCoords - m_position) }
 		, m_right{ glm::normalize(glm::cross(m_forward, glm::vec3(0.0f, 0.0f, 1.0f))) }
 		, m_up{ glm::cross(m_right, m_forward) }
-		, m_xAxis{ 1.0f, 0.0f, 0.0f }
-		, m_yAxis{ 0.0f, 1.0f, 0.0f }
-		, m_zAxis{ 0.0f, 0.0f, 1.0f }
 	{
 		CalculateViewMatrix();
 	}
 
 	CameraView::~CameraView() = default;
 
-	const glm::vec3& CameraView::GetPosition() const
+	Math::Vec3 CameraView::GetPosition() const
 	{
-		return m_position;
+		return MathUtils::FromGLM(m_position);
 	}
 
-	const glm::vec3& CameraView::GetTargetCoords() const
+	Math::Vec3 CameraView::GetTargetCoords() const
 	{
-		return m_targetCoords;
+		return MathUtils::FromGLM(m_targetCoords);
 	}
 
-	const glm::vec3& CameraView::GetForward() const
+	Math::Vec3 CameraView::GetForward() const
 	{
-		return m_forward;
+		return MathUtils::FromGLM(m_forward);
 	}
 
-	const glm::vec3& CameraView::GetRight() const
+	Math::Vec3 CameraView::GetRight() const
 	{
-		return m_right;
+		return MathUtils::FromGLM(m_right);
 	}
 
-	const glm::vec3& CameraView::GetUp() const
+	Math::Vec3 CameraView::GetUp() const
 	{
-		return m_up;
+		return MathUtils::FromGLM(m_up);
 	}
 
-	const glm::mat4& CameraView::GetViewMatrix() const
+	Math::Mat4 CameraView::GetViewMatrix() const
 	{
-		return m_viewMat;
+		return MathUtils::FromGLM(m_viewMat);
 	}
 
-	void CameraView::SetPosition(const glm::vec3& position)
+	void CameraView::SetPosition(const Math::Vec3& position)
 	{
-		m_position = position;
+		m_position = MathUtils::ToGLM(position);
 		CalculateViewMatrix();
 	}
 
-	void CameraView::SetTargetCoords(const glm::vec3& targetCoords)
+	void CameraView::SetTargetCoords(const Math::Vec3& targetCoords)
 	{
-		m_targetCoords = targetCoords;
+		m_targetCoords = MathUtils::ToGLM(targetCoords);
 		CalculateViewMatrix();
 	}
 

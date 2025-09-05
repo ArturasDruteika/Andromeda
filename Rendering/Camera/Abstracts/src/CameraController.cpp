@@ -5,9 +5,13 @@
 
 namespace Andromeda::Rendering
 {
+    constexpr glm::vec3 X_AXIS{ 1.0f, 0.0f, 0.0f };
+    constexpr glm::vec3 Y_AXIS{ 0.0f, 1.0f, 0.0f };
+    constexpr glm::vec3 NEGATIVE_Z_AXIS{ 0.0f, 0.0f, -1.0f };
+
+
 	CameraController::CameraController(const glm::vec3& position, const glm::vec3& targetCoords)
 		: CameraView(position, targetCoords)
-		, PerspectiveControl()
 		, m_distance{ glm::length(position - targetCoords) }
 		, m_orientation{ glm::quat(1.0f, 0.0f, 0.0f, 0.0f) }
 	{
@@ -18,22 +22,22 @@ namespace Andromeda::Rendering
     void CameraController::Rotate(float yaw, float pitch, float roll)
     {
         // Get camera local axis
-        glm::vec3 right = glm::rotate(m_orientation, glm::vec3(1, 0, 0));
-        glm::vec3 up = glm::rotate(m_orientation, glm::vec3(0, 1, 0));
-        glm::vec3 forward = glm::rotate(m_orientation, glm::vec3(0, 0, -1));
+        m_right = glm::rotate(m_orientation, X_AXIS);
+        m_up = glm::rotate(m_orientation, Y_AXIS);
+        m_forward = glm::rotate(m_orientation, NEGATIVE_Z_AXIS);
 
         if (roll != 0.0f)
         {
             // Roll: rotate around forward
-            glm::quat qRoll = glm::angleAxis(roll, forward);
+            glm::quat qRoll = glm::angleAxis(roll, m_forward);
             m_orientation = glm::normalize(qRoll * m_orientation);
         }
         else
         {
             // Yaw: rotate around up
-            glm::quat qYaw = glm::angleAxis(-yaw, up);
+            glm::quat qYaw = glm::angleAxis(-yaw, m_up);
             // Pitch: rotate around right
-            glm::quat qPitch = glm::angleAxis(-pitch, right);
+            glm::quat qPitch = glm::angleAxis(-pitch, m_right);
             m_orientation = glm::normalize(qYaw * qPitch * m_orientation);
         }
 
