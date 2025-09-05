@@ -5,6 +5,9 @@
 #include "CameraView.hpp"
 #include "PerspectiveControl.hpp"
 #include "glm/glm.hpp"
+
+#define GLM_ENABLE_EXPERIMENTAL
+
 #include "glm/gtx/quaternion.hpp"
 
 
@@ -15,7 +18,7 @@ namespace Andromeda::Rendering
 		, public PerspectiveControl
 	{
 	public:
-		CameraController();
+		CameraController(const glm::vec3& position, const glm::vec3& targetCoords = glm::vec3(0.0f));
 		~CameraController();
 
 		void Rotate(float yaw, float pitch, float roll);

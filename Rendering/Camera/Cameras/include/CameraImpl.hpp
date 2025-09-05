@@ -6,7 +6,7 @@
 #include "Camera.hpp"
 #include "../../Abstracts/include/PerspectiveControl.hpp"
 #include "glm/glm.hpp"
-#include "glm/gtc/quaternion.hpp"
+#include "glm/gtx/quaternion.hpp"
 
 
 namespace Andromeda

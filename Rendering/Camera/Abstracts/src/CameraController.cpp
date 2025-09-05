@@ -5,7 +5,11 @@
 
 namespace Andromeda::Rendering
 {
-	CameraController::CameraController()
+	CameraController::CameraController(const glm::vec3& position, const glm::vec3& targetCoords)
+		: CameraView(position, targetCoords)
+		, PerspectiveControl()
+		, m_distance{ glm::length(position - targetCoords) }
+		, m_orientation{ glm::quat(1.0f, 0.0f, 0.0f, 0.0f) }
 	{
 	}
 
