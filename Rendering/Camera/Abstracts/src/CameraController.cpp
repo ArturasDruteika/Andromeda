@@ -15,6 +15,7 @@ namespace Andromeda::Rendering
 		, m_distance{ glm::length(position - targetCoords) }
 		, m_orientation{ glm::quat(1.0f, 0.0f, 0.0f, 0.0f) }
 	{
+        UpdateDirection();
 	}
 
 	CameraController::~CameraController() = default;
@@ -22,22 +23,22 @@ namespace Andromeda::Rendering
     void CameraController::Rotate(float yaw, float pitch, float roll)
     {
         // Get camera local axis
-        m_right = glm::rotate(m_orientation, X_AXIS);
-        m_up = glm::rotate(m_orientation, Y_AXIS);
-        m_forward = glm::rotate(m_orientation, NEGATIVE_Z_AXIS);
+        glm::vec3 right = glm::rotate(m_orientation, glm::vec3(1, 0, 0));
+        glm::vec3 up = glm::rotate(m_orientation, glm::vec3(0, 1, 0));
+        glm::vec3 forward = glm::rotate(m_orientation, glm::vec3(0, 0, -1));
 
         if (roll != 0.0f)
         {
             // Roll: rotate around forward
-            glm::quat qRoll = glm::angleAxis(roll, m_forward);
+            glm::quat qRoll = glm::angleAxis(roll, forward);
             m_orientation = glm::normalize(qRoll * m_orientation);
         }
         else
         {
             // Yaw: rotate around up
-            glm::quat qYaw = glm::angleAxis(-yaw, m_up);
+            glm::quat qYaw = glm::angleAxis(-yaw, up);
             // Pitch: rotate around right
-            glm::quat qPitch = glm::angleAxis(-pitch, m_right);
+            glm::quat qPitch = glm::angleAxis(-pitch, right);
             m_orientation = glm::normalize(qYaw * qPitch * m_orientation);
         }
 
