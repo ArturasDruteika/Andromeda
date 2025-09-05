@@ -2,12 +2,17 @@
 #define RENDERING__CAMERA_CONTROLLER__HPP
 
 
+#include "CameraView.hpp"
+#include "PerspectiveControl.hpp"
 #include "glm/glm.hpp"
+#include "glm/gtx/quaternion.hpp"
 
 
 namespace Andromeda::Rendering
 {
 	class CameraController
+		: public CameraView
+		, public PerspectiveControl
 	{
 	public:
 		CameraController();
@@ -17,7 +22,11 @@ namespace Andromeda::Rendering
 		void Zoom(float deltaDistance);
 
 	private:
+		void UpdateDirection();
+
+	protected:
 		float m_distance;
+		glm::quat m_orientation;
 	};
 }
 

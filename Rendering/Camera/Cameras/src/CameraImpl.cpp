@@ -120,7 +120,7 @@ namespace Andromeda
             glm::vec3 offset = glm::rotate(m_orientation, glm::vec3(0.0f, 0.0f, m_distance));
             m_position = m_targetCoords + offset;
             m_up = glm::rotate(m_orientation, glm::vec3(0, 1, 0));
-            CalculateViewMatrix();
+            CalculateViewMatrix(); 
         }
 
         void Camera::CameraImpl::CalculateViewMatrix()

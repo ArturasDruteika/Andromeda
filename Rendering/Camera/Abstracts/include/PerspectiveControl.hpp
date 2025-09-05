@@ -29,7 +29,7 @@ namespace Andromeda::Rendering
 	private:
 		void UpdateProjection();
 
-	private:
+	protected:
 		float m_fovDeg;
 		float m_nearPlane;
 		float m_farPlane;

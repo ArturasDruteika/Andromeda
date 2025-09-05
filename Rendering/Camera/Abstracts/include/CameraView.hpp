@@ -3,7 +3,6 @@
 
 
 #include "glm/glm.hpp"
-#include "LinearAlgebraDataTypes.hpp"
 
 
 namespace Andromeda::Rendering
@@ -11,21 +10,32 @@ namespace Andromeda::Rendering
 	class CameraView
 	{
 	public:
-		CameraView();
+		CameraView(const glm::vec3& position, const glm::vec3& targetCoords = glm::vec3(0.0f));
 		~CameraView();
 
-		Math::Mat4 GetViewMatrix() const;
-		Math::Vec3 GetPosition() const;
-		Math::Vec3 GetForward() const;
-		Math::Vec3 GetRight() const;
-		Math::Vec3 GetUp() const;
+		const glm::vec3& GetPosition() const;
+		const glm::vec3& GetTargetCoords() const;
+		const glm::vec3& GetForward() const;
+		const glm::vec3& GetRight() const;
+		const glm::vec3& GetUp() const;
+		const glm::mat4& GetViewMatrix() const;
+		// Setters
+		void SetPosition(const glm::vec3& position);
+		void SetTargetCoords(const glm::vec3& targetCoords);
 
-	private:
-		float m_fovDeg;
-		float m_nearPlane;
-		float m_farPlane;
-		float m_aspect;
-		glm::mat4 m_projection;
+	protected:
+		void CalculateViewMatrix();
+
+	protected:
+		glm::vec3 m_position;
+		glm::vec3 m_targetCoords;
+		glm::vec3 m_forward;
+		glm::vec3 m_right;
+		glm::vec3 m_up;
+		glm::vec3 m_xAxis;
+		glm::vec3 m_yAxis;
+		glm::vec3 m_zAxis;
+		glm::mat4 m_viewMat;
 	};
 }
 
