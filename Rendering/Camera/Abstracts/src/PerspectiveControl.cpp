@@ -22,9 +22,7 @@ namespace Andromeda::Rendering
 		UpdateProjection();
 	}
 
-	PerspectiveControl::~PerspectiveControl()
-	{
-	}
+	PerspectiveControl::~PerspectiveControl() = default;
 
 	float PerspectiveControl::GetFieldOfViewDegrees() const
 	{

@@ -15,6 +15,8 @@ namespace Andromeda::Rendering
 
 		// Setters
 		void SetCamera(ICamera* camera);
+		void SetCameraAspect(int width, int height);
+		// TODO: add more camera controls as needed
 
 	protected:
 		ICamera* m_pCamera;

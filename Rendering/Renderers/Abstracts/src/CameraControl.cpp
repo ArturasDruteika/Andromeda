@@ -20,4 +20,12 @@ namespace Andromeda::Rendering
 		}
 		m_pCamera = camera;
 	}
+
+	void CameraControl::SetCameraAspect(int width, int height)
+	{
+		if (m_pCamera == nullptr)
+			return;
+		float aspect = static_cast<float>(width) / static_cast<float>(height);
+		m_pCamera->SetAspect(aspect);
+	}
 }
