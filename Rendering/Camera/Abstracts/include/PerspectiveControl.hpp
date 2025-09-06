@@ -21,12 +21,10 @@ namespace Andromeda::Rendering
 		float GetAspect() const;
 		const glm::mat4& GetProjection() const;
 		// Setters
-		void SetFieldOfViewDegrees(float fovDeg);
-		void SetNearPlane(float nearPlane);
-		void SetFarPlane(float farPlane);
-		void SetAspect(float aspect);
-
-	private:
+		void SetFieldOfViewDegrees(float fovDeg, bool updateProjection = true);
+		void SetNearPlane(float nearPlane, bool updateProjection = true);
+		void SetFarPlane(float farPlane, bool updateProjection = true);
+		void SetAspect(float aspect, bool updateProjection = true);
 		void UpdateProjection();
 
 	protected:

@@ -49,24 +49,32 @@ namespace Andromeda::Rendering
 		return m_projection;
 	}
 
-	void PerspectiveControl::SetFieldOfViewDegrees(float fovDeg)
+	void PerspectiveControl::SetFieldOfViewDegrees(float fovDeg, bool updateProjection)
 	{
 		m_fovDeg = fovDeg;
+		if (updateProjection)
+			UpdateProjection();
 	}
 
-	void PerspectiveControl::SetNearPlane(float nearPlane)
+	void PerspectiveControl::SetNearPlane(float nearPlane, bool updateProjection)
 	{
 		m_nearPlane = nearPlane;
+		if (updateProjection)
+			UpdateProjection();
 	}
 
-	void PerspectiveControl::SetFarPlane(float farPlane)
+	void PerspectiveControl::SetFarPlane(float farPlane, bool updateProjection)
 	{
 		m_farPlane = farPlane;
+		if (updateProjection)
+			UpdateProjection();
 	}
 
-	void PerspectiveControl::SetAspect(float aspect)
+	void PerspectiveControl::SetAspect(float aspect, bool updateProjection)
 	{
 		m_aspect = aspect;
+		if (updateProjection)
+			UpdateProjection();
 	}
 
 	void PerspectiveControl::UpdateProjection()
