@@ -1,10 +1,12 @@
 #ifndef RENDERING__I_CAMERA_VIEW__HPP
 #define RENDERING__I_CAMERA_VIEW__HPP
 
+
 #include "../../../MacroExports/include/MacroExports.hpp"
 #include "IPerspectiveControl.hpp"
 #include "pch.hpp"
 #include "LinearAlgebraDataTypes.hpp"
+
 
 namespace Andromeda::Rendering
 {
@@ -23,5 +25,6 @@ namespace Andromeda::Rendering
         virtual Math::Vec3 GetUp() const = 0;
     };
 }
+
 
 #endif // RENDERING__I_CAMERA_VIEW__HPP

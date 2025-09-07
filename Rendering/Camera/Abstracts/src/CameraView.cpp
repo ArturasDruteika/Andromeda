@@ -3,9 +3,6 @@
 #include <glm/gtc/matrix_transform.hpp>
 
 
-#define GLM_ENABLE_EXPERIMENTAL
-
-
 namespace Andromeda::Rendering
 {
 	CameraView::CameraView(const glm::vec3& position, const glm::vec3& targetCoords)

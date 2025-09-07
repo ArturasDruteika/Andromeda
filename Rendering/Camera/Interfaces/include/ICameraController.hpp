@@ -3,8 +3,8 @@
 
 
 #include "../../../MacroExports/include/MacroExports.hpp"
-
 #include "pch.hpp"
+
 
 namespace Andromeda::Rendering
 {
@@ -23,5 +23,6 @@ namespace Andromeda::Rendering
         virtual void SetOnDistanceChange(OnDistanceChange callback) = 0;
     };
 }
+
 
 #endif // RENDERING__I_CAMERA_CONTROLLER__HPP
