@@ -3,7 +3,7 @@
 
 
 #include "../../../MacroExports/include/MacroExports.hpp"
-#include "../../../Camera/include/ICamera.hpp"
+#include "../../../Camera/Interfaces/include/ICamera.hpp"
 
 
 namespace Andromeda::Rendering

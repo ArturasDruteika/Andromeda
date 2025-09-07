@@ -45,7 +45,6 @@ namespace Andromeda::Rendering
 		void RenderLuminousObjects(const IScene& scene) const;
 		void RenderObjects(const IScene& scene) const;
 		void RenderGrid(const IRenderableObjectOpenGL& object) const;
-		void UpdatePerspectiveMatrix(int width, int height);
 		void BeginFrame() const;
 		void EndFrame() const;
 		void LogFPS() const;
@@ -58,7 +57,6 @@ namespace Andromeda::Rendering
 
 	private:
 		bool m_isInitialized;
-		glm::mat4 m_projectionMatrix;
 		glm::mat4 m_lightSpace;
 		FrameBufferOpenGL m_mainFBO;
 		FrameBufferOpenGL m_shadowFBO;

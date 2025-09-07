@@ -4,7 +4,7 @@
 
 #include "../../MacroExports/include/MacroExports.hpp"
 #include "pch.hpp"
-#include "ICamera.hpp"
+#include "../../Interfaces/include/ICamera.hpp"
 #include "LinearAlgebraDataTypes.hpp"
 
 
@@ -26,11 +26,21 @@ namespace Andromeda
             Camera& operator=(Camera&& other) noexcept;
 
             // Getters
+            float GetFieldOfViewDegrees() const override;
+            float GetNearPlane() const override;
+            float GetFarPlane() const override;
+            float GetAspect() const override;
+            const glm::mat4& GetProjection() const override;
             Math::Mat4 GetViewMatrix() const override;
             Math::Vec3 GetPosition() const override;
             Math::Vec3 GetForward() const override;
             Math::Vec3 GetRight() const override;
             Math::Vec3 GetUp() const override;
+            // Setters
+            void SetFieldOfViewDegrees(float fovDeg) override;
+            void SetNearPlane(float nearPlane) override;
+            void SetFarPlane(float farPlane) override;
+            void SetAspect(float aspect) override;
 
             void Rotate(float yaw, float pitch, float roll) override;
             void Zoom(float deltaDistance) override;
