@@ -35,7 +35,7 @@ namespace Andromeda::Rendering
             BACKGROUND_COLOR_DEFAULT.a
         );
         m_pShaderManager = new ShaderManager(true);
-        UpdatePerspectiveMatrix(m_width, m_height);
+        SetCameraAspect(m_width, m_height);
     }
 
     OpenGLRenderer::OpenGLRendererImpl::~OpenGLRendererImpl()
@@ -72,7 +72,7 @@ namespace Andromeda::Rendering
             }
         }
 
-        UpdatePerspectiveMatrix(width, height);
+        SetCameraAspect(width, height);
         m_isInitialized = true;
     }
 
@@ -87,7 +87,7 @@ namespace Andromeda::Rendering
     {
         SizeControl::Resize(width, height);
 
-        UpdatePerspectiveMatrix(width, height);
+        SetCameraAspect(width, height);
 
         m_mainFBO.Resize(width, height);
         if (m_isIlluminationMode)
@@ -200,7 +200,7 @@ namespace Andromeda::Rendering
         nlShader->Bind();
 
         nlShader->SetUniform("u_view", MathUtils::ToGLM(m_pCamera->GetViewMatrix()));
-        nlShader->SetUniform("u_projection", m_projectionMatrix);
+        nlShader->SetUniform("u_projection", m_pCamera->GetProjection());
         nlShader->SetUniform("u_viewPos", MathUtils::ToGLM(m_pCamera->GetPosition()));
         nlShader->SetUniform("u_lightSpaceMatrix", lightSpace);
         nlShader->SetUniform("u_shadowMap", SHADOW_UNIT);
@@ -217,7 +217,7 @@ namespace Andromeda::Rendering
         ShaderOpenGL* lumShader = m_pShaderManager->GetShader(ShaderOpenGLTypes::RenderableObjectsLuminous);
         lumShader->Bind();
         lumShader->SetUniform("u_view", MathUtils::ToGLM(m_pCamera->GetViewMatrix()));
-        lumShader->SetUniform("u_projection", m_projectionMatrix);
+        lumShader->SetUniform("u_projection", m_pCamera->GetProjection());
 
         for (auto& [id, obj] : scene.GetObjects())
         {
@@ -239,7 +239,7 @@ namespace Andromeda::Rendering
         ShaderOpenGL* shader = m_pShaderManager->GetShader(ShaderOpenGLTypes::RenderableObjects);
         shader->Bind();
         shader->SetUniform("u_view", MathUtils::ToGLM(m_pCamera->GetViewMatrix()));
-        shader->SetUniform("u_projection", m_projectionMatrix);
+        shader->SetUniform("u_projection", m_pCamera->GetProjection());
 
         for (auto& [id, obj] : scene.GetObjects())
         {
@@ -269,7 +269,7 @@ namespace Andromeda::Rendering
         glm::mat4 viewMatrix = MathUtils::ToGLM(m_pCamera->GetViewMatrix());
 
         shader->SetUniform("u_view", viewMatrix);
-        shader->SetUniform("u_projection", m_projectionMatrix);
+        shader->SetUniform("u_projection", m_pCamera->GetProjection());
 
         glBindVertexArray(object.GetVAO());
         glBindBuffer(GL_ARRAY_BUFFER, object.GetVBO());
@@ -277,12 +277,6 @@ namespace Andromeda::Rendering
         glDrawElements(GL_LINES, object.GetIndicesCount(), GL_UNSIGNED_INT, 0);
 
         shader->UnBind();
-    }
-
-    void OpenGLRenderer::OpenGLRendererImpl::UpdatePerspectiveMatrix(int width, int height)
-    {
-        float aspect = static_cast<float>(m_width) / static_cast<float>(m_height);
-        m_projectionMatrix = glm::infinitePerspective(glm::radians(45.0f), aspect, 0.1f);
     }
 
     void OpenGLRenderer::OpenGLRendererImpl::BeginFrame() const
@@ -366,7 +360,6 @@ namespace Andromeda::Rendering
         shader.SetUniform("u_diffuseLight", lightDiffuseValues);
         shader.SetUniform("u_specularLight", lightSpecularValues);
     }
-
 
     void OpenGLRenderer::OpenGLRendererImpl::RenderEachNonLuminousObject(ShaderOpenGL& shader, const IScene& scene) const
     {

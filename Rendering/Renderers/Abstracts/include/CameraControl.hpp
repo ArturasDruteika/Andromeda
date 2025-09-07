@@ -2,7 +2,7 @@
 #define RENDERER__CAMERA_CONTROL__HPP
 
 
-#include "../../../Camera/include/ICamera.hpp"
+#include "../../../Camera/Interfaces/include/ICamera.hpp"
 
 
 namespace Andromeda::Rendering
@@ -15,6 +15,8 @@ namespace Andromeda::Rendering
 
 		// Setters
 		void SetCamera(ICamera* camera);
+		void SetCameraAspect(int width, int height);
+		// TODO: add more camera controls as needed
 
 	protected:
 		ICamera* m_pCamera;
