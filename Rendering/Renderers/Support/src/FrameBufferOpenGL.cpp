@@ -6,17 +6,29 @@
 
 namespace Andromeda::Rendering
 {
+    FrameBufferOpenGL::FrameBufferOpenGL()
+        : m_FBO{ 0 }
+        , m_colorTex{ 0 }
+        , m_depthRBO{ 0 }
+        , m_depthTex{ 0 }
+        , m_width{ 0 }
+        , m_height{ 0 }
+        , m_type{ FrameBufferType::None }
+    {
+    }
+
     FrameBufferOpenGL::FrameBufferOpenGL(int width, int height, FrameBufferType type)
-		: m_FBO(0)
-        , m_colorTex(0)
-        , m_depthRBO(0)
-        , m_depthTex(0)
-        , m_width(width)
-        , m_height(height)
-        , m_type(type)
+        : m_FBO{ 0 }
+        , m_colorTex{ 0 }
+        , m_depthRBO{ 0 }
+        , m_depthTex{ 0 }
+        , m_width{ width }
+        , m_height{ height }
+        , m_type{ type }
     {
         Init(width, height, type);
     }
+
 
     FrameBufferOpenGL::~FrameBufferOpenGL()
     {

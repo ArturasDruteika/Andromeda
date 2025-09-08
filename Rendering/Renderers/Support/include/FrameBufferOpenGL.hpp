@@ -12,17 +12,15 @@ namespace Andromeda::Rendering
         None,
         Color,
         Depth,
-        ColorDepth
+        ColorDepth,
+        DepthCube
     };
 
 
     class FrameBufferOpenGL
     {
     public:
-
-
-    public:
-        FrameBufferOpenGL() = default;
+        FrameBufferOpenGL();
         FrameBufferOpenGL(int width, int height, FrameBufferType type);
         ~FrameBufferOpenGL();
 
