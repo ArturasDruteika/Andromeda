@@ -40,6 +40,7 @@ namespace Andromeda::Rendering
         unsigned int GetColorTexture() const;     // valid only for ColorDepth
         unsigned int GetDepthRenderbuffer() const; // valid only for ColorDepth
         unsigned int GetDepthTexture() const;     // valid only for DepthOnly
+        unsigned int GetDepthCubeTexture() const;
         int GetWidth() const;
         int GetHeight() const;
         FrameBufferType GetFrameBufferType() const;
@@ -49,6 +50,7 @@ namespace Andromeda::Rendering
         bool Build();
         bool BuildColorDepth();
         bool BuildDepthOnly();
+		bool BuildDepthCube();
         bool CheckStatus() const;
 
     private:
@@ -56,7 +58,7 @@ namespace Andromeda::Rendering
         unsigned int m_colorTex;
         unsigned int m_depthRBO;
         unsigned int m_depthTex;
-
+        unsigned int m_depthCubeTex;
         int m_width;
         int m_height;
         FrameBufferType m_type;
