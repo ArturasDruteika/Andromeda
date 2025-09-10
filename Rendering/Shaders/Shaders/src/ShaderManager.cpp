@@ -61,7 +61,7 @@ namespace Andromeda::Rendering
             },
             {
                 ShaderOpenGLTypes::RenderableObjectsLuminous,
-                "shader_program_sources/vertex_illumination.glsl",
+                "shader_program_sources/vertex.glsl",
                 "shader_program_sources/fragment_luminous_objects.glsl"
             },
             {
