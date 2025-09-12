@@ -4,8 +4,12 @@
 
 namespace Andromeda::Rendering
 {
-	ShaderOpenGL::ShaderOpenGL(const std::filesystem::path& vertexCodeFilePath, const std::filesystem::path& fragmentCodeFilePath)
-		: ShaderSourceManagerOpenGL(vertexCodeFilePath, fragmentCodeFilePath, true)
+	ShaderOpenGL::ShaderOpenGL(
+		const std::filesystem::path& vertexCodeFilePath, 
+		const std::filesystem::path& fragmentCodeFilePath,
+		const std::filesystem::path& geometryShaderFilepath
+	)
+		: ShaderSourceManagerOpenGL(vertexCodeFilePath, fragmentCodeFilePath, geometryShaderFilepath, true)
 	{
 		ShaderProgramOpenGL::CreateShaderProgram(GetVertexCode(), GetFragmentCode());
 	}

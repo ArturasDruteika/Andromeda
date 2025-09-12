@@ -15,7 +15,11 @@ namespace Andromeda::Rendering
 		, public IShader
 	{
 	public:
-		ShaderOpenGL(const std::filesystem::path& vertexCodeFilePath, const std::filesystem::path& fragmentCodeFilePath);
+		ShaderOpenGL(
+			const std::filesystem::path& vertexCodeFilePath,
+			const std::filesystem::path& fragmentCodeFilePath,
+			const std::filesystem::path& geometryShaderFilepath = {}
+		);
 		~ShaderOpenGL() = default;
 
 		void Bind() const override;
