@@ -7,7 +7,8 @@ namespace Andromeda::Rendering
 	enum class ShaderType
 	{
 		Vertex,
-		Fragment
+		Fragment,
+		Geometry
 	};
 }
 
