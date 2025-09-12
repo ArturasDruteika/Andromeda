@@ -14,11 +14,15 @@ namespace Andromeda::Rendering
 		~ShaderCompilerOpenGL();
 
 		unsigned int Compile(unsigned int type, const std::string& source);
-		unsigned int Link(unsigned int vertexShader, unsigned int fragmentShader);
+		unsigned int Link(
+			unsigned int vertexShader, 
+			unsigned int fragmentShader,
+			unsigned int geometryShader = 0
+		);
 
 	private:
-		void CheckCompileErrors(unsigned int shader, int type);
-		void CheckLinkErrors(unsigned int program);
+		bool CheckCompileErrors(unsigned int shader, int type);
+		bool CheckLinkErrors(unsigned int program);
 	};
 }
 

@@ -20,7 +20,11 @@ namespace Andromeda::Rendering
 		void UnBind() const;
 
 	protected:
-		void CreateShaderProgram(const std::string& vertexCode, const std::string& fragmentCode);
+		void CreateShaderProgram(
+			const std::string& vertexCode,
+			const std::string& fragmentCode,
+			const std::string& geometryCode = {}
+		);
 
 	protected:
 		unsigned int m_programId;

@@ -19,24 +19,41 @@ namespace Andromeda::Rendering
 		return shader;
 	}
 
-	unsigned int ShaderCompilerOpenGL::Link(unsigned int vertexShader, unsigned int fragmentShader)
+	unsigned int ShaderCompilerOpenGL::Link(
+		unsigned int vertexShader,
+		unsigned int fragmentShader,
+		unsigned int geometryShader
+	)
 	{
 		unsigned int program = glCreateProgram();
 
-		glAttachShader(program, vertexShader);
-		glAttachShader(program, fragmentShader);
+		if (vertexShader)
+			glAttachShader(program, vertexShader);
+		if (fragmentShader)
+			glAttachShader(program, fragmentShader);
+		if (geometryShader)
+			glAttachShader(program, geometryShader);
+
 		glLinkProgram(program);
 
-		CheckLinkErrors(program);
+		if (!CheckLinkErrors(program))
+		{
+			glDeleteProgram(program);
+			return 0;
+		}
 
-		// Optionally detach shaders after linking
-		glDetachShader(program, vertexShader);
-		glDetachShader(program, fragmentShader);
+		// Optionally detach after a successful link
+		if (vertexShader)
+			glDetachShader(program, vertexShader);
+		if (fragmentShader)
+			glDetachShader(program, fragmentShader);
+		if (geometryShader)
+			glDetachShader(program, geometryShader);
 
 		return program;
 	}
 
-	void ShaderCompilerOpenGL::CheckCompileErrors(unsigned int shader, int type)
+	bool ShaderCompilerOpenGL::CheckCompileErrors(unsigned int shader, int type)
 	{
 		int success;
 		int length;
@@ -49,11 +66,12 @@ namespace Andromeda::Rendering
 			std::string shaderTypeStr = (type == GL_VERTEX_SHADER ? "vertex" : "fragment");
 			spdlog::error("Shader compilation error ({}): {}", shaderTypeStr, message);
 			glDeleteShader(shader);
+			return false;
 		}
-		return;
+		return true;
 	}
 
-	void ShaderCompilerOpenGL::CheckLinkErrors(unsigned int program)
+	bool ShaderCompilerOpenGL::CheckLinkErrors(unsigned int program)
 	{
 		int success;
 		glGetProgramiv(program, GL_LINK_STATUS, &success);
@@ -66,6 +84,8 @@ namespace Andromeda::Rendering
 			glGetProgramInfoLog(program, length, nullptr, message);
 			spdlog::error("Shader program linking error: {}", message);
 			glDeleteProgram(program);
+			return false;
 		}
+		return true;
 	}
 }

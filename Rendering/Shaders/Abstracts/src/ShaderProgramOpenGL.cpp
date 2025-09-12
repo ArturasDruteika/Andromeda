@@ -20,20 +20,26 @@ namespace Andromeda::Rendering
 		}
 	}
 
-	void ShaderProgramOpenGL::CreateShaderProgram(const std::string& vertexCode, const std::string& fragmentCode)
+	void ShaderProgramOpenGL::CreateShaderProgram(
+		const std::string& vertexCode, 
+		const std::string& fragmentCode, 
+		const std::string& geometryCode
+	)
 	{
 		ShaderCompilerOpenGL compiler;
 
 		// Compile shaders
 		unsigned int vertexShader = compiler.Compile(GL_VERTEX_SHADER, vertexCode);
 		unsigned int fragmentShader = compiler.Compile(GL_FRAGMENT_SHADER, fragmentCode);
+		unsigned int geometryShader = compiler.Compile(GL_GEOMETRY_SHADER, geometryCode);
 
 		// Link program
-		m_programId = compiler.Link(vertexShader, fragmentShader);
+		m_programId = compiler.Link(vertexShader, fragmentShader, geometryShader);
 
 		// Delete shader objects after linking
 		glDeleteShader(vertexShader);
 		glDeleteShader(fragmentShader);
+		glDeleteShader(geometryShader);
 	}
 
 	void ShaderProgramOpenGL::Bind() const
