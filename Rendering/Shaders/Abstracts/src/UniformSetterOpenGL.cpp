@@ -128,4 +128,31 @@ namespace Andromeda::Rendering
 			glUniform4f(location, vectors[i].r, vectors[i].g, vectors[i].b, vectors[i].a);
 		}
 	}
+
+	void UniformSetterOpenGL::SetUniform(unsigned int program, const std::string& name, const std::vector<glm::mat4>& matrices) const
+	{
+		if (matrices.empty())
+			return;
+
+		// Try "name" first, then "name[0]" for array base
+		GLint location = glGetUniformLocation(program, name.c_str());
+		if (location == -1) 
+		{
+			std::string name0 = name + "[0]";
+			location = glGetUniformLocation(program, name0.c_str());
+		}
+
+		if (location == -1) 
+		{
+			spdlog::warn("Uniform '{}' not found in shader.", name);
+			return;
+		}
+
+		glUniformMatrix4fv(
+			location,
+			static_cast<GLsizei>(matrices.size()),
+			GL_FALSE, // GLM is column-major -> no transpose
+			glm::value_ptr(matrices[0])
+		);
+	}
 }

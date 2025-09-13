@@ -23,6 +23,7 @@ namespace Andromeda::Rendering
 		void SetUniform(unsigned int program, const std::string& name, const std::vector<float>& values) const;
 		void SetUniform(unsigned int program, const std::string& name, const std::vector<glm::vec3>& vectors) const;
 		void SetUniform(unsigned int program, const std::string& name, const std::vector<glm::vec4>& vectors) const;
+		void SetUniform(unsigned int program, const std::string& name, const std::vector<glm::mat4>& vectors) const;
 	};
 }
 
