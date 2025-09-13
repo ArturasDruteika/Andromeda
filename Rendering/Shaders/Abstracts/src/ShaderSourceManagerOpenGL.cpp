@@ -20,7 +20,7 @@ namespace Andromeda::Rendering
 			LoadShaderFromFile(ShaderType::Vertex, vertexShaderFilepath);
 			LoadShaderFromFile(ShaderType::Fragment, fragmentShaderFilepath);
 			if (!geometryShaderFilepath.empty())
-				LoadShaderFromFile(ShaderType::Fragment, geometryShaderFilepath);
+				LoadShaderFromFile(ShaderType::Geometry, geometryShaderFilepath);
 		}
 	}
 

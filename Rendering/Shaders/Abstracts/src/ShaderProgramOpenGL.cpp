@@ -31,7 +31,9 @@ namespace Andromeda::Rendering
 		// Compile shaders
 		unsigned int vertexShader = compiler.Compile(GL_VERTEX_SHADER, vertexCode);
 		unsigned int fragmentShader = compiler.Compile(GL_FRAGMENT_SHADER, fragmentCode);
-		unsigned int geometryShader = compiler.Compile(GL_GEOMETRY_SHADER, geometryCode);
+		unsigned int geometryShader = 0;
+		if (!geometryCode.empty())
+			geometryShader = compiler.Compile(GL_GEOMETRY_SHADER, geometryCode);
 
 		// Link program
 		m_programId = compiler.Link(vertexShader, fragmentShader, geometryShader);

@@ -155,7 +155,7 @@ namespace Andromeda::Rendering
             status = false;
         if (!geometryPath.empty())
             status = CheckShaderPath(geometryPath, "Geometry");
-        return CheckShaderPath(vertexPath, "Vertex") && CheckShaderPath(fragmentPath, "Fragment");
+        return status;
     }
 
     bool ShaderManager::CheckShaderPath(const std::filesystem::path& path, const std::string& type)
