@@ -40,4 +40,5 @@ namespace Andromeda::Rendering
 	template void ShaderOpenGL::SetUniform<std::vector<float>>(const std::string&, const std::vector<float>&) const;
 	template void ShaderOpenGL::SetUniform<std::vector<glm::vec3>>(const std::string&, const std::vector<glm::vec3>&) const;
 	template void ShaderOpenGL::SetUniform<std::vector<glm::vec4>>(const std::string&, const std::vector<glm::vec4>&) const;
+	template void ShaderOpenGL::SetUniform<std::vector<glm::mat4>>(const std::string&, const std::vector<glm::mat4>&) const;
 }
