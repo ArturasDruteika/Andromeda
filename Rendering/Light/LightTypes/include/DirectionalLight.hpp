@@ -21,7 +21,10 @@ namespace Andromeda::Rendering
 			float intensity = 1.0f,
 			const glm::vec3& ambient = glm::vec3(0.1f),
 			const glm::vec3& diffuse = glm::vec3(0.4f, 0.4f, 0.4f),
-			const glm::vec3& specular = glm::vec3(0.4f, 0.4f, 0.4f)
+			const glm::vec3& specular = glm::vec3(0.4f, 0.4f, 0.4f),
+			float orthographicHalfSize = 10.0f,
+			float nearPlane = 1.0f,
+			float farPlane = 30.0f
 		);
 		~DirectionalLight();
 

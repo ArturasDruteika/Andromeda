@@ -9,7 +9,10 @@ namespace Andromeda::Rendering
 		float intensity,
 		const glm::vec3& ambient,
 		const glm::vec3& diffuse,
-		const glm::vec3& specular
+		const glm::vec3& specular,
+		float orthographicHalfSize,
+		float nearPlane,
+		float farPlane
 	)
 		: Light{
 			color,
@@ -19,9 +22,9 @@ namespace Andromeda::Rendering
 			specular
 		}
 		, LuminousBehavior{ this, LightType::Directional }
-		, m_orthographicHalfSize{ 10.0f }
-		, m_nearPlane{ 1.0f }
-		, m_farPlane{ 30.0f }
+		, m_orthographicHalfSize{ orthographicHalfSize }
+		, m_nearPlane{ nearPlane }
+		, m_farPlane{ farPlane }
 		, m_direction{ glm::normalize(direction) }
 	{
 	}
