@@ -327,11 +327,14 @@ set(SHADER_FILES
     "fragment.glsl"
     "vertex_illumination.glsl"
     "vertex_grid.glsl"
+    "vertex_point_shadow.glsl"
     "fragment_grid.glsl"
     "fragment_luminous_objects.glsl"
     "fragment_non_luminous_objects.glsl"
     "vertex_depth_only.glsl"
     "fragment_depth_only.glsl"
+    "fragment_point_shadow.glsl"
+    "geometry_point_shadow.glsl"
 )
 
 # Create full source paths
