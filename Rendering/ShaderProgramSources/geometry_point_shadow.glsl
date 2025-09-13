@@ -7,7 +7,7 @@ layout (triangle_strip, max_vertices = 18) out;
 // 6 face view-projection matrices for the cubemap (built on CPU)
 // Face order (recommended):
 // 0:+X, 1:-X, 2:+Y, 3:-Y, 4:+Z, 5:-Z
-uniform mat4 u_ShadowMatrices[6];
+uniform mat4 u_shadowMatrices[6];
 
 // From the vertex shader: world-space position per vertex
 in vec3 fragPosition[];
@@ -26,8 +26,8 @@ void main()
         // Emit the triangle for this face
         for (int v = 0; v < 3; ++v)
         {
-            gWorldPos   = fragPosition[v];
-            gl_Position = u_ShadowMatrices[face] * vec4(fragPosition[v], 1.0);
+            gWorldPos = fragPosition[v];
+            gl_Position = u_shadowMatrices[face] * vec4(fragPosition[v], 1.0);
             EmitVertex();
         }
         EndPrimitive();
