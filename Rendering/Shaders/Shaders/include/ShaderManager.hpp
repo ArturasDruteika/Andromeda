@@ -21,11 +21,25 @@ namespace Andromeda::Rendering
 		const std::unordered_map<ShaderOpenGLTypes, ShaderOpenGL*>& GetShadersMap() const;
 
 		bool InitShaders();
-		bool LoadShader(const ShaderOpenGLTypes& shaderType, const std::filesystem::path& vertexShaderPath, const std::filesystem::path& fragmentShaderPath);
+		bool LoadShader(
+			const ShaderOpenGLTypes& shaderType,
+			const std::filesystem::path& vertexShaderPath,
+			const std::filesystem::path& fragmentShaderPath,
+			const std::filesystem::path& geometryShaderPath
+		);
 
 	private:
-		bool CreateShader(const ShaderOpenGLTypes& shaderType, const std::filesystem::path& vertexShaderPath, const std::filesystem::path& fragmentShaderPath);
-		bool ValidateShaderPaths(const std::filesystem::path& vertexPath, const std::filesystem::path& fragmentPath);
+		bool CreateShader(
+			const ShaderOpenGLTypes& shaderType,
+			const std::filesystem::path& vertexShaderPath,
+			const std::filesystem::path& fragmentShaderPath,
+			const std::filesystem::path& geometryShaderPath
+		);
+		bool ValidateShaderPaths(
+			const std::filesystem::path& vertexPath,
+			const std::filesystem::path& fragmentPath,
+			const std::filesystem::path& geometryPath
+		);
 		bool CheckShaderPath(const std::filesystem::path& path, const std::string& type);
 
 	private:

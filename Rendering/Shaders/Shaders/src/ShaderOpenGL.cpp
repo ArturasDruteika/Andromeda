@@ -11,7 +11,7 @@ namespace Andromeda::Rendering
 	)
 		: ShaderSourceManagerOpenGL(vertexCodeFilePath, fragmentCodeFilePath, geometryShaderFilepath, true)
 	{
-		ShaderProgramOpenGL::CreateShaderProgram(GetVertexCode(), GetFragmentCode());
+		ShaderProgramOpenGL::CreateShaderProgram(GetVertexCode(), GetFragmentCode(), GetGeometryCode());
 	}
 
 	void ShaderOpenGL::Bind() const

@@ -73,12 +73,19 @@ namespace Andromeda::Rendering
                 ShaderOpenGLTypes::ShadowMap,
                 "shader_program_sources/vertex_depth_only.glsl",
                 "shader_program_sources/fragment_depth_only.glsl"
+            },
+            {
+                ShaderOpenGLTypes::PointShadowCubeMap,
+                "shader_program_sources/vertex_point_shadow.glsl",
+                "shader_program_sources/fragment_point_shadow.glsl",
+                "shader_program_sources/geometry_point_shadow.glsl"
             }
+
         };
 
         for (const auto& shader : shaders)
         {
-            if (!CreateShader(shader.type, shader.vertexPath, shader.fragmentPath))
+            if (!CreateShader(shader.type, shader.vertexPath, shader.fragmentPath, shader.geometryPath))
             {
                 // If any shader fails to load/compile, return false immediately
                 return false;
@@ -89,9 +96,14 @@ namespace Andromeda::Rendering
         return true;
     }
 
-    bool ShaderManager::LoadShader(const ShaderOpenGLTypes& shaderType, const std::filesystem::path& vertexShaderPath, const std::filesystem::path& fragmentShaderPath)
+    bool ShaderManager::LoadShader(
+        const ShaderOpenGLTypes& shaderType,
+        const std::filesystem::path& vertexShaderPath,
+        const std::filesystem::path& fragmentShaderPath,
+        const std::filesystem::path& geometryShaderPath
+    )
     {
-        if (!ValidateShaderPaths(vertexShaderPath, fragmentShaderPath))
+        if (!ValidateShaderPaths(vertexShaderPath, fragmentShaderPath, geometryShaderPath))
         {
             return false;
         }
@@ -109,20 +121,40 @@ namespace Andromeda::Rendering
             delete m_shadersMap[shaderType];
             m_shadersMap.erase(shaderType);
         }
-        return CreateShader(shaderType, vertexShaderPath, fragmentShaderPath);
+        return CreateShader(shaderType, vertexShaderPath, fragmentShaderPath, geometryShaderPath);
     }
 
-    bool ShaderManager::CreateShader(const ShaderOpenGLTypes& shaderType, const std::filesystem::path& vertexShaderPath, const std::filesystem::path& fragmentShaderPath)
+    bool ShaderManager::CreateShader(
+        const ShaderOpenGLTypes& shaderType, 
+        const std::filesystem::path& vertexShaderPath, 
+        const std::filesystem::path& fragmentShaderPath,
+        const std::filesystem::path& geometryShaderPath
+    )
     {
-        ShaderOpenGL* shader = new ShaderOpenGL(vertexShaderPath, fragmentShaderPath);
+        ShaderOpenGL* shader = new ShaderOpenGL(vertexShaderPath, fragmentShaderPath, geometryShaderPath);
         m_shadersMap.insert({ shaderType, shader });
 
 		// TODO: Add error handling for shader creation
         return true;
     }
 
-    bool ShaderManager::ValidateShaderPaths(const std::filesystem::path& vertexPath, const std::filesystem::path& fragmentPath)
+    bool ShaderManager::ValidateShaderPaths(
+        const std::filesystem::path& vertexPath, 
+        const std::filesystem::path& fragmentPath,
+        const std::filesystem::path& geometryPath
+        )
     {
+        bool status = true;
+        if (!vertexPath.empty())
+            status = CheckShaderPath(vertexPath, "Vertex");
+        else
+            status = false;
+        if (!fragmentPath.empty())
+            status = CheckShaderPath(fragmentPath, "Fragment");
+        else
+            status = false;
+        if (!geometryPath.empty())
+            status = CheckShaderPath(geometryPath, "Geometry");
         return CheckShaderPath(vertexPath, "Vertex") && CheckShaderPath(fragmentPath, "Fragment");
     }
 
