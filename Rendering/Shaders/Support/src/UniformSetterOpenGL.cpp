@@ -134,15 +134,16 @@ namespace Andromeda::Rendering
 		if (matrices.empty())
 			return;
 
-		// Try "name" first, then "name[0]" for array base
 		GLint location = glGetUniformLocation(program, name.c_str());
-		if (location == -1) 
+
+		// only try appending [0] if the caller passed the base name without brackets
+		if (location == -1 && name.find('[') == std::string::npos)
 		{
 			std::string name0 = name + "[0]";
 			location = glGetUniformLocation(program, name0.c_str());
 		}
 
-		if (location == -1) 
+		if (location == -1)
 		{
 			spdlog::warn("Uniform '{}' not found in shader.", name);
 			return;
@@ -151,7 +152,7 @@ namespace Andromeda::Rendering
 		glUniformMatrix4fv(
 			location,
 			static_cast<GLsizei>(matrices.size()),
-			GL_FALSE, // GLM is column-major -> no transpose
+			GL_FALSE,
 			glm::value_ptr(matrices[0])
 		);
 	}
