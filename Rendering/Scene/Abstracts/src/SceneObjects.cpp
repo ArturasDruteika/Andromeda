@@ -35,8 +35,8 @@ namespace Andromeda::Rendering
 		m_objects.erase(id);
 	}
 
-	void SceneObjects::AddDirectionaLight(int id, DirectionalLight* pDirectionalLight)
+	void SceneObjects::AddLuminousObject(int id, LuminousBehavior* pLuminousObject)
 	{
-		m_luminousObjects.insert({ id, pDirectionalLight });
+		m_luminousObjects.insert({ id, pLuminousObject });
 	}
 }

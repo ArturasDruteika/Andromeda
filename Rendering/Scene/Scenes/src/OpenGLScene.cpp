@@ -49,9 +49,9 @@ namespace Andromeda::Rendering
 		m_pOpenGLSceneImpl->RemoveObject(id);
 	}
 
-	void OpenGLScene::AddDirectionaLight(int id, DirectionalLight* pDirectionalLight)
+	void OpenGLScene::AddLuminousObject(int id, LuminousBehavior* pLuminousObject)
 	{
-		m_pOpenGLSceneImpl->AddDirectionaLight(id, pDirectionalLight);
+		m_pOpenGLSceneImpl->AddLuminousObject(id, pLuminousObject);
 	}
 
 	const std::unordered_map<int, const DirectionalLight*> OpenGLScene::GetDirectionalLights() const
