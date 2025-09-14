@@ -1,5 +1,5 @@
 #include "../include/ShaderProgramOpenGL.hpp"
-#include "../include/ShaderCompilerOpenGL.hpp"
+#include "../../Support/include/ShaderCompilerOpenGL.hpp"
 #include <glad/gl.h>
 #include <spdlog/spdlog.h>
 

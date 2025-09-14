@@ -3,8 +3,8 @@
 
 
 #include "../../Abstracts/include/ShaderProgramOpenGL.hpp"
-#include "../../Abstracts/include/UniformSetterOpenGL.hpp"
 #include "../../Abstracts/include/ShaderSourceManagerOpenGL.hpp"
+#include "../../Support/include/UniformSetterOpenGL.hpp"
 #include "../../Interfaces/include/IShader.hpp"
 
 namespace Andromeda::Rendering
