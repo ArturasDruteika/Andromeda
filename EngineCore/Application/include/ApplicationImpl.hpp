@@ -30,7 +30,7 @@ namespace Andromeda::EngineCore
 		void RunMainLoop();
 		void DeInit();
 		void AddToScene(int id, Rendering::IRenderableObjectOpenGL* object);
-		void AddToScene(int id, Rendering::DirectionalLight* object);
+		void AddToScene(int id, Rendering::LuminousBehavior* object);
 		void RemoveFromScene(int id);
 
 	private:

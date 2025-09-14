@@ -116,9 +116,9 @@ namespace Andromeda::EngineCore
 		m_pScene->AddObject(id, object);
     }
 
-    void Application::ApplicationImpl::AddToScene(int id, Rendering::DirectionalLight* object)
+    void Application::ApplicationImpl::AddToScene(int id, Rendering::LuminousBehavior* object)
     {
-        m_pScene->AddDirectionaLight(id, object);
+        m_pScene->AddLuminousObject(id, object);
 	}
 
     void Application::ApplicationImpl::RemoveFromScene(int id)
