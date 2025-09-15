@@ -27,6 +27,7 @@ namespace Andromeda::Rendering
         : m_isInitialized{ false }
         , m_lightSpace{ glm::mat4(1.0f) }
         , m_pShaderManager{ nullptr }
+		, m_shadowCubeSize{ 1024 }
     {
         glClearColor(
             BACKGROUND_COLOR_DEFAULT.r,
@@ -72,6 +73,19 @@ namespace Andromeda::Rendering
             }
         }
 
+        // Point-light shadow map: cubemap depth (new)
+        if (!m_pointShadowFBO.Init(width, height, FrameBufferType::DepthCube))
+        {
+            spdlog::error("Failed to create point-light cubemap shadow framebuffer");
+            return;
+        }
+
+        // Optional: hardware depth comparison for samplerCubeShadow
+        glBindTexture(GL_TEXTURE_CUBE_MAP, m_pointShadowFBO.GetDepthCubeTexture());
+        glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_COMPARE_MODE, GL_COMPARE_REF_TO_TEXTURE);
+        glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_COMPARE_FUNC, GL_LEQUAL);
+        glBindTexture(GL_TEXTURE_CUBE_MAP, 0);
+
         SetCameraAspect(width, height);
         m_isInitialized = true;
     }
@@ -91,7 +105,17 @@ namespace Andromeda::Rendering
 
         m_mainFBO.Resize(width, height);
         if (m_isIlluminationMode)
+        {
             m_shadowFBO.Resize(width, height);
+            // If you want it to scale with window, clamp to a square:
+            int cube = std::max(128, std::min(width, height)); // or keep a fixed 1024
+            m_pointShadowFBO.Resize(cube, cube);
+            // Optional: hardware depth comparison for samplerCubeShadow
+            glBindTexture(GL_TEXTURE_CUBE_MAP, m_pointShadowFBO.GetDepthCubeTexture());
+            glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_COMPARE_MODE, GL_COMPARE_REF_TO_TEXTURE);
+            glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_COMPARE_FUNC, GL_LEQUAL);
+            glBindTexture(GL_TEXTURE_CUBE_MAP, 0);
+        }
     }
 
     void OpenGLRenderer::OpenGLRendererImpl::RenderFrame(IScene& scene)
@@ -103,10 +127,31 @@ namespace Andromeda::Rendering
 
         if (m_isIlluminationMode)
         {
-            glm::mat4 lightSpace = ComputeLightSpaceMatrix(scene);
+            // Directional light(s)
+            const std::unordered_map<int, const DirectionalLight*> dirLights = scene.GetDirectionalLights();
+            const bool hasDir = !dirLights.empty();
 
-            ShadowMapDepthPass(scene, lightSpace);
-            RenderNonLuminousObjects(scene, lightSpace);
+            // Point light(s)
+            const std::unordered_map<int, const PointLight*> pointLights = scene.GetPointLights(); // assumes API exists
+            const bool hasPoint = !pointLights.empty();
+
+            if (hasDir)
+            {
+                m_lightSpace = ComputeLightSpaceMatrix(scene);
+                ShadowMapDepthPass(scene, m_lightSpace);
+            }
+
+            if (hasPoint)
+            {
+                const PointLight* pl = pointLights.begin()->second; // pick first (extend as needed)
+                const glm::vec3 lightPos = pl->GetPosition();
+                const float nearPlane = pl->GetShadowNearPlane();   // or 0.1f
+                const float farPlane = pl->GetShadowFarPlane();    // or light radius
+                ShadowMapDepthPassPoint(scene, lightPos, nearPlane, farPlane);
+            }
+
+            // Lighting pass that can read both shadow maps
+            RenderNonLuminousObjectsCombined(scene, hasDir, hasPoint);
             RenderLuminousObjects(scene);
         }
         else
@@ -117,6 +162,7 @@ namespace Andromeda::Rendering
         EndFrame();
         LogFPS();
     }
+
 
     bool OpenGLRenderer::OpenGLRendererImpl::IsInitialized() const
     {
@@ -146,6 +192,11 @@ namespace Andromeda::Rendering
     unsigned int OpenGLRenderer::OpenGLRendererImpl::GetShadowMap() const
     {
         return m_shadowFBO.GetDepthTexture();
+    }
+
+    unsigned int OpenGLRenderer::OpenGLRendererImpl::GetPointShadowCube() const
+    {
+        return m_pointShadowFBO.GetDepthCubeTexture();
     }
 
     void OpenGLRenderer::OpenGLRendererImpl::ShadowMapDepthPass(const IScene& scene, const glm::mat4& lightSpace) const
@@ -189,6 +240,64 @@ namespace Andromeda::Rendering
         DisableFaceCulling();
     }
 
+    void OpenGLRenderer::OpenGLRendererImpl::ShadowMapDepthPassPoint(const IScene& scene, const glm::vec3& lightPos, float nearPlane, float farPlane) const
+    {
+        EnableFaceCulling(GL_FRONT, GL_CCW);
+
+        int prevFBO;
+        glGetIntegerv(GL_DRAW_FRAMEBUFFER_BINDING, &prevFBO);
+
+        m_pointShadowFBO.Bind();
+        glViewport(0, 0, m_pointShadowFBO.GetWidth(), m_pointShadowFBO.GetHeight());
+        glEnable(GL_DEPTH_TEST);
+        glClear(GL_DEPTH_BUFFER_BIT);
+
+        ShaderOpenGL* depthCubeShader = m_pShaderManager->GetShader(ShaderOpenGLTypes::PointShadowCubeMap);
+        depthCubeShader->Bind();
+
+        const glm::mat4 proj = glm::perspective(glm::radians(90.0f), 1.0f, nearPlane, farPlane);
+
+        // build 6 face matrices using vectors
+        std::vector<glm::vec3> ups{
+            { 0, -1,  0}, { 0, -1,  0},
+            { 0,  0,  1}, { 0,  0, -1},
+            { 0, -1,  0}, { 0, -1,  0}
+        };
+
+        std::vector<glm::vec3> targets{
+            lightPos + glm::vec3(1, 0, 0),
+            lightPos + glm::vec3(-1, 0, 0),
+            lightPos + glm::vec3(0, 1, 0),
+            lightPos + glm::vec3(0,-1, 0),
+            lightPos + glm::vec3(0, 0, 1),
+            lightPos + glm::vec3(0, 0,-1)
+        };
+
+        std::vector<glm::mat4> shadowMatrices(6);
+        for (std::size_t i = 0; i < shadowMatrices.size(); ++i)
+        {
+            shadowMatrices[i] = proj * glm::lookAt(lightPos, targets[i], ups[i]);
+        }
+
+        // assuming your ShaderOpenGL supports vector uploads
+        depthCubeShader->SetUniform("u_shadowMatrices[0]", shadowMatrices);
+
+        depthCubeShader->SetUniform("u_lightPos", lightPos);
+        depthCubeShader->SetUniform("u_farPlane", farPlane);
+
+        for (auto& [id, obj] : scene.GetObjects())
+        {
+            IRenderableObjectOpenGL* r = dynamic_cast<IRenderableObjectOpenGL*>(obj);
+            depthCubeShader->SetUniform("u_model", MathUtils::ToGLM(obj->GetModelMatrix()));
+            glBindVertexArray(r->GetVAO());
+            glDrawElements(GL_TRIANGLES, obj->GetIndicesCount(), GL_UNSIGNED_INT, nullptr);
+        }
+
+        depthCubeShader->UnBind();
+        glBindFramebuffer(GL_FRAMEBUFFER, prevFBO);
+        DisableFaceCulling();
+    }
+
     void OpenGLRenderer::OpenGLRendererImpl::RenderNonLuminousObjects(const IScene& scene, const glm::mat4& lightSpace) const
     {
         EnableFaceCulling(GL_BACK, GL_CCW);
@@ -209,6 +318,51 @@ namespace Andromeda::Rendering
         RenderEachNonLuminousObject(*nlShader, scene);
 
         nlShader->UnBind();
+        DisableFaceCulling();
+    }
+
+    void OpenGLRenderer::OpenGLRendererImpl::RenderNonLuminousObjectsCombined(const IScene& scene, bool hasDir, bool hasPoint) const
+    {
+        glViewport(0, 0, m_width, m_height);
+        EnableFaceCulling(GL_BACK, GL_CCW);
+
+        const int DIR_UNIT = 5;
+        const int POINT_UNIT = 6;
+
+        if (hasDir) 
+        {
+            glActiveTexture(GL_TEXTURE0 + DIR_UNIT);
+            glBindTexture(GL_TEXTURE_2D, m_shadowFBO.GetDepthTexture());
+        }
+        if (hasPoint) 
+        {
+            glActiveTexture(GL_TEXTURE0 + POINT_UNIT);
+            glBindTexture(GL_TEXTURE_CUBE_MAP, m_pointShadowFBO.GetDepthCubeTexture());
+        }
+
+        ShaderOpenGL* shader = m_pShaderManager->GetShader(ShaderOpenGLTypes::RenderableObjectsNonLuminous);
+        shader->Bind();
+
+        shader->SetUniform("u_view", MathUtils::ToGLM(m_pCamera->GetViewMatrix()));
+        shader->SetUniform("u_projection", m_pCamera->GetProjection());
+        shader->SetUniform("u_viewPos", MathUtils::ToGLM(m_pCamera->GetPosition()));
+        shader->SetUniform("u_hasDirShadow", hasDir ? 1 : 0);
+        shader->SetUniform("u_hasPointShadow", hasPoint ? 1 : 0);
+        if (hasDir) 
+            shader->SetUniform("u_shadowMap2D", DIR_UNIT);
+        if (hasPoint) 
+            shader->SetUniform("u_shadowCube", POINT_UNIT);
+
+        // *** MISSING BEFORE: pass light-space for dir shadows ***
+        if (hasDir)
+        {
+            shader->SetUniform("u_lightSpaceMatrix", m_lightSpace);
+        }
+
+        PopulateLightUniforms(*shader, scene);
+        PopulatePointLightUniforms(*shader, scene);
+        RenderEachNonLuminousObject(*shader, scene);
+        shader->UnBind();
         DisableFaceCulling();
     }
 
@@ -279,6 +433,145 @@ namespace Andromeda::Rendering
         shader->UnBind();
     }
 
+    void OpenGLRenderer::OpenGLRendererImpl::RenderPointShadowMap(
+        const IScene& scene, 
+        const glm::vec3& lightPos, 
+        float nearZ,
+        float farZ
+    )
+    {
+        // 1) Build the 6 face matrices
+        glm::mat4 proj = glm::perspective(glm::radians(90.0f), 1.0f, nearZ, farZ);
+        std::vector<glm::mat4> mats;
+        mats.reserve(6);
+
+        mats.push_back(proj * glm::lookAt(lightPos, lightPos + glm::vec3(1, 0, 0), glm::vec3(0, -1, 0)));
+        mats.push_back(proj * glm::lookAt(lightPos, lightPos + glm::vec3(-1, 0, 0), glm::vec3(0, -1, 0)));
+        mats.push_back(proj * glm::lookAt(lightPos, lightPos + glm::vec3(0, 1, 0), glm::vec3(0, 0, 1)));
+        mats.push_back(proj * glm::lookAt(lightPos, lightPos + glm::vec3(0, -1, 0), glm::vec3(0, 0, -1)));
+        mats.push_back(proj * glm::lookAt(lightPos, lightPos + glm::vec3(0, 0, 1), glm::vec3(0, -1, 0)));
+        mats.push_back(proj * glm::lookAt(lightPos, lightPos + glm::vec3(0, 0, -1), glm::vec3(0, -1, 0)));
+
+        // 2) Bind layered depth-cubemap FBO
+        glViewport(0, 0, m_shadowFBO.GetWidth(), m_shadowFBO.GetHeight());
+        glBindFramebuffer(GL_FRAMEBUFFER, m_shadowFBO.GetId());
+        glClear(GL_DEPTH_BUFFER_BIT);
+        glColorMask(GL_FALSE, GL_FALSE, GL_FALSE, GL_FALSE); // depth-only
+
+        glEnable(GL_DEPTH_TEST);
+        glEnable(GL_CULL_FACE);
+        glCullFace(GL_FRONT); // helps acne; try FRONT for shadow pass
+
+        // 3) Use point-shadow shader
+        ShaderOpenGL* sh = m_pShaderManager->GetShader(ShaderOpenGLTypes::PointShadowCubeMap);
+        sh->Bind();
+        sh->SetUniform("u_lightPos", lightPos);
+        sh->SetUniform("u_farPlane", farZ);
+        sh->SetUniform("u_shadowMatrices[0]", mats); // implement helper that uploads 6 mat4s
+
+        // 4) Draw scene (per-object u_model)
+        RenderEachObjectDepthOnly(*sh, scene); // draw all occluders; sets u_model for each mesh
+
+        sh->UnBind();
+
+        // 5) Restore state
+        glCullFace(GL_BACK);
+        glColorMask(GL_TRUE, GL_TRUE, GL_TRUE, GL_TRUE);
+        glBindFramebuffer(GL_FRAMEBUFFER, 0);
+    }
+
+    void OpenGLRenderer::OpenGLRendererImpl::PopulatePointLightUniforms(ShaderOpenGL& shader, const IScene& scene) const
+    {
+        const auto& pointLightMap = scene.GetPointLights();
+
+        std::vector<glm::vec3> positions;
+        std::vector<glm::vec3> ambient;
+        std::vector<glm::vec3> diffuse;
+        std::vector<glm::vec3> specular;
+
+        std::vector<float> constant;
+        std::vector<float> linear;
+        std::vector<float> quadratic;
+
+        std::vector<float> farPlanes;
+
+        positions.reserve(pointLightMap.size());
+        ambient.reserve(pointLightMap.size());
+        diffuse.reserve(pointLightMap.size());
+        specular.reserve(pointLightMap.size());
+        constant.reserve(pointLightMap.size());
+        linear.reserve(pointLightMap.size());
+        quadratic.reserve(pointLightMap.size());
+        farPlanes.reserve(pointLightMap.size());
+
+        for (const auto& [id, pl] : pointLightMap)
+        {
+            positions.push_back(pl->GetPosition());
+
+            // If your PointLight exposes GetAmbient(), use that.
+            // Otherwise keep a subtle base ambient to avoid pitch-black areas.
+            ambient.push_back(glm::vec3(0.05f));
+            diffuse.push_back(pl->GetDiffuse());
+            specular.push_back(pl->GetSpecular());
+
+            // If your PointLight exposes attenuation getters, use them;
+            // otherwise fall back to sensible defaults.
+            float c = 1.0f;
+            float l = 0.09f;
+            float q = 0.032f;
+
+            if constexpr (true) // replace with feature-detection if needed
+            {
+                // Wrap in try/catch or `if constexpr` with traits if your API differs.
+                // Assuming these exist:
+                c = pl->GetAttenuationConstant();
+                l = pl->GetAttenuationLinear();
+                q = pl->GetAttenuationQuadratic();
+            }
+
+            constant.push_back(c);
+            linear.push_back(l);
+            quadratic.push_back(q);
+
+            farPlanes.push_back(pl->GetShadowFarPlane());
+        }
+
+        shader.SetUniform("u_numPointLights", static_cast<int>(positions.size()));
+        shader.SetUniform("u_pointLightPositions", positions);
+        shader.SetUniform("u_pointLightAmbient", ambient);
+        shader.SetUniform("u_pointLightDiffuse", diffuse);
+        shader.SetUniform("u_pointLightSpecular", specular);
+
+        // Attenuation & far-planes (used for cubemap shadow distance normalization in the fragment shader)
+        shader.SetUniform("u_pointLightConstant", constant);
+        shader.SetUniform("u_pointLightLinear", linear);
+        shader.SetUniform("u_pointLightQuadratic", quadratic);
+        shader.SetUniform("u_pointLightFarPlane", farPlanes);
+    }
+
+    void OpenGLRenderer::OpenGLRendererImpl::RenderEachObjectDepthOnly(ShaderOpenGL& shader, const IScene& scene) const
+    {
+        // Draw *all* occluders (generally all visible geometry with a VAO).
+        // If you want to exclude helpers (like the grid), keep the id < 0 check.
+        for (const auto& [id, obj] : scene.GetObjects())
+        {
+            if (id < 0)
+            {
+                continue;
+            }
+
+            IRenderableObjectOpenGL* renderable = dynamic_cast<IRenderableObjectOpenGL*>(obj);
+            if (!renderable)
+            {
+                continue;
+            }
+
+            shader.SetUniform("u_model", MathUtils::ToGLM(obj->GetModelMatrix()));
+            glBindVertexArray(renderable->GetVAO());
+            glDrawElements(GL_TRIANGLES, obj->GetIndicesCount(), GL_UNSIGNED_INT, nullptr);
+        }
+    }
+
     void OpenGLRenderer::OpenGLRendererImpl::BeginFrame() const
     {
         m_mainFBO.Bind();
@@ -303,7 +596,7 @@ namespace Andromeda::Rendering
         if (duration > 0.0f)
         {
             float fps = 1.0f / duration;
-            spdlog::info("FPS: {:.2f}", fps);
+            //spdlog::info("FPS: {:.2f}", fps);
         }
     }
 
