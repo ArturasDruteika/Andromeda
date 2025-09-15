@@ -249,17 +249,23 @@ namespace Andromeda::Rendering
         glGenTextures(1, &m_depthCubeTex);
         glBindTexture(GL_TEXTURE_CUBE_MAP, m_depthCubeTex);
 
+        // kill mipmap ambiguity across resizes
+        glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_BASE_LEVEL, 0);
+        glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MAX_LEVEL, 0);
+
+        // safer internal format/type pairing for depth
         for (int i = 0; i < 6; ++i)
         {
             glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X + i,
                 0,
-                GL_DEPTH_COMPONENT24,   // or 32F if needed
-                m_width,
+                GL_DEPTH_COMPONENT32F,     // <-- use 32F for GL_FLOAT
+                m_width, 
                 m_height,
                 0,
                 GL_DEPTH_COMPONENT,
                 GL_FLOAT,
                 nullptr);
+            // If you prefer 24-bit: internal=GL_DEPTH_COMPONENT24, type=GL_UNSIGNED_INT
         }
 
         glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
@@ -268,13 +274,14 @@ namespace Andromeda::Rendering
         glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
         glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE);
 
-        // Attach the entire cubemap texture, not a single face
+        // attach the WHOLE cubemap (layered)
         glFramebufferTexture(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, m_depthCubeTex, 0);
 
         glDrawBuffer(GL_NONE);
         glReadBuffer(GL_NONE);
 
-        bool ok = CheckStatus();
+        bool ok = CheckStatus();               // checks the currently bound FBO
+        glBindTexture(GL_TEXTURE_CUBE_MAP, 0);
         glBindFramebuffer(GL_FRAMEBUFFER, 0);
         return ok;
     }
