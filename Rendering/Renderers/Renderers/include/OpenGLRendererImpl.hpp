@@ -42,7 +42,7 @@ namespace Andromeda::Rendering
 
 	private:
 		void ShadowMapDepthPass(const IScene& scene, const glm::mat4& lightSpace) const;
-		void ShadowMapDepthPassPoint(const IScene& scene,
+		void ShadowCubeDepthPass(const IScene& scene,
 			const glm::vec3& lightPos,
 			float nearPlane,
 			float farPlane) const;

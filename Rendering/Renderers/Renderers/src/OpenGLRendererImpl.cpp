@@ -147,7 +147,7 @@ namespace Andromeda::Rendering
                 const glm::vec3 lightPos = pl->GetPosition();
                 const float nearPlane = pl->GetShadowNearPlane();   // or 0.1f
                 const float farPlane = pl->GetShadowFarPlane();    // or light radius
-                ShadowMapDepthPassPoint(scene, lightPos, nearPlane, farPlane);
+                ShadowCubeDepthPass(scene, lightPos, nearPlane, farPlane);
             }
 
             // Lighting pass that can read both shadow maps
@@ -240,7 +240,7 @@ namespace Andromeda::Rendering
         DisableFaceCulling();
     }
 
-    void OpenGLRenderer::OpenGLRendererImpl::ShadowMapDepthPassPoint(const IScene& scene, const glm::vec3& lightPos, float nearPlane, float farPlane) const
+    void OpenGLRenderer::OpenGLRendererImpl::ShadowCubeDepthPass(const IScene& scene, const glm::vec3& lightPos, float nearPlane, float farPlane) const
     {
         EnableFaceCulling(GL_FRONT, GL_CCW);
 
