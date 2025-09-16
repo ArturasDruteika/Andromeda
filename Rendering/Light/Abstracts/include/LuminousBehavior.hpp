@@ -17,15 +17,15 @@ namespace Andromeda
 			: public ILightBehavior
 		{
 		public:
-			LuminousBehavior(Light* light, const LightType& type);
+			LuminousBehavior(Light light, const LightType& type);
 			~LuminousBehavior();
 
 			LightType GetType() const;
-			Light* GetLight() const;
+			const Light& GetLight() const;
 
 		private:
 			LightType m_type;
-			Light* m_light;
+			Light m_light;
 		};
 	}
 }

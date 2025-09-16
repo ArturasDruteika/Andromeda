@@ -14,14 +14,15 @@ namespace Andromeda::Rendering
 		float nearPlane,
 		float farPlane
 	)
-		: Light{
-			color,
-			intensity,
-			ambient,
-			diffuse,
-			specular
+		: LuminousBehavior{ Light{
+				color,
+				intensity,
+				ambient,
+				diffuse,
+				specular
+			}, 
+			LightType::Directional 
 		}
-		, LuminousBehavior{ this, LightType::Directional }
 		, m_orthographicHalfSize{ orthographicHalfSize }
 		, m_nearPlane{ nearPlane }
 		, m_farPlane{ farPlane }

@@ -11,8 +11,7 @@
 namespace Andromeda::Rendering
 {
 	class RENDERING_API PointLight
-		: public Light
-		, public LuminousBehavior
+		: public LuminousBehavior
 	{
 	public:
 		PointLight(

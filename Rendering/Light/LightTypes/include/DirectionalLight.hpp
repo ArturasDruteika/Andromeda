@@ -11,8 +11,7 @@
 namespace Andromeda::Rendering
 {
 	class RENDERING_API DirectionalLight
-		: public Light
-		, public LuminousBehavior
+		: public LuminousBehavior
 	{
 	public:
 		DirectionalLight(
