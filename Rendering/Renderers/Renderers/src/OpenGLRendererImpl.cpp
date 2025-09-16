@@ -506,13 +506,15 @@ namespace Andromeda::Rendering
 
         for (const auto& [id, pl] : pointLightMap)
         {
+            const Light& light = pl->GetLight();
+
             positions.push_back(pl->GetPosition());
 
             // If your PointLight exposes GetAmbient(), use that.
             // Otherwise keep a subtle base ambient to avoid pitch-black areas.
             ambient.push_back(glm::vec3(0.05f));
-            diffuse.push_back(pl->GetDiffuse());
-            specular.push_back(pl->GetSpecular());
+            diffuse.push_back(light.GetDiffuse());
+            specular.push_back(light.GetSpecular());
 
             // If your PointLight exposes attenuation getters, use them;
             // otherwise fall back to sensible defaults.
@@ -637,14 +639,15 @@ namespace Andromeda::Rendering
         std::vector<glm::vec3> lightDiffuseValues;
         std::vector<glm::vec3> lightSpecularValues;
 
-        for (const auto& [id, light] : directionalLightMap)
+        for (const auto& [id, directionalLight] : directionalLightMap)
         {
-            glm::vec3 lightDirGLM = light->GetDirection();
+            const Light& light = directionalLight->GetLight();
+            glm::vec3 lightDirGLM = directionalLight->GetDirection();
             lightDirections.push_back(lightDirGLM);
 
             lightAmbientValues.push_back(glm::vec3(0.9f));  // optional: could be fetched from light
-            lightDiffuseValues.push_back(light->GetDiffuse());
-            lightSpecularValues.push_back(light->GetSpecular());
+            lightDiffuseValues.push_back(light.GetDiffuse());
+            lightSpecularValues.push_back(light.GetSpecular());
         }
 
         shader.SetUniform("u_numLights", static_cast<int>(lightDirections.size()));
