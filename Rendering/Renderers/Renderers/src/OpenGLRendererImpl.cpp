@@ -137,15 +137,14 @@ namespace Andromeda::Rendering
                 ShadowMapDepthPass(scene, m_lightSpace);
             }
 
-            // If/when enabling point shadows:
-            // if (hasPoint)
-            // {
-            //     const PointLight* pl = pointLights.begin()->second;
-            //     const glm::vec3 lightPos = pl->GetPosition();
-            //     const float nearPlane = pl->GetShadowNearPlane();
-            //     const float farPlane  = pl->GetShadowFarPlane();
-            //     ShadowCubeDepthPass(scene, lightPos, nearPlane, farPlane);
-            // }
+             if (hasPoint)
+             {
+                 const PointLight* pl = pointLights.begin()->second;
+                 const glm::vec3 lightPos = pl->GetPosition();
+                 const float nearPlane = pl->GetShadowNearPlane();
+                 const float farPlane  = pl->GetShadowFarPlane();
+                 ShadowCubeDepthPass(scene, lightPos, nearPlane, farPlane);
+             }
 
             RenderNonLuminousObjectsCombined(scene, hasDir, hasPoint);
             RenderLuminousObjects(scene);
@@ -340,12 +339,16 @@ namespace Andromeda::Rendering
         shader->SetUniform("u_cameraPosWS", MathUtils::ToGLM(m_pCamera->GetPosition()));
         shader->SetUniform("u_hasDirShadows", hasDir ? 1 : 0);
         shader->SetUniform("u_hasPointShadows", hasPoint ? 1 : 0);
-        if (hasDir)   shader->SetUniform("u_dirShadowMap", DIR_UNIT);
-        if (hasPoint) shader->SetUniform("u_pointShadowCube", POINT_UNIT);
 
         if (hasDir)
         {
+            shader->SetUniform("u_dirShadowMap", DIR_UNIT);
             shader->SetUniform("u_lightSpaceMatrix", m_lightSpace);
+        }
+
+        if (hasPoint)
+        {
+            shader->SetUniform("u_pointShadowCube", POINT_UNIT);
         }
 
         PopulateLightUniforms(*shader, scene);
@@ -557,7 +560,7 @@ namespace Andromeda::Rendering
         if (duration > 0.0f)
         {
             float fps = 1.0f / duration;
-            // spdlog::info("FPS: {:.2f}", fps);
+            spdlog::info("FPS: {:.2f}", fps);
         }
     }
 

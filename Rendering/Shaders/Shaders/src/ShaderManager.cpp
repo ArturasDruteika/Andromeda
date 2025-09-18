@@ -80,7 +80,6 @@ namespace Andromeda::Rendering
                 "shader_program_sources/fragment_point_shadow.glsl",
                 "shader_program_sources/geometry_point_shadow.glsl"
             }
-
         };
 
         for (const auto& shader : shaders)
