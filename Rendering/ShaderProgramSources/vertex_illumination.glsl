@@ -1,4 +1,5 @@
 #version 330 core
+
 layout(location=0) in vec3 aPos;
 layout(location=1) in vec3 aNormal;
 
@@ -16,7 +17,7 @@ void main()
 {
     vec4 worldPos = u_model * vec4(aPos, 1.0);
     v_FragPos = worldPos.xyz;
-    v_Normal  = normalize(u_normalMatrix * aNormal);
+    v_Normal = normalize(u_normalMatrix * aNormal);
     v_FragPosLightSpace = u_lightSpaceMatrix * worldPos;
     gl_Position = u_projection * u_view * worldPos;
 }
