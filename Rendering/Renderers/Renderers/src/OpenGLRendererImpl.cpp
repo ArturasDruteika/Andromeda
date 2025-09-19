@@ -631,7 +631,7 @@ namespace Andromeda::Rendering
                 continue;
 
             Material material = nonLum->GetMaterial();
-            glm::mat3 normalMatrix = glm::inverseTranspose(glm::mat3(MathUtils::ToGLM(obj->GetModelMatrix())));
+            glm::mat3 normalMatrix = glm::inverseTranspose(MathUtils::ToGLM(obj->GetModelMatrix()));
 
             shader.SetUniform("u_materialAmbient", MathUtils::ToGLM(material.GetAmbient()));
             shader.SetUniform("u_materialDiffuse", MathUtils::ToGLM(material.GetDiffuse()));

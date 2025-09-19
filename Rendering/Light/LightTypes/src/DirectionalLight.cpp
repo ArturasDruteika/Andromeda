@@ -72,6 +72,6 @@ namespace Andromeda::Rendering
 
 	void DirectionalLight::SetDirection(const glm::vec3& direction)
 	{
-		m_direction = direction;
+		m_direction = glm::normalize(direction);
 	}
 }
