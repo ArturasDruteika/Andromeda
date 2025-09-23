@@ -211,6 +211,7 @@ namespace Andromeda::Rendering
         glEnable(GL_DEPTH_TEST);
         glClear(GL_DEPTH_BUFFER_BIT);
 
+        DisableFaceCulling();
         EnableFaceCulling(GL_FRONT, GL_CW);
 
         glEnable(GL_POLYGON_OFFSET_FILL);
@@ -231,6 +232,7 @@ namespace Andromeda::Rendering
         depthShader->UnBind();
 
         glBindFramebuffer(GL_FRAMEBUFFER, prevFBO);
+        glDisable(GL_POLYGON_OFFSET_FILL);
         DisableFaceCulling();
     }
 
@@ -631,6 +633,7 @@ namespace Andromeda::Rendering
                 continue;
 
             Material material = nonLum->GetMaterial();
+            // TODO: Recalculate normal matrix IF the state of the objet has changed.
             glm::mat3 normalMatrix = glm::inverseTranspose(MathUtils::ToGLM(obj->GetModelMatrix()));
 
             shader.SetUniform("u_materialAmbient", MathUtils::ToGLM(material.GetAmbient()));
