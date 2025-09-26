@@ -24,7 +24,7 @@ namespace Andromeda::Rendering
 
     OpenGLRenderer::OpenGLRendererImpl::OpenGLRendererImpl()
         : m_isInitialized{ false }
-        , m_lightSpace{ glm::mat4(1.0f) }
+        , m_shadowMapLightSpace{ glm::mat4(1.0f) }
         , m_pShaderManager{ nullptr }
         , m_shadowCubeSize{ 1024 }
     {
@@ -133,8 +133,8 @@ namespace Andromeda::Rendering
 
             if (hasDir)
             {
-                m_lightSpace = ComputeLightSpaceMatrix(scene);
-                ShadowMapDepthPass(scene, m_lightSpace);
+                m_shadowMapLightSpace = ComputeLightSpaceMatrix(scene);
+                ShadowMapDepthPass(scene);
             }
 
              if (hasPoint)
@@ -193,7 +193,7 @@ namespace Andromeda::Rendering
         return m_pointShadowFBO.GetDepthCubeTexture();
     }
 
-    void OpenGLRenderer::OpenGLRendererImpl::ShadowMapDepthPass(const IScene& scene, const glm::mat4& lightSpace) const
+    void OpenGLRenderer::OpenGLRendererImpl::ShadowMapDepthPass(const IScene& scene) const
     {
         EnableFaceCulling(GL_FRONT, GL_CCW);
 
@@ -219,7 +219,7 @@ namespace Andromeda::Rendering
 
         ShaderOpenGL* depthShader = m_pShaderManager->GetShader(ShaderOpenGLTypes::ShadowMap);
         depthShader->Bind();
-        depthShader->SetUniform("u_lightSpaceMatrix", lightSpace);
+        depthShader->SetUniform("u_lightSpaceMatrix", m_shadowMapLightSpace);
 
         for (auto& [id, obj] : scene.GetObjects())
         {
@@ -236,7 +236,12 @@ namespace Andromeda::Rendering
         DisableFaceCulling();
     }
 
-    void OpenGLRenderer::OpenGLRendererImpl::ShadowCubeDepthPass(const IScene& scene, const glm::vec3& lightPos, float nearPlane, float farPlane) const
+    void OpenGLRenderer::OpenGLRendererImpl::ShadowCubeDepthPass(
+        const IScene& scene, 
+        const glm::vec3& lightPos, 
+        float nearPlane, 
+        float farPlane
+    ) const
     {
         EnableFaceCulling(GL_FRONT, GL_CCW);
 
@@ -345,7 +350,7 @@ namespace Andromeda::Rendering
         if (hasDir)
         {
             shader->SetUniform("u_dirShadowMap", DIR_UNIT);
-            shader->SetUniform("u_lightSpaceMatrix", m_lightSpace);
+            shader->SetUniform("u_lightSpaceMatrix", m_shadowMapLightSpace);
         }
 
         if (hasPoint)

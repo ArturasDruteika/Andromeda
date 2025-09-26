@@ -41,11 +41,13 @@ namespace Andromeda::Rendering
 		void Resize(int width, int height);
 
 	private:
-		void ShadowMapDepthPass(const IScene& scene, const glm::mat4& lightSpace) const;
-		void ShadowCubeDepthPass(const IScene& scene,
+		void ShadowMapDepthPass(const IScene& scene) const;
+		void ShadowCubeDepthPass(
+			const IScene& scene,
 			const glm::vec3& lightPos,
 			float nearPlane,
-			float farPlane) const;
+			float farPlane
+		) const;
 		void RenderNonLuminousObjects(const IScene& scene, const glm::mat4& lightSpace) const;
 		void RenderNonLuminousObjectsCombined(const IScene& scene, bool hasDir, bool hasPoint) const;
 		void RenderLuminousObjects(const IScene& scene) const;
@@ -73,7 +75,7 @@ namespace Andromeda::Rendering
 		bool m_isInitialized;
 		int m_shadowCubeSize;
 
-		glm::mat4 m_lightSpace;
+		glm::mat4 m_shadowMapLightSpace;
 		FrameBufferOpenGL m_mainFBO;
 		FrameBufferOpenGL m_shadowFBO;
 		FrameBufferOpenGL m_pointShadowFBO;
