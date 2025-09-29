@@ -13,6 +13,7 @@ namespace Andromeda::Rendering
 		RenderableObjectsLuminous,
 		RenderableObjectsNonLuminous,
 		ShadowMap,
+		ShadowMapTest,
 		PointShadowCubeMap,
 		Grid,
 	};
