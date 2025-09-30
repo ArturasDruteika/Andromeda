@@ -6,6 +6,7 @@ namespace Andromeda::Rendering
 	SceneEnvironment::SceneEnvironment()
 		: m_gridSpacing(1.0f)
 		, m_ambientStrength(0.1f)
+		, m_backroundColor{ 0.0f, 0.0f, 0.0f, 1.0f }
 	{
 	}
 
@@ -16,9 +17,19 @@ namespace Andromeda::Rendering
 		return m_ambientStrength;
 	}
 
+	glm::vec4 SceneEnvironment::GetBackgroundColor() const
+	{
+		return m_backroundColor;
+	}
+
 	void SceneEnvironment::SetAmbientStrength(float ambientStrength)
 	{
 		m_ambientStrength = ambientStrength;
+	}
+
+	void SceneEnvironment::SetBackgroundColor(glm::vec4 backroundColor)
+	{
+		m_backroundColor = backroundColor;
 	}
 
 	void SceneEnvironment::ResizeGrid(float resizeFactor)

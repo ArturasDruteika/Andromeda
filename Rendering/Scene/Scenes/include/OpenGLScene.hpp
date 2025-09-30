@@ -28,7 +28,9 @@ namespace Andromeda::Rendering
 
 		// === From ISceneEnvironment ===
 		float GetAmbientStrength() const override;
+		glm::vec4 GetBackgroundColor() const override;
 		void SetAmbientStrength(float ambientStrength) override;
+		void SetBackgroundColor(glm::vec4 backroundColor) override;
 		void ResizeGrid(float resizeFactor) override;
 
 		// === From ISceneObjects ===

@@ -2,6 +2,9 @@
 #define ENVIRONMENT__ABSTRACTS_SCENE_ENVIRONMENT__HPP
 
 
+#include "glm/glm.hpp"
+
+
 namespace Andromeda::Rendering
 {
 	class SceneEnvironment
@@ -12,14 +15,17 @@ namespace Andromeda::Rendering
 
 		// Getters
 		float GetAmbientStrength() const;
+		glm::vec4 GetBackgroundColor() const;
 		// Setters
 		void SetAmbientStrength(float ambientStrength);
+		void SetBackgroundColor(glm::vec4 backroundColor);
 
 		void ResizeGrid(float resizeFactor);
 
 	protected:
 		float m_gridSpacing;
 		float m_ambientStrength;
+		glm::vec4 m_backroundColor;
 	};
 }
 

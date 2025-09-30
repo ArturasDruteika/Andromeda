@@ -3,6 +3,7 @@
 
 
 #include "../../../MacroExports/include/MacroExports.hpp"
+#include "glm/glm.hpp"
 
 
 namespace Andromeda::Rendering
@@ -14,8 +15,10 @@ namespace Andromeda::Rendering
 
 		// Getters
 		virtual float GetAmbientStrength() const = 0;
+		virtual glm::vec4 GetBackgroundColor() const = 0;
 		// Setters
 		virtual void SetAmbientStrength(float ambientStrength) = 0;
+		virtual void SetBackgroundColor(glm::vec4 backroundColor) = 0;
 
 		virtual void ResizeGrid(float resizeFactor) = 0;
 	};
