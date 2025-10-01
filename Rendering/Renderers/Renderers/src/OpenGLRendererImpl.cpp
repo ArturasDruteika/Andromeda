@@ -18,22 +18,15 @@
 #include <glm/gtc/matrix_inverse.hpp>
 #include "spdlog/spdlog.h"
 
+
 namespace Andromeda::Rendering
 {
-    constexpr Space::Color BACKGROUND_COLOR_DEFAULT{ 0.0f, 0.0f, 0.0f, 1.0f };
-
     OpenGLRenderer::OpenGLRendererImpl::OpenGLRendererImpl()
         : m_isInitialized{ false }
         , m_shadowMapLightSpace{ glm::mat4(1.0f) }
         , m_pShaderManager{ nullptr }
         , m_shadowCubeSize{ 1024 }
     {
-        glClearColor(
-            BACKGROUND_COLOR_DEFAULT.r,
-            BACKGROUND_COLOR_DEFAULT.g,
-            BACKGROUND_COLOR_DEFAULT.b,
-            BACKGROUND_COLOR_DEFAULT.a
-        );
         m_pShaderManager = new ShaderManager(true);
         SetCameraAspect(m_width, m_height);
     }
@@ -41,6 +34,41 @@ namespace Andromeda::Rendering
     OpenGLRenderer::OpenGLRendererImpl::~OpenGLRendererImpl()
     {
         DeInit();
+    }
+
+    bool OpenGLRenderer::OpenGLRendererImpl::IsInitialized() const
+    {
+        return m_isInitialized;
+    }
+
+    bool OpenGLRenderer::OpenGLRendererImpl::IsGridVisible() const
+    {
+        return m_isGridVisible;
+    }
+
+    unsigned int OpenGLRenderer::OpenGLRendererImpl::GetFrameBufferObject() const
+    {
+        return m_mainFBO.GetId();
+    }
+
+    unsigned int OpenGLRenderer::OpenGLRendererImpl::GetFrameBufferTexture() const
+    {
+        return m_mainFBO.GetColorTexture();
+    }
+
+    unsigned int OpenGLRenderer::OpenGLRendererImpl::GetDepthRenderBuffer() const
+    {
+        return m_mainFBO.GetDepthRenderbuffer();
+    }
+
+    unsigned int OpenGLRenderer::OpenGLRendererImpl::GetShadowMap() const
+    {
+        return m_shadowFBO.GetDepthTexture();
+    }
+
+    unsigned int OpenGLRenderer::OpenGLRendererImpl::GetPointShadowCube() const
+    {
+        return m_pointShadowFBO.GetDepthCubeTexture();
     }
 
     void OpenGLRenderer::OpenGLRendererImpl::Init(int width, int height, bool illuminationMode)
@@ -121,6 +149,14 @@ namespace Andromeda::Rendering
         if (!m_isInitialized)
             return;
 
+        glm::vec4 backgroundColor = scene.GetBackgroundColor();
+        glClearColor(
+            backgroundColor.r,
+            backgroundColor.g,
+            backgroundColor.b,
+            backgroundColor.a
+        );
+
         BeginFrame();
 
         if (m_isIlluminationMode)
@@ -137,14 +173,14 @@ namespace Andromeda::Rendering
                 ShadowMapDepthPass(scene);
             }
 
-             if (hasPoint)
-             {
-                 const PointLight* pl = pointLights.begin()->second;
-                 const glm::vec3 lightPos = pl->GetPosition();
-                 const float nearPlane = pl->GetShadowNearPlane();
-                 const float farPlane  = pl->GetShadowFarPlane();
-                 ShadowCubeDepthPass(scene, lightPos, nearPlane, farPlane);
-             }
+            if (hasPoint)
+            {
+                const PointLight* pl = pointLights.begin()->second;
+                const glm::vec3 lightPos = pl->GetPosition();
+                const float nearPlane = pl->GetShadowNearPlane();
+                const float farPlane = pl->GetShadowFarPlane();
+                ShadowCubeDepthPass(scene, lightPos, nearPlane, farPlane);
+            }
 
             RenderNonLuminousObjectsCombined(scene, hasDir, hasPoint);
             RenderLuminousObjects(scene);
@@ -156,41 +192,6 @@ namespace Andromeda::Rendering
 
         EndFrame();
         LogFPS();
-    }
-
-    bool OpenGLRenderer::OpenGLRendererImpl::IsInitialized() const
-    {
-        return m_isInitialized;
-    }
-
-    bool OpenGLRenderer::OpenGLRendererImpl::IsGridVisible() const
-    {
-        return m_isGridVisible;
-    }
-
-    unsigned int OpenGLRenderer::OpenGLRendererImpl::GetFrameBufferObject() const
-    {
-        return m_mainFBO.GetId();
-    }
-
-    unsigned int OpenGLRenderer::OpenGLRendererImpl::GetFrameBufferTexture() const
-    {
-        return m_mainFBO.GetColorTexture();
-    }
-
-    unsigned int OpenGLRenderer::OpenGLRendererImpl::GetDepthRenderBuffer() const
-    {
-        return m_mainFBO.GetDepthRenderbuffer();
-    }
-
-    unsigned int OpenGLRenderer::OpenGLRendererImpl::GetShadowMap() const
-    {
-        return m_shadowFBO.GetDepthTexture();
-    }
-
-    unsigned int OpenGLRenderer::OpenGLRendererImpl::GetPointShadowCube() const
-    {
-        return m_pointShadowFBO.GetDepthCubeTexture();
     }
 
     void OpenGLRenderer::OpenGLRendererImpl::ShadowMapDepthPass(const IScene& scene) const
