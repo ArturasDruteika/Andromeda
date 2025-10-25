@@ -77,7 +77,7 @@ namespace Andromeda::Rendering
 
 		glm::mat4 m_shadowMapLightSpace;
 		FrameBufferOpenGL m_mainFBO;
-		FrameBufferOpenGL m_shadowFBO;
+		FrameBufferOpenGL m_directionalShadowFBO;
 		FrameBufferOpenGL m_pointShadowFBO;
 		ShaderManager* m_pShaderManager;
 		mutable std::chrono::steady_clock::time_point m_lastFrameTime = std::chrono::steady_clock::now();

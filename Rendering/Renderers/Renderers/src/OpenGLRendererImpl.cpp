@@ -63,7 +63,7 @@ namespace Andromeda::Rendering
 
     unsigned int OpenGLRenderer::OpenGLRendererImpl::GetShadowMap() const
     {
-        return m_shadowFBO.GetDepthTexture();
+        return m_directionalShadowFBO.GetDepthTexture();
     }
 
     unsigned int OpenGLRenderer::OpenGLRendererImpl::GetPointShadowCube() const
@@ -93,7 +93,7 @@ namespace Andromeda::Rendering
         // depth-only shadow map
         if (m_isIlluminationMode)
         {
-            if (!m_shadowFBO.Init(width, height, FrameBufferType::Depth))
+            if (!m_directionalShadowFBO.Init(width, height, FrameBufferType::Depth))
             {
                 spdlog::error("Failed to create shadow framebuffer");
                 return;
@@ -133,7 +133,7 @@ namespace Andromeda::Rendering
         m_mainFBO.Resize(width, height);
         if (m_isIlluminationMode)
         {
-            m_shadowFBO.Resize(width, height);
+            m_directionalShadowFBO.Resize(width, height);
             int cube = std::max(128, std::min(width, height)); // or keep a fixed 1024
             m_pointShadowFBO.Resize(cube, cube);
 
@@ -207,7 +207,7 @@ namespace Andromeda::Rendering
         int prevFBO;
         glGetIntegerv(GL_DRAW_FRAMEBUFFER_BINDING, &prevFBO);
 
-        m_shadowFBO.Bind();
+        m_directionalShadowFBO.Bind();
         glViewport(0, 0, m_width, m_height);
         glEnable(GL_DEPTH_TEST);
         glClear(GL_DEPTH_BUFFER_BIT);
@@ -302,7 +302,7 @@ namespace Andromeda::Rendering
         EnableFaceCulling(GL_BACK, GL_CCW);
         const int SHADOW_UNIT = 5;
         glActiveTexture(GL_TEXTURE0 + SHADOW_UNIT);
-        glBindTexture(GL_TEXTURE_2D, m_shadowFBO.GetDepthTexture());
+        glBindTexture(GL_TEXTURE_2D, m_directionalShadowFBO.GetDepthTexture());
 
         ShaderOpenGL* nlShader = m_pShaderManager->GetShader(ShaderOpenGLTypes::RenderableObjectsNonLuminous);
         nlShader->Bind();
@@ -331,7 +331,7 @@ namespace Andromeda::Rendering
         if (hasDir)
         {
             glActiveTexture(GL_TEXTURE0 + DIR_UNIT);
-            glBindTexture(GL_TEXTURE_2D, m_shadowFBO.GetDepthTexture());
+            glBindTexture(GL_TEXTURE_2D, m_directionalShadowFBO.GetDepthTexture());
         }
         if (hasPoint)
         {
@@ -451,8 +451,8 @@ namespace Andromeda::Rendering
         mats.push_back(proj * glm::lookAt(lightPos, lightPos + glm::vec3(0, 0, 1), glm::vec3(0, -1, 0)));
         mats.push_back(proj * glm::lookAt(lightPos, lightPos + glm::vec3(0, 0, -1), glm::vec3(0, -1, 0)));
 
-        glViewport(0, 0, m_shadowFBO.GetWidth(), m_shadowFBO.GetHeight());
-        glBindFramebuffer(GL_FRAMEBUFFER, m_shadowFBO.GetId());
+        glViewport(0, 0, m_directionalShadowFBO.GetWidth(), m_directionalShadowFBO.GetHeight());
+        glBindFramebuffer(GL_FRAMEBUFFER, m_directionalShadowFBO.GetId());
         glClear(GL_DEPTH_BUFFER_BIT);
         glColorMask(GL_FALSE, GL_FALSE, GL_FALSE, GL_FALSE); // depth-only
 
@@ -583,7 +583,7 @@ namespace Andromeda::Rendering
     void OpenGLRenderer::OpenGLRendererImpl::BindShadowMap(int textureUnit) const
     {
         glActiveTexture(GL_TEXTURE0 + textureUnit);
-        glBindTexture(GL_TEXTURE_2D, m_shadowFBO.GetDepthTexture());
+        glBindTexture(GL_TEXTURE_2D, m_directionalShadowFBO.GetDepthTexture());
     }
 
     void OpenGLRenderer::OpenGLRendererImpl::RenderGridIfVisible(const IScene& scene) const
