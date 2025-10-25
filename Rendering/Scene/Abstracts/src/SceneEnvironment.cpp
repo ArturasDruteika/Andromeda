@@ -17,7 +17,7 @@ namespace Andromeda::Rendering
 		return m_ambientStrength;
 	}
 
-	glm::vec4 SceneEnvironment::GetBackgroundColor() const
+	const glm::vec4& SceneEnvironment::GetBackgroundColor() const
 	{
 		return m_backroundColor;
 	}
@@ -27,7 +27,7 @@ namespace Andromeda::Rendering
 		m_ambientStrength = ambientStrength;
 	}
 
-	void SceneEnvironment::SetBackgroundColor(glm::vec4 backroundColor)
+	void SceneEnvironment::SetBackgroundColor(const glm::vec4& backroundColor)
 	{
 		m_backroundColor = backroundColor;
 	}

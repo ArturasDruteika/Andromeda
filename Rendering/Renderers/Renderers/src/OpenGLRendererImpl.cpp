@@ -149,7 +149,7 @@ namespace Andromeda::Rendering
         if (!m_isInitialized)
             return;
 
-        glm::vec4 backgroundColor = scene.GetBackgroundColor();
+        const glm::vec4& backgroundColor = scene.GetBackgroundColor();
         glClearColor(
             backgroundColor.r,
             backgroundColor.g,

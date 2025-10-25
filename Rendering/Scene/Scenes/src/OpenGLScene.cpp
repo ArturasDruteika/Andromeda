@@ -24,7 +24,7 @@ namespace Andromeda::Rendering
 		return m_pOpenGLSceneImpl->GetAmbientStrength();
 	}
 
-	glm::vec4 OpenGLScene::GetBackgroundColor() const
+	const glm::vec4& OpenGLScene::GetBackgroundColor() const
 	{
 		return m_pOpenGLSceneImpl->GetBackgroundColor();
 	}
@@ -34,7 +34,7 @@ namespace Andromeda::Rendering
 		m_pOpenGLSceneImpl->SetAmbientStrength(ambientStrength);
 	}
 
-	void OpenGLScene::SetBackgroundColor(glm::vec4 backroundColor)
+	void OpenGLScene::SetBackgroundColor(const glm::vec4& backroundColor)
 	{
 		m_pOpenGLSceneImpl->SetBackgroundColor(backroundColor);
 	}

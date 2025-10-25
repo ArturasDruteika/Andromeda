@@ -15,10 +15,10 @@ namespace Andromeda::Rendering
 
 		// Getters
 		float GetAmbientStrength() const;
-		glm::vec4 GetBackgroundColor() const;
+		const glm::vec4& GetBackgroundColor() const;
 		// Setters
 		void SetAmbientStrength(float ambientStrength);
-		void SetBackgroundColor(glm::vec4 backroundColor);
+		void SetBackgroundColor(const glm::vec4& backroundColor);
 
 		void ResizeGrid(float resizeFactor);
 
