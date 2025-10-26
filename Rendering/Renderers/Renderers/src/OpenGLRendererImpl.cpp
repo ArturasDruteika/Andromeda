@@ -451,8 +451,8 @@ namespace Andromeda::Rendering
         mats.push_back(proj * glm::lookAt(lightPos, lightPos + glm::vec3(0, 0, 1), glm::vec3(0, -1, 0)));
         mats.push_back(proj * glm::lookAt(lightPos, lightPos + glm::vec3(0, 0, -1), glm::vec3(0, -1, 0)));
 
-        glViewport(0, 0, m_directionalShadowFBO.GetWidth(), m_directionalShadowFBO.GetHeight());
-        glBindFramebuffer(GL_FRAMEBUFFER, m_directionalShadowFBO.GetId());
+        glViewport(0, 0, m_pointShadowFBO.GetWidth(), m_pointShadowFBO.GetHeight());
+        glBindFramebuffer(GL_FRAMEBUFFER, m_pointShadowFBO.GetId());
         glClear(GL_DEPTH_BUFFER_BIT);
         glColorMask(GL_FALSE, GL_FALSE, GL_FALSE, GL_FALSE); // depth-only
 
@@ -480,9 +480,10 @@ namespace Andromeda::Rendering
         const auto& pointLightMap = scene.GetPointLights();
 
         std::vector<glm::vec3> positions, ambient, diffuse, specular;
-        std::vector<float> constant, linear, quadratic, farPlanes;
+        std::vector<float> intensities, constant, linear, quadratic, farPlanes;
 
         positions.reserve(pointLightMap.size());
+        intensities.reserve(pointLightMap.size());
         ambient.reserve(pointLightMap.size());
         diffuse.reserve(pointLightMap.size());
         specular.reserve(pointLightMap.size());
@@ -496,23 +497,21 @@ namespace Andromeda::Rendering
             const Light& light = pl->GetLight();
 
             positions.push_back(pl->GetPosition());
-            ambient.push_back(glm::vec3(0.05f));
+            intensities.push_back(light.GetIntensity());
+            ambient.push_back(light.GeAmbient());
             diffuse.push_back(light.GetDiffuse());
             specular.push_back(light.GetSpecular());
-
-            float c = pl->GetAttenuationConstant();
-            float l = pl->GetAttenuationLinear();
-            float q = pl->GetAttenuationQuadratic();
-
-            constant.push_back(c);
-            linear.push_back(l);
-            quadratic.push_back(q);
+            
+            constant.push_back(pl->GetAttenuationConstant());
+            linear.push_back(pl->GetAttenuationLinear());
+            quadratic.push_back(pl->GetAttenuationQuadratic());
 
             farPlanes.push_back(pl->GetShadowFarPlane());
         }
 
         shader.SetUniform("u_numPointLights", static_cast<int>(positions.size()));
         shader.SetUniform("u_pointLightPositions", positions);
+        shader.SetUniform("u_pointLightIntensity", intensities);
         shader.SetUniform("u_pointLightAmbient", ambient);
         shader.SetUniform("u_pointLightDiffuse", diffuse);
         shader.SetUniform("u_pointLightSpecular", specular);
