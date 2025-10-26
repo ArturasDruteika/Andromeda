@@ -433,48 +433,6 @@ namespace Andromeda::Rendering
         shader->UnBind();
     }
 
-    void OpenGLRenderer::OpenGLRendererImpl::RenderPointShadowMap(
-        const IScene& scene,
-        const glm::vec3& lightPos,
-        float nearZ,
-        float farZ
-    )
-    {
-        glm::mat4 proj = glm::perspective(glm::radians(90.0f), 1.0f, nearZ, farZ);
-        std::vector<glm::mat4> mats;
-        mats.reserve(6);
-
-        mats.push_back(proj * glm::lookAt(lightPos, lightPos + glm::vec3(1, 0, 0), glm::vec3(0, -1, 0)));
-        mats.push_back(proj * glm::lookAt(lightPos, lightPos + glm::vec3(-1, 0, 0), glm::vec3(0, -1, 0)));
-        mats.push_back(proj * glm::lookAt(lightPos, lightPos + glm::vec3(0, 1, 0), glm::vec3(0, 0, 1)));
-        mats.push_back(proj * glm::lookAt(lightPos, lightPos + glm::vec3(0, -1, 0), glm::vec3(0, 0, -1)));
-        mats.push_back(proj * glm::lookAt(lightPos, lightPos + glm::vec3(0, 0, 1), glm::vec3(0, -1, 0)));
-        mats.push_back(proj * glm::lookAt(lightPos, lightPos + glm::vec3(0, 0, -1), glm::vec3(0, -1, 0)));
-
-        glViewport(0, 0, m_pointShadowFBO.GetWidth(), m_pointShadowFBO.GetHeight());
-        glBindFramebuffer(GL_FRAMEBUFFER, m_pointShadowFBO.GetId());
-        glClear(GL_DEPTH_BUFFER_BIT);
-        glColorMask(GL_FALSE, GL_FALSE, GL_FALSE, GL_FALSE); // depth-only
-
-        glEnable(GL_DEPTH_TEST);
-        glEnable(GL_CULL_FACE);
-        glCullFace(GL_FRONT);
-
-        ShaderOpenGL* sh = m_pShaderManager->GetShader(ShaderOpenGLTypes::PointShadowCubeMap);
-        sh->Bind();
-        sh->SetUniform("u_lightPos", lightPos);
-        sh->SetUniform("u_farPlane", farZ);
-        sh->SetUniform("u_shadowMatrices[0]", mats);
-
-        RenderEachObjectDepthOnly(*sh, scene);
-
-        sh->UnBind();
-
-        glCullFace(GL_BACK);
-        glColorMask(GL_TRUE, GL_TRUE, GL_TRUE, GL_TRUE);
-        glBindFramebuffer(GL_FRAMEBUFFER, 0);
-    }
-
     void OpenGLRenderer::OpenGLRendererImpl::PopulatePointLightUniforms(ShaderOpenGL& shader, const IScene& scene) const
     {
         const auto& pointLightMap = scene.GetPointLights();

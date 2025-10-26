@@ -53,12 +53,6 @@ namespace Andromeda::Rendering
 		void RenderLuminousObjects(const IScene& scene) const;
 		void RenderObjects(const IScene& scene) const;
 		void RenderGrid(const IRenderableObjectOpenGL& object) const;
-		void RenderPointShadowMap(
-			const IScene& scene,
-			const glm::vec3& lightPos,
-			float nearZ,
-			float farZ
-		);
 		void PopulatePointLightUniforms(ShaderOpenGL& shader, const IScene& scene) const;
 		void RenderEachObjectDepthOnly(ShaderOpenGL& shader, const IScene& scene) const;
 		void BeginFrame() const;
