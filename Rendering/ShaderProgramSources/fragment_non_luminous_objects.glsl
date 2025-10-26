@@ -40,6 +40,7 @@ uniform float u_pointLightConstant[16];
 uniform float u_pointLightLinear[16];
 uniform float u_pointLightQuadratic[16];
 uniform float u_pointLightFarPlanes[16];
+uniform float u_pointLightIntensity[16];
 
 // ----------------------------------------------------------------------------
 // Helpers
@@ -99,9 +100,11 @@ vec3 shadeBlinnPhong(
     vec3 normalSmoothWS,     // interpolated normal
     vec3 viewDirWS,          // camera - frag
     vec3 lightDirWS,         // light -> scene (or light->frag for point)
+    float intensity,
     vec3 ambientColor,
     vec3 diffuseColor,
     vec3 specularColor,
+    float attenuation, 
     float shadowVisibility
 )
 {
@@ -137,7 +140,7 @@ vec3 shadeBlinnPhong(
     vec3 specularTerm = specularColor * u_materialSpecular * specStrength;
 
     // Apply shadowing to direct terms only
-    return ambientTerm + shadowVisibility * (diffuseTerm + specularTerm);
+    return ambientTerm + intensity * attenuation * shadowVisibility * (diffuseTerm + specularTerm);
 }
 
 void main()
@@ -158,8 +161,14 @@ void main()
             visibility = dirShadowVisibility(v_FragPosLightSpace, normalWS, lightDirWS);
 
         colorAccum += shadeBlinnPhong(
-            normalWS, viewDir, lightDirWS,
-            u_dirLightAmbient[i], u_dirLightDiffuse[i], u_dirLightSpecular[i],
+            normalWS, 
+            viewDir, 
+            lightDirWS,
+            1.0,
+            u_dirLightAmbient[i], 
+            u_dirLightDiffuse[i], 
+            u_dirLightSpecular[i],
+            1.0,
             visibility
         );
     }
@@ -179,9 +188,15 @@ void main()
         if (u_hasPointShadows == 1 && i == 0)
             visibility = pointShadowVisibilitySingle(v_FragPos, lightPosWS, u_pointLightFarPlanes[i]);
 
-        colorAccum += attenuation * shadeBlinnPhong(
-            normalWS, viewDir, lightDirWS,
-            u_pointLightAmbient[i], u_pointLightDiffuse[i], u_pointLightSpecular[i],
+        colorAccum += shadeBlinnPhong(
+            normalWS, 
+            viewDir, 
+            lightDirWS,
+            u_pointLightIntensity[i], 
+            u_pointLightAmbient[i], 
+            u_pointLightDiffuse[i], 
+            u_pointLightSpecular[i],
+            attenuation,
             visibility
         );
     }
