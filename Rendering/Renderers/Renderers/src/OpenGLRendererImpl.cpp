@@ -338,16 +338,14 @@ namespace Andromeda::Rendering
             glActiveTexture(GL_TEXTURE0 + POINT_UNIT);
             glBindTexture(GL_TEXTURE_CUBE_MAP, m_pointShadowFBO.GetDepthCubeTexture());
         }
-
+        
         ShaderOpenGL* shader = m_pShaderManager->GetShader(ShaderOpenGLTypes::RenderableObjectsNonLuminous);
         shader->Bind();
 
         shader->SetUniform("u_view", MathUtils::ToGLM(m_pCamera->GetViewMatrix()));
         shader->SetUniform("u_projection", m_pCamera->GetProjection());
         shader->SetUniform("u_cameraPosWS", MathUtils::ToGLM(m_pCamera->GetPosition()));
-        shader->SetUniform("u_hasDirShadows", hasDir ? 1 : 0);
-        shader->SetUniform("u_hasPointShadows", hasPoint ? 1 : 0);
-
+        
         if (hasDir)
         {
             shader->SetUniform("u_dirShadowMap", DIR_UNIT);
