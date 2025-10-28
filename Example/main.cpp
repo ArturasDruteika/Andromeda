@@ -69,17 +69,17 @@ int main(void)
                     1.0f
                 );
 
-                Andromeda::Rendering::CubeObjectOpenGL* cube = new Andromeda::Rendering::CubeObjectOpenGL(pos, cubeHalfExtent, color);
+                Andromeda::Rendering::CubeObjectOpenGL* pCube = new Andromeda::Rendering::CubeObjectOpenGL(pos, cubeHalfExtent, color);
                 Andromeda::Rendering::NonLuminousBehavior* nlBehavior = new Andromeda::Rendering::NonLuminousBehavior(material);
-                cube->SetLuminousBehavior(nlBehavior); // if your class supports material application
-                app.AddToScene(objectId++, cube);
+                pCube->SetLuminousBehavior(nlBehavior); // if your class supports material application
+                app.AddToScene(objectId++, pCube);
             }
         }
     }
 
     // Light source sphere
     float sphereRadius = 0.7f;
-    Andromeda::Math::Vec3 spherePosition(10.0f, 5.0f, 5.0f);
+    Andromeda::Math::Vec3 spherePosition(10.0f, 5.0f, -5.0f);
     Andromeda::Space::Color sphereColor(1.0f, 1.0f, 1.0f, 1.0f);
 
     Andromeda::Rendering::PointLight* pPointLight = new Andromeda::Rendering::PointLight(
@@ -87,12 +87,12 @@ int main(void)
         glm::vec3(sphereColor.r, sphereColor.g, sphereColor.b)
     );
 
-    Andromeda::Rendering::SphereObjectOpenGL* sphere = new Andromeda::Rendering::SphereObjectOpenGL(
+    Andromeda::Rendering::SphereObjectOpenGL* pSphere = new Andromeda::Rendering::SphereObjectOpenGL(
         spherePosition,
         sphereRadius,
         sphereColor
     );
-    sphere->SetLuminousBehavior(pPointLight);
+    pSphere->SetLuminousBehavior(pPointLight);
 
 	glm::vec3 directionalLightDirection(2.0f, -1.0f, -4.0f);
     Andromeda::Rendering::DirectionalLight* pDirectionalLight = new Andromeda::Rendering::DirectionalLight(
@@ -105,7 +105,7 @@ int main(void)
 	);
 
     app.AddToScene(objectId++, pDirectionalLight);
-    app.AddToScene(objectId++, sphere);
+    app.AddToScene(objectId++, pSphere);
 
     app.RunMainLoop();
     app.DeInit();
