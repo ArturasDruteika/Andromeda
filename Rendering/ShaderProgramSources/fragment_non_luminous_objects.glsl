@@ -15,10 +15,6 @@ uniform float u_materialShininess;
 // ===== camera =====
 uniform vec3 u_cameraPosWS;
 
-// ===== toggles =====
-uniform int u_hasDirShadows;
-uniform int u_hasPointShadows;
-
 // ===== shadow samplers =====
 uniform sampler2D         u_dirShadowMap;     // manual compare (no compare mode)
 uniform samplerCubeShadow u_pointShadowCube;  // hardware compare (compare mode ON)
@@ -157,7 +153,8 @@ void main()
         vec3 lightDirWS = normalize(-u_dirLightDirections[i]); // light -> scene
 
         float visibility = 1.0;
-        if (u_hasDirShadows == 1)
+        // TODO: later implement visibility if multiple directional shadows exist
+        if (i == 1)
             visibility = dirShadowVisibility(v_FragPosLightSpace, normalWS, lightDirWS);
 
         colorAccum += shadeBlinnPhong(
@@ -185,7 +182,8 @@ void main()
                                    u_pointLightQuadratic[i] * dist * dist);
 
         float visibility = 1.0;
-        if (u_hasPointShadows == 1 && i == 0)
+        // TODO: later implement visibility if multiple point shadows exist
+        if (i == 0)
             visibility = pointShadowVisibilitySingle(v_FragPos, lightPosWS, u_pointLightFarPlanes[i]);
 
         colorAccum += shadeBlinnPhong(
