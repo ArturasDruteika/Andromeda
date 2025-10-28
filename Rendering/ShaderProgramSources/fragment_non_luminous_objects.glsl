@@ -17,7 +17,7 @@ uniform vec3 u_cameraPosWS;
 
 // ===== shadow samplers =====
 uniform sampler2D         u_dirShadowMap;     // manual compare (no compare mode)
-uniform samplerCubeShadow u_pointShadowCube;  // hardware compare (compare mode ON)
+uniform samplerCube       u_pointShadowCube;  // manual compare (COMPARE_MODE = GL_NONE)
 
 // ===== directional lights =====
 uniform int      u_numDirLights;
@@ -37,6 +37,15 @@ uniform float u_pointLightLinear[16];
 uniform float u_pointLightQuadratic[16];
 uniform float u_pointLightFarPlanes[16];
 uniform float u_pointLightIntensity[16];
+
+
+const vec3 kSampleDirs[20] = vec3[](
+  vec3( 1,  1,  1), vec3( 1, -1,  1), vec3(-1, -1,  1), vec3(-1,  1,  1),
+  vec3( 1,  1, -1), vec3( 1, -1, -1), vec3(-1, -1, -1), vec3(-1,  1, -1),
+  vec3( 1,  1,  0), vec3( 1, -1,  0), vec3(-1, -1,  0), vec3(-1,  1,  0),
+  vec3( 1,  0,  1), vec3(-1,  0,  1), vec3( 1,  0, -1), vec3(-1,  0, -1),
+  vec3( 0,  1,  1), vec3( 0, -1,  1), vec3( 0, -1, -1), vec3( 0,  1, -1)
+);
 
 // ----------------------------------------------------------------------------
 // Helpers
@@ -80,11 +89,33 @@ float dirShadowVisibility(vec4 fragPosLightSpace, vec3 normalWS, vec3 lightDirWS
     return vis / 9.0;
 }
 
-float pointShadowVisibilitySingle(vec3 fragPosWS, vec3 lightPosWS, float farPlane)
+float PointShadowVisibilitySingle(vec3 fragPosWS, vec3 normalWS, vec3 lightPosWS, float farPlane)
 {
-    vec3 L = fragPosWS - lightPosWS;           // light -> frag
-    float dist = length(L);
-    return texture(u_pointShadowCube, vec4(normalize(L), dist / max(farPlane, 1e-6)));
+    vec3  toFrag      = fragPosWS - lightPosWS;           // light -> frag
+    float currentDist = length(toFrag);
+
+    // Normal-dependent bias (tune numbers as needed)
+    vec3  L    = normalize(-toFrag);
+    float ndl  = max(dot(normalize(normalWS), L), 0.0);
+    float bias = max(0.002, 0.02 * (1.0 - ndl));
+
+    // Simple PCF over a small “disk” in direction space
+    float shadow  = 0.0;
+    int   samples = 20;
+    float radius  = (1.0 + currentDist / farPlane) * 0.05;  // distance-based radius
+
+    for (int i = 0; i < samples; ++i)
+    {
+        // Sample stored normalized depth from the cubemap
+        float stored = texture(u_pointShadowCube, toFrag + kSampleDirs[i] * radius).r;
+        float closestDepth = stored * farPlane; // de-normalize
+
+        if (currentDist - bias > closestDepth)
+            shadow += 1.0;
+    }
+
+    // Return visibility in [0,1]
+    return 1.0 - (shadow / float(samples));
 }
 
 // ----------------------------------------------------------------------------
@@ -154,7 +185,7 @@ void main()
 
         float visibility = 1.0;
         // TODO: later implement visibility if multiple directional shadows exist
-        if (i == 1)
+        if (i == 0)
             visibility = dirShadowVisibility(v_FragPosLightSpace, normalWS, lightDirWS);
 
         colorAccum += shadeBlinnPhong(
@@ -184,7 +215,12 @@ void main()
         float visibility = 1.0;
         // TODO: later implement visibility if multiple point shadows exist
         if (i == 0)
-            visibility = pointShadowVisibilitySingle(v_FragPos, lightPosWS, u_pointLightFarPlanes[i]);
+            float visibility = PointShadowVisibilitySingle(
+                v_FragPos, 
+                normalWS, 
+                u_pointLightPositions[i], 
+                u_pointLightFarPlanes[i]
+            );
 
         colorAccum += shadeBlinnPhong(
             normalWS, 
