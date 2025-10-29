@@ -215,7 +215,7 @@ void main()
         float visibility = 1.0;
         // TODO: later implement visibility if multiple point shadows exist
         if (i == 0)
-            float visibility = PointShadowVisibilitySingle(
+            visibility = PointShadowVisibilitySingle(
                 v_FragPos, 
                 normalWS, 
                 u_pointLightPositions[i], 
