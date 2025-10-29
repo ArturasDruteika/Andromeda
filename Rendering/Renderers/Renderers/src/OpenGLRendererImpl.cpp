@@ -119,7 +119,7 @@ namespace Andromeda::Rendering
         glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
         glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE);
 
-        // Disable hardware depth comparison — we’ll do it manually in the shader
+        // Disable hardware depth comparison - we'll do it manually in the shader
         glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_COMPARE_MODE, GL_NONE);
 
         glBindTexture(GL_TEXTURE_CUBE_MAP, 0);
@@ -161,7 +161,7 @@ namespace Andromeda::Rendering
             glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
             glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE);
 
-            // Disable hardware depth comparison — we’ll do it manually in the shader
+            // Disable hardware depth comparison - we'll do it manually in the shader
             glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_COMPARE_MODE, GL_NONE);
 
             glBindTexture(GL_TEXTURE_CUBE_MAP, 0);
