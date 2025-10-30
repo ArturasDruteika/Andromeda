@@ -50,7 +50,7 @@ const vec3 kSampleDirs[20] = vec3[](
 // ----------------------------------------------------------------------------
 // Helpers
 // ----------------------------------------------------------------------------
-float dirShadowVisibility(vec4 fragPosLightSpace, vec3 normalWS, vec3 lightDirWS)
+float DirShadowVisibility(vec4 fragPosLightSpace, vec3 normalWS, vec3 lightDirWS)
 {
     // Project to [0,1] texture space
     vec3 projCoords = fragPosLightSpace.xyz / max(fragPosLightSpace.w, 1e-6);
@@ -123,7 +123,7 @@ float PointShadowVisibilitySingle(vec3 fragPosWS, vec3 normalWS, vec3 lightPosWS
 //  - Diffuse uses interpolated normal (smooth if your vertices are smooth).
 //  - Specular uses a flat normal computed from derivatives -> no triangle seam.
 // ----------------------------------------------------------------------------
-vec3 shadeBlinnPhong(
+vec3 ShadeBlinnPhong(
     vec3 normalSmoothWS,     // interpolated normal
     vec3 viewDirWS,          // camera - frag
     vec3 lightDirWS,         // light -> scene (or light->frag for point)
@@ -186,9 +186,9 @@ void main()
         float visibility = 1.0;
         // TODO: later implement visibility if multiple directional shadows exist
         if (i == 0)
-            visibility = dirShadowVisibility(v_FragPosLightSpace, normalWS, lightDirWS);
+            visibility = DirShadowVisibility(v_FragPosLightSpace, normalWS, lightDirWS);
 
-        colorAccum += shadeBlinnPhong(
+        colorAccum += ShadeBlinnPhong(
             normalWS, 
             viewDir, 
             lightDirWS,
@@ -222,7 +222,7 @@ void main()
                 u_pointLightFarPlanes[i]
             );
 
-        colorAccum += shadeBlinnPhong(
+        colorAccum += ShadeBlinnPhong(
             normalWS, 
             viewDir, 
             lightDirWS,
