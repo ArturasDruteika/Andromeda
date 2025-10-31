@@ -63,6 +63,8 @@ namespace Andromeda::Rendering
 		void RenderGridIfVisible(const IScene& scene) const;
 		void PopulateLightUniforms(ShaderOpenGL& shader, const IScene& scene) const;
 		void RenderEachNonLuminousObject(ShaderOpenGL& shader, const IScene& scene) const;
+		void ConfigurePointShadowDepthTexture();
+		void RenderLuminousMode(const IScene& scene);
 		glm::mat4 ComputeLightSpaceMatrix(const IScene& scene) const;
 
 	private:

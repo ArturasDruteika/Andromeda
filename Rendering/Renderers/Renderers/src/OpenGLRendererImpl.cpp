@@ -107,24 +107,7 @@ namespace Andromeda::Rendering
             return;
         }
 
-        // Manual compare setup for depth cubemap
-        glBindTexture(GL_TEXTURE_CUBE_MAP, m_pointShadowFBO.GetDepthCubeTexture());
-
-        // Filters (NEAREST easiest for debugging)
-        glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-        glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-
-        // Wrapping
-        glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
-        glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
-        glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE);
-
-        // Disable hardware depth comparison - we'll do it manually in the shader
-        glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_COMPARE_MODE, GL_NONE);
-
-        glBindTexture(GL_TEXTURE_CUBE_MAP, 0);
-
-
+        ConfigurePointShadowDepthTexture();
         SetCameraAspect(width, height);
         m_isInitialized = true;
     }
@@ -148,24 +131,7 @@ namespace Andromeda::Rendering
             m_directionalShadowFBO.Resize(width, height);
             int cube = std::max(128, std::min(width, height)); // or keep a fixed 1024
             m_pointShadowFBO.Resize(cube, cube);
-
-            // Manual compare setup for depth cubemap
-            glBindTexture(GL_TEXTURE_CUBE_MAP, m_pointShadowFBO.GetDepthCubeTexture());
-
-            // Filters (NEAREST easiest for debugging)
-            glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-            glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-
-            // Wrapping
-            glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
-            glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
-            glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE);
-
-            // Disable hardware depth comparison - we'll do it manually in the shader
-            glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_COMPARE_MODE, GL_NONE);
-
-            glBindTexture(GL_TEXTURE_CUBE_MAP, 0);
-
+            ConfigurePointShadowDepthTexture();
         }
     }
 
@@ -186,29 +152,7 @@ namespace Andromeda::Rendering
 
         if (m_isIlluminationMode)
         {
-            const std::unordered_map<int, const DirectionalLight*> dirLights = scene.GetDirectionalLights();
-            const bool hasDir = !dirLights.empty();
-
-            const std::unordered_map<int, const PointLight*> pointLights = scene.GetPointLights();
-            const bool hasPoint = !pointLights.empty();
-
-            if (hasDir)
-            {
-                m_shadowMapLightSpace = ComputeLightSpaceMatrix(scene);
-                ShadowMapDepthPass(scene);
-            }
-
-            if (hasPoint)
-            {
-                const PointLight* pl = pointLights.begin()->second;
-                const glm::vec3 lightPos = pl->GetPosition();
-                const float nearPlane = pl->GetShadowNearPlane();
-                const float farPlane = pl->GetShadowFarPlane();
-                ShadowCubeDepthPass(scene, lightPos, nearPlane, farPlane);
-            }
-
-            RenderNonLuminousObjectsCombined(scene, hasDir, hasPoint);
-            RenderLuminousObjects(scene);
+            RenderLuminousMode(scene);
         }
         else
         {
@@ -634,6 +578,53 @@ namespace Andromeda::Rendering
             glBindVertexArray(renderableObj->GetVAO());
             glDrawElements(GL_TRIANGLES, obj->GetIndicesCount(), GL_UNSIGNED_INT, nullptr);
         }
+    }
+
+    void OpenGLRenderer::OpenGLRendererImpl::ConfigurePointShadowDepthTexture()
+    {
+        // Manual compare setup for depth cubemap
+        glBindTexture(GL_TEXTURE_CUBE_MAP, m_pointShadowFBO.GetDepthCubeTexture());
+
+        // Filters (NEAREST easiest for debugging)
+        glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+        glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+
+        // Wrapping
+        glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+        glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+        glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE);
+
+        // Disable hardware depth comparison - we'll do it manually in the shader
+        glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_COMPARE_MODE, GL_NONE);
+
+        glBindTexture(GL_TEXTURE_CUBE_MAP, 0);
+    }
+
+    void OpenGLRenderer::OpenGLRendererImpl::RenderLuminousMode(const IScene& scene)
+    {
+        const std::unordered_map<int, const DirectionalLight*> dirLights = scene.GetDirectionalLights();
+        const bool hasDir = !dirLights.empty();
+
+        const std::unordered_map<int, const PointLight*> pointLights = scene.GetPointLights();
+        const bool hasPoint = !pointLights.empty();
+
+        if (hasDir)
+        {
+            m_shadowMapLightSpace = ComputeLightSpaceMatrix(scene);
+            ShadowMapDepthPass(scene);
+        }
+
+        if (hasPoint)
+        {
+            const PointLight* pl = pointLights.begin()->second;
+            const glm::vec3 lightPos = pl->GetPosition();
+            const float nearPlane = pl->GetShadowNearPlane();
+            const float farPlane = pl->GetShadowFarPlane();
+            ShadowCubeDepthPass(scene, lightPos, nearPlane, farPlane);
+        }
+
+        RenderNonLuminousObjectsCombined(scene, hasDir, hasPoint);
+        RenderLuminousObjects(scene);
     }
 
     glm::mat4 OpenGLRenderer::OpenGLRendererImpl::ComputeLightSpaceMatrix(const IScene& scene) const
