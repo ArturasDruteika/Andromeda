@@ -134,7 +134,7 @@ namespace Andromeda::Rendering
 		if (matrices.empty())
 			return;
 
-		GLint location = glGetUniformLocation(program, name.c_str());
+		int location = glGetUniformLocation(program, name.c_str());
 
 		// only try appending [0] if the caller passed the base name without brackets
 		if (location == -1 && name.find('[') == std::string::npos)
@@ -151,7 +151,7 @@ namespace Andromeda::Rendering
 
 		glUniformMatrix4fv(
 			location,
-			static_cast<GLsizei>(matrices.size()),
+			static_cast<int>(matrices.size()),
 			GL_FALSE,
 			glm::value_ptr(matrices[0])
 		);
