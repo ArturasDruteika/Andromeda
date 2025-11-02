@@ -6,34 +6,31 @@
 #include "../../Abstracts/include/RenderableObjectOpenGL.hpp"
 
 
-namespace Andromeda
+namespace Andromeda::Rendering
 {
-	namespace Rendering
-	{
-		class CubeObjectOpenGL::CubeObjectOpenGLImpl
-			: public RenderableObjectOpenGL
-		{	
-		public:
-			CubeObjectOpenGLImpl(const Math::Vec3& centerPosition, float radius, const Space::Color& color);
-			~CubeObjectOpenGLImpl();
+	class CubeObjectOpenGL::CubeObjectOpenGLImpl
+		: public RenderableObjectOpenGL
+	{	
+	public:
+		CubeObjectOpenGLImpl(const Math::Vec3& centerPosition, float radius, const Space::Color& color);
+		~CubeObjectOpenGLImpl();
 
-			CubeObjectOpenGLImpl(const CubeObjectOpenGLImpl& other) = delete;	// Prevent Copy Constructor
-			CubeObjectOpenGLImpl& operator=(const CubeObjectOpenGLImpl& other) = delete;	// Prevent Copy Assignment
-			CubeObjectOpenGLImpl(CubeObjectOpenGLImpl&& other) noexcept = delete;	// Prevent Move Constructor
-			CubeObjectOpenGLImpl& operator=(CubeObjectOpenGLImpl&& other) noexcept = delete;	// Prevent Move Assignment
+		CubeObjectOpenGLImpl(const CubeObjectOpenGLImpl& other) = delete;	// Prevent Copy Constructor
+		CubeObjectOpenGLImpl& operator=(const CubeObjectOpenGLImpl& other) = delete;	// Prevent Copy Assignment
+		CubeObjectOpenGLImpl(CubeObjectOpenGLImpl&& other) noexcept = delete;	// Prevent Move Constructor
+		CubeObjectOpenGLImpl& operator=(CubeObjectOpenGLImpl&& other) noexcept = delete;	// Prevent Move Assignment
 
-			// Getters
-			float GetHalfExtent() const;
-			void SetHalfExtent(float halfExtent);
+		// Getters
+		float GetHalfExtent() const;
+		void SetHalfExtent(float halfExtent);
 
-		private:
-			// Cube construction
-			void ConstructCube(float halfExtent, const Space::Color& color);
+	private:
+		// Cube construction
+		void ConstructCube(float halfExtent, const Space::Color& color);
 
-		private:
-			float m_halfExtent;
-		};
-	}
+	private:
+		float m_halfExtent;
+	};
 }
 
 
