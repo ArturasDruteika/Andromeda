@@ -120,6 +120,8 @@ set(RO_HEADERS
     RenderableObjects/Objects/include/CubeObjectOpenGL.hpp
     RenderableObjects/Objects/include/CubeObjectOpenGLImpl.hpp
     RenderableObjects/Objects/include/GridOpenGL.hpp
+    RenderableObjects/Objects/include/SkyroomOpenGL.hpp
+    RenderableObjects/Objects/include/SkyroomOpenGLImpl.hpp
     RenderableObjects/Objects/include/SphereObjectOpenGL.hpp
     RenderableObjects/Objects/include/SphereObjectOpenGLImpl.hpp
     RenderableObjects/Support/include/TransformationTypes.hpp
@@ -139,6 +141,8 @@ set(RO_SOURCES
     RenderableObjects/Objects/src/CubeObjectOpenGL.cpp
     RenderableObjects/Objects/src/CubeObjectOpenGLImpl.cpp
     RenderableObjects/Objects/src/GridOpenGL.cpp
+    RenderableObjects/Objects/src/SkyroomOpenGL.cpp
+    RenderableObjects/Objects/src/SkyroomOpenGLImpl.cpp
     RenderableObjects/Objects/src/SphereObjectOpenGL.cpp
     RenderableObjects/Objects/src/SphereObjectOpenGLImpl.cpp
 )
