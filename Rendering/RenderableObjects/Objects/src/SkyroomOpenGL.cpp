@@ -4,8 +4,8 @@
 
 namespace Andromeda::Rendering
 {
-	SkyroomOpenGL::SkyroomOpenGL(const Math::Vec3& centerPosition, const Space::Color& color)
-		: m_pSkyroomOpenGLImpl(new SkyroomOpenGLImpl(centerPosition, color))
+	SkyroomOpenGL::SkyroomOpenGL(const Math::Vec3& centerPosition, float halfExtent, const Space::Color& color)
+		: m_pSkyroomOpenGLImpl(new SkyroomOpenGLImpl(centerPosition, halfExtent, color))
 	{
 	}
 

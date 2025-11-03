@@ -2,16 +2,17 @@
 #define RENDERING__OBJECTS__SKYROOM_OPENGL__HPP
 
 
+#include "../../../MacroExports/include/MacroExports.hpp"
 #include "../../Interfaces/include/IRenderableObjectOpenGL.hpp"
 
 
 namespace Andromeda::Rendering
 {
-	class SkyroomOpenGL
+	class RENDERING_API SkyroomOpenGL
 		: public IRenderableObjectOpenGL
 	{
 		public:
-		SkyroomOpenGL(const Math::Vec3& centerPosition, const Space::Color& color);
+		SkyroomOpenGL(const Math::Vec3& centerPosition, float halfExtent, const Space::Color& color);
 		~SkyroomOpenGL() override;
 
 		// === Overrides from ILuminous ===
