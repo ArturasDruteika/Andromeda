@@ -1,6 +1,7 @@
 #include "Application.hpp"
 #include "LinearAlgebraDataTypes.hpp"
 #include "SphereObjectOpenGL.hpp"
+#include "SkyroomOpenGL.hpp"
 #include "CubeObjectOpenGL.hpp"
 #include "Constants.hpp"
 #include "DirectionalLight.hpp"
@@ -104,8 +105,21 @@ int main(void)
         glm::vec3(0.4f, 0.4f, 0.4f) // Specular
 	);
 
+    Andromeda::Rendering::MaterialType materialType = materialTypes[5];
+    Andromeda::Rendering::Material material = materialsLib.GetMaterial(materialType);
+
+    Andromeda::Rendering::SkyroomOpenGL* pSkyroom = new Andromeda::Rendering::SkyroomOpenGL(
+        Andromeda::Math::Vec3(0.0f, 0.0f, 0.0f),
+        50.0f,
+        Andromeda::Space::Color(0.5f, 0.7f, 0.9f, 1.0f) // Light blue
+	);
+
+    Andromeda::Rendering::NonLuminousBehavior* nlBehavior = new Andromeda::Rendering::NonLuminousBehavior(material);
+	pSkyroom->SetLuminousBehavior(nlBehavior);
+
     app.AddToScene(objectId++, pDirectionalLight);
     app.AddToScene(objectId++, pSphere);
+    app.AddToScene(objectId++, pSkyroom);
 
     app.RunMainLoop();
     app.DeInit();
