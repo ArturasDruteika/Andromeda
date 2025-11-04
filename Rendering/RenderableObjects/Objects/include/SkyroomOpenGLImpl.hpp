@@ -15,6 +15,8 @@ namespace Andromeda::Rendering
 		SkyroomOpenGLImpl(const Math::Vec3& centerPosition, float halfExtent, const Space::Color& color);
 		~SkyroomOpenGLImpl();
 
+		float GetHalfExtent() const;
+
 	private:
 		void BuildGeometry(float h, const Space::Color& colorGray);
 

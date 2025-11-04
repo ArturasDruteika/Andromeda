@@ -142,4 +142,9 @@ namespace Andromeda::Rendering
 	{
 		return m_pSkyroomOpenGLImpl->GetEBO();
 	}
+
+	float SkyroomOpenGL::GetHalfExtent() const
+	{
+		return m_pSkyroomOpenGLImpl->GetHalfExtent();
+	}
 }

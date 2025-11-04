@@ -36,6 +36,11 @@ namespace Andromeda::Rendering
 
     SkyroomOpenGL::SkyroomOpenGLImpl::~SkyroomOpenGLImpl() = default;
 
+    float SkyroomOpenGL::SkyroomOpenGLImpl::GetHalfExtent() const
+    {
+        return m_halfExtent;
+	}
+
     void SkyroomOpenGL::SkyroomOpenGLImpl::BuildGeometry(float h, const Space::Color& colorGray)
     {
         // 8 corners

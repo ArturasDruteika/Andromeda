@@ -49,6 +49,8 @@ namespace Andromeda::Rendering
 		unsigned int GetVAO() const override;
 		unsigned int GetEBO() const override;
 
+		float GetHalfExtent() const;
+
 	private:
 		class SkyroomOpenGLImpl;
 		SkyroomOpenGLImpl* m_pSkyroomOpenGLImpl;
