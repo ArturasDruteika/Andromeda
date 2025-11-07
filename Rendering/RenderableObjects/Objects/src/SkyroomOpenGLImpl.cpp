@@ -31,6 +31,7 @@ namespace Andromeda::Rendering
         , m_halfExtent{ halfExtent }
     {
         BuildGeometry(halfExtent, { -1.f, 0.f, 0.f });
+        Translate(centerPosition);
         Init(); // uploads VBO/VAO/EBO using your base helpers
     }
 
