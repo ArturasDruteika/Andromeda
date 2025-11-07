@@ -140,13 +140,7 @@ namespace Andromeda::Rendering
         if (!m_isInitialized)
             return;
 
-        const glm::vec4& backgroundColor = scene.GetBackgroundColor();
-        glClearColor(
-            backgroundColor.r,
-            backgroundColor.g,
-            backgroundColor.b,
-            backgroundColor.a
-        );
+        SetBackgroundColor(scene.GetBackgroundColor());
 
         BeginFrame();
 
@@ -625,6 +619,16 @@ namespace Andromeda::Rendering
 
         RenderNonLuminousObjectsCombined(scene, hasDir, hasPoint);
         RenderLuminousObjects(scene);
+    }
+
+    void OpenGLRenderer::OpenGLRendererImpl::SetBackgroundColor(const glm::vec4& backgroundColor)
+    {
+        glClearColor(
+            backgroundColor.r,
+            backgroundColor.g,
+            backgroundColor.b,
+            backgroundColor.a
+        );
     }
 
     glm::mat4 OpenGLRenderer::OpenGLRendererImpl::ComputeLightSpaceMatrix(const IScene& scene) const
