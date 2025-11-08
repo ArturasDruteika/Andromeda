@@ -17,7 +17,8 @@ namespace Andromeda::Rendering
         float shadowNearPlane,
         float shadowFarPlane
     )
-        : LuminousBehavior{ Light{
+        : LuminousBehavior{ 
+            Light{
                 color,
                 intensity,
                 ambient,

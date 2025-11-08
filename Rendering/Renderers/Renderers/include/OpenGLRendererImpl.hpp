@@ -70,7 +70,8 @@ namespace Andromeda::Rendering
 
 	private:
 		bool m_isInitialized;
-		int m_shadowCubeSize;
+		int m_directionalShadowResolution;
+		int m_shadowCubeResolution;
 
 		glm::mat4 m_shadowMapLightSpace;
 		FrameBufferOpenGL m_mainFBO;

@@ -25,7 +25,8 @@ namespace Andromeda::Rendering
         : m_isInitialized{ false }
         , m_shadowMapLightSpace{ glm::mat4(1.0f) }
         , m_pShaderManager{ nullptr }
-        , m_shadowCubeSize{ 1024 }
+        , m_directionalShadowResolution{ 2048 }
+        , m_shadowCubeResolution{ 1024 }
     {
         m_pShaderManager = new ShaderManager(true);
         SetCameraAspect(m_width, m_height);
@@ -93,7 +94,7 @@ namespace Andromeda::Rendering
         // depth-only shadow map
         if (m_isIlluminationMode)
         {
-            if (!m_directionalShadowFBO.Init(width, height, FrameBufferType::Depth))
+            if (!m_directionalShadowFBO.Init(m_directionalShadowResolution, m_directionalShadowResolution, FrameBufferType::Depth))
             {
                 spdlog::error("Failed to create shadow framebuffer");
                 return;
@@ -101,7 +102,7 @@ namespace Andromeda::Rendering
         }
 
         // Point-light shadow map: cubemap depth
-        if (!m_pointShadowFBO.Init(width, height, FrameBufferType::DepthCube))
+        if (!m_pointShadowFBO.Init(m_shadowCubeResolution, m_shadowCubeResolution, FrameBufferType::DepthCube))
         {
             spdlog::error("Failed to create point-light cubemap shadow framebuffer");
             return;
@@ -122,17 +123,8 @@ namespace Andromeda::Rendering
     void OpenGLRenderer::OpenGLRendererImpl::Resize(int width, int height)
     {
         SizeControl::Resize(width, height);
-
         SetCameraAspect(width, height);
-
         m_mainFBO.Resize(width, height);
-        if (m_isIlluminationMode)
-        {
-            m_directionalShadowFBO.Resize(width, height);
-            int cube = std::max(128, std::min(width, height)); // or keep a fixed 1024
-            m_pointShadowFBO.Resize(cube, cube);
-            ConfigurePointShadowDepthTexture();
-        }
     }
 
     void OpenGLRenderer::OpenGLRendererImpl::RenderFrame(IScene& scene)
@@ -610,6 +602,7 @@ namespace Andromeda::Rendering
 
         if (hasPoint)
         {
+            // TODO: later implement point shadows for ALL point lights casters
             const PointLight* pl = pointLights.begin()->second;
             const glm::vec3 lightPos = pl->GetPosition();
             const float nearPlane = pl->GetShadowNearPlane();
