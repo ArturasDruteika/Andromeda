@@ -1,11 +1,3 @@
-#include "glad/gl.h"
-#include "glm/glm.hpp"
-#include <glm/gtc/type_ptr.hpp>
-#include <glm/gtc/matrix_transform.hpp>
-#include <glm/gtc/matrix_inverse.hpp>
-#include "spdlog/spdlog.h"
-#include "FileOperations.hpp"
-#include "Colors.hpp"
 #include "../include/OpenGLRendererImpl.hpp"
 #include "../../../Scene/Support/include/SpecialIndices.hpp"
 #include "../../../Utils/include/MathUtils.hpp"
@@ -18,6 +10,14 @@
 #include "../../../Shaders/Support/include/ShaderOpenGLTypes.hpp"
 #include "../../../RenderableObjects/Interfaces/include/IRenderableObjectOpenGL.hpp"
 #include "../../../RenderableObjects/Objects/include/SkyroomOpenGL.hpp"
+#include "FileOperations.hpp"
+#include "Colors.hpp"
+#include "glad/gl.h"
+#include "glm/glm.hpp"
+#include <glm/gtc/type_ptr.hpp>
+#include <glm/gtc/matrix_transform.hpp>
+#include <glm/gtc/matrix_inverse.hpp>
+#include "spdlog/spdlog.h"
 
 
 namespace Andromeda::Rendering

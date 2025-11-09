@@ -84,8 +84,8 @@ int main(void)
     Andromeda::Space::Color sphereColor(1.0f, 1.0f, 1.0f, 1.0f);
 
     Andromeda::Rendering::PointLight* pPointLight = new Andromeda::Rendering::PointLight(
-        glm::vec3(10.0f, 5.0f, -5.0f),  // position
-        glm::vec3(1.0f, 1.0f, 1.0f),    // color
+        glm::vec3(spherePosition[0], spherePosition[1], spherePosition[2]),                 // position
+        glm::vec3(sphereColor.r, sphereColor.g, sphereColor.b),                    // color
         1.0f,                           // intensity
         glm::vec3(1.0f, 1.0f, 1.0f),    // ambient
         glm::vec3(1.0f, 1.0f, 1.0f),    // diffuse
