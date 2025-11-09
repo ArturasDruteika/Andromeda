@@ -289,15 +289,15 @@ namespace Andromeda::Rendering
         {
             shader->SetUniform("u_dirShadowMap", DIR_UNIT);
             shader->SetUniform("u_lightSpaceMatrix", m_shadowMapLightSpace);
+            PopulateLightUniforms(*shader, scene);
         }
 
         if (hasPoint)
         {
             shader->SetUniform("u_pointShadowCube", POINT_UNIT);
+            PopulatePointLightUniforms(*shader, scene);
         }
 
-        PopulateLightUniforms(*shader, scene);
-        PopulatePointLightUniforms(*shader, scene);
         RenderEachNonLuminousObject(*shader, scene);
         shader->UnBind();
         DisableFaceCulling();
@@ -527,6 +527,9 @@ namespace Andromeda::Rendering
         {
             if (id < 0 || obj->IsLuminous())
                 continue;
+
+            if (dynamic_cast<SkyroomOpenGL*>(obj) != nullptr)
+                DisableFaceCulling();
 
             NonLuminousBehavior* nonLum = dynamic_cast<NonLuminousBehavior*>(obj->GetLightBehavior());
             if (!nonLum)
