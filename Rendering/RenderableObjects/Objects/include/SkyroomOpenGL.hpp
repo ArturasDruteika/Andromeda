@@ -1,31 +1,19 @@
-#ifndef RENDERING__OBJECTS__GRID_OPENGL__HPP
-#define RENDERING__OBJECTS__GRID_OPENGL__HPP
+#ifndef RENDERING__OBJECTS__SKYROOM_OPENGL__HPP
+#define RENDERING__OBJECTS__SKYROOM_OPENGL__HPP
 
 
+#include "../../../MacroExports/include/MacroExports.hpp"
 #include "../../Interfaces/include/IRenderableObjectOpenGL.hpp"
-#include "../../Abstracts/include/RenderableObjectOpenGL.hpp"
-#include "Colors.hpp"
 
 
 namespace Andromeda::Rendering
 {
-	class GridOpenGL
+	class RENDERING_API SkyroomOpenGL
 		: public IRenderableObjectOpenGL
-		, public RenderableObjectOpenGL
-	{	
-	public:
-		GridOpenGL(
-			int gridSize = 100, 
-			float spacing = 1.0f, 
-			float densityFactor = 0.05, 
-			const Space::Color& color = Space::Color(0.3f, 0.3f, 0.3f, 1.0f)
-		);
-		~GridOpenGL();
-
-		GridOpenGL(const GridOpenGL& other) = delete;	// Prevent Copy Constructor
-		GridOpenGL& operator=(const GridOpenGL& other) = delete;	// Prevent Copy Assignment
-		GridOpenGL(GridOpenGL&& other) noexcept = delete;	// Prevent Move Constructor
-		GridOpenGL& operator=(GridOpenGL&& other) noexcept = delete;	// Prevent Move Assignment
+	{
+		public:
+		SkyroomOpenGL(const Math::Vec3& centerPosition, float halfExtent, const Space::Color& color);
+		~SkyroomOpenGL() override;
 
 		// === Overrides from ILuminous ===
 		bool IsLuminous() const override;
@@ -61,24 +49,13 @@ namespace Andromeda::Rendering
 		unsigned int GetVAO() const override;
 		unsigned int GetEBO() const override;
 
-		// Getters
-		int GetGridSize() const;
-		float GetSpacing() const;
-		float GetDensityFactor() const;
-		// Setters
-		void SetGridSize(int size);
-		void SetSpacing(float spacing);
-		void SetDensityFactor(float densityFactor);
+		float GetHalfExtent() const;
 
 	private:
-		void ConstructGrid(int size = 100, float spacing = 1.0f, const Space::Color& gridColor = { 0.3, 0.3, 0.3, 1.0 });
-
-	private:
-		int m_gridSize;
-		float m_spacing;
-		float m_densityFactor;
+		class SkyroomOpenGLImpl;
+		SkyroomOpenGLImpl* m_pSkyroomOpenGLImpl;
 	};
 }
 
 
-#endif // RENDERING__OBJECTS__GRID_OPENGL__HPP
+#endif // RENDERING__OBJECTS__SKYROOM_OPENGL__HPP

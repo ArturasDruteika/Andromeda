@@ -28,14 +28,16 @@ namespace Andromeda::Rendering
 
 		// === From ISceneEnvironment ===
 		float GetAmbientStrength() const override;
+		const glm::vec4& GetBackgroundColor() const override;
 		void SetAmbientStrength(float ambientStrength) override;
+		void SetBackgroundColor(const glm::vec4& backroundColor) override;
 		void ResizeGrid(float resizeFactor) override;
 
 		// === From ISceneObjects ===
 		const std::unordered_map<int, IRenderableObject*>& GetObjects() const override;
 		void AddObject(int id, IRenderableObject* object) override;
 		void RemoveObject(int id) override;
-		void AddDirectionaLight(int id, DirectionalLight* pDirectionalLight) override;
+		void AddLuminousObject(int id, LuminousBehavior* pLuminousObject) override;
 
 		// === From ISceneLighting ===
 		const std::unordered_map<int, const DirectionalLight*> GetDirectionalLights() const override;

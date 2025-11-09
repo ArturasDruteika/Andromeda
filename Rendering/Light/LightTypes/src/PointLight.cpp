@@ -13,20 +13,26 @@ namespace Andromeda::Rendering
         const glm::vec3& specular,
         float attenuationConstant, 
         float attenuationLinear, 
-        float attenuationQuadratic
+        float attenuationQuadratic,
+        float shadowNearPlane,
+        float shadowFarPlane
     )
-        : Light{
-            color,
-            intensity,
-            ambient,
-            diffuse,
-            specular
+        : LuminousBehavior{ 
+            Light{
+                color,
+                intensity,
+                ambient,
+                diffuse,
+                specular
+            },
+            LightType::Point
         }
-        , LuminousBehavior{ this, LightType::Point }
         , m_attenuationConstant{ attenuationConstant }
         , m_attenuationLinear{ attenuationLinear }
         , m_attenuationQuadratic{ attenuationQuadratic }
         , m_position{ position }
+        , m_shadowNearPlane{ shadowNearPlane }
+        , m_shadowFarPlane{ shadowFarPlane }
     {
     }
 
@@ -45,6 +51,16 @@ namespace Andromeda::Rendering
     float PointLight::GetAttenuationQuadratic() const
     {
         return m_attenuationQuadratic;
+    }
+
+    float PointLight::GetShadowNearPlane() const
+    {
+        return m_shadowNearPlane;
+    }
+
+    float PointLight::GetShadowFarPlane() const
+    {
+        return m_shadowFarPlane;
     }
 
     glm::vec3 PointLight::GetPosition() const
@@ -80,6 +96,16 @@ namespace Andromeda::Rendering
             return;
         }
         m_attenuationQuadratic = quadratic;
+    }
+
+    void PointLight::SetShadowNearPlane(float shadowNearPlane)
+    {
+        m_shadowNearPlane = shadowNearPlane;
+    }
+
+    void PointLight::SetShadowFarPlane(float shadowFarPlane)
+    {
+        m_shadowFarPlane = shadowFarPlane;
     }
 
     void PointLight::SetPosition(const glm::vec3& position)

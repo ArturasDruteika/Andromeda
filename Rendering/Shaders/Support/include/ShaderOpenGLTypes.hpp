@@ -13,14 +13,17 @@ namespace Andromeda::Rendering
 		RenderableObjectsLuminous,
 		RenderableObjectsNonLuminous,
 		ShadowMap,
+		ShadowMapTest,
+		PointShadowCubeMap,
 		Grid,
 	};
 
 	struct ShaderDefinition
 	{
 		ShaderOpenGLTypes type;
-		std::filesystem::path vertexPath;
-		std::filesystem::path fragmentPath;
+		std::filesystem::path vertexPath{};
+		std::filesystem::path fragmentPath{};
+		std::filesystem::path geometryPath{};
 	};
 }
 

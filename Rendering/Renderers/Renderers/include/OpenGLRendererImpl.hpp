@@ -33,6 +33,7 @@ namespace Andromeda::Rendering
 		unsigned int GetFrameBufferTexture() const;
 		unsigned int GetDepthRenderBuffer() const;
 		unsigned int GetShadowMap() const;
+		unsigned int GetPointShadowCube() const;
 
 		void Init(int width, int height, bool illuminationMode = false);
 		void DeInit();
@@ -40,11 +41,19 @@ namespace Andromeda::Rendering
 		void Resize(int width, int height);
 
 	private:
-		void ShadowMapDepthPass(const IScene& scene, const glm::mat4& lightSpace) const;
-		void RenderNonLuminousObjects(const IScene& scene, const glm::mat4& lightSpace) const;
+		void ShadowMapDepthPass(const IScene& scene) const;
+		void ShadowCubeDepthPass(
+			const IScene& scene,
+			const glm::vec3& lightPos,
+			float nearPlane,
+			float farPlane
+		) const;
+		void RenderNonLuminousObjectsCombined(const IScene& scene, bool hasDir, bool hasPoint) const;
 		void RenderLuminousObjects(const IScene& scene) const;
 		void RenderObjects(const IScene& scene) const;
 		void RenderGrid(const IRenderableObjectOpenGL& object) const;
+		void PopulatePointLightUniforms(ShaderOpenGL& shader, const IScene& scene) const;
+		void RenderEachObjectDepthOnly(ShaderOpenGL& shader, const IScene& scene) const;
 		void BeginFrame() const;
 		void EndFrame() const;
 		void LogFPS() const;
@@ -53,13 +62,20 @@ namespace Andromeda::Rendering
 		void RenderGridIfVisible(const IScene& scene) const;
 		void PopulateLightUniforms(ShaderOpenGL& shader, const IScene& scene) const;
 		void RenderEachNonLuminousObject(ShaderOpenGL& shader, const IScene& scene) const;
+		void ConfigurePointShadowDepthTexture();
+		void RenderLuminousMode(const IScene& scene);
+		void SetBackgroundColor(const glm::vec4& backgroundColor);
 		glm::mat4 ComputeLightSpaceMatrix(const IScene& scene) const;
 
 	private:
 		bool m_isInitialized;
-		glm::mat4 m_lightSpace;
+		int m_directionalShadowResolution;
+		int m_shadowCubeResolution;
+
+		glm::mat4 m_shadowMapLightSpace;
 		FrameBufferOpenGL m_mainFBO;
-		FrameBufferOpenGL m_shadowFBO;
+		FrameBufferOpenGL m_directionalShadowFBO;
+		FrameBufferOpenGL m_pointShadowFBO;
 		ShaderManager* m_pShaderManager;
 		mutable std::chrono::steady_clock::time_point m_lastFrameTime = std::chrono::steady_clock::now();
 	};

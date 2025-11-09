@@ -3,8 +3,8 @@
 
 
 #include "../../Abstracts/include/ShaderProgramOpenGL.hpp"
-#include "../../Abstracts/include/UniformSetterOpenGL.hpp"
 #include "../../Abstracts/include/ShaderSourceManagerOpenGL.hpp"
+#include "../../Support/include/UniformSetterOpenGL.hpp"
 #include "../../Interfaces/include/IShader.hpp"
 
 namespace Andromeda::Rendering
@@ -15,7 +15,11 @@ namespace Andromeda::Rendering
 		, public IShader
 	{
 	public:
-		ShaderOpenGL(const std::filesystem::path& vertexCodeFilePath, const std::filesystem::path& fragmentCodeFilePath);
+		ShaderOpenGL(
+			const std::filesystem::path& vertexCodeFilePath,
+			const std::filesystem::path& fragmentCodeFilePath,
+			const std::filesystem::path& geometryShaderFilepath = {}
+		);
 		~ShaderOpenGL() = default;
 
 		void Bind() const override;

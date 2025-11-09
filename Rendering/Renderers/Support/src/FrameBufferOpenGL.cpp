@@ -3,20 +3,33 @@
 #include "spdlog/spdlog.h"
 
 
-
 namespace Andromeda::Rendering
 {
+    FrameBufferOpenGL::FrameBufferOpenGL()
+        : m_FBO{ 0 }
+        , m_colorTex{ 0 }
+        , m_depthRBO{ 0 }
+        , m_depthTex{ 0 }
+		, m_depthCubeTex{ 0 }
+        , m_width{ 0 }
+        , m_height{ 0 }
+        , m_type{ FrameBufferType::None }
+    {
+    }
+
     FrameBufferOpenGL::FrameBufferOpenGL(int width, int height, FrameBufferType type)
-		: m_FBO(0)
-        , m_colorTex(0)
-        , m_depthRBO(0)
-        , m_depthTex(0)
-        , m_width(width)
-        , m_height(height)
-        , m_type(type)
+        : m_FBO{ 0 }
+        , m_colorTex{ 0 }
+        , m_depthRBO{ 0 }
+        , m_depthTex{ 0 }
+		, m_depthCubeTex{ 0 }
+        , m_width{ width }
+        , m_height{ height }
+        , m_type{ type }
     {
         Init(width, height, type);
     }
+
 
     FrameBufferOpenGL::~FrameBufferOpenGL()
     {
@@ -39,6 +52,7 @@ namespace Andromeda::Rendering
         m_colorTex = other.m_colorTex;
         m_depthRBO = other.m_depthRBO;
         m_depthTex = other.m_depthTex;
+		m_depthCubeTex = other.m_depthCubeTex;
         m_width = other.m_width;
         m_height = other.m_height;
         m_type = other.m_type;
@@ -47,6 +61,7 @@ namespace Andromeda::Rendering
         other.m_colorTex = 0;
         other.m_depthRBO = 0;
         other.m_depthTex = 0;
+		other.m_depthCubeTex = 0;
         other.m_width = 0;
         other.m_height = 0;
 
@@ -108,6 +123,11 @@ namespace Andromeda::Rendering
         return m_depthTex;
     }
 
+    unsigned int FrameBufferOpenGL::GetDepthCubeTexture() const
+    {
+        return m_depthCubeTex;
+    }
+
     int FrameBufferOpenGL::GetWidth() const
     {
         return m_width;
@@ -145,6 +165,11 @@ namespace Andromeda::Rendering
             glDeleteFramebuffers(1, &m_FBO);
             m_FBO = 0;
         }
+        if (m_depthCubeTex)
+        {
+            glDeleteTextures(1, &m_depthCubeTex);
+            m_depthCubeTex = 0;
+        }
     }
 
     bool FrameBufferOpenGL::Build()
@@ -155,6 +180,8 @@ namespace Andromeda::Rendering
             return BuildColorDepth();
         case FrameBufferType::Depth:
             return BuildDepthOnly();
+		case FrameBufferType::DepthCube:
+            return BuildDepthCube();
         default:
             spdlog::error("FrameBufferOpenGL::Build: unknown type");
             return false;
@@ -210,6 +237,51 @@ namespace Andromeda::Rendering
         glReadBuffer(GL_NONE);
 
         bool ok = CheckStatus();
+        glBindFramebuffer(GL_FRAMEBUFFER, 0);
+        return ok;
+    }
+
+    bool FrameBufferOpenGL::BuildDepthCube()
+    {
+        glGenFramebuffers(1, &m_FBO);
+        glBindFramebuffer(GL_FRAMEBUFFER, m_FBO);
+
+        glGenTextures(1, &m_depthCubeTex);
+        glBindTexture(GL_TEXTURE_CUBE_MAP, m_depthCubeTex);
+
+        // kill mipmap ambiguity across resizes
+        glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_BASE_LEVEL, 0);
+        glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MAX_LEVEL, 0);
+
+        // safer internal format/type pairing for depth
+        for (int i = 0; i < 6; ++i)
+        {
+            glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X + i,
+                0,
+                GL_DEPTH_COMPONENT32F,     // <-- use 32F for GL_FLOAT
+                m_width, 
+                m_height,
+                0,
+                GL_DEPTH_COMPONENT,
+                GL_FLOAT,
+                nullptr);
+            // If you prefer 24-bit: internal=GL_DEPTH_COMPONENT24, type=GL_UNSIGNED_INT
+        }
+
+        glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+        glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+        glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+        glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+        glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE);
+
+        // attach the WHOLE cubemap (layered)
+        glFramebufferTexture(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, m_depthCubeTex, 0);
+
+        glDrawBuffer(GL_NONE);
+        glReadBuffer(GL_NONE);
+
+        bool ok = CheckStatus();               // checks the currently bound FBO
+        glBindTexture(GL_TEXTURE_CUBE_MAP, 0);
         glBindFramebuffer(GL_FRAMEBUFFER, 0);
         return ok;
     }

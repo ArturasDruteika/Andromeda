@@ -24,9 +24,19 @@ namespace Andromeda::Rendering
 		return m_pOpenGLSceneImpl->GetAmbientStrength();
 	}
 
+	const glm::vec4& OpenGLScene::GetBackgroundColor() const
+	{
+		return m_pOpenGLSceneImpl->GetBackgroundColor();
+	}
+
 	void OpenGLScene::SetAmbientStrength(float ambientStrength)
 	{
 		m_pOpenGLSceneImpl->SetAmbientStrength(ambientStrength);
+	}
+
+	void OpenGLScene::SetBackgroundColor(const glm::vec4& backroundColor)
+	{
+		m_pOpenGLSceneImpl->SetBackgroundColor(backroundColor);
 	}
 
 	void OpenGLScene::ResizeGrid(float resizeFactor)
@@ -49,9 +59,9 @@ namespace Andromeda::Rendering
 		m_pOpenGLSceneImpl->RemoveObject(id);
 	}
 
-	void OpenGLScene::AddDirectionaLight(int id, DirectionalLight* pDirectionalLight)
+	void OpenGLScene::AddLuminousObject(int id, LuminousBehavior* pLuminousObject)
 	{
-		m_pOpenGLSceneImpl->AddDirectionaLight(id, pDirectionalLight);
+		m_pOpenGLSceneImpl->AddLuminousObject(id, pLuminousObject);
 	}
 
 	const std::unordered_map<int, const DirectionalLight*> OpenGLScene::GetDirectionalLights() const

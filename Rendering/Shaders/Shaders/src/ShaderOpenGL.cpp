@@ -4,10 +4,14 @@
 
 namespace Andromeda::Rendering
 {
-	ShaderOpenGL::ShaderOpenGL(const std::filesystem::path& vertexCodeFilePath, const std::filesystem::path& fragmentCodeFilePath)
-		: ShaderSourceManagerOpenGL(vertexCodeFilePath, fragmentCodeFilePath, true)
+	ShaderOpenGL::ShaderOpenGL(
+		const std::filesystem::path& vertexCodeFilePath, 
+		const std::filesystem::path& fragmentCodeFilePath,
+		const std::filesystem::path& geometryShaderFilepath
+	)
+		: ShaderSourceManagerOpenGL(vertexCodeFilePath, fragmentCodeFilePath, geometryShaderFilepath, true)
 	{
-		ShaderProgramOpenGL::CreateShaderProgram(GetVertexCode(), GetFragmentCode());
+		ShaderProgramOpenGL::CreateShaderProgram(GetVertexCode(), GetFragmentCode(), GetGeometryCode());
 	}
 
 	void ShaderOpenGL::Bind() const
@@ -36,4 +40,5 @@ namespace Andromeda::Rendering
 	template void ShaderOpenGL::SetUniform<std::vector<float>>(const std::string&, const std::vector<float>&) const;
 	template void ShaderOpenGL::SetUniform<std::vector<glm::vec3>>(const std::string&, const std::vector<glm::vec3>&) const;
 	template void ShaderOpenGL::SetUniform<std::vector<glm::vec4>>(const std::string&, const std::vector<glm::vec4>&) const;
+	template void ShaderOpenGL::SetUniform<std::vector<glm::mat4>>(const std::string&, const std::vector<glm::mat4>&) const;
 }

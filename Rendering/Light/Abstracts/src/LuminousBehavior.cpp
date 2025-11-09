@@ -7,7 +7,7 @@ namespace Andromeda
 {
 	namespace Rendering
 	{
-		LuminousBehavior::LuminousBehavior(Light* light, const LightType& type)
+		LuminousBehavior::LuminousBehavior(Light light, const LightType& type)
 			: m_light{ light }
 			, m_type{ type }
 		{
@@ -15,8 +15,6 @@ namespace Andromeda
 
 		LuminousBehavior::~LuminousBehavior()
 		{
-			delete m_light;
-			m_light = nullptr;
 			m_type = LightType::None;
 		};
 
@@ -25,7 +23,7 @@ namespace Andromeda
 			return m_type;
 		}
 
-		Light* LuminousBehavior::GetLight() const
+		const Light& LuminousBehavior::GetLight() const
 		{
 			return m_light;
 		}

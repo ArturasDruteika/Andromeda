@@ -6,33 +6,30 @@
 #include "../../Abstracts/include/RenderableObjectOpenGL.hpp"
 
 
-namespace Andromeda
+namespace Andromeda::Rendering
 {
-	namespace Rendering
-	{
-		class SphereObjectOpenGL::SphereObjectOpenGLImpl
-			: public RenderableObjectOpenGL
-		{	
-		public:
-			SphereObjectOpenGLImpl(const Math::Vec3& centerPosition, float radius, const Space::Color& color);
-			~SphereObjectOpenGLImpl();
+	class SphereObjectOpenGL::SphereObjectOpenGLImpl
+		: public RenderableObjectOpenGL
+	{	
+	public:
+		SphereObjectOpenGLImpl(const Math::Vec3& centerPosition, float radius, const Space::Color& color);
+		~SphereObjectOpenGLImpl();
 
-			SphereObjectOpenGLImpl(const SphereObjectOpenGLImpl& other) = delete;	// Prevent Copy Constructor
-			SphereObjectOpenGLImpl& operator=(const SphereObjectOpenGLImpl& other) = delete;	// Prevent Copy Assignment
-			SphereObjectOpenGLImpl(SphereObjectOpenGLImpl&& other) noexcept = delete;	// Prevent Move Constructor
-			SphereObjectOpenGLImpl& operator=(SphereObjectOpenGLImpl&& other) noexcept = delete;	// Prevent Move Assignment
+		SphereObjectOpenGLImpl(const SphereObjectOpenGLImpl& other) = delete;	// Prevent Copy Constructor
+		SphereObjectOpenGLImpl& operator=(const SphereObjectOpenGLImpl& other) = delete;	// Prevent Copy Assignment
+		SphereObjectOpenGLImpl(SphereObjectOpenGLImpl&& other) noexcept = delete;	// Prevent Move Constructor
+		SphereObjectOpenGLImpl& operator=(SphereObjectOpenGLImpl&& other) noexcept = delete;	// Prevent Move Assignment
 
-			float GetRadius() const;
-			void SetRadius(float radius);
+		float GetRadius() const;
+		void SetRadius(float radius);
 
-		private:
-			// Sphere construction
-			void ConstructSphere(float radius, int sectorCount, int stackCount, const Space::Color& color);
+	private:
+		// Sphere construction
+		void ConstructSphere(float radius, int sectorCount, int stackCount, const Space::Color& color);
 
-		private:
-			float m_radius;
-		};
-	}
+	private:
+		float m_radius;
+	};
 }
 
 

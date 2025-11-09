@@ -6,6 +6,7 @@
 namespace Andromeda::Rendering
 {
     SceneLighting::SceneLighting() = default;
+
     SceneLighting::~SceneLighting() = default;
 
     const std::unordered_map<int, LuminousBehavior*>& SceneLighting::GetLuminousObjects() const
