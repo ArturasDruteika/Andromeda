@@ -84,8 +84,17 @@ int main(void)
     Andromeda::Space::Color sphereColor(1.0f, 1.0f, 1.0f, 1.0f);
 
     Andromeda::Rendering::PointLight* pPointLight = new Andromeda::Rendering::PointLight(
-        glm::vec3(spherePosition[0], spherePosition[1], spherePosition[2]),
-        glm::vec3(sphereColor.r, sphereColor.g, sphereColor.b)
+        glm::vec3(10.0f, 5.0f, -5.0f),  // position
+        glm::vec3(1.0f, 1.0f, 1.0f),    // color
+        1.0f,                           // intensity
+        glm::vec3(1.0f, 1.0f, 1.0f),    // ambient
+        glm::vec3(1.0f, 1.0f, 1.0f),    // diffuse
+        glm::vec3(1.0f, 1.0f, 1.0f),    // specular
+        1.0f,                           // k_c (constant attenuation)
+        0.0f,                           // k_l (linear attenuation)
+        0.0f,                           // k_q (quadratic attenuation)
+        0.1f,                           // near (shadow z range)
+        1000.0f                         // far (shadow z range)
     );
 
     Andromeda::Rendering::SphereObjectOpenGL* pSphere = new Andromeda::Rendering::SphereObjectOpenGL(
