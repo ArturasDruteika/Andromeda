@@ -1,3 +1,11 @@
+#include "glad/gl.h"
+#include "glm/glm.hpp"
+#include <glm/gtc/type_ptr.hpp>
+#include <glm/gtc/matrix_transform.hpp>
+#include <glm/gtc/matrix_inverse.hpp>
+#include "spdlog/spdlog.h"
+#include "FileOperations.hpp"
+#include "Colors.hpp"
 #include "../include/OpenGLRendererImpl.hpp"
 #include "../../../Scene/Support/include/SpecialIndices.hpp"
 #include "../../../Utils/include/MathUtils.hpp"
@@ -9,14 +17,7 @@
 #include "../../../Shaders/Shaders/include/ShaderOpenGL.hpp"
 #include "../../../Shaders/Support/include/ShaderOpenGLTypes.hpp"
 #include "../../../RenderableObjects/Interfaces/include/IRenderableObjectOpenGL.hpp"
-#include "FileOperations.hpp"
-#include "Colors.hpp"
-#include "glad/gl.h"
-#include "glm/glm.hpp"
-#include <glm/gtc/type_ptr.hpp>
-#include <glm/gtc/matrix_transform.hpp>
-#include <glm/gtc/matrix_inverse.hpp>
-#include "spdlog/spdlog.h"
+#include "../../../RenderableObjects/Objects/include/SkyroomOpenGL.hpp"
 
 
 namespace Andromeda::Rendering
@@ -25,7 +26,8 @@ namespace Andromeda::Rendering
         : m_isInitialized{ false }
         , m_shadowMapLightSpace{ glm::mat4(1.0f) }
         , m_pShaderManager{ nullptr }
-        , m_shadowCubeSize{ 1024 }
+        , m_directionalShadowResolution{ 2048 }
+        , m_shadowCubeResolution{ 1024 }
     {
         m_pShaderManager = new ShaderManager(true);
         SetCameraAspect(m_width, m_height);
@@ -93,7 +95,7 @@ namespace Andromeda::Rendering
         // depth-only shadow map
         if (m_isIlluminationMode)
         {
-            if (!m_directionalShadowFBO.Init(width, height, FrameBufferType::Depth))
+            if (!m_directionalShadowFBO.Init(m_directionalShadowResolution, m_directionalShadowResolution, FrameBufferType::Depth))
             {
                 spdlog::error("Failed to create shadow framebuffer");
                 return;
@@ -101,7 +103,7 @@ namespace Andromeda::Rendering
         }
 
         // Point-light shadow map: cubemap depth
-        if (!m_pointShadowFBO.Init(width, height, FrameBufferType::DepthCube))
+        if (!m_pointShadowFBO.Init(m_shadowCubeResolution, m_shadowCubeResolution, FrameBufferType::DepthCube))
         {
             spdlog::error("Failed to create point-light cubemap shadow framebuffer");
             return;
@@ -122,17 +124,8 @@ namespace Andromeda::Rendering
     void OpenGLRenderer::OpenGLRendererImpl::Resize(int width, int height)
     {
         SizeControl::Resize(width, height);
-
         SetCameraAspect(width, height);
-
         m_mainFBO.Resize(width, height);
-        if (m_isIlluminationMode)
-        {
-            m_directionalShadowFBO.Resize(width, height);
-            int cube = std::max(128, std::min(width, height)); // or keep a fixed 1024
-            m_pointShadowFBO.Resize(cube, cube);
-            ConfigurePointShadowDepthTexture();
-        }
     }
 
     void OpenGLRenderer::OpenGLRendererImpl::RenderFrame(IScene& scene)
@@ -140,13 +133,7 @@ namespace Andromeda::Rendering
         if (!m_isInitialized)
             return;
 
-        const glm::vec4& backgroundColor = scene.GetBackgroundColor();
-        glClearColor(
-            backgroundColor.r,
-            backgroundColor.g,
-            backgroundColor.b,
-            backgroundColor.a
-        );
+        SetBackgroundColor(scene.GetBackgroundColor());
 
         BeginFrame();
 
@@ -177,7 +164,7 @@ namespace Andromeda::Rendering
         glGetIntegerv(GL_DRAW_FRAMEBUFFER_BINDING, &prevFBO);
 
         m_directionalShadowFBO.Bind();
-        glViewport(0, 0, m_width, m_height);
+        glViewport(0, 0, m_directionalShadowResolution, m_directionalShadowResolution);
         glEnable(GL_DEPTH_TEST);
         glClear(GL_DEPTH_BUFFER_BIT);
 
@@ -219,7 +206,7 @@ namespace Andromeda::Rendering
         glGetIntegerv(GL_DRAW_FRAMEBUFFER_BINDING, &prevFBO);
 
         m_pointShadowFBO.Bind();
-        glViewport(0, 0, m_pointShadowFBO.GetWidth(), m_pointShadowFBO.GetHeight());
+        glViewport(0, 0, m_shadowCubeResolution, m_shadowCubeResolution);
         glEnable(GL_DEPTH_TEST);
         glClear(GL_DEPTH_BUFFER_BIT);
 
@@ -229,9 +216,12 @@ namespace Andromeda::Rendering
         const glm::mat4 proj = glm::perspective(glm::radians(90.0f), 1.0f, nearPlane, farPlane);
 
         std::vector<glm::vec3> ups{
-            { 0, -1,  0}, { 0, -1,  0},
-            { 0,  0,  1}, { 0,  0, -1},
-            { 0, -1,  0}, { 0, -1,  0}
+            { 0, -1,  0}, 
+            { 0, -1,  0},
+            { 0,  0,  1}, 
+            { 0,  0, -1},
+            { 0, -1,  0}, 
+            { 0, -1,  0}
         };
 
         std::vector<glm::vec3> targets{
@@ -255,6 +245,9 @@ namespace Andromeda::Rendering
 
         for (auto& [id, obj] : scene.GetObjects())
         {
+            if (obj->IsLuminous())
+                continue;
+
             IRenderableObjectOpenGL* r = dynamic_cast<IRenderableObjectOpenGL*>(obj);
             depthCubeShader->SetUniform("u_model", MathUtils::ToGLM(obj->GetModelMatrix()));
             glBindVertexArray(r->GetVAO());
@@ -263,29 +256,6 @@ namespace Andromeda::Rendering
 
         depthCubeShader->UnBind();
         glBindFramebuffer(GL_FRAMEBUFFER, prevFBO);
-        DisableFaceCulling();
-    }
-
-    void OpenGLRenderer::OpenGLRendererImpl::RenderNonLuminousObjects(const IScene& scene, const glm::mat4& lightSpace) const
-    {
-        EnableFaceCulling(GL_BACK, GL_CCW);
-        const int SHADOW_UNIT = 5;
-        glActiveTexture(GL_TEXTURE0 + SHADOW_UNIT);
-        glBindTexture(GL_TEXTURE_2D, m_directionalShadowFBO.GetDepthTexture());
-
-        ShaderOpenGL* nlShader = m_pShaderManager->GetShader(ShaderOpenGLTypes::RenderableObjectsNonLuminous);
-        nlShader->Bind();
-
-        nlShader->SetUniform("u_view", MathUtils::ToGLM(m_pCamera->GetViewMatrix()));
-        nlShader->SetUniform("u_projection", m_pCamera->GetProjection());
-        nlShader->SetUniform("u_cameraPosWS", MathUtils::ToGLM(m_pCamera->GetPosition()));
-        nlShader->SetUniform("u_lightSpaceMatrix", lightSpace);
-        nlShader->SetUniform("u_dirShadowMap", SHADOW_UNIT);
-
-        PopulateLightUniforms(*nlShader, scene);
-        RenderEachNonLuminousObject(*nlShader, scene);
-
-        nlShader->UnBind();
         DisableFaceCulling();
     }
 
@@ -319,15 +289,15 @@ namespace Andromeda::Rendering
         {
             shader->SetUniform("u_dirShadowMap", DIR_UNIT);
             shader->SetUniform("u_lightSpaceMatrix", m_shadowMapLightSpace);
+            PopulateLightUniforms(*shader, scene);
         }
 
         if (hasPoint)
         {
             shader->SetUniform("u_pointShadowCube", POINT_UNIT);
+            PopulatePointLightUniforms(*shader, scene);
         }
 
-        PopulateLightUniforms(*shader, scene);
-        PopulatePointLightUniforms(*shader, scene);
         RenderEachNonLuminousObject(*shader, scene);
         shader->UnBind();
         DisableFaceCulling();
@@ -558,6 +528,9 @@ namespace Andromeda::Rendering
             if (id < 0 || obj->IsLuminous())
                 continue;
 
+            if (dynamic_cast<SkyroomOpenGL*>(obj) != nullptr)
+                DisableFaceCulling();
+
             NonLuminousBehavior* nonLum = dynamic_cast<NonLuminousBehavior*>(obj->GetLightBehavior());
             if (!nonLum)
                 continue;
@@ -616,6 +589,7 @@ namespace Andromeda::Rendering
 
         if (hasPoint)
         {
+            // TODO: later implement point shadows for ALL point lights casters
             const PointLight* pl = pointLights.begin()->second;
             const glm::vec3 lightPos = pl->GetPosition();
             const float nearPlane = pl->GetShadowNearPlane();
@@ -625,6 +599,16 @@ namespace Andromeda::Rendering
 
         RenderNonLuminousObjectsCombined(scene, hasDir, hasPoint);
         RenderLuminousObjects(scene);
+    }
+
+    void OpenGLRenderer::OpenGLRendererImpl::SetBackgroundColor(const glm::vec4& backgroundColor)
+    {
+        glClearColor(
+            backgroundColor.r,
+            backgroundColor.g,
+            backgroundColor.b,
+            backgroundColor.a
+        );
     }
 
     glm::mat4 OpenGLRenderer::OpenGLRendererImpl::ComputeLightSpaceMatrix(const IScene& scene) const

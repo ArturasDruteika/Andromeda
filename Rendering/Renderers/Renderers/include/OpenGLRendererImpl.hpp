@@ -48,7 +48,6 @@ namespace Andromeda::Rendering
 			float nearPlane,
 			float farPlane
 		) const;
-		void RenderNonLuminousObjects(const IScene& scene, const glm::mat4& lightSpace) const;
 		void RenderNonLuminousObjectsCombined(const IScene& scene, bool hasDir, bool hasPoint) const;
 		void RenderLuminousObjects(const IScene& scene) const;
 		void RenderObjects(const IScene& scene) const;
@@ -65,11 +64,13 @@ namespace Andromeda::Rendering
 		void RenderEachNonLuminousObject(ShaderOpenGL& shader, const IScene& scene) const;
 		void ConfigurePointShadowDepthTexture();
 		void RenderLuminousMode(const IScene& scene);
+		void SetBackgroundColor(const glm::vec4& backgroundColor);
 		glm::mat4 ComputeLightSpaceMatrix(const IScene& scene) const;
 
 	private:
 		bool m_isInitialized;
-		int m_shadowCubeSize;
+		int m_directionalShadowResolution;
+		int m_shadowCubeResolution;
 
 		glm::mat4 m_shadowMapLightSpace;
 		FrameBufferOpenGL m_mainFBO;

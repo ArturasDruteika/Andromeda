@@ -1,6 +1,7 @@
 #include "Application.hpp"
 #include "LinearAlgebraDataTypes.hpp"
 #include "SphereObjectOpenGL.hpp"
+#include "SkyroomOpenGL.hpp"
 #include "CubeObjectOpenGL.hpp"
 #include "Constants.hpp"
 #include "DirectionalLight.hpp"
@@ -83,8 +84,17 @@ int main(void)
     Andromeda::Space::Color sphereColor(1.0f, 1.0f, 1.0f, 1.0f);
 
     Andromeda::Rendering::PointLight* pPointLight = new Andromeda::Rendering::PointLight(
-        glm::vec3(spherePosition[0], spherePosition[1], spherePosition[2]),
-        glm::vec3(sphereColor.r, sphereColor.g, sphereColor.b)
+        glm::vec3(10.0f, 5.0f, -5.0f),  // position
+        glm::vec3(1.0f, 1.0f, 1.0f),    // color
+        1.0f,                           // intensity
+        glm::vec3(1.0f, 1.0f, 1.0f),    // ambient
+        glm::vec3(1.0f, 1.0f, 1.0f),    // diffuse
+        glm::vec3(1.0f, 1.0f, 1.0f),    // specular
+        1.0f,                           // k_c (constant attenuation)
+        0.0f,                           // k_l (linear attenuation)
+        0.0f,                           // k_q (quadratic attenuation)
+        0.1f,                           // near (shadow z range)
+        1000.0f                         // far (shadow z range)
     );
 
     Andromeda::Rendering::SphereObjectOpenGL* pSphere = new Andromeda::Rendering::SphereObjectOpenGL(
@@ -104,8 +114,21 @@ int main(void)
         glm::vec3(0.4f, 0.4f, 0.4f) // Specular
 	);
 
+    Andromeda::Rendering::MaterialType materialType = materialTypes[5];
+    Andromeda::Rendering::Material material = materialsLib.GetMaterial(materialType);
+
+    Andromeda::Rendering::SkyroomOpenGL* pSkyroom = new Andromeda::Rendering::SkyroomOpenGL(
+        Andromeda::Math::Vec3(0.0f, 0.0f, 0.0f),
+        50.0f,
+        Andromeda::Space::Color(0.5f, 0.7f, 0.9f, 1.0f) // Light blue
+	);
+
+    Andromeda::Rendering::NonLuminousBehavior* nlBehavior = new Andromeda::Rendering::NonLuminousBehavior(material);
+	pSkyroom->SetLuminousBehavior(nlBehavior);
+
     app.AddToScene(objectId++, pDirectionalLight);
     app.AddToScene(objectId++, pSphere);
+    app.AddToScene(objectId++, pSkyroom);
 
     app.RunMainLoop();
     app.DeInit();
