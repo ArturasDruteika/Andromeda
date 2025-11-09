@@ -1,3 +1,11 @@
+#include "glad/gl.h"
+#include "glm/glm.hpp"
+#include <glm/gtc/type_ptr.hpp>
+#include <glm/gtc/matrix_transform.hpp>
+#include <glm/gtc/matrix_inverse.hpp>
+#include "spdlog/spdlog.h"
+#include "FileOperations.hpp"
+#include "Colors.hpp"
 #include "../include/OpenGLRendererImpl.hpp"
 #include "../../../Scene/Support/include/SpecialIndices.hpp"
 #include "../../../Utils/include/MathUtils.hpp"
@@ -9,14 +17,7 @@
 #include "../../../Shaders/Shaders/include/ShaderOpenGL.hpp"
 #include "../../../Shaders/Support/include/ShaderOpenGLTypes.hpp"
 #include "../../../RenderableObjects/Interfaces/include/IRenderableObjectOpenGL.hpp"
-#include "FileOperations.hpp"
-#include "Colors.hpp"
-#include "glad/gl.h"
-#include "glm/glm.hpp"
-#include <glm/gtc/type_ptr.hpp>
-#include <glm/gtc/matrix_transform.hpp>
-#include <glm/gtc/matrix_inverse.hpp>
-#include "spdlog/spdlog.h"
+#include "../../../RenderableObjects/Objects/include/SkyroomOpenGL.hpp"
 
 
 namespace Andromeda::Rendering
@@ -163,7 +164,7 @@ namespace Andromeda::Rendering
         glGetIntegerv(GL_DRAW_FRAMEBUFFER_BINDING, &prevFBO);
 
         m_directionalShadowFBO.Bind();
-        glViewport(0, 0, m_width, m_height);
+        glViewport(0, 0, m_directionalShadowResolution, m_directionalShadowResolution);
         glEnable(GL_DEPTH_TEST);
         glClear(GL_DEPTH_BUFFER_BIT);
 
@@ -205,7 +206,7 @@ namespace Andromeda::Rendering
         glGetIntegerv(GL_DRAW_FRAMEBUFFER_BINDING, &prevFBO);
 
         m_pointShadowFBO.Bind();
-        glViewport(0, 0, m_pointShadowFBO.GetWidth(), m_pointShadowFBO.GetHeight());
+        glViewport(0, 0, m_shadowCubeResolution, m_shadowCubeResolution);
         glEnable(GL_DEPTH_TEST);
         glClear(GL_DEPTH_BUFFER_BIT);
 
@@ -215,9 +216,12 @@ namespace Andromeda::Rendering
         const glm::mat4 proj = glm::perspective(glm::radians(90.0f), 1.0f, nearPlane, farPlane);
 
         std::vector<glm::vec3> ups{
-            { 0, -1,  0}, { 0, -1,  0},
-            { 0,  0,  1}, { 0,  0, -1},
-            { 0, -1,  0}, { 0, -1,  0}
+            { 0, -1,  0}, 
+            { 0, -1,  0},
+            { 0,  0,  1}, 
+            { 0,  0, -1},
+            { 0, -1,  0}, 
+            { 0, -1,  0}
         };
 
         std::vector<glm::vec3> targets{
@@ -241,6 +245,9 @@ namespace Andromeda::Rendering
 
         for (auto& [id, obj] : scene.GetObjects())
         {
+            if (obj->IsLuminous())
+                continue;
+
             IRenderableObjectOpenGL* r = dynamic_cast<IRenderableObjectOpenGL*>(obj);
             depthCubeShader->SetUniform("u_model", MathUtils::ToGLM(obj->GetModelMatrix()));
             glBindVertexArray(r->GetVAO());
@@ -249,29 +256,6 @@ namespace Andromeda::Rendering
 
         depthCubeShader->UnBind();
         glBindFramebuffer(GL_FRAMEBUFFER, prevFBO);
-        DisableFaceCulling();
-    }
-
-    void OpenGLRenderer::OpenGLRendererImpl::RenderNonLuminousObjects(const IScene& scene, const glm::mat4& lightSpace) const
-    {
-        EnableFaceCulling(GL_BACK, GL_CCW);
-        const int SHADOW_UNIT = 5;
-        glActiveTexture(GL_TEXTURE0 + SHADOW_UNIT);
-        glBindTexture(GL_TEXTURE_2D, m_directionalShadowFBO.GetDepthTexture());
-
-        ShaderOpenGL* nlShader = m_pShaderManager->GetShader(ShaderOpenGLTypes::RenderableObjectsNonLuminous);
-        nlShader->Bind();
-
-        nlShader->SetUniform("u_view", MathUtils::ToGLM(m_pCamera->GetViewMatrix()));
-        nlShader->SetUniform("u_projection", m_pCamera->GetProjection());
-        nlShader->SetUniform("u_cameraPosWS", MathUtils::ToGLM(m_pCamera->GetPosition()));
-        nlShader->SetUniform("u_lightSpaceMatrix", lightSpace);
-        nlShader->SetUniform("u_dirShadowMap", SHADOW_UNIT);
-
-        PopulateLightUniforms(*nlShader, scene);
-        RenderEachNonLuminousObject(*nlShader, scene);
-
-        nlShader->UnBind();
         DisableFaceCulling();
     }
 

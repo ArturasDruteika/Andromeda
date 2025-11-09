@@ -48,7 +48,6 @@ namespace Andromeda::Rendering
 			float nearPlane,
 			float farPlane
 		) const;
-		void RenderNonLuminousObjects(const IScene& scene, const glm::mat4& lightSpace) const;
 		void RenderNonLuminousObjectsCombined(const IScene& scene, bool hasDir, bool hasPoint) const;
 		void RenderLuminousObjects(const IScene& scene) const;
 		void RenderObjects(const IScene& scene) const;
