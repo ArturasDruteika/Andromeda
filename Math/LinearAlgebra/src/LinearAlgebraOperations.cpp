@@ -101,5 +101,55 @@ namespace Andromeda
 			}
 			return result;
 		}
+
+		// === Length ===
+		float LinAlgOps::Length(const Vec2& v)
+		{
+			return std::sqrt(DotProd(v, v));
+		}
+
+		float LinAlgOps::Length(const Vec3& v)
+		{
+			return std::sqrt(DotProd(v, v));
+		}
+
+		float LinAlgOps::Length(const Vec4& v)
+		{
+			return std::sqrt(DotProd(v, v));
+		}
+
+		// === Normalize ===
+		Vec2 LinAlgOps::Normalize(const Vec2& v, float epsilon)
+		{
+			float lenSq = DotProd(v, v);
+			if (lenSq <= epsilon * epsilon)
+			{
+				return v; // Avoid NaNs on zero-length vectors
+			}
+			float invLen = 1.0f / std::sqrt(lenSq);
+			return Vec2{ v[0] * invLen, v[1] * invLen };
+		}
+
+		Vec3 LinAlgOps::Normalize(const Vec3& v, float epsilon)
+		{
+			float lenSq = DotProd(v, v);
+			if (lenSq <= epsilon * epsilon)
+			{
+				return v;
+			}
+			float invLen = 1.0f / std::sqrt(lenSq);
+			return Vec3{ v[0] * invLen, v[1] * invLen, v[2] * invLen };
+		}
+
+		Vec4 LinAlgOps::Normalize(const Vec4& v, float epsilon)
+		{
+			float lenSq = DotProd(v, v);
+			if (lenSq <= epsilon * epsilon)
+			{
+				return v;
+			}
+			float invLen = 1.0f / std::sqrt(lenSq);
+			return Vec4{ v[0] * invLen, v[1] * invLen, v[2] * invLen, v[3] * invLen };
+		}
 	}
 }

@@ -25,6 +25,16 @@ namespace Andromeda
 			static Mat2 Multiply(const Mat2& a, const Mat2& b);
 			static Mat3 Multiply(const Mat3& a, const Mat3& b);
 			static Mat4 Multiply(const Mat4& a, const Mat4& b);
+
+			// Length / magnitude
+			static float Length(const Vec2& v);
+			static float Length(const Vec3& v);
+			static float Length(const Vec4& v);
+
+			// Normalize (returns unit vector). If length is ~0, returns the input unchanged.
+			static Vec2 Normalize(const Vec2& v, float epsilon = 1e-8f);
+			static Vec3 Normalize(const Vec3& v, float epsilon = 1e-8f);
+			static Vec4 Normalize(const Vec4& v, float epsilon = 1e-8f);
 		};
 	}
 }
