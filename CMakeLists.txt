@@ -28,7 +28,7 @@ add_subdirectory(Window)
 add_subdirectory(Context)
 add_subdirectory(glfw)
 add_subdirectory(imgui)
-add_subdirectory(Space)
+add_subdirectory(PhysicalProperties)
 add_subdirectory(Math)
 add_subdirectory(Api)
 
