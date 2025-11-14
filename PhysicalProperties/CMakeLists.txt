@@ -66,6 +66,11 @@ set(SPACE_HEADERS
     Space/include/Points.hpp
 )
 
+# ==== Vertices ====
+set(VERTICES_HEADERS
+    Vertices/include/Vertex.hpp
+)
+
 # ==== Target ====
 add_library(${PROJECT_NAME}
     SHARED
@@ -76,6 +81,7 @@ add_library(${PROJECT_NAME}
         ${MATERIALS_HEADERS}
         ${MATERIALS_SOURCES}
         ${SPACE_HEADERS}
+        ${VERTICES_HEADERS}
 )
 
 # ==== Include Directories ====
@@ -149,4 +155,13 @@ source_group(
     FILES
         ${SPACE_HEADERS}
         ${SPACE_SOURCES}
+)
+
+source_group(
+    TREE
+        ${CMAKE_CURRENT_SOURCE_DIR}/Vertices
+    PREFIX
+        "Vertices"
+    FILES
+        ${VERTICES_HEADERS}
 )
