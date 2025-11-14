@@ -29,7 +29,7 @@ namespace Andromeda::Rendering
         return m_gridLineWidth;
     }
 
-    const Space::Color& GridControl::GetGridColor() const
+    const PhysicalProperties::Color& GridControl::GetGridColor() const
     {
 		return m_gridColor;
     }
@@ -54,7 +54,7 @@ namespace Andromeda::Rendering
 		m_gridLineWidth = lineWidth;
     }
 
-    void GridControl::SetGridColor(const Space::Color& color)
+    void GridControl::SetGridColor(const PhysicalProperties::Color& color)
     {
 		m_gridColor = color;
     }

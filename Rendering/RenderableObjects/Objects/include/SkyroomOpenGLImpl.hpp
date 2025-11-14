@@ -12,13 +12,13 @@ namespace Andromeda::Rendering
 		: public RenderableObjectOpenGL
 	{
 	public:
-		SkyroomOpenGLImpl(const Math::Vec3& centerPosition, float halfExtent, const Space::Color& color);
+		SkyroomOpenGLImpl(const Math::Vec3& centerPosition, float halfExtent, const PhysicalProperties::Color& color);
 		~SkyroomOpenGLImpl();
 
 		float GetHalfExtent() const;
 
 	private:
-		void BuildGeometry(float h, const Space::Color& colorGray);
+		void BuildGeometry(float h, const PhysicalProperties::Color& colorGray);
 
 	private:
 		float m_halfExtent;

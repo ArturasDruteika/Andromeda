@@ -4,7 +4,7 @@
 
 namespace Andromeda::Rendering
 {
-	SkyroomOpenGL::SkyroomOpenGL(const Math::Vec3& centerPosition, float halfExtent, const Space::Color& color)
+	SkyroomOpenGL::SkyroomOpenGL(const Math::Vec3& centerPosition, float halfExtent, const PhysicalProperties::Color& color)
 		: m_pSkyroomOpenGLImpl(new SkyroomOpenGLImpl(centerPosition, halfExtent, color))
 	{
 	}
@@ -117,12 +117,12 @@ namespace Andromeda::Rendering
 	}
 
 	// === IRenderableObject ===
-	Space::Color SkyroomOpenGL::GetColor() const
+	PhysicalProperties::Color SkyroomOpenGL::GetColor() const
 	{
 		return m_pSkyroomOpenGLImpl->GetColor();
 	}
 
-	void SkyroomOpenGL::SetColor(const Space::Color& color)
+	void SkyroomOpenGL::SetColor(const PhysicalProperties::Color& color)
 	{
 		m_pSkyroomOpenGLImpl->SetColor(color);
 	}

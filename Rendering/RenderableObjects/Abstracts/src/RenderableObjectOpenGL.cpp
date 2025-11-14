@@ -9,7 +9,7 @@ namespace Andromeda
 {
 	namespace Rendering
 	{
-		RenderableObjectOpenGL::RenderableObjectOpenGL(const Math::Vec3& centerPosition, const Space::Color& color, const VertexLayout& vertexLayout)
+		RenderableObjectOpenGL::RenderableObjectOpenGL(const Math::Vec3& centerPosition, const PhysicalProperties::Color& color, const VertexLayout& vertexLayout)
 			: RenderableObject(centerPosition, color)
 			, m_VBO{ 0 }
 			, m_VAO{ 0 }

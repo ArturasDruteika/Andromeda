@@ -12,7 +12,7 @@ target_include_directories(${PROJECT_NAME}
     PRIVATE
 	    ../ExternalGraphicsLibs/glm/
         ../Math/LinearAlgebra/include/
-        ../Space/Attributes/include/
+        ../PhysicalProperties/Space/include/
         ../Rendering/Light/LightTypes/include/
         ../Rendering/Light/Abstracts/include/
         ../Rendering/RenderableObjects/Interfaces/include/
@@ -26,6 +26,7 @@ target_link_libraries(${PROJECT_NAME}
     PRIVATE 
         PrecompiledHeaders
         Math
+        PhysicalProperties
         Rendering
         EngineCore
 )
@@ -33,7 +34,7 @@ target_link_libraries(${PROJECT_NAME}
 # Ensure Example waits for EngineCore to build
 add_dependencies(${PROJECT_NAME} 
     Math
-    Space
+    PhysicalProperties
     ExternalGraphicsLibs
     Rendering
     EngineCore

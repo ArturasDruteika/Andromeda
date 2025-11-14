@@ -12,7 +12,7 @@ namespace Andromeda::Rendering
 		: public IRenderableObjectOpenGL
 	{
 		public:
-		SkyroomOpenGL(const Math::Vec3& centerPosition, float halfExtent, const Space::Color& color);
+		SkyroomOpenGL(const Math::Vec3& centerPosition, float halfExtent, const PhysicalProperties::Color& color);
 		~SkyroomOpenGL() override;
 
 		// === Overrides from ILuminous ===
@@ -41,8 +41,8 @@ namespace Andromeda::Rendering
 		std::vector<Vertex> GetVertices() const override;
 
 		// === Overrides from IRenderableObject ===
-		Space::Color GetColor() const override;
-		void SetColor(const Space::Color& color) override;
+		PhysicalProperties::Color GetColor() const override;
+		void SetColor(const PhysicalProperties::Color& color) override;
 
 		// === Overrides from IRenderableObjectOpenGL ===
 		unsigned int GetVBO() const override;

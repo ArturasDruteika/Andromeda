@@ -7,15 +7,15 @@
 
 namespace Andromeda::Rendering
 {
-    SphereObjectOpenGL::SphereObjectOpenGLImpl::SphereObjectOpenGLImpl(const Math::Vec3& centerPosition, float radius, const Space::Color& color)
+    SphereObjectOpenGL::SphereObjectOpenGLImpl::SphereObjectOpenGLImpl(const Math::Vec3& centerPosition, float radius, const PhysicalProperties::Color& color)
 		: m_radius{ radius }
 		, RenderableObjectOpenGL(
 			centerPosition,
 			color,
 			std::vector {
-				VertexAttributes{ 0, Space::Point3D::Size(), GL_FLOAT, GL_FALSE, sizeof(Vertex), 0 }, // Position
-				VertexAttributes{ 1, Space::Color::Size(), GL_FLOAT, GL_FALSE, sizeof(Vertex), sizeof(Space::Point3D)}, // Color
-                VertexAttributes{ 2, Math::Vec3::Size(), GL_FLOAT, GL_FALSE, sizeof(Vertex), sizeof(Space::Point3D) + sizeof(Space::Color)} // Normal
+				VertexAttributes{ 0, PhysicalProperties::Point3D::Size(), GL_FLOAT, GL_FALSE, sizeof(Vertex), 0 }, // Position
+				VertexAttributes{ 1, PhysicalProperties::Color::Size(), GL_FLOAT, GL_FALSE, sizeof(Vertex), sizeof(PhysicalProperties::Point3D)}, // Color
+                VertexAttributes{ 2, Math::Vec3::Size(), GL_FLOAT, GL_FALSE, sizeof(Vertex), sizeof(PhysicalProperties::Point3D) + sizeof(PhysicalProperties::Color)} // Normal
 			} 
 		)
 	{
@@ -36,7 +36,7 @@ namespace Andromeda::Rendering
 			
 	}
 
-    void SphereObjectOpenGL::SphereObjectOpenGLImpl::ConstructSphere(float radius, int sectorCount, int stackCount, const Space::Color& color)
+    void SphereObjectOpenGL::SphereObjectOpenGLImpl::ConstructSphere(float radius, int sectorCount, int stackCount, const PhysicalProperties::Color& color)
     {
         m_vertices.clear();
         m_indices.clear();
@@ -59,7 +59,7 @@ namespace Andromeda::Rendering
 
                 // Use your Vertex constructor with position, color, and normal
                 m_vertices.emplace_back(
-                    Space::Point3D(position.x, position.y, position.z),
+                    PhysicalProperties::Point3D(position.x, position.y, position.z),
                     color,
                     MathUtils::FromGLM(normal)
                 );

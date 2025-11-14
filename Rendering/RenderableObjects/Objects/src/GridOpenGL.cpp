@@ -5,7 +5,7 @@
 
 namespace Andromeda::Rendering
 {
-    GridOpenGL::GridOpenGL(int gridSize, float spacing, float densityFactor, const Space::Color& color)
+    GridOpenGL::GridOpenGL(int gridSize, float spacing, float densityFactor, const PhysicalProperties::Color& color)
 		: m_gridSize{ gridSize }
         , m_spacing{ spacing }
         , m_densityFactor{ densityFactor }
@@ -13,9 +13,9 @@ namespace Andromeda::Rendering
 			Math::Vec3(0.0f, 0.0f, 0.0f),
 			color,
 			std::vector{
-				VertexAttributes{ 0, Space::Point3D::Size(), GL_FLOAT, GL_FALSE, sizeof(Vertex), 0 }, // Position
-				VertexAttributes{ 1, Space::Color::Size(), GL_FLOAT, GL_FALSE, sizeof(Vertex), sizeof(Space::Point3D)}, // Color
-				VertexAttributes{ 2, Math::Vec3::Size(), GL_FLOAT, GL_FALSE, sizeof(Vertex), sizeof(Space::Point3D) + sizeof(Space::Color)} // Normal
+				VertexAttributes{ 0, PhysicalProperties::Point3D::Size(), GL_FLOAT, GL_FALSE, sizeof(Vertex), 0 }, // Position
+				VertexAttributes{ 1, PhysicalProperties::Color::Size(), GL_FLOAT, GL_FALSE, sizeof(Vertex), sizeof(PhysicalProperties::Point3D)}, // Color
+				VertexAttributes{ 2, Math::Vec3::Size(), GL_FLOAT, GL_FALSE, sizeof(Vertex), sizeof(PhysicalProperties::Point3D) + sizeof(PhysicalProperties::Color)} // Normal
 			}
 		)
 	{
@@ -81,7 +81,7 @@ namespace Andromeda::Rendering
         return MathUtils::FromGLM(m_modelMatrix);
     }
 
-    Space::Color GridOpenGL::GetColor() const
+    PhysicalProperties::Color GridOpenGL::GetColor() const
     {
         return m_color;
     }
@@ -141,7 +141,7 @@ namespace Andromeda::Rendering
         RenderableObjectOpenGL::Scale(scale);
     }
 
-    void GridOpenGL::SetColor(const Space::Color& color)
+    void GridOpenGL::SetColor(const PhysicalProperties::Color& color)
     {
     }
 
@@ -181,7 +181,7 @@ namespace Andromeda::Rendering
         UpdateModelMatrix(TransformationType::ALL);
     }
 
-    void GridOpenGL::ConstructGrid(int size, float spacing, const Space::Color& gridColor)
+    void GridOpenGL::ConstructGrid(int size, float spacing, const PhysicalProperties::Color& gridColor)
     {
         m_vertices.clear();
         m_indices.clear();
@@ -193,23 +193,23 @@ namespace Andromeda::Rendering
         for (float i = -max; i <= max; i += m_densityFactor)
         {
             float coord = i * spacing;
-            Space::Color color = gridColor;
+            PhysicalProperties::Color color = gridColor;
 
             if (std::abs(i) < 0.001f) // Center line
             {
-                color = Space::Color(1.0f, 0.5f, 0.5f); // X-axis = Red
+                color = PhysicalProperties::Color(1.0f, 0.5f, 0.5f); // X-axis = Red
             }
 
             // Line parallel to Z-axis (X is constant)
-            m_vertices.emplace_back(Space::Point3D(coord, 0.0f, -size * spacing), color);
-            m_vertices.emplace_back(Space::Point3D(coord, 0.0f, size * spacing), color);
+            m_vertices.emplace_back(PhysicalProperties::Point3D(coord, 0.0f, -size * spacing), color);
+            m_vertices.emplace_back(PhysicalProperties::Point3D(coord, 0.0f, size * spacing), color);
             m_indices.push_back(index++);
             m_indices.push_back(index++);
 
             // Line parallel to X-axis (Z is constant)
-            color = (std::abs(i) < 0.001f) ? Space::Color(0.5f, 0.5f, 1.0f) : gridColor; // Z-axis = Blue
-            m_vertices.emplace_back(Space::Point3D(-size * spacing, 0.0f, coord), color);
-            m_vertices.emplace_back(Space::Point3D(size * spacing, 0.0f, coord), color);
+            color = (std::abs(i) < 0.001f) ? PhysicalProperties::Color(0.5f, 0.5f, 1.0f) : gridColor; // Z-axis = Blue
+            m_vertices.emplace_back(PhysicalProperties::Point3D(-size * spacing, 0.0f, coord), color);
+            m_vertices.emplace_back(PhysicalProperties::Point3D(size * spacing, 0.0f, coord), color);
             m_indices.push_back(index++);
             m_indices.push_back(index++);
         }

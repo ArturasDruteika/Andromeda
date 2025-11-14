@@ -299,9 +299,10 @@ target_include_directories(${PROJECT_NAME}
     PUBLIC
         ..//Math//LinearAlgebra//include//
         ..//Math//Constants//include//
-        ..//Space//DataTypes//include//
-        ..//Space//Attributes//include//
-        ..//Space//Vertices//include//
+        ..//PhysicalProperties//Colors//include//
+        ..//PhysicalProperties//Light//Interfaces//include//
+        ..//PhysicalProperties//Light//LightTypes//include//
+        ..//PhysicalProperties//Space//include//
 )
 
 # Link GLFW and OpenGL to the executable
@@ -309,6 +310,7 @@ target_link_libraries(${PROJECT_NAME}
     PRIVATE
         PrecompiledHeaders
         Utils
+        PhysicalProperties
         ExternalGraphicsLibs
         Math
         spdlog::spdlog
@@ -316,6 +318,7 @@ target_link_libraries(${PROJECT_NAME}
 
 add_dependencies(${PROJECT_NAME} 
     Utils
+    PhysicalProperties
     ExternalGraphicsLibs
     Math
 )

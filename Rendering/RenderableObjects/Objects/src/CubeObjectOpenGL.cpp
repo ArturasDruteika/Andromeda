@@ -4,7 +4,7 @@
 
 namespace Andromeda::Rendering
 {
-	CubeObjectOpenGL::CubeObjectOpenGL(const Math::Vec3& centerPosition, float radius, const Space::Color& color)
+	CubeObjectOpenGL::CubeObjectOpenGL(const Math::Vec3& centerPosition, float radius, const PhysicalProperties::Color& color)
 		: m_pCubeObjectOpenGLImpl{ new CubeObjectOpenGL::CubeObjectOpenGLImpl(centerPosition, radius, color) }
 	{
 	}
@@ -69,7 +69,7 @@ namespace Andromeda::Rendering
 		return m_pCubeObjectOpenGLImpl->GetModelMatrix();
 	}
 
-	Space::Color CubeObjectOpenGL::GetColor() const
+	PhysicalProperties::Color CubeObjectOpenGL::GetColor() const
 	{
 		return m_pCubeObjectOpenGLImpl->GetColor();
 	}
@@ -129,7 +129,7 @@ namespace Andromeda::Rendering
 		m_pCubeObjectOpenGLImpl->Scale(scale);
 	}
 
-	void CubeObjectOpenGL::SetColor(const Space::Color& color)
+	void CubeObjectOpenGL::SetColor(const PhysicalProperties::Color& color)
 	{
 	}
 

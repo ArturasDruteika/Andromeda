@@ -18,7 +18,7 @@ namespace Andromeda::Rendering
 			int gridSize = 100, 
 			float spacing = 1.0f, 
 			float densityFactor = 0.05, 
-			const Space::Color& color = Space::Color(0.3f, 0.3f, 0.3f, 1.0f)
+			const PhysicalProperties::Color& color = PhysicalProperties::Color(0.3f, 0.3f, 0.3f, 1.0f)
 		);
 		~GridOpenGL();
 
@@ -53,8 +53,8 @@ namespace Andromeda::Rendering
 		std::vector<Vertex> GetVertices() const override;
 
 		// === Overrides from IRenderableObject ===
-		Space::Color GetColor() const override;
-		void SetColor(const Space::Color& color) override;
+		PhysicalProperties::Color GetColor() const override;
+		void SetColor(const PhysicalProperties::Color& color) override;
 
 		// === Overrides from IRenderableObjectOpenGL ===
 		unsigned int GetVBO() const override;
@@ -71,7 +71,7 @@ namespace Andromeda::Rendering
 		void SetDensityFactor(float densityFactor);
 
 	private:
-		void ConstructGrid(int size = 100, float spacing = 1.0f, const Space::Color& gridColor = { 0.3, 0.3, 0.3, 1.0 });
+		void ConstructGrid(int size = 100, float spacing = 1.0f, const PhysicalProperties::Color& gridColor = { 0.3, 0.3, 0.3, 1.0 });
 
 	private:
 		int m_gridSize;

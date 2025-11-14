@@ -7,25 +7,25 @@ namespace Andromeda::Rendering
 {
     // Build CCW triangles as seen from INSIDE the cube; normals point inward.
     static inline void PushTri(std::vector<Vertex>& v,
-        const Space::Point3D& a,
-        const Space::Point3D& b,
-        const Space::Point3D& c,
+        const PhysicalProperties::Point3D& a,
+        const PhysicalProperties::Point3D& b,
+        const PhysicalProperties::Point3D& c,
         const Math::Vec3& n,
-        const Space::Color& col)
+        const PhysicalProperties::Color& col)
     {
         v.emplace_back(a, col, n);
         v.emplace_back(b, col, n);
         v.emplace_back(c, col, n);
     }
 
-    SkyroomOpenGL::SkyroomOpenGLImpl::SkyroomOpenGLImpl(const Math::Vec3& centerPosition, float halfExtent, const Space::Color& color)
+    SkyroomOpenGL::SkyroomOpenGLImpl::SkyroomOpenGLImpl(const Math::Vec3& centerPosition, float halfExtent, const PhysicalProperties::Color& color)
         : RenderableObjectOpenGL(
             centerPosition,
             color,
             std::vector{
-                VertexAttributes{ 0, Space::Point3D::Size(), GL_FLOAT, GL_FALSE, sizeof(Vertex), 0 }, // Position
-                VertexAttributes{ 1, Space::Color::Size(), GL_FLOAT, GL_FALSE, sizeof(Vertex), sizeof(Space::Point3D)}, // Color
-                VertexAttributes{ 2, Math::Vec3::Size(), GL_FLOAT, GL_FALSE, sizeof(Vertex), sizeof(Space::Point3D) + sizeof(Space::Color)} // Normal
+                VertexAttributes{ 0, PhysicalProperties::Point3D::Size(), GL_FLOAT, GL_FALSE, sizeof(Vertex), 0 }, // Position
+                VertexAttributes{ 1, PhysicalProperties::Color::Size(), GL_FLOAT, GL_FALSE, sizeof(Vertex), sizeof(PhysicalProperties::Point3D)}, // Color
+                VertexAttributes{ 2, Math::Vec3::Size(), GL_FLOAT, GL_FALSE, sizeof(Vertex), sizeof(PhysicalProperties::Point3D) + sizeof(PhysicalProperties::Color)} // Normal
             }
         )
         , m_halfExtent{ halfExtent }
@@ -42,10 +42,10 @@ namespace Andromeda::Rendering
         return m_halfExtent;
 	}
 
-    void SkyroomOpenGL::SkyroomOpenGLImpl::BuildGeometry(float h, const Space::Color& colorGray)
+    void SkyroomOpenGL::SkyroomOpenGLImpl::BuildGeometry(float h, const PhysicalProperties::Color& colorGray)
     {
         // 8 corners
-        const Space::Point3D p[8] = {
+        const PhysicalProperties::Point3D p[8] = {
             { -h, -h, -h }, { +h, -h, -h }, { +h, +h, -h }, { -h, +h, -h },
             { -h, -h, +h }, { +h, -h, +h }, { +h, +h, +h }, { -h, +h, +h }
         };

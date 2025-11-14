@@ -13,20 +13,20 @@ namespace Andromeda
 	{
 		struct Vertex
 		{
-			Space::Point3D position;
-			Space::Color color;
+			PhysicalProperties::Point3D position;
+			PhysicalProperties::Color color;
 			Math::Vec3 normal;
 
 			Vertex() = default;
 
-			Vertex(const Space::Point3D& pos, const Space::Color& col)
+			Vertex(const PhysicalProperties::Point3D& pos, const PhysicalProperties::Color& col)
 				: position(pos)
 				, color(col)
 				, normal(0.0f, 0.0f, 0.0f)
 			{
 			}
 
-			Vertex(const Space::Point3D& pos, const Space::Color& col, const Math::Vec3& normal)
+			Vertex(const PhysicalProperties::Point3D& pos, const PhysicalProperties::Color& col, const Math::Vec3& normal)
 				: position(pos)
 				, color(col)
 				, normal(normal)

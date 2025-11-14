@@ -16,16 +16,16 @@ namespace Andromeda::Rendering
         public Luminous
     {
     public:
-        RenderableObject(const Math::Vec3& centerPosition, const Space::Color& color);
+        RenderableObject(const Math::Vec3& centerPosition, const PhysicalProperties::Color& color);
         ~RenderableObject();
 
         // Getters
-        Space::Color GetColor() const;
+        PhysicalProperties::Color GetColor() const;
 		// Setters
-		void SetColor(const Space::Color& color);
+		void SetColor(const PhysicalProperties::Color& color);
 
     protected:
-        Space::Color m_color;
+        PhysicalProperties::Color m_color;
 
     };
 }

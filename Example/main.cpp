@@ -63,7 +63,7 @@ int main(void)
                 Andromeda::Rendering::MaterialType materialType = materialTypes[objectId % numMaterials];
                 Andromeda::Rendering::Material material = materialsLib.GetMaterial(materialType);
 
-                Andromeda::Space::Color color(
+                Andromeda::PhysicalProperties::Color color(
                     material.GetDiffuse()[0],
                     material.GetDiffuse()[1],
                     material.GetDiffuse()[2],
@@ -81,7 +81,7 @@ int main(void)
     // Light source sphere
     float sphereRadius = 0.7f;
     Andromeda::Math::Vec3 spherePosition(10.0f, 5.0f, -5.0f);
-    Andromeda::Space::Color sphereColor(1.0f, 1.0f, 1.0f, 1.0f);
+    Andromeda::PhysicalProperties::Color sphereColor(1.0f, 1.0f, 1.0f, 1.0f);
 
     Andromeda::Rendering::PointLight* pPointLight = new Andromeda::Rendering::PointLight(
         glm::vec3(spherePosition[0], spherePosition[1], spherePosition[2]),                 // position
@@ -120,7 +120,7 @@ int main(void)
     Andromeda::Rendering::SkyroomOpenGL* pSkyroom = new Andromeda::Rendering::SkyroomOpenGL(
         Andromeda::Math::Vec3(0.0f, 0.0f, 0.0f),
         50.0f,
-        Andromeda::Space::Color(0.5f, 0.7f, 0.9f, 1.0f) // Light blue
+        Andromeda::PhysicalProperties::Color(0.5f, 0.7f, 0.9f, 1.0f) // Light blue
 	);
 
     Andromeda::Rendering::NonLuminousBehavior* nlBehavior = new Andromeda::Rendering::NonLuminousBehavior(material);

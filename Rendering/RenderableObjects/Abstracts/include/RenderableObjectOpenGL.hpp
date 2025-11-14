@@ -16,7 +16,7 @@ namespace Andromeda
 			: public RenderableObject
 		{	
 		public:
-			RenderableObjectOpenGL(const Math::Vec3& centerPosition, const Space::Color& color, const VertexLayout& vertexLayout);
+			RenderableObjectOpenGL(const Math::Vec3& centerPosition, const PhysicalProperties::Color& color, const VertexLayout& vertexLayout);
 			~RenderableObjectOpenGL();
 
 			RenderableObjectOpenGL(const RenderableObjectOpenGL& other) = delete;	// Prevent Copy Constructor

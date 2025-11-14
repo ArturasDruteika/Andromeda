@@ -14,15 +14,15 @@ namespace Andromeda::Rendering
 	};
 
 
-	CubeObjectOpenGL::CubeObjectOpenGLImpl::CubeObjectOpenGLImpl(const Math::Vec3& centerPosition, float halfExtent, const Space::Color& color)
+	CubeObjectOpenGL::CubeObjectOpenGLImpl::CubeObjectOpenGLImpl(const Math::Vec3& centerPosition, float halfExtent, const PhysicalProperties::Color& color)
 		: m_halfExtent{ halfExtent }
 		, RenderableObjectOpenGL(
 			centerPosition,
 			color,
 			std::vector {
-				VertexAttributes{ 0, Space::Point3D::Size(), GL_FLOAT, GL_FALSE, sizeof(Vertex), 0 }, // Position
-				VertexAttributes{ 1, Space::Color::Size(), GL_FLOAT, GL_FALSE, sizeof(Vertex), sizeof(Space::Point3D)}, // Color
-				VertexAttributes{ 2, Math::Vec3::Size(), GL_FLOAT, GL_FALSE, sizeof(Vertex), sizeof(Space::Point3D) + sizeof(Space::Color)} // Normal
+				VertexAttributes{ 0, PhysicalProperties::Point3D::Size(), GL_FLOAT, GL_FALSE, sizeof(Vertex), 0 }, // Position
+				VertexAttributes{ 1, PhysicalProperties::Color::Size(), GL_FLOAT, GL_FALSE, sizeof(Vertex), sizeof(PhysicalProperties::Point3D)}, // Color
+				VertexAttributes{ 2, Math::Vec3::Size(), GL_FLOAT, GL_FALSE, sizeof(Vertex), sizeof(PhysicalProperties::Point3D) + sizeof(PhysicalProperties::Color)} // Normal
 			} 
 		)
 	{
@@ -42,7 +42,7 @@ namespace Andromeda::Rendering
 	{
 	}
 
-	void CubeObjectOpenGL::CubeObjectOpenGLImpl::ConstructCube(float halfExtent, const Space::Color& color)
+	void CubeObjectOpenGL::CubeObjectOpenGLImpl::ConstructCube(float halfExtent, const PhysicalProperties::Color& color)
 	{
 		const float h = halfExtent;
 
@@ -60,7 +60,7 @@ namespace Andromeda::Rendering
 		{
 			for (const auto& pos : face.vertices)
 			{
-				m_vertices.emplace_back(Space::Point3D(pos.x, pos.y, pos.z), color, MathUtils::FromGLM(face.normal));
+				m_vertices.emplace_back(PhysicalProperties::Point3D(pos.x, pos.y, pos.z), color, MathUtils::FromGLM(face.normal));
 			}
 
 			// Triangle 1: 0, 1, 2 - Triangle 2: 2, 3, 0

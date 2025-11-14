@@ -12,7 +12,7 @@ namespace Andromeda::Rendering
 		: public RenderableObjectOpenGL
 	{	
 	public:
-		SphereObjectOpenGLImpl(const Math::Vec3& centerPosition, float radius, const Space::Color& color);
+		SphereObjectOpenGLImpl(const Math::Vec3& centerPosition, float radius, const PhysicalProperties::Color& color);
 		~SphereObjectOpenGLImpl();
 
 		SphereObjectOpenGLImpl(const SphereObjectOpenGLImpl& other) = delete;	// Prevent Copy Constructor
@@ -25,7 +25,7 @@ namespace Andromeda::Rendering
 
 	private:
 		// Sphere construction
-		void ConstructSphere(float radius, int sectorCount, int stackCount, const Space::Color& color);
+		void ConstructSphere(float radius, int sectorCount, int stackCount, const PhysicalProperties::Color& color);
 
 	private:
 		float m_radius;

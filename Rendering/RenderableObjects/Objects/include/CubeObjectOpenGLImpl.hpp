@@ -12,7 +12,7 @@ namespace Andromeda::Rendering
 		: public RenderableObjectOpenGL
 	{	
 	public:
-		CubeObjectOpenGLImpl(const Math::Vec3& centerPosition, float radius, const Space::Color& color);
+		CubeObjectOpenGLImpl(const Math::Vec3& centerPosition, float radius, const PhysicalProperties::Color& color);
 		~CubeObjectOpenGLImpl();
 
 		CubeObjectOpenGLImpl(const CubeObjectOpenGLImpl& other) = delete;	// Prevent Copy Constructor
@@ -26,7 +26,7 @@ namespace Andromeda::Rendering
 
 	private:
 		// Cube construction
-		void ConstructCube(float halfExtent, const Space::Color& color);
+		void ConstructCube(float halfExtent, const PhysicalProperties::Color& color);
 
 	private:
 		float m_halfExtent;

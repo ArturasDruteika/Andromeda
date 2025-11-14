@@ -13,7 +13,7 @@ namespace Andromeda::Rendering
 		: public IRenderableObjectOpenGL
 	{	
 	public:
-		CubeObjectOpenGL(const Math::Vec3& centerPosition, float radius, const Space::Color& color);
+		CubeObjectOpenGL(const Math::Vec3& centerPosition, float radius, const PhysicalProperties::Color& color);
 		~CubeObjectOpenGL();
 
 		CubeObjectOpenGL(const CubeObjectOpenGL& other) = delete;	// Prevent Copy Constructor
@@ -47,8 +47,8 @@ namespace Andromeda::Rendering
 		std::vector<Vertex> GetVertices() const override;
 
 		// === Overrides from IRenderableObject ===
-		Space::Color GetColor() const override;
-		void SetColor(const Space::Color& color) override;
+		PhysicalProperties::Color GetColor() const override;
+		void SetColor(const PhysicalProperties::Color& color) override;
 
 		// === Overrides from IRenderableObjectOpenGL ===
 		unsigned int GetVBO() const override;

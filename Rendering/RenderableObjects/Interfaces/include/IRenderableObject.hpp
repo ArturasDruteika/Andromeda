@@ -20,9 +20,9 @@ namespace Andromeda::Rendering
         virtual ~IRenderableObject();
 
         // Getters
-        virtual Space::Color GetColor() const = 0;
+        virtual PhysicalProperties::Color GetColor() const = 0;
 		// Setters
-        virtual void SetColor(const Space::Color& color) = 0;
+        virtual void SetColor(const PhysicalProperties::Color& color) = 0;
     };
 }
 
