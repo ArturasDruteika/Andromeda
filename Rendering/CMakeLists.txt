@@ -47,46 +47,9 @@ set(CAMERA_SOURCES
     Camera/Interfaces/src/ICameraController.cpp
 )
 
-# ==== Light ====
-set(LIGHT_HEADERS
-    Light/Abstracts/include/Light.hpp
-    Light/Abstracts/include/LuminousBehavior.hpp
-    Light/Abstracts/include/NonLuminousBehavior.hpp
-    Light/Interfaces/include/ILightBehavior.hpp
-    Light/LightTypes/include/DirectionalLight.hpp
-    Light/LightTypes/include/PointLight.hpp
-    Light/LightTypes/include/SpotLight.hpp
-    Light/Support/include/LightData.hpp
-    Light/Support/include/LightTypes.hpp
-)
-
-set(LIGHT_SOURCES
-    Light/Abstracts/src/Light.cpp
-    Light/Abstracts/src/LuminousBehavior.cpp
-    Light/Abstracts/src/NonLuminousBehavior.cpp
-    Light/Interfaces/src/ILightBehavior.cpp
-    Light/LightTypes/src/DirectionalLight.cpp
-    Light/LightTypes/src/PointLight.cpp
-    Light/LightTypes/src/SpotLight.cpp
-    Light/Support/src/LightData.cpp
-)
-
 # ==== Macro Exports ====
 set(MACRO_EXPORTS_HEADERS
     MacroExports/include/MacroExports.hpp
-)
-
-
-# ==== Materials ====
-set(MATERIALS_HEADERS
-    Materials/include/Materials.hpp
-    Materials/include/MaterialsLibrary.hpp
-    Materials/include/MaterialTypes.hpp
-)
-
-set(MATERIALS_SOURCES
-    Materials/src/Materials.cpp
-    Materials/src/MaterialsLibrary.cpp
 )
 
 # ==== OpenGLLoader ====
@@ -124,7 +87,6 @@ set(RO_HEADERS
     RenderableObjects/Objects/include/SkyroomOpenGLImpl.hpp
     RenderableObjects/Objects/include/SphereObjectOpenGL.hpp
     RenderableObjects/Objects/include/SphereObjectOpenGLImpl.hpp
-    RenderableObjects/Support/include/TransformationTypes.hpp
 )
 
 set(RO_SOURCES
@@ -256,7 +218,6 @@ set(UTILS_SOURCES
 set(VERTEX_HEADERS
     Vertices/include/VertexAttributes.hpp
     Vertices/include/VertexLayouts.hpp
-    Vertices/include/Vertex.hpp
 )
 
 set(VERTEX_SOURCES
@@ -267,13 +228,9 @@ add_library(${PROJECT_NAME}
     SHARED
         ${CAMERA_HEADERS}
         ${CAMERA_SOURCES}
-        ${LIGHT_HEADERS}
-        ${LIGHT_SOURCES}
         ${MACRO_EXPORTS_HEADERS}
         ${LOADER_HEADERS}
         ${LOADER_SOURCES}
-        ${MATERIALS_HEADERS}
-        ${MATERIALS_SOURCES}
         ${RAYTRACING_HEADERS}
         ${RENDERERS_HEADERS}
         ${RENDERERS_SOURCES}
@@ -300,9 +257,13 @@ target_include_directories(${PROJECT_NAME}
         ..//Math//LinearAlgebra//include//
         ..//Math//Constants//include//
         ..//PhysicalProperties//Colors//include//
+        ..//PhysicalProperties//Light//Abstracts//include//
         ..//PhysicalProperties//Light//Interfaces//include//
         ..//PhysicalProperties//Light//LightTypes//include//
+        ..//PhysicalProperties//Light//Support//include//
         ..//PhysicalProperties//Space//include//
+        ..//PhysicalProperties//Transformations//include//
+        ..//PhysicalProperties//Vertices//include//
 )
 
 # Link GLFW and OpenGL to the executable
@@ -377,7 +338,7 @@ endforeach()
 ## Material properties
 set(MATERIAL_JSON_FILENAME "material_properties.json")
 set(MATERIAL_JSON_SOURCE
-    "${CMAKE_CURRENT_SOURCE_DIR}/MaterialProperties/${MATERIAL_JSON_FILENAME}"
+    "${CMAKE_CURRENT_SOURCE_DIR}/../PhysicalProperties/MaterialProperties/${MATERIAL_JSON_FILENAME}"
 )
 
 # Put materials next to shaders (same assets root)
@@ -416,31 +377,11 @@ source_group(
 
 source_group(
     TREE 
-        ${CMAKE_CURRENT_SOURCE_DIR}/Light
-    PREFIX
-        "Light"
-    FILES
-        ${LIGHT_HEADERS}
-        ${LIGHT_SOURCES}
-)
-
-source_group(
-    TREE 
         ${CMAKE_CURRENT_SOURCE_DIR}/MacroExports
     PREFIX
         "MacroExports"
     FILES
         ${MACRO_EXPORTS_HEADERS}
-)
-
-source_group(
-    TREE 
-        ${CMAKE_CURRENT_SOURCE_DIR}/Materials
-    PREFIX
-        "Materials"
-    FILES
-        ${MATERIALS_HEADERS}
-        ${MATERIALS_SOURCES}
 )
 
 source_group(

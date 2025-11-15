@@ -8,22 +8,19 @@
 #include "../../../Vertices/include/VertexLayouts.hpp"
 
 
-namespace Andromeda
+namespace Andromeda::Rendering
 {
-	namespace Rendering
-	{
-		class RENDERING_API IRenderableObjectOpenGL
-			: public IRenderableObject
-		{	
-		public:
-			virtual ~IRenderableObjectOpenGL();
+	class RENDERING_API IRenderableObjectOpenGL
+		: public IRenderableObject
+	{	
+	public:
+		virtual ~IRenderableObjectOpenGL();
 
-			// Getters
-			virtual unsigned int GetVBO() const = 0;
-			virtual unsigned int GetVAO() const = 0;
-			virtual unsigned int GetEBO() const = 0;
-		};
-	}
+		// Getters
+		virtual unsigned int GetVBO() const = 0;
+		virtual unsigned int GetVAO() const = 0;
+		virtual unsigned int GetEBO() const = 0;
+	};
 }
 
 

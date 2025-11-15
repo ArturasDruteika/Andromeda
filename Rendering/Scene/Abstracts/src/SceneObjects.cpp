@@ -34,7 +34,7 @@ namespace Andromeda::Rendering
 		m_objects.insert({ id, object });
 		if (object->IsLuminous())
 		{
-			AddLuminousObject(id, dynamic_cast<LuminousBehavior*>(object->GetLightBehavior()));
+			AddLuminousObject(id, dynamic_cast<PhysicalProperties::LuminousBehavior*>(object->GetLightBehavior()));
 		}
 	}
 
@@ -48,7 +48,7 @@ namespace Andromeda::Rendering
 		m_objects.erase(id);
 	}
 
-	void SceneObjects::AddLuminousObject(int id, LuminousBehavior* pLuminousObject)
+	void SceneObjects::AddLuminousObject(int id, PhysicalProperties::LuminousBehavior* pLuminousObject)
 	{
 		m_luminousObjects.insert({ id, pLuminousObject });
 	}

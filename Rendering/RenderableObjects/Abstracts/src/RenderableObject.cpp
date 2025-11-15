@@ -1,5 +1,6 @@
 #include "../include/RenderableObject.hpp"
 
+
 namespace Andromeda::Rendering
 {
 	RenderableObject::RenderableObject(const Math::Vec3& centerPosition, const PhysicalProperties::Color& color)

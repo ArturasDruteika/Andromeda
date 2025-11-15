@@ -3,7 +3,7 @@
 
 
 #include "pch.hpp"
-#include "../../../Vertices/include/Vertex.hpp"
+#include "Vertex.hpp"
 
 
 namespace Andromeda::Rendering
@@ -18,11 +18,11 @@ namespace Andromeda::Rendering
 		unsigned int GetIndicesCount() const;
 		unsigned int GetVerticesCount() const;
 		std::vector<unsigned int> GetIndices() const;
-		std::vector<Vertex> GetVertices() const;
+		std::vector<PhysicalProperties::Vertex> GetVertices() const;
 
 	protected:
 		std::vector<unsigned int> m_indices;
-		std::vector<Vertex> m_vertices;
+		std::vector<PhysicalProperties::Vertex> m_vertices;
 	};
 }
 

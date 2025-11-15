@@ -20,15 +20,15 @@ namespace Andromeda::Rendering
 			centerPosition,
 			color,
 			std::vector {
-				VertexAttributes{ 0, PhysicalProperties::Point3D::Size(), GL_FLOAT, GL_FALSE, sizeof(Vertex), 0 }, // Position
-				VertexAttributes{ 1, PhysicalProperties::Color::Size(), GL_FLOAT, GL_FALSE, sizeof(Vertex), sizeof(PhysicalProperties::Point3D)}, // Color
-				VertexAttributes{ 2, Math::Vec3::Size(), GL_FLOAT, GL_FALSE, sizeof(Vertex), sizeof(PhysicalProperties::Point3D) + sizeof(PhysicalProperties::Color)} // Normal
+				VertexAttributes{ 0, PhysicalProperties::Point3D::Size(), GL_FLOAT, GL_FALSE, sizeof(PhysicalProperties::Vertex), 0 }, // Position
+				VertexAttributes{ 1, PhysicalProperties::Color::Size(), GL_FLOAT, GL_FALSE, sizeof(PhysicalProperties::Vertex), sizeof(PhysicalProperties::Point3D)}, // Color
+				VertexAttributes{ 2, Math::Vec3::Size(), GL_FLOAT, GL_FALSE, sizeof(PhysicalProperties::Vertex), sizeof(PhysicalProperties::Point3D) + sizeof(PhysicalProperties::Color)} // Normal
 			} 
 		)
 	{
 		ConstructCube(halfExtent, color);
 		Init();
-		UpdateModelMatrix(TransformationType::ALL);
+		UpdateModelMatrix(PhysicalProperties::TransformationType::ALL);
 	}
 
 	CubeObjectOpenGL::CubeObjectOpenGLImpl::~CubeObjectOpenGLImpl() = default;

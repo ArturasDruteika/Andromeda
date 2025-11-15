@@ -1,7 +1,8 @@
 #ifndef RENDERING__ABSTRACTS__LUMINOUS__HPP
 #define RENDERING__ABSTRACTS__LUMINOUS__HPP
 
-#include "../../../Light/Interfaces/include/ILightBehavior.hpp"
+
+#include "ILightBehavior.hpp"
 
 
 namespace Andromeda::Rendering
@@ -14,13 +15,13 @@ namespace Andromeda::Rendering
 		
 		// Getters
 		bool IsLuminous() const;
-		ILightBehavior* GetLightBehavior() const;
+		PhysicalProperties::ILightBehavior* GetLightBehavior() const;
 		// Setters
-		void SetLuminousBehavior(ILightBehavior* behavior);
+		void SetLuminousBehavior(PhysicalProperties::ILightBehavior* behavior);
 
 	protected:
 		bool m_luminous;
-		ILightBehavior* m_pILightBehavior;
+		PhysicalProperties::ILightBehavior* m_pILightBehavior;
 	};
 }
 

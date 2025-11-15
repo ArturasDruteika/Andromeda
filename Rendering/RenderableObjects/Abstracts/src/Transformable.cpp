@@ -47,65 +47,65 @@ namespace Andromeda::Rendering
 	void Transformable::Translate(const Math::Vec3& translation)
 	{
 		m_centerPosition = MathUtils::ToGLM(translation);
-		UpdateModelMatrix(TransformationType::TRANSLATE);
+		UpdateModelMatrix(PhysicalProperties::TransformationType::TRANSLATE);
 	}
 
 	void Transformable::TranslateDelta(const Math::Vec3& translationDelta)
 	{
 		m_centerPosition += MathUtils::ToGLM(translationDelta);
-		UpdateModelMatrix(TransformationType::TRANSLATE);
+		UpdateModelMatrix(PhysicalProperties::TransformationType::TRANSLATE);
 	}
 
 	void Transformable::Rotate(const Math::Vec3& rotation)
 	{
 		m_rotation += MathUtils::ToGLM(rotation);
-		UpdateModelMatrix(TransformationType::ROTATE);
+		UpdateModelMatrix(PhysicalProperties::TransformationType::ROTATE);
 	}
 
 	void Transformable::RotateX(float angle)
 	{
 		m_rotation += glm::vec3(angle, 0.0f, 0.0f);
-		UpdateModelMatrix(TransformationType::ROTATE);
+		UpdateModelMatrix(PhysicalProperties::TransformationType::ROTATE);
 	}
 
 	void Transformable::RotateY(float angle)
 	{
 		m_rotation += glm::vec3(0.0f, angle, 0.0f);
-		UpdateModelMatrix(TransformationType::ROTATE);
+		UpdateModelMatrix(PhysicalProperties::TransformationType::ROTATE);
 	}
 
 	void Transformable::RotateZ(float angle)
 	{
 		m_rotation += glm::vec3(0.0f, 0.0f, angle);
-		UpdateModelMatrix(TransformationType::ROTATE);
+		UpdateModelMatrix(PhysicalProperties::TransformationType::ROTATE);
 	}
 
 	void Transformable::Scale(const Math::Vec3& scale)
 	{
 		m_scale += MathUtils::ToGLM(scale);
-		UpdateModelMatrix(TransformationType::SCALE);
+		UpdateModelMatrix(PhysicalProperties::TransformationType::SCALE);
 	}
 
-	void Transformable::UpdateModelMatrix(const TransformationType& transformationType)
+	void Transformable::UpdateModelMatrix(const PhysicalProperties::TransformationType& transformationType)
 	{
 		switch (transformationType)
 		{
-		case TransformationType::TRANSLATE:
+		case PhysicalProperties::TransformationType::TRANSLATE:
 		{
 			m_translationMatrix = ConstructTranslationMatrix();
 			break;
 		}
-		case TransformationType::ROTATE:
+		case PhysicalProperties::TransformationType::ROTATE:
 		{
 			m_rotationMatrix = ConstructRotationMatrix();
 			break;
 		}
-		case TransformationType::SCALE:
+		case PhysicalProperties::TransformationType::SCALE:
 		{
 			m_scaleMatrix = ConstructScaleMatrix();
 			break;
 		}
-		case TransformationType::ALL:
+		case PhysicalProperties::TransformationType::ALL:
 		{
 			m_translationMatrix = ConstructTranslationMatrix();
 			m_rotationMatrix = ConstructRotationMatrix();

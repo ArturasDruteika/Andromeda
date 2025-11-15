@@ -2,7 +2,7 @@
 #define RENDERING__ABSTRACTS__TRANSFORMABLE__HPP
 
 
-#include "../../Support/include/TransformationTypes.hpp"
+#include "TransformationTypes.hpp"
 #include "LinearAlgebraDataTypes.hpp"
 #include "glm/glm.hpp"
 #include "glm/gtc/matrix_transform.hpp"
@@ -31,7 +31,7 @@ namespace Andromeda::Rendering
         void RotateY(float angle);
         void RotateZ(float angle);
         void Scale(const Math::Vec3& scale);
-        void UpdateModelMatrix(const TransformationType& transformationType);
+        void UpdateModelMatrix(const PhysicalProperties::TransformationType& transformationType);
 
     private:
         // Transformation matrices

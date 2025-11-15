@@ -29,8 +29,8 @@ namespace Andromeda::Rendering
 
 		// === Overrides from ILuminous ===
 		bool IsLuminous() const override;
-		ILightBehavior* GetLightBehavior() const override;
-		void SetLuminousBehavior(ILightBehavior* behavior) override;
+		PhysicalProperties::ILightBehavior* GetLightBehavior() const override;
+		void SetLuminousBehavior(PhysicalProperties::ILightBehavior* behavior) override;
 
 		// === Overrides from ITransformable ===
 		bool StateChanged() const override;
@@ -50,7 +50,7 @@ namespace Andromeda::Rendering
 		unsigned int GetVerticesCount() const override;
 		unsigned int GetIndicesCount() const override;
 		std::vector<unsigned int> GetIndices() const override;
-		std::vector<Vertex> GetVertices() const override;
+		std::vector<PhysicalProperties::Vertex> GetVertices() const override;
 
 		// === Overrides from IRenderableObject ===
 		PhysicalProperties::Color GetColor() const override;

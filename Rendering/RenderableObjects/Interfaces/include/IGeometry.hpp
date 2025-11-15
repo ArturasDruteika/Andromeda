@@ -4,7 +4,7 @@
 
 #include "../../../MacroExports/include/MacroExports.hpp"
 #include "pch.hpp"
-#include "../../../Vertices/include/Vertex.hpp"
+#include "Vertex.hpp"
 
 
 namespace Andromeda::Rendering
@@ -18,7 +18,7 @@ namespace Andromeda::Rendering
 		virtual unsigned int GetIndicesCount() const = 0;
 		virtual unsigned int GetVerticesCount() const = 0;
 		virtual std::vector<unsigned int> GetIndices() const = 0;
-		virtual std::vector<Vertex> GetVertices() const = 0;
+		virtual std::vector<PhysicalProperties::Vertex> GetVertices() const = 0;
 	};
 }
 

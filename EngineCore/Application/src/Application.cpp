@@ -31,7 +31,7 @@ namespace Andromeda::EngineCore
 		m_pApplicationImpl->AddToScene(id, object);
 	}
 
-	void Application::AddToScene(int id, Rendering::LuminousBehavior* object)
+	void Application::AddToScene(int id, PhysicalProperties::LuminousBehavior* object)
 	{
 		m_pApplicationImpl->AddToScene(id, object);
 	}

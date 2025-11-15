@@ -13,11 +13,11 @@ target_include_directories(${PROJECT_NAME}
 	    ../ExternalGraphicsLibs/glm/
         ../Math/LinearAlgebra/include/
         ../PhysicalProperties/Space/include/
-        ../Rendering/Light/LightTypes/include/
-        ../Rendering/Light/Abstracts/include/
+        ../PhysicalProperties/Light/LightTypes/include/
+        ../PhysicalProperties/Light/Abstracts/include/
+        ../PhysicalProperties/Materials/include/
         ../Rendering/RenderableObjects/Interfaces/include/
         ../Rendering/RenderableObjects/Objects/include/
-        ../Rendering/Materials/include/
         ../EngineCore/Application/include/
 )
 

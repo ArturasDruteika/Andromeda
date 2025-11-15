@@ -20,7 +20,7 @@ namespace Andromeda::Rendering
 		
 		virtual void AddObject(int id, IRenderableObject* object) = 0;
 		virtual void RemoveObject(int id) = 0;
-		virtual void AddLuminousObject(int id, LuminousBehavior* pLuminousObject) = 0;
+		virtual void AddLuminousObject(int id, PhysicalProperties::LuminousBehavior* pLuminousObject) = 0;
 	};
 }
 

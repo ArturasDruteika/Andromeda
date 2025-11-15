@@ -24,12 +24,12 @@ namespace Andromeda::Rendering
 		return m_pSkyroomOpenGLImpl->IsLuminous();
 	}
 
-	ILightBehavior* SkyroomOpenGL::GetLightBehavior() const
+	PhysicalProperties::ILightBehavior* SkyroomOpenGL::GetLightBehavior() const
 	{
 		return m_pSkyroomOpenGLImpl->GetLightBehavior();
 	}
 
-	void SkyroomOpenGL::SetLuminousBehavior(ILightBehavior* behavior)
+	void SkyroomOpenGL::SetLuminousBehavior(PhysicalProperties::ILightBehavior* behavior)
 	{
 		m_pSkyroomOpenGLImpl->SetLuminousBehavior(behavior);
 	}
@@ -111,7 +111,7 @@ namespace Andromeda::Rendering
 		return m_pSkyroomOpenGLImpl->GetIndices();
 	}
 
-	std::vector<Vertex> SkyroomOpenGL::GetVertices() const
+	std::vector<PhysicalProperties::Vertex> SkyroomOpenGL::GetVertices() const
 	{
 		return m_pSkyroomOpenGLImpl->GetVertices();
 	}

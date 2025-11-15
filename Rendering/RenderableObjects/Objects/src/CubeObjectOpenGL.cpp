@@ -54,7 +54,7 @@ namespace Andromeda::Rendering
 		return m_pCubeObjectOpenGLImpl->GetIndices();
 	}
 
-	std::vector<Vertex> CubeObjectOpenGL::GetVertices() const
+	std::vector<PhysicalProperties::Vertex> CubeObjectOpenGL::GetVertices() const
 	{
 		return m_pCubeObjectOpenGLImpl->GetVertices();
 	}
@@ -74,7 +74,7 @@ namespace Andromeda::Rendering
 		return m_pCubeObjectOpenGLImpl->GetColor();
 	}
 
-	ILightBehavior* CubeObjectOpenGL::GetLightBehavior() const
+	PhysicalProperties::ILightBehavior* CubeObjectOpenGL::GetLightBehavior() const
 	{
 		return m_pCubeObjectOpenGLImpl->GetLightBehavior();
 	}
@@ -84,7 +84,7 @@ namespace Andromeda::Rendering
 		m_pCubeObjectOpenGLImpl->SetModelMatrix(modelMatrix);
 	}
 
-	void CubeObjectOpenGL::SetLuminousBehavior(ILightBehavior* behavior)
+	void CubeObjectOpenGL::SetLuminousBehavior(PhysicalProperties::ILightBehavior* behavior)
 	{
 		m_pCubeObjectOpenGLImpl->SetLuminousBehavior(behavior);
 	}

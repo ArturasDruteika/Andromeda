@@ -4,8 +4,8 @@
 
 #include "../../../MacroExports/include/MacroExports.hpp"
 #include "pch.hpp"
-#include "../../../Light/LightTypes/include/DirectionalLight.hpp"
-#include "../../../Light/LightTypes/include/PointLight.hpp"
+#include "DirectionalLight.hpp"
+#include "PointLight.hpp"
 #include "../../../RenderableObjects/Interfaces/include/IRenderableObject.hpp"
 
 
@@ -17,9 +17,9 @@ namespace Andromeda::Rendering
         virtual ~ISceneLighting();
 
         // Getters
-        virtual const std::unordered_map<int, const DirectionalLight*> GetDirectionalLights() const = 0;
-        virtual const std::unordered_map<int, const PointLight*> GetPointLights() const = 0;
-        virtual const std::unordered_map<int, LuminousBehavior*>& GetLuminousObjects() const = 0;
+        virtual const std::unordered_map<int, const PhysicalProperties::DirectionalLight*> GetDirectionalLights() const = 0;
+        virtual const std::unordered_map<int, const PhysicalProperties::PointLight*> GetPointLights() const = 0;
+        virtual const std::unordered_map<int, PhysicalProperties::LuminousBehavior*>& GetLuminousObjects() const = 0;
     };
 }
 

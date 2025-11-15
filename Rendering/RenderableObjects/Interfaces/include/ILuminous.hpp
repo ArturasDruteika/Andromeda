@@ -3,7 +3,7 @@
 
 
 #include "../../../MacroExports/include/MacroExports.hpp"
-#include "../../../Light/Interfaces/include/ILightBehavior.hpp"
+#include "ILightBehavior.hpp"
 
 
 namespace Andromeda::Rendering
@@ -15,9 +15,9 @@ namespace Andromeda::Rendering
 		
 		// Getters
 		virtual bool IsLuminous() const = 0;
-		virtual ILightBehavior* GetLightBehavior() const = 0;
+		virtual PhysicalProperties::ILightBehavior* GetLightBehavior() const = 0;
 		// Setters
-		virtual void SetLuminousBehavior(ILightBehavior* behavior) = 0;
+		virtual void SetLuminousBehavior(PhysicalProperties::ILightBehavior* behavior) = 0;
 	};
 }
 

@@ -9,24 +9,24 @@ namespace Andromeda::Rendering
 
     SceneLighting::~SceneLighting() = default;
 
-    const std::unordered_map<int, LuminousBehavior*>& SceneLighting::GetLuminousObjects() const
+    const std::unordered_map<int, PhysicalProperties::LuminousBehavior*>& SceneLighting::GetLuminousObjects() const
     {
         return m_luminousObjects;
     }
 
-    const std::unordered_map<int, const DirectionalLight*> SceneLighting::GetDirectionalLights() const
+    const std::unordered_map<int, const PhysicalProperties::DirectionalLight*> SceneLighting::GetDirectionalLights() const
     {
-        return ExtractLightsOfType<DirectionalLight>(LightType::Directional);
+        return ExtractLightsOfType<PhysicalProperties::DirectionalLight>(PhysicalProperties::LightType::Directional);
     }
 
-    const std::unordered_map<int, const PointLight*> SceneLighting::GetPointLights() const
+    const std::unordered_map<int, const PhysicalProperties::PointLight*> SceneLighting::GetPointLights() const
     {
-        return ExtractLightsOfType<PointLight>(LightType::Point);
+        return ExtractLightsOfType<PhysicalProperties::PointLight>(PhysicalProperties::LightType::Point);
     }
 
     // Fixed Template: returns map of POINTERS to TLight
     template <typename TLight>
-    std::unordered_map<int, const TLight*> SceneLighting::ExtractLightsOfType(LightType type) const
+    std::unordered_map<int, const TLight*> SceneLighting::ExtractLightsOfType(PhysicalProperties::LightType type) const
     {
         std::unordered_map<int, const TLight*> result;
 
@@ -46,6 +46,6 @@ namespace Andromeda::Rendering
 
 
     // Explicit instantiations with pointers (note the asterisk *)
-    template std::unordered_map<int, const DirectionalLight*> SceneLighting::ExtractLightsOfType<DirectionalLight>(LightType type) const;
-    template std::unordered_map<int, const PointLight*> SceneLighting::ExtractLightsOfType<PointLight>(LightType type) const;
+    template std::unordered_map<int, const PhysicalProperties::DirectionalLight*> SceneLighting::ExtractLightsOfType<PhysicalProperties::DirectionalLight>(PhysicalProperties::LightType type) const;
+    template std::unordered_map<int, const PhysicalProperties::PointLight*> SceneLighting::ExtractLightsOfType<PhysicalProperties::PointLight>(PhysicalProperties::LightType type) const;
 }

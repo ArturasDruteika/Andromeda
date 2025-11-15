@@ -54,7 +54,7 @@ namespace Andromeda::Rendering
 		return std::vector<unsigned int>();
 	}
 
-	std::vector<Vertex> SphereObjectOpenGL::GetVertices() const
+	std::vector<PhysicalProperties::Vertex> SphereObjectOpenGL::GetVertices() const
 	{
 		return m_pSphereObjectOpenGLImpl->GetVertices();
 	}
@@ -74,7 +74,7 @@ namespace Andromeda::Rendering
 		return m_pSphereObjectOpenGLImpl->GetColor();
 	}
 
-	ILightBehavior* SphereObjectOpenGL::GetLightBehavior() const
+	PhysicalProperties::ILightBehavior* SphereObjectOpenGL::GetLightBehavior() const
 	{
 		return m_pSphereObjectOpenGLImpl->GetLightBehavior();
 	}
@@ -84,7 +84,7 @@ namespace Andromeda::Rendering
 		m_pSphereObjectOpenGLImpl->SetModelMatrix(modelMatrix);
 	}
 
-	void SphereObjectOpenGL::SetLuminousBehavior(ILightBehavior* behavior)
+	void SphereObjectOpenGL::SetLuminousBehavior(PhysicalProperties::ILightBehavior* behavior)
 	{
 		m_pSphereObjectOpenGLImpl->SetLuminousBehavior(behavior);
 	}

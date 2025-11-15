@@ -5,32 +5,28 @@
 #include "../include/VertexAttributes.hpp"
 
 
-namespace Andromeda
+namespace Andromeda::Rendering
 {
-	namespace Rendering
+	class VertexLayout
 	{
-		class VertexLayout
-		{
-		public:
-			VertexLayout(const std::vector<VertexAttributes>& vertexAttributes);
-			~VertexLayout();
+	public:
+		VertexLayout(const std::vector<VertexAttributes>& vertexAttributes);
+		~VertexLayout();
 
-			VertexLayout(const VertexLayout& other);
-			VertexLayout& operator=(const VertexLayout& other) = delete;	// Prevent Copy Assignment
-			VertexLayout(VertexLayout&& other) noexcept = delete;	// Prevent Move Constructor
-			VertexLayout& operator=(VertexLayout&& other) noexcept = delete;	// Prevent Move Assignment
+		VertexLayout(const VertexLayout& other);
+		VertexLayout& operator=(const VertexLayout& other) = delete;	// Prevent Copy Assignment
+		VertexLayout(VertexLayout&& other) noexcept = delete;	// Prevent Move Constructor
+		VertexLayout& operator=(VertexLayout&& other) noexcept = delete;	// Prevent Move Assignment
 
-			const std::vector<VertexAttributes>& GetVerticesAttributesVec() const;
-			size_t GetStride() const;
+		const std::vector<VertexAttributes>& GetVerticesAttributesVec() const;
+		size_t GetStride() const;
 
-		private:
-			void CalculateStride(const std::vector<VertexAttributes>& vertexAttributes);
+	private:
+		void CalculateStride(const std::vector<VertexAttributes>& vertexAttributes);
 
-			std::vector<VertexAttributes> m_verticesAttributesVec;
-			size_t m_stride;
-		};
-
-	}
+		std::vector<VertexAttributes> m_verticesAttributesVec;
+		size_t m_stride;
+	};
 }
 
 

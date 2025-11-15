@@ -37,12 +37,12 @@ namespace Andromeda::Rendering
 		const std::unordered_map<int, IRenderableObject*>& GetObjects() const override;
 		void AddObject(int id, IRenderableObject* object) override;
 		void RemoveObject(int id) override;
-		void AddLuminousObject(int id, LuminousBehavior* pLuminousObject) override;
+		void AddLuminousObject(int id, PhysicalProperties::LuminousBehavior* pLuminousObject) override;
 
 		// === From ISceneLighting ===
-		const std::unordered_map<int, const DirectionalLight*> GetDirectionalLights() const override;
-		const std::unordered_map<int, const PointLight*> GetPointLights() const override;
-		const std::unordered_map<int, LuminousBehavior*>& GetLuminousObjects() const override;
+		const std::unordered_map<int, const PhysicalProperties::DirectionalLight*> GetDirectionalLights() const override;
+		const std::unordered_map<int, const PhysicalProperties::PointLight*> GetPointLights() const override;
+		const std::unordered_map<int, PhysicalProperties::LuminousBehavior*>& GetLuminousObjects() const override;
 
 		// === From IScene ===
 		glm::vec3 GetSceneCenter() const override;

@@ -13,15 +13,15 @@ namespace Andromeda::Rendering
 			Math::Vec3(0.0f, 0.0f, 0.0f),
 			color,
 			std::vector{
-				VertexAttributes{ 0, PhysicalProperties::Point3D::Size(), GL_FLOAT, GL_FALSE, sizeof(Vertex), 0 }, // Position
-				VertexAttributes{ 1, PhysicalProperties::Color::Size(), GL_FLOAT, GL_FALSE, sizeof(Vertex), sizeof(PhysicalProperties::Point3D)}, // Color
-				VertexAttributes{ 2, Math::Vec3::Size(), GL_FLOAT, GL_FALSE, sizeof(Vertex), sizeof(PhysicalProperties::Point3D) + sizeof(PhysicalProperties::Color)} // Normal
+				VertexAttributes{ 0, PhysicalProperties::Point3D::Size(), GL_FLOAT, GL_FALSE, sizeof(PhysicalProperties::Vertex), 0 }, // Position
+				VertexAttributes{ 1, PhysicalProperties::Color::Size(), GL_FLOAT, GL_FALSE, sizeof(PhysicalProperties::Vertex), sizeof(PhysicalProperties::Point3D)}, // Color
+				VertexAttributes{ 2, Math::Vec3::Size(), GL_FLOAT, GL_FALSE, sizeof(PhysicalProperties::Vertex), sizeof(PhysicalProperties::Point3D) + sizeof(PhysicalProperties::Color)} // Normal
 			}
 		)
 	{
         ConstructGrid(100, spacing, color);
         Init();
-        RenderableObject::UpdateModelMatrix(TransformationType::ALL);
+        RenderableObject::UpdateModelMatrix(PhysicalProperties::TransformationType::ALL);
 	}
 
 	GridOpenGL::~GridOpenGL() = default;
@@ -66,7 +66,7 @@ namespace Andromeda::Rendering
         return std::vector<unsigned int>();
     }
 
-    std::vector<Vertex> GridOpenGL::GetVertices() const
+    std::vector<PhysicalProperties::Vertex> GridOpenGL::GetVertices() const
     {
         return m_vertices;
     }
@@ -86,7 +86,7 @@ namespace Andromeda::Rendering
         return m_color;
     }
 
-    ILightBehavior* GridOpenGL::GetLightBehavior() const
+    PhysicalProperties::ILightBehavior* GridOpenGL::GetLightBehavior() const
     {
         return nullptr;
     }
@@ -96,7 +96,7 @@ namespace Andromeda::Rendering
         m_modelMatrix = MathUtils::ToGLM(modelMatrix);
     }
 
-    void GridOpenGL::SetLuminousBehavior(ILightBehavior* behavior)
+    void GridOpenGL::SetLuminousBehavior(PhysicalProperties::ILightBehavior* behavior)
     {
 		// This object does not support luminous behavior, so we do nothing.
     }
@@ -164,21 +164,21 @@ namespace Andromeda::Rendering
     {
 		m_gridSize = size;
 		ConstructGrid(size, m_spacing, m_color); // Reconstruct grid with new size
-        RenderableObjectOpenGL::UpdateModelMatrix(TransformationType::ALL);
+        RenderableObjectOpenGL::UpdateModelMatrix(PhysicalProperties::TransformationType::ALL);
     }
 
     void GridOpenGL::SetSpacing(float spacing)
     {
 		m_spacing = spacing;
 		ConstructGrid(100, spacing, m_color); // Reconstruct grid with new spacing
-        UpdateModelMatrix(TransformationType::ALL);
+        UpdateModelMatrix(PhysicalProperties::TransformationType::ALL);
     }
 
     void GridOpenGL::SetDensityFactor(float densityFactor)
     {
 		m_densityFactor = densityFactor;
 		ConstructGrid(100, m_spacing, m_color); // Reconstruct grid with new density factor
-        UpdateModelMatrix(TransformationType::ALL);
+        UpdateModelMatrix(PhysicalProperties::TransformationType::ALL);
     }
 
     void GridOpenGL::ConstructGrid(int size, float spacing, const PhysicalProperties::Color& gridColor)

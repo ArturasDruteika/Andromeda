@@ -389,13 +389,13 @@ namespace Andromeda::Rendering
 
         for (const auto& [id, pl] : pointLightMap)
         {
-            const Light& light = pl->GetLight();
+            const PhysicalProperties::Light& light = pl->GetLight();
 
-            positions.push_back(pl->GetPosition());
+            positions.push_back(MathUtils::ToGLM(pl->GetPosition()));
             intensities.push_back(light.GetIntensity());
-            ambient.push_back(light.GeAmbient());
-            diffuse.push_back(light.GetDiffuse());
-            specular.push_back(light.GetSpecular());
+            ambient.push_back(MathUtils::ToGLM(light.GeAmbient()));
+            diffuse.push_back(MathUtils::ToGLM(light.GetDiffuse()));
+            specular.push_back(MathUtils::ToGLM(light.GetSpecular()));
             
             constant.push_back(pl->GetAttenuationConstant());
             linear.push_back(pl->GetAttenuationLinear());
@@ -505,13 +505,13 @@ namespace Andromeda::Rendering
 
         for (const auto& [id, directionalLight] : directionalLightMap)
         {
-            const Light& light = directionalLight->GetLight();
-            glm::vec3 lightDirGLM = directionalLight->GetDirection();
+            const PhysicalProperties::Light& light = directionalLight->GetLight();
+            glm::vec3 lightDirGLM = MathUtils::ToGLM(directionalLight->GetDirection());
             lightDirections.push_back(lightDirGLM);
 
             lightAmbientValues.push_back(glm::vec3(0.9f)); // consider lowering for testing shadows
-            lightDiffuseValues.push_back(light.GetDiffuse());
-            lightSpecularValues.push_back(light.GetSpecular());
+            lightDiffuseValues.push_back(MathUtils::ToGLM(light.GetDiffuse()));
+            lightSpecularValues.push_back(MathUtils::ToGLM(light.GetSpecular()));
         }
 
         shader.SetUniform("u_numDirLights", static_cast<int>(lightDirections.size()));
@@ -531,11 +531,11 @@ namespace Andromeda::Rendering
             if (dynamic_cast<SkyroomOpenGL*>(obj) != nullptr)
                 DisableFaceCulling();
 
-            NonLuminousBehavior* nonLum = dynamic_cast<NonLuminousBehavior*>(obj->GetLightBehavior());
+            PhysicalProperties::NonLuminousBehavior* nonLum = dynamic_cast<PhysicalProperties::NonLuminousBehavior*>(obj->GetLightBehavior());
             if (!nonLum)
                 continue;
 
-            Material material = nonLum->GetMaterial();
+            PhysicalProperties::Material material = nonLum->GetMaterial();
             // TODO: Recalculate normal matrix IF the state of the objet has changed.
             glm::mat3 normalMatrix = glm::inverseTranspose(MathUtils::ToGLM(obj->GetModelMatrix()));
 
@@ -575,10 +575,10 @@ namespace Andromeda::Rendering
 
     void OpenGLRenderer::OpenGLRendererImpl::RenderLuminousMode(const IScene& scene)
     {
-        const std::unordered_map<int, const DirectionalLight*> dirLights = scene.GetDirectionalLights();
+        const std::unordered_map<int, const PhysicalProperties::DirectionalLight*> dirLights = scene.GetDirectionalLights();
         const bool hasDir = !dirLights.empty();
 
-        const std::unordered_map<int, const PointLight*> pointLights = scene.GetPointLights();
+        const std::unordered_map<int, const PhysicalProperties::PointLight*> pointLights = scene.GetPointLights();
         const bool hasPoint = !pointLights.empty();
 
         if (hasDir)
@@ -590,8 +590,8 @@ namespace Andromeda::Rendering
         if (hasPoint)
         {
             // TODO: later implement point shadows for ALL point lights casters
-            const PointLight* pl = pointLights.begin()->second;
-            const glm::vec3 lightPos = pl->GetPosition();
+            const PhysicalProperties::PointLight* pl = pointLights.begin()->second;
+            const glm::vec3 lightPos = MathUtils::ToGLM(pl->GetPosition());
             const float nearPlane = pl->GetShadowNearPlane();
             const float farPlane = pl->GetShadowFarPlane();
             ShadowCubeDepthPass(scene, lightPos, nearPlane, farPlane);
@@ -613,9 +613,9 @@ namespace Andromeda::Rendering
 
     glm::mat4 OpenGLRenderer::OpenGLRendererImpl::ComputeLightSpaceMatrix(const IScene& scene) const
     {
-        const std::unordered_map<int, const DirectionalLight*> directionalLightMap = scene.GetDirectionalLights();
-        const DirectionalLight* light = directionalLightMap.begin()->second;
-        glm::vec3 lightDirection = light->GetDirection();
+        const std::unordered_map<int, const PhysicalProperties::DirectionalLight*> directionalLightMap = scene.GetDirectionalLights();
+        const PhysicalProperties::DirectionalLight* light = directionalLightMap.begin()->second;
+        glm::vec3 lightDirection = MathUtils::ToGLM(light->GetDirection());
 
         glm::vec3 up(0.0f, 1.0f, 0.0f);
         glm::vec3 lightPos = scene.GetSceneCenter() - lightDirection * 20.0f;

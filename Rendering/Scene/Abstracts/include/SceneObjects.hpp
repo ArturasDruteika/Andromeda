@@ -21,7 +21,7 @@ namespace Andromeda::Rendering
 		
 		void AddObject(int id, IRenderableObject* object);
 		void RemoveObject(int id);
-		void AddLuminousObject(int id, LuminousBehavior* pLuminousObject);
+		void AddLuminousObject(int id, PhysicalProperties::LuminousBehavior* pLuminousObject);
 
 	protected:
 		std::unordered_map<int, IRenderableObject*> m_objects;

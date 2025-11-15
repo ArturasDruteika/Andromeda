@@ -8,42 +8,39 @@
 #include "LinearAlgebraDataTypes.hpp"
 
 
-namespace Andromeda
+namespace Andromeda::Rendering
 {
-	namespace Rendering
-	{
-		class RenderableObjectOpenGL
-			: public RenderableObject
-		{	
-		public:
-			RenderableObjectOpenGL(const Math::Vec3& centerPosition, const PhysicalProperties::Color& color, const VertexLayout& vertexLayout);
-			~RenderableObjectOpenGL();
+	class RenderableObjectOpenGL
+		: public RenderableObject
+	{	
+	public:
+		RenderableObjectOpenGL(const Math::Vec3& centerPosition, const PhysicalProperties::Color& color, const VertexLayout& vertexLayout);
+		~RenderableObjectOpenGL();
 
-			RenderableObjectOpenGL(const RenderableObjectOpenGL& other) = delete;	// Prevent Copy Constructor
-			RenderableObjectOpenGL& operator=(const RenderableObjectOpenGL& other) = delete;	// Prevent Copy Assignment
-			RenderableObjectOpenGL(RenderableObjectOpenGL&& other) noexcept = delete;	// Prevent Move Constructor
-			RenderableObjectOpenGL& operator=(RenderableObjectOpenGL&& other) noexcept = delete;	// Prevent Move Assignment
+		RenderableObjectOpenGL(const RenderableObjectOpenGL& other) = delete;	// Prevent Copy Constructor
+		RenderableObjectOpenGL& operator=(const RenderableObjectOpenGL& other) = delete;	// Prevent Copy Assignment
+		RenderableObjectOpenGL(RenderableObjectOpenGL&& other) noexcept = delete;	// Prevent Move Constructor
+		RenderableObjectOpenGL& operator=(RenderableObjectOpenGL&& other) noexcept = delete;	// Prevent Move Assignment
 
-			// Getters
-			unsigned int GetVBO() const;
-			unsigned int GetVAO() const;
-			unsigned int GetEBO() const;
+		// Getters
+		unsigned int GetVBO() const;
+		unsigned int GetVAO() const;
+		unsigned int GetEBO() const;
 
-		protected:
-			void Init();
-			void CreateAndBindVertexAttributes();
-			void CreateAndBindVertexBuffers(const std::vector<Vertex>& vertices);
-			void GenerateAndBindElementBuffer(const std::vector<unsigned int>& indices);
-			void SetVertexAttributePointers();
-			void UnbindVertexAttributes();
+	protected:
+		void Init();
+		void CreateAndBindVertexAttributes();
+		void CreateAndBindVertexBuffers(const std::vector<PhysicalProperties::Vertex>& vertices);
+		void GenerateAndBindElementBuffer(const std::vector<unsigned int>& indices);
+		void SetVertexAttributePointers();
+		void UnbindVertexAttributes();
 
-		protected:
-			unsigned int m_VBO;
-			unsigned int m_VAO;
-			unsigned int m_EBO;
-			VertexLayout m_vertexLayout;
-		};
-	}
+	protected:
+		unsigned int m_VBO;
+		unsigned int m_VAO;
+		unsigned int m_EBO;
+		VertexLayout m_vertexLayout;
+	};
 }
 
 

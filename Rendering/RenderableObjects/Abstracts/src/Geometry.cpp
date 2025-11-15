@@ -22,7 +22,7 @@ namespace Andromeda::Rendering
 		return m_indices;
 	}
 
-	std::vector<Vertex> Geometry::GetVertices() const
+	std::vector<PhysicalProperties::Vertex> Geometry::GetVertices() const
 	{
 		return m_vertices;
 	}

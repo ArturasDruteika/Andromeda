@@ -1,12 +1,12 @@
 #include "../include/SkyroomOpenGLImpl.hpp"
-#include "../../../Vertices/include/Vertex.hpp"
+#include "Vertex.hpp"
 #include "glad/gl.h"
 
 
 namespace Andromeda::Rendering
 {
     // Build CCW triangles as seen from INSIDE the cube; normals point inward.
-    static inline void PushTri(std::vector<Vertex>& v,
+    static inline void PushTri(std::vector<PhysicalProperties::Vertex>& v,
         const PhysicalProperties::Point3D& a,
         const PhysicalProperties::Point3D& b,
         const PhysicalProperties::Point3D& c,
@@ -23,9 +23,9 @@ namespace Andromeda::Rendering
             centerPosition,
             color,
             std::vector{
-                VertexAttributes{ 0, PhysicalProperties::Point3D::Size(), GL_FLOAT, GL_FALSE, sizeof(Vertex), 0 }, // Position
-                VertexAttributes{ 1, PhysicalProperties::Color::Size(), GL_FLOAT, GL_FALSE, sizeof(Vertex), sizeof(PhysicalProperties::Point3D)}, // Color
-                VertexAttributes{ 2, Math::Vec3::Size(), GL_FLOAT, GL_FALSE, sizeof(Vertex), sizeof(PhysicalProperties::Point3D) + sizeof(PhysicalProperties::Color)} // Normal
+                VertexAttributes{ 0, PhysicalProperties::Point3D::Size(), GL_FLOAT, GL_FALSE, sizeof(PhysicalProperties::Vertex), 0 }, // Position
+                VertexAttributes{ 1, PhysicalProperties::Color::Size(), GL_FLOAT, GL_FALSE, sizeof(PhysicalProperties::Vertex), sizeof(PhysicalProperties::Point3D)}, // Color
+                VertexAttributes{ 2, Math::Vec3::Size(), GL_FLOAT, GL_FALSE, sizeof(PhysicalProperties::Vertex), sizeof(PhysicalProperties::Point3D) + sizeof(PhysicalProperties::Color)} // Normal
             }
         )
         , m_halfExtent{ halfExtent }

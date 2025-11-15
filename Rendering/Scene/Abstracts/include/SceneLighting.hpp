@@ -3,11 +3,11 @@
 
 
 #include "pch.hpp"
-#include "../../../Light/Abstracts/include/LuminousBehavior.hpp"
+#include "LuminousBehavior.hpp"
 #include "../../../RenderableObjects/Interfaces/include/IRenderableObject.hpp"
-#include "../../../Light/LightTypes/include/DirectionalLight.hpp"
-#include "../../../Light/LightTypes/include/PointLight.hpp"
-#include "../../../Light/Support/include/LightTypes.hpp"
+#include "DirectionalLight.hpp"
+#include "PointLight.hpp"
+#include "LightTypes.hpp"
 #include "LinearAlgebraDataTypes.hpp"
 
 
@@ -20,17 +20,17 @@ namespace Andromeda::Rendering
         ~SceneLighting();
 
         // Getters
-        const std::unordered_map<int, const DirectionalLight*> GetDirectionalLights() const;
-        const std::unordered_map<int, const PointLight*> GetPointLights() const;
-        const std::unordered_map<int, LuminousBehavior*>& GetLuminousObjects() const;
+        const std::unordered_map<int, const PhysicalProperties::DirectionalLight*> GetDirectionalLights() const;
+        const std::unordered_map<int, const PhysicalProperties::PointLight*> GetPointLights() const;
+        const std::unordered_map<int, PhysicalProperties::LuminousBehavior*>& GetLuminousObjects() const;
 
     protected:
-        std::unordered_map<int, LuminousBehavior*> m_luminousObjects;
+        std::unordered_map<int, PhysicalProperties::LuminousBehavior*> m_luminousObjects;
 
     private:
         // Fixed: return map of pointers, not objects
         template <typename TLight>
-        std::unordered_map<int, const TLight*> ExtractLightsOfType(LightType type) const;
+        std::unordered_map<int, const TLight*> ExtractLightsOfType(PhysicalProperties::LightType type) const;
     };
 }
 

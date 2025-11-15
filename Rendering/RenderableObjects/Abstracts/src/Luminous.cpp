@@ -1,5 +1,5 @@
 #include "../include/Luminous.hpp"
-#include "../../../Light/Abstracts/include/LuminousBehavior.hpp"
+#include "LuminousBehavior.hpp"
 #include "spdlog/spdlog.h"
 
 
@@ -22,12 +22,12 @@ namespace Andromeda::Rendering
 		return m_luminous;
 	}
 
-	ILightBehavior* Luminous::GetLightBehavior() const
+	PhysicalProperties::ILightBehavior* Luminous::GetLightBehavior() const
 	{
 		return m_pILightBehavior;
 	}
 
-	void Luminous::SetLuminousBehavior(ILightBehavior* behavior)
+	void Luminous::SetLuminousBehavior(PhysicalProperties::ILightBehavior* behavior)
 	{
 		if (behavior == nullptr)
 		{
@@ -36,6 +36,6 @@ namespace Andromeda::Rendering
 		}
 		delete m_pILightBehavior;
 		m_pILightBehavior = behavior;
-		m_luminous = dynamic_cast<LuminousBehavior*>(m_pILightBehavior) ? true : false;
+		m_luminous = dynamic_cast<PhysicalProperties::LuminousBehavior*>(m_pILightBehavior) ? true : false;
 	}
 }

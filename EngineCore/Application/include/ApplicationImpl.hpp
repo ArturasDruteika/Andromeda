@@ -2,7 +2,6 @@
 #define ENGINECORE__APPLICATION_IMPL__HPP
 
 #include "../include/Application.hpp"
-//#include "../../RenderingWindows/include/RendererWindowOpenGL.hpp"
 #include "../../RenderingWindows/include/ImGuiDockspaceManager.hpp"
 #include "OpenGLRenderer.hpp"
 #include "OpenGLScene.hpp"
@@ -30,7 +29,7 @@ namespace Andromeda::EngineCore
 		void RunMainLoop();
 		void DeInit();
 		void AddToScene(int id, Rendering::IRenderableObjectOpenGL* object);
-		void AddToScene(int id, Rendering::LuminousBehavior* object);
+		void AddToScene(int id, PhysicalProperties::LuminousBehavior* object);
 		void RemoveFromScene(int id);
 
 	private:
