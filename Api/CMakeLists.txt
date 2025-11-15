@@ -23,8 +23,11 @@ set(ENGINE_HEADERS
 
 # ==== RenderableObjects ====
 set(RENDERABLE_OBJECTS_HEADERS
+    RenderableObjects/ICube.hpp
     RenderableObjects/ILuminous.hpp
     RenderableObjects/IRenderableObject.hpp
+    RenderableObjects/ISkyroom.hpp
+    RenderableObjects/ISphere.hpp
     RenderableObjects/ITransformable.hpp
 )
 
@@ -43,7 +46,7 @@ set(SCENE_HEADERS
 )
 
 # Attach headers to the target (nice for IDEs; works without install)
-target_sources(Api
+target_sources(${PROJECT_NAME}
     PUBLIC
         FILE_SET HEADERS
         BASE_DIRS ${CMAKE_CURRENT_SOURCE_DIR}
@@ -56,22 +59,30 @@ target_sources(Api
 )
 
 # Include directories for anything that links Api
-target_include_directories(Api
+target_include_directories(${PROJECT_NAME}
     PUBLIC
         ${CMAKE_CURRENT_SOURCE_DIR}
         ${CMAKE_CURRENT_SOURCE_DIR}/../Math/LinearAlgebra/include
+        ${CMAKE_CURRENT_SOURCE_DIR}/../PhysicalProperties/Light/interfaces/include
+        ${CMAKE_CURRENT_SOURCE_DIR}/../PhysicalProperties/Colors/include
 )
 
 # Link PrecompiledHeaders and Math to this project
-target_link_libraries(Api
+target_link_libraries(${PROJECT_NAME}
     PRIVATE
         PrecompiledHeaders   # used only for PCH / build
     PUBLIC
         Math                 # consumers of Api also see Math
+        PhysicalProperties
 )
 
+target_precompile_headers(Api REUSE_FROM PrecompiledHeaders)
+
 # Ensure Math is built before Api (optional if CMake graph already guarantees it)
-add_dependencies(Api Math)
+add_dependencies(${PROJECT_NAME}
+    Math
+    PhysicalProperties
+)
 
 # ===== Visual Studio filters (Solution Explorer groups) =====
 source_group(
