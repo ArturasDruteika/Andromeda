@@ -1,10 +1,20 @@
-#ifndef API__I_RENDERER__HPP
-#define API__I_RENDERER__HPP
+#ifndef API_RENDERER__I_RENDERER__HPP
+#define API_RENDERER__I_RENDERER__HPP
+
+
+#include "ICameraControl.hpp"
+#include "IGridControl.hpp"
+#include "IIlluminationControl.hpp"
+#include "ISizeControl.hpp"
 
 
 namespace Andromeda
 {
-	class IRenderer
+	class IRenderer 
+		: public ICameraControl
+		, public IGridControl
+		, public IIlluminationControl
+		, public ISizeControl
 	{
 	public:
 		virtual ~IRenderer() = default;
@@ -17,4 +27,4 @@ namespace Andromeda
 }
 
 
-#endif // API__I_RENDERER__HPP
+#endif // API_RENDERER__I_RENDERER__HPP

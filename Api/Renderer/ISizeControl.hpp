@@ -1,5 +1,5 @@
-#ifndef API__I_SIZE__HPP
-#define API__I_SIZE__HPP
+#ifndef API_RENDERER__I_SIZE__HPP
+#define API_RENDERER__I_SIZE__HPP
 
 
 namespace Andromeda
@@ -18,4 +18,4 @@ namespace Andromeda
 }
 
 
-#endif // API__I_SIZE__HPP
+#endif // API_RENDERER__I_SIZE__HPP

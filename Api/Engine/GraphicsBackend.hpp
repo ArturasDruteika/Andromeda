@@ -1,5 +1,5 @@
-#ifndef API__GRAPHICS_BACKEND__HPP
-#define API__GRAPHICS_BACKEND__HPP
+#ifndef API__ENGINE__GRAPHICS_BACKEND__HPP
+#define API__ENGINE__GRAPHICS_BACKEND__HPP
 
 
 namespace Andromeda
@@ -12,4 +12,4 @@ namespace Andromeda
 }
 
 
-#endif // API__GRAPHICS_BACKEND__HPP
+#endif // API__ENGINE__GRAPHICS_BACKEND__HPP

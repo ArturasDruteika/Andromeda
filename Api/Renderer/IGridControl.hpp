@@ -1,5 +1,5 @@
-#ifndef API__I_GRID_CONTROL__HPP
-#define API__I_GRID_CONTROL__HPP
+#ifndef API_RENDERER__I_GRID_CONTROL__HPP
+#define API_RENDERER__I_GRID_CONTROL__HPP
 
 
 namespace Andromeda
@@ -17,4 +17,4 @@ namespace Andromeda
 }
 
 
-#endif // API__I_GRID_CONTROL__HPP
+#endif // API_RENDERER__I_GRID_CONTROL__HPP

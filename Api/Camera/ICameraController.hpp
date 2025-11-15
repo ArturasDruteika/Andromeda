@@ -1,5 +1,5 @@
-#ifndef API__I_CAMERA_CONTROLLER__HPP
-#define API__I_CAMERA_CONTROLLER__HPP
+#ifndef API__CAMERA__I_CAMERA_CONTROLLER__HPP
+#define API__CAMERA__I_CAMERA_CONTROLLER__HPP
 
 
 #include "pch.hpp"
@@ -9,7 +9,6 @@ namespace Andromeda
 {
     using OnDistanceChange = std::function<void(float)>;
 
-    // Mutation & events for controlling the camera.
     class ICameraController
     {
     public:
@@ -24,4 +23,4 @@ namespace Andromeda
 }
 
 
-#endif // API__I_CAMERA_CONTROLLER__HPP
+#endif // API__CAMERA__I_CAMERA_CONTROLLER__HPP

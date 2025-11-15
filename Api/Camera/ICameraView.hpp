@@ -1,5 +1,5 @@
-#ifndef API__I_CAMERA_VIEW__HPP
-#define API__I_CAMERA_VIEW__HPP
+#ifndef API__CAMERA__I_CAMERA_VIEW__HPP
+#define API__CAMERA__I_CAMERA_VIEW__HPP
 
 
 #include "IPerspectiveControl.hpp"
@@ -8,7 +8,6 @@
 
 namespace Andromeda
 {
-    // Read-only access to camera orientation and position.
     class ICameraView
         : public IPerspectiveControl
     {
@@ -25,4 +24,4 @@ namespace Andromeda
 }
 
 
-#endif // API__I_CAMERA_VIEW__HPP
+#endif // API__CAMERA__I_CAMERA_VIEW__HPP

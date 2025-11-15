@@ -1,5 +1,5 @@
-#ifndef API__I_ENGINE__HPP
-#define API__I_ENGINE__HPP
+#ifndef API__ENGINE__I_ENGINE__HPP
+#define API__ENGINE__I_ENGINE__HPP
 
 
 #include "GraphicsBackend.hpp"
@@ -25,4 +25,4 @@ namespace Andromeda
 }
 
 
-#endif // API__I_ENGINE__HPP
+#endif // API__ENGINE__I_ENGINE__HPP

@@ -1,5 +1,5 @@
-#ifndef API__I_CAMERA__HPP
-#define API__I_CAMERA__HPP
+#ifndef API__CAMERA__I_CAMERA__HPP
+#define API__CAMERA__I_CAMERA__HPP
 
 
 #include "pch.hpp"
@@ -19,4 +19,4 @@ namespace Andromeda
 }
 
 
-#endif // API__I_CAMERA__HPP
+#endif // API__CAMERA__I_CAMERA__HPP

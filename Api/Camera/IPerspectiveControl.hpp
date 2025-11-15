@@ -1,5 +1,5 @@
-#ifndef API__I_PERSPECTIVE_CONTROL__HPP
-#define API__I_PERSPECTIVE_CONTROL__HPP
+#ifndef API__CAMERA__I_PERSPECTIVE_CONTROL__HPP
+#define API__CAMERA__I_PERSPECTIVE_CONTROL__HPP
 
 
 #include "LinearAlgebraDataTypes.hpp"
@@ -27,4 +27,4 @@ namespace Andromeda
 }
 
 
-#endif // API__I_PERSPECTIVE_CONTROL__HPP
+#endif // API__CAMERA__I_PERSPECTIVE_CONTROL__HPP

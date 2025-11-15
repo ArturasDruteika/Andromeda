@@ -1,5 +1,5 @@
-#ifndef API__I_SCENE__HPP
-#define API__I_SCENE__HPP
+#ifndef API_SCENE__I_SCENE__HPP
+#define API_SCENE__I_SCENE__HPP
 
 
 namespace Andromeda
@@ -12,4 +12,4 @@ namespace Andromeda
 }
 
 
-#endif // API__I_SCENE__HPP
+#endif // API_SCENE__I_SCENE__HPP

@@ -1,8 +1,8 @@
-#ifndef API__I_CAMERA_CONTROL__HPP
-#define API__I_CAMERA_CONTROL__HPP
+#ifndef API_RENDERER__I_CAMERA_CONTROL__HPP
+#define API_RENDERER__I_CAMERA_CONTROL__HPP
 
 
-#include "ICamera.hpp"
+#include "../Camera/ICamera.hpp"
 
 
 namespace Andromeda
@@ -18,4 +18,4 @@ namespace Andromeda
 }
 
 
-#endif // API__I_CAMERA_CONTROL__HPP
+#endif // API_RENDERER__I_CAMERA_CONTROL__HPP

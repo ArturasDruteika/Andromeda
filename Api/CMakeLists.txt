@@ -1,8 +1,10 @@
 cmake_minimum_required(VERSION 3.24)
+
 project(Api LANGUAGES CXX)
 
+# Real target so Visual Studio shows a proper project
 add_library(Api STATIC)
-set_target_properties(Api PROPERTIES LINKER_LANGUAGE CXX)  # <-- key line
+set_target_properties(Api PROPERTIES LINKER_LANGUAGE CXX)
 target_compile_features(Api PUBLIC cxx_std_23)
 
 # ==== Camera ====
@@ -19,6 +21,13 @@ set(ENGINE_HEADERS
     Engine/GraphicsBackend.hpp
 )
 
+# ==== RenderableObjects ====
+set(RENDERABLE_OBJECTS_HEADERS
+    RenderableObjects/ILuminous.hpp
+    RenderableObjects/IRenderableObject.hpp
+    RenderableObjects/ITransformable.hpp
+)
+
 # ==== Renderer ====
 set(RENDERER_HEADERS
     Renderer/ICameraControl.hpp
@@ -33,73 +42,79 @@ set(SCENE_HEADERS
     Scene/IScene.hpp
 )
 
-target_sources(${PROJECT_NAME} 
+# Attach headers to the target (nice for IDEs; works without install)
+target_sources(Api
     PUBLIC
         FILE_SET HEADERS
         BASE_DIRS ${CMAKE_CURRENT_SOURCE_DIR}
         FILES
-            ${CMAKE_CURRENT_SOURCE_DIR}/${CAMERA_HEADERS}
-            ${CMAKE_CURRENT_SOURCE_DIR}/${ENGINE_HEADERS}
-            ${CMAKE_CURRENT_SOURCE_DIR}/${RENDERER_HEADERS}
-            ${CMAKE_CURRENT_SOURCE_DIR}/${SCENE_HEADERS}
+            ${CAMERA_HEADERS}
+            ${ENGINE_HEADERS}
+            ${RENDERABLE_OBJECTS_HEADERS}
+            ${RENDERER_HEADERS}
+            ${SCENE_HEADERS}
 )
 
-# Link GLFW and OpenGL to the executable
-target_link_libraries(${PROJECT_NAME} 
-    PRIVATE
-        PrecompiledHeaders
-        Math
-)
-
-target_include_directories(${PROJECT_NAME} 
+# Include directories for anything that links Api
+target_include_directories(Api
     PUBLIC
-        $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}>
-        $<INSTALL_INTERFACE:include>
-        ..//Math//LinearAlgebra//include//
+        ${CMAKE_CURRENT_SOURCE_DIR}
+        ${CMAKE_CURRENT_SOURCE_DIR}/../Math/LinearAlgebra/include
 )
 
-add_dependencies(${PROJECT_NAME} 
-    Math
+# Link PrecompiledHeaders and Math to this project
+target_link_libraries(Api
+    PRIVATE
+        PrecompiledHeaders   # used only for PCH / build
+    PUBLIC
+        Math                 # consumers of Api also see Math
 )
 
-include(GNUInstallDirs)
-install(TARGETS ${PROJECT_NAME}  EXPORT ApiTargets FILE_SET HEADERS)
-install(EXPORT ApiTargets NAMESPACE Andromeda:: DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/${PROJECT_NAME} )
-install(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/ DESTINATION ${CMAKE_INSTALL_INCLUDEDIR})
+# Ensure Math is built before Api (optional if CMake graph already guarantees it)
+add_dependencies(Api Math)
 
-
+# ===== Visual Studio filters (Solution Explorer groups) =====
 source_group(
-    TREE 
-        ${CMAKE_CURRENT_SOURCE_DIR}/Camera 
-    PREFIX 
-        "Camera" 
+    TREE
+        ${CMAKE_CURRENT_SOURCE_DIR}/Camera
+    PREFIX
+        "Camera"
     FILES
         ${CAMERA_HEADERS}
 )
 
 source_group(
-    TREE 
-        ${CMAKE_CURRENT_SOURCE_DIR}/Engine 
-    PREFIX 
-        "Engine" 
+    TREE
+        ${CMAKE_CURRENT_SOURCE_DIR}/Engine
+    PREFIX
+        "Engine"
     FILES
         ${ENGINE_HEADERS}
 )
 
 source_group(
-    TREE 
-        ${CMAKE_CURRENT_SOURCE_DIR}/Renderer 
-    PREFIX 
-        "Renderer" 
+    TREE
+        ${CMAKE_CURRENT_SOURCE_DIR}/RenderableObjects
+    PREFIX
+        "RenderableObjects"
+    FILES
+        ${RENDERABLE_OBJECTS_HEADERS}
+)
+
+source_group(
+    TREE
+        ${CMAKE_CURRENT_SOURCE_DIR}/Renderer
+    PREFIX
+        "Renderer"
     FILES
         ${RENDERER_HEADERS}
 )
 
 source_group(
-    TREE 
-        ${CMAKE_CURRENT_SOURCE_DIR}/Scene 
-    PREFIX 
-        "Scene" 
+    TREE
+        ${CMAKE_CURRENT_SOURCE_DIR}/Scene
+    PREFIX
+        "Scene"
     FILES
         ${SCENE_HEADERS}
 )
