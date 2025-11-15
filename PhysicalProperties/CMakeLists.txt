@@ -66,6 +66,11 @@ set(SPACE_HEADERS
     Space/include/Points.hpp
 )
 
+# ==== Transformations ====
+set(TRANSFORMATIONS_HEADERS
+    Transformations/include/TransformationTypes.hpp
+)
+
 # ==== Vertices ====
 set(VERTICES_HEADERS
     Vertices/include/Vertex.hpp
@@ -81,6 +86,7 @@ add_library(${PROJECT_NAME}
         ${MATERIALS_HEADERS}
         ${MATERIALS_SOURCES}
         ${SPACE_HEADERS}
+        ${TRANSFORMATIONS_HEADERS}
         ${VERTICES_HEADERS}
 )
 
@@ -155,6 +161,15 @@ source_group(
     FILES
         ${SPACE_HEADERS}
         ${SPACE_SOURCES}
+)
+
+source_group(
+    TREE
+        ${CMAKE_CURRENT_SOURCE_DIR}/Transformations
+    PREFIX
+        "Transformations"
+    FILES
+        ${TRANSFORMATIONS_HEADERS}
 )
 
 source_group(
