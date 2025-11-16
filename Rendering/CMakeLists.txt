@@ -100,7 +100,6 @@ set(RENDERERS_HEADERS
     Renderers/Abstracts/include/GridControl.hpp
     Renderers/Abstracts/include/IlluminationControl.hpp
     Renderers/Abstracts/include/Renderer.hpp
-    Renderers/Abstracts/include/RendererOpenGL.hpp
     Renderers/Abstracts/include/SizeControl.hpp
     Renderers/Interfaces/include/IFrameBufferProvider.hpp
     Renderers/Interfaces/include/IRendererOpenGL.hpp
@@ -115,7 +114,6 @@ set(RENDERERS_SOURCES
     Renderers/Abstracts/src/GridControl.cpp
     Renderers/Abstracts/src/IlluminationControl.cpp
     Renderers/Abstracts/src/Renderer.cpp
-    Renderers/Abstracts/src/RendererOpenGL.cpp
     Renderers/Abstracts/src/SizeControl.cpp
     Renderers/Interfaces/src/IFrameBufferProvider.cpp
     Renderers/Interfaces/src/IRendererOpenGL.cpp

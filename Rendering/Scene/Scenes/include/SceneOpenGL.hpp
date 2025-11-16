@@ -4,9 +4,9 @@
 
 #include "../../../MacroExports/include/MacroExports.hpp"
 #include "pch.hpp"
-#include "IScene.hpp"
 #include "../../../RenderableObjects/Interfaces/include/IRenderableObjectOpenGL.hpp"
-#include "../../../Light/Abstracts/include/LuminousBehavior.hpp"
+#include "IScene.hpp"
+#include "LuminousBehavior.hpp"
 
 
 namespace Andromeda::Rendering
