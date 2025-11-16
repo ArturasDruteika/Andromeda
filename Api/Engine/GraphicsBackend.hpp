@@ -14,7 +14,7 @@ namespace Andromeda
 		Vulkan = 2
 	};
 
-    constexpr std::string_view GraphicsBackendString(GraphicsBackend backend) noexcept
+    constexpr std::string_view GraphicsBackendString(const GraphicsBackend& backend) noexcept
     {
         switch (backend)
         {
