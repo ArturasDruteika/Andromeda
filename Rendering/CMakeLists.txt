@@ -234,22 +234,22 @@ target_include_directories(${PROJECT_NAME}
         ..//Api//Renderer//
 )
 
-# Link GLFW and OpenGL to the executable
-target_link_libraries(${PROJECT_NAME} 
+# Link libraries – Api is INTERFACE, so this just pulls in its usage requirements
+target_link_libraries(${PROJECT_NAME}
     PRIVATE
         PrecompiledHeaders
-        Math
-        Api
         Utils
-        PhysicalProperties
         ExternalGraphicsLibs
         spdlog::spdlog
+    PUBLIC
+        Math
+        Api
+        PhysicalProperties
 )
 
-add_dependencies(${PROJECT_NAME} 
+add_dependencies(${PROJECT_NAME}
     Utils
     Math
-    Api
     PhysicalProperties
     ExternalGraphicsLibs
 )

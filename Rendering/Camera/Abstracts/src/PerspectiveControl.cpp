@@ -1,4 +1,6 @@
 #include "../include/PerspectiveControl.hpp"
+#include "LinearAlgebraDataTypes.hpp"
+#include "../../../Utils/include/MathUtils.hpp"
 #include <glm/gtc/matrix_transform.hpp>
 
 
@@ -9,6 +11,7 @@ namespace Andromeda::Rendering
 		, m_nearPlane{ 0.1f }
 		, m_farPlane{ 1000.0f }
 		, m_aspect{ 1.0f }
+		, m_projection{}
 	{
 		UpdateProjection();
 	}
@@ -44,7 +47,7 @@ namespace Andromeda::Rendering
 		return m_aspect;
 	}
 
-	const glm::mat4& PerspectiveControl::GetProjection() const
+	const Math::Mat4& PerspectiveControl::GetProjection() const
 	{
 		return m_projection;
 	}
@@ -79,6 +82,7 @@ namespace Andromeda::Rendering
 
 	void PerspectiveControl::UpdateProjection()
 	{
-		m_projection = glm::infinitePerspective(glm::radians(m_fovDeg), m_aspect, m_nearPlane);
+		glm::mat4 projection = glm::perspective(glm::radians(m_fovDeg), m_aspect, m_nearPlane, m_farPlane);
+		m_projection = MathUtils::FromGLM(projection);
 	}
 }

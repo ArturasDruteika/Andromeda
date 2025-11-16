@@ -282,7 +282,7 @@ namespace Andromeda::Rendering
         shader->Bind();
 
         shader->SetUniform("u_view", MathUtils::ToGLM(m_pCamera->GetViewMatrix()));
-        shader->SetUniform("u_projection", m_pCamera->GetProjection());
+        shader->SetUniform("u_projection", MathUtils::ToGLM(m_pCamera->GetProjection()));
         shader->SetUniform("u_cameraPosWS", MathUtils::ToGLM(m_pCamera->GetPosition()));
         
         if (hasDir)
@@ -308,7 +308,7 @@ namespace Andromeda::Rendering
         ShaderOpenGL* lumShader = m_pShaderManager->GetShader(ShaderOpenGLTypes::RenderableObjectsLuminous);
         lumShader->Bind();
         lumShader->SetUniform("u_view", MathUtils::ToGLM(m_pCamera->GetViewMatrix()));
-        lumShader->SetUniform("u_projection", m_pCamera->GetProjection());
+        lumShader->SetUniform("u_projection", MathUtils::ToGLM(m_pCamera->GetProjection()));
 
         for (auto& [id, obj] : scene.GetObjects())
         {
@@ -330,7 +330,7 @@ namespace Andromeda::Rendering
         ShaderOpenGL* shader = m_pShaderManager->GetShader(ShaderOpenGLTypes::RenderableObjects);
         shader->Bind();
         shader->SetUniform("u_view", MathUtils::ToGLM(m_pCamera->GetViewMatrix()));
-        shader->SetUniform("u_projection", m_pCamera->GetProjection());
+        shader->SetUniform("u_projection", MathUtils::ToGLM(m_pCamera->GetProjection()));
 
         for (auto& [id, obj] : scene.GetObjects())
         {
@@ -360,7 +360,7 @@ namespace Andromeda::Rendering
         glm::mat4 viewMatrix = MathUtils::ToGLM(m_pCamera->GetViewMatrix());
 
         shader->SetUniform("u_view", viewMatrix);
-        shader->SetUniform("u_projection", m_pCamera->GetProjection());
+        shader->SetUniform("u_projection", MathUtils::ToGLM(m_pCamera->GetProjection()));
 
         glBindVertexArray(object.GetVAO());
         glBindBuffer(GL_ARRAY_BUFFER, object.GetVBO());

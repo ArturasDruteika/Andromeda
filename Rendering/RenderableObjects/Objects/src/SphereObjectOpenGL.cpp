@@ -51,7 +51,7 @@ namespace Andromeda::Rendering
 
 	const std::vector<unsigned int>& SphereObjectOpenGL::GetIndices() const
 	{
-		return std::vector<unsigned int>();
+		return m_pSphereObjectOpenGLImpl->GetIndices();
 	}
 
 	const std::vector<PhysicalProperties::Vertex>& SphereObjectOpenGL::GetVertices() const

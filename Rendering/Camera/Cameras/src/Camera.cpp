@@ -73,7 +73,7 @@ namespace Andromeda
             return m_pCameraImpl->GetAspect();
         }
 
-        const glm::mat4& Camera::GetProjection() const
+        const Math::Mat4& Camera::GetProjection() const
         {
             return m_pCameraImpl->GetProjection();
         }

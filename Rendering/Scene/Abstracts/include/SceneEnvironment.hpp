@@ -26,7 +26,7 @@ namespace Andromeda::Rendering
 	protected:
 		float m_gridSpacing;
 		float m_ambientStrength;
-		glm::vec4 m_backroundColor;
+		Math::Vec4 m_backroundColor;
 	};
 }
 

@@ -2,7 +2,7 @@
 #define RENDERING__PERSPECTIVE_CONTROL__HPP
 
 
-#include "glm/glm.hpp"
+#include "LinearAlgebraDataTypes.hpp"
 
 
 namespace Andromeda::Rendering
@@ -19,7 +19,7 @@ namespace Andromeda::Rendering
 		float GetNearPlane() const;
 		float GetFarPlane() const;
 		float GetAspect() const;
-		const glm::mat4& GetProjection() const;
+		const Math::Mat4& GetProjection() const;
 		// Setters
 		void SetFieldOfViewDegrees(float fovDeg, bool updateProjection = true);
 		void SetNearPlane(float nearPlane, bool updateProjection = true);
@@ -32,7 +32,7 @@ namespace Andromeda::Rendering
 		float m_nearPlane;
 		float m_farPlane;
 		float m_aspect;
-		glm::mat4 m_projection;
+		Math::Mat4 m_projection;
 	};
 }
 

@@ -2,9 +2,9 @@
 #define RENDERING__CAMERA__HPP
 
 
-#include "../../MacroExports/include/MacroExports.hpp"
+#include "../../../MacroExports/include/MacroExports.hpp"
 #include "pch.hpp"
-#include "../../Interfaces/include/ICamera.hpp"
+#include "ICamera.hpp"
 #include "LinearAlgebraDataTypes.hpp"
 
 
@@ -30,7 +30,7 @@ namespace Andromeda
             float GetNearPlane() const override;
             float GetFarPlane() const override;
             float GetAspect() const override;
-            const glm::mat4& GetProjection() const override;
+            const Math::Mat4& GetProjection() const override;
             Math::Mat4 GetViewMatrix() const override;
             Math::Vec3 GetPosition() const override;
             Math::Vec3 GetForward() const override;

@@ -63,7 +63,7 @@ namespace Andromeda::Rendering
 
     const std::vector<unsigned int>& GridOpenGL::GetIndices() const
     {
-        return std::vector<unsigned int>();
+        return m_indices;
     }
 
     const std::vector<PhysicalProperties::Vertex>& GridOpenGL::GetVertices() const

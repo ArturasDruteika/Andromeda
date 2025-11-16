@@ -20,7 +20,7 @@ namespace Andromeda::Rendering
 
 	const Math::Vec4& SceneEnvironment::GetBackgroundColor() const
 	{
-		return MathUtils::FromGLM(m_backroundColor);
+		return m_backroundColor;
 	}
 
 	void SceneEnvironment::SetAmbientStrength(float ambientStrength)
@@ -30,7 +30,7 @@ namespace Andromeda::Rendering
 
 	void SceneEnvironment::SetBackgroundColor(const Math::Vec4& backroundColor)
 	{
-		m_backroundColor = MathUtils::ToGLM(backroundColor);
+		m_backroundColor = backroundColor;
 	}
 
 	void SceneEnvironment::ResizeGrid(float resizeFactor)
