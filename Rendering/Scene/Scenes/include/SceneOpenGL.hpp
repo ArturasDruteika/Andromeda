@@ -44,6 +44,9 @@ namespace Andromeda::Rendering
 		const std::unordered_map<int, const PhysicalProperties::PointLight*> GetPointLights() const override;
 		const std::unordered_map<int, PhysicalProperties::LuminousBehavior*>& GetLuminousObjects() const override;
 
+		void ClearScene() override;
+		void ResetSceneState() override;
+
 		// === From IScene ===
 		Math::Vec3 GetSceneCenter() const override;
 

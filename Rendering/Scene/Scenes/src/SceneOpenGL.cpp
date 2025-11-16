@@ -79,6 +79,14 @@ namespace Andromeda::Rendering
 		return m_pSceneOpenGLImpl->GetLuminousObjects();
 	}
 
+	void SceneOpenGL::ClearScene()
+	{
+	}
+
+	void SceneOpenGL::ResetSceneState()
+	{
+	}
+
 	Math::Vec3 SceneOpenGL::GetSceneCenter() const
 	{
 		return m_pSceneOpenGLImpl->GetSceneCenter();;
