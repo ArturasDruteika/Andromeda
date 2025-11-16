@@ -6,6 +6,7 @@
 #include "IGridControl.hpp"
 #include "IIlluminationControl.hpp"
 #include "ISizeControl.hpp"
+#include "../Scene/IScene.hpp"
 
 
 namespace Andromeda
