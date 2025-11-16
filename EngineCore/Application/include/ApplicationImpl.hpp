@@ -3,8 +3,8 @@
 
 #include "../include/Application.hpp"
 #include "../../RenderingWindows/include/ImGuiDockspaceManager.hpp"
-#include "OpenGLRenderer.hpp"
-#include "OpenGLScene.hpp"
+#include "RendererOpenGL.hpp"
+#include "SceneOpenGL.hpp"
 #include "OpenGLLoader.hpp"
 #include "GLFWContext.hpp"
 #include "GLFWWindow.hpp"
@@ -47,8 +47,8 @@ namespace Andromeda::EngineCore
 		Rendering::OpenGLLoader m_openGLLoader;
 		Context::GLFWContext* m_pContext;
 		Window::GLFWWindow* m_pWindow;
-		Rendering::OpenGLRenderer* m_pRenderer;
-		Rendering::OpenGLScene* m_pScene;
+		Rendering::RendererOpenGL* m_pRenderer;
+		Rendering::SceneOpenGL* m_pScene;
 		RendererWindowOpenGL* m_pRendererWindowOpenGL;
 		Rendering::Camera* m_pCamera;
 		CameraInputMapper* m_pCameraInputMapper;

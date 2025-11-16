@@ -57,10 +57,10 @@ namespace Andromeda::EngineCore
                     SetupEventCallbacks();
 
                     // Create and initialize the Renderer
-                    m_pRenderer = new Rendering::OpenGLRenderer();
+                    m_pRenderer = new Rendering::RendererOpenGL();
                     m_pRenderer->Init(m_pWindow->GetWidth(), m_pWindow->GetHeight(), true);
                     //m_pRenderer->SetGridVisible(true);
-                    m_pScene = new Rendering::OpenGLScene();
+                    m_pScene = new Rendering::SceneOpenGL();
 
 					m_pRenderer->SetCamera(m_pCamera);
 
@@ -146,7 +146,7 @@ namespace Andromeda::EngineCore
     {
         m_pRendererWindowOpenGL->SetOnResizeCallback(
             std::bind(
-                &Rendering::OpenGLRenderer::Resize, 
+                &Rendering::RendererOpenGL::Resize, 
                 m_pRenderer, 
                 std::placeholders::_1, 
                 std::placeholders::_2
@@ -173,7 +173,7 @@ namespace Andromeda::EngineCore
 
         m_pCamera->SetOnDistanceChange(
             std::bind(
-                &Rendering::OpenGLScene::ResizeGrid,
+                &Rendering::SceneOpenGL::ResizeGrid,
                 m_pScene,
                 std::placeholders::_1
             )
