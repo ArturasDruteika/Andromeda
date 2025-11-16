@@ -10,7 +10,7 @@ namespace Andromeda
 	class ICameraControl
 	{
 	public:
-		virtual ~ICameraControl();
+		virtual ~ICameraControl() = default;
 
 		// Setters
 		virtual void SetCamera(ICamera* camera) = 0;

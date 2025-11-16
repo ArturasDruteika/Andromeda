@@ -7,7 +7,7 @@ namespace Andromeda
 	class IIlluminationControl
 	{
 	public:
-		virtual ~IIlluminationControl();
+		virtual ~IIlluminationControl() = default;
 
 		// Getters
 		virtual bool IsIlluminationMode() const = 0;

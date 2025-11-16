@@ -10,7 +10,7 @@ namespace Andromeda
 	class ISceneState
 	{
 	public:
-		virtual ~ISceneState();
+		virtual ~ISceneState() = default;
 
 		virtual bool StateChanged(const std::unordered_map<int, IRenderableObject*>& objects) const = 0;
 	};

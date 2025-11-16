@@ -16,7 +16,7 @@ namespace Andromeda
 			: public IRenderableObject
 		{	
 		public:
-			virtual ~IRenderableObjectOpenGL();
+			virtual ~IRenderableObjectOpenGL() = default;
 
 			// Getters
 			virtual unsigned int GetVBO() const = 0;

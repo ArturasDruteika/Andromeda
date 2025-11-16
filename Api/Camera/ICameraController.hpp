@@ -12,7 +12,7 @@ namespace Andromeda
     class ICameraController
     {
     public:
-        virtual ~ICameraController();
+        virtual ~ICameraController() = default;
 
         virtual void Rotate(float yaw, float pitch, float roll) = 0;
         virtual void Zoom(float deltaDistance) = 0;

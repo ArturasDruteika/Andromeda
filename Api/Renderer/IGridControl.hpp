@@ -7,7 +7,7 @@ namespace Andromeda
 	class IGridControl
 	{
 	public:
-		virtual ~IGridControl();
+		virtual ~IGridControl() = default;
 
 		// Getters
 		virtual bool IsGridVisible() const = 0;

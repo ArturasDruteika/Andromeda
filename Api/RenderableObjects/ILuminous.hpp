@@ -10,7 +10,7 @@ namespace Andromeda
 	class ILuminous
 	{
 	public:
-		virtual ~ILuminous();
+		virtual ~ILuminous() = default;
 		
 		// Getters
 		virtual bool IsLuminous() const = 0;

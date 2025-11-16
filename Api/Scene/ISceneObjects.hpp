@@ -11,7 +11,7 @@ namespace Andromeda
 	class ISceneObjects
 	{
 	public:
-		virtual ~ISceneObjects();
+		virtual ~ISceneObjects() = default;
 
 		// Getters
 		virtual const std::unordered_map<int, IRenderableObject*>& GetObjects() const = 0;

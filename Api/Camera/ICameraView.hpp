@@ -12,7 +12,7 @@ namespace Andromeda
         : public IPerspectiveControl
     {
     public:
-        virtual ~ICameraView();
+        virtual ~ICameraView() = default;
 
         // Getters
         virtual Math::Mat4 GetViewMatrix() const = 0;

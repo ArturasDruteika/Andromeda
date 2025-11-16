@@ -10,7 +10,7 @@ namespace Andromeda
     class ITransformable
     {
     public:
-        virtual ~ITransformable();
+        virtual ~ITransformable() = default;
 
 		// Getters
 		virtual bool StateChanged() const = 0;

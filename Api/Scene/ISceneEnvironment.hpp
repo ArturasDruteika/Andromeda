@@ -10,7 +10,7 @@ namespace Andromeda
 	class ISceneEnvironment
 	{
 	public:
-		virtual ~ISceneEnvironment();
+		virtual ~ISceneEnvironment() = default;
 
 		// Getters
 		virtual float GetAmbientStrength() const = 0;

@@ -13,7 +13,7 @@ namespace Andromeda
 		, public ICameraView
     {
     public:
-        virtual ~ICamera();
+        virtual ~ICamera() = default;
     };
 }
 

@@ -7,7 +7,7 @@ namespace Andromeda
 	class ISizeControl
 	{
 	public:
-		virtual ~ISizeControl();
+		virtual ~ISizeControl() = default;
 
 		// Getters
 		virtual int GetWidth() const = 0;

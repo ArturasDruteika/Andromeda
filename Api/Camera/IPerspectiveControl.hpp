@@ -10,7 +10,7 @@ namespace Andromeda
 	class IPerspectiveControl
     {
     public:
-        virtual ~IPerspectiveControl();
+        virtual ~IPerspectiveControl() = default;
 
 		// Getters
 		virtual float GetFieldOfViewDegrees() const = 0;

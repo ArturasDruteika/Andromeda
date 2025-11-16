@@ -13,7 +13,7 @@ namespace Andromeda
     class ISceneLighting
     {
     public:
-        virtual ~ISceneLighting();
+        virtual ~ISceneLighting() = default;
 
         // Getters
         virtual const std::unordered_map<int, const PhysicalProperties::DirectionalLight*> GetDirectionalLights() const = 0;

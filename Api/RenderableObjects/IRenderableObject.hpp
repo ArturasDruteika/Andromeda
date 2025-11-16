@@ -16,7 +16,7 @@ namespace Andromeda
         , public IMesh
     {
     public:
-        virtual ~IRenderableObject();
+        virtual ~IRenderableObject() = default;
 
         // Getters
         virtual PhysicalProperties::Color GetColor() const = 0;
