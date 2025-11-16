@@ -10,17 +10,17 @@
 
 namespace Andromeda::Rendering
 {
-	class RENDERING_API OpenGLRenderer
+	class RENDERING_API RendererOpenGL
 		: public IRendererOpenGL
 	{
 	public:
-		OpenGLRenderer();
-		~OpenGLRenderer();
+		RendererOpenGL();
+		~RendererOpenGL();
 
-		OpenGLRenderer(const OpenGLRenderer& other) = delete;	// Prevent Copy Constructor
-		OpenGLRenderer& operator=(const OpenGLRenderer& other) = delete;	// Prevent Copy Assignment
-		OpenGLRenderer(OpenGLRenderer&& other) noexcept = delete;	// Prevent Move Constructor
-		OpenGLRenderer& operator=(OpenGLRenderer&& other) noexcept = delete;	// Prevent Move Assignment
+		RendererOpenGL(const RendererOpenGL& other) = delete;	// Prevent Copy Constructor
+		RendererOpenGL& operator=(const RendererOpenGL& other) = delete;	// Prevent Copy Assignment
+		RendererOpenGL(RendererOpenGL&& other) noexcept = delete;	// Prevent Move Constructor
+		RendererOpenGL& operator=(RendererOpenGL&& other) noexcept = delete;	// Prevent Move Assignment
 
 		// Getters
 		bool IsInitialized() const override;
@@ -40,8 +40,8 @@ namespace Andromeda::Rendering
 		void Resize(int width, int height) override;
 
 	private:
-		class OpenGLRendererImpl;
-		OpenGLRendererImpl* m_pOpenGLRendererImpl;
+		class RendererOpenGLImpl;
+		RendererOpenGLImpl* m_pRendererOpenGLImpl;
 	};
 }
 

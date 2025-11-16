@@ -104,8 +104,8 @@ set(RENDERERS_HEADERS
     Renderers/Abstracts/include/SizeControl.hpp
     Renderers/Interfaces/include/IFrameBufferProvider.hpp
     Renderers/Interfaces/include/IRendererOpenGL.hpp
-    Renderers/Renderers/include/OpenGLRenderer.hpp
-    Renderers/Renderers/include/OpenGLRendererImpl.hpp
+    Renderers/Renderers/include/RendererOpenGL.hpp
+    Renderers/Renderers/include/RendererOpenGLImpl.hpp
     Renderers/Support/include/FrameBufferOpenGL.hpp
 )
 
@@ -119,8 +119,8 @@ set(RENDERERS_SOURCES
     Renderers/Abstracts/src/SizeControl.cpp
     Renderers/Interfaces/src/IFrameBufferProvider.cpp
     Renderers/Interfaces/src/IRendererOpenGL.cpp
-    Renderers/Renderers/src/OpenGLRenderer.cpp
-    Renderers/Renderers/src/OpenGLRendererImpl.cpp
+    Renderers/Renderers/src/RendererOpenGL.cpp
+    Renderers/Renderers/src/RendererOpenGLImpl.cpp
     Renderers/Support/src/FrameBufferOpenGL.cpp
 )
 
@@ -131,8 +131,8 @@ set(SCENE_HEADERS
     Scene/Abstracts/include/SceneLighting.hpp
     Scene/Abstracts/include/SceneObjects.hpp
     Scene/Abstracts/include/SceneState.hpp
-    Scene/Scenes/include/OpenGLScene.hpp
-    Scene/Scenes/include/OpenGLSceneImpl.hpp
+    Scene/Scenes/include/SceneOpenGL.hpp
+    Scene/Scenes/include/SceneOpenGLImpl.hpp
     Scene/Support/include/SpecialIndices.hpp
 )
 
@@ -142,8 +142,8 @@ set(SCENE_SOURCES
     Scene/Abstracts/src/SceneLighting.cpp
     Scene/Abstracts/src/SceneObjects.cpp
     Scene/Abstracts/src/SceneState.cpp
-    Scene/Scenes/src/OpenGLScene.cpp
-    Scene/Scenes/src/OpenGLSceneImpl.cpp
+    Scene/Scenes/src/SceneOpenGL.cpp
+    Scene/Scenes/src/SceneOpenGLImpl.cpp
 )
 
 # ==== Shaders ====

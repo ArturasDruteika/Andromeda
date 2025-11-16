@@ -11,17 +11,17 @@
 
 namespace Andromeda::Rendering
 {
-	class RENDERING_API OpenGLScene
+	class RENDERING_API SceneOpenGL
 		: public IScene
 	{
 	public:
-		OpenGLScene();
-		~OpenGLScene();
+		SceneOpenGL();
+		~SceneOpenGL();
 
-		OpenGLScene(const OpenGLScene& other) = delete;	// Prevent Copy Constructor
-		OpenGLScene& operator=(const OpenGLScene& other) = delete;	// Prevent Copy Assignment
-		OpenGLScene(OpenGLScene&& other) noexcept = delete;	// Prevent Move Constructor
-		OpenGLScene& operator=(OpenGLScene&& other) noexcept = delete;	// Prevent Move Assignment
+		SceneOpenGL(const SceneOpenGL& other) = delete;	// Prevent Copy Constructor
+		SceneOpenGL& operator=(const SceneOpenGL& other) = delete;	// Prevent Copy Assignment
+		SceneOpenGL(SceneOpenGL&& other) noexcept = delete;	// Prevent Move Constructor
+		SceneOpenGL& operator=(SceneOpenGL&& other) noexcept = delete;	// Prevent Move Assignment
 
 		// === From ISceneState ===
 		bool StateChanged(const std::unordered_map<int, IRenderableObject*>& objects) const override;
@@ -48,8 +48,8 @@ namespace Andromeda::Rendering
 		Math::Vec3 GetSceneCenter() const override;
 
 	private:
-		class OpenGLSceneImpl;
-		OpenGLSceneImpl* m_pOpenGLSceneImpl;
+		class SceneOpenGLImpl;
+		SceneOpenGLImpl* m_pSceneOpenGLImpl;
 	};
 }
 

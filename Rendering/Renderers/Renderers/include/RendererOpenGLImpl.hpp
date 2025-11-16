@@ -2,7 +2,7 @@
 #define RENDERER__OPENGL_RENDERER_IMPL__HPP
 
 
-#include "../include/OpenGLRenderer.hpp"
+#include "../include/RendererOpenGL.hpp"
 #include "../../Abstracts/include/Renderer.hpp"
 #include "../../Abstracts/include/FaceCullingControlOpenGL.hpp"
 #include "../../Support/include/FrameBufferOpenGL.hpp"
@@ -13,18 +13,18 @@
 
 namespace Andromeda::Rendering
 {
-	class OpenGLRenderer::OpenGLRendererImpl
+	class RendererOpenGL::RendererOpenGLImpl
 		: public Renderer
 		, public FaceCullingControlOpenGL
 	{
 	public:
-		OpenGLRendererImpl();
-		~OpenGLRendererImpl();
+		RendererOpenGLImpl();
+		~RendererOpenGLImpl();
 
-		OpenGLRendererImpl(const OpenGLRendererImpl& other) = delete;	// Prevent Copy Constructor
-		OpenGLRendererImpl& operator=(const OpenGLRendererImpl& other) = delete;	// Prevent Copy Assignment
-		OpenGLRendererImpl(OpenGLRendererImpl&& other) noexcept = delete;	// Prevent Move Constructor
-		OpenGLRendererImpl& operator=(OpenGLRendererImpl&& other) noexcept = delete;	// Prevent Move Assignment
+		RendererOpenGLImpl(const RendererOpenGLImpl& other) = delete;	// Prevent Copy Constructor
+		RendererOpenGLImpl& operator=(const RendererOpenGLImpl& other) = delete;	// Prevent Copy Assignment
+		RendererOpenGLImpl(RendererOpenGLImpl&& other) noexcept = delete;	// Prevent Move Constructor
+		RendererOpenGLImpl& operator=(RendererOpenGLImpl&& other) noexcept = delete;	// Prevent Move Assignment
 
 		// Getters
 		bool IsInitialized() const;
