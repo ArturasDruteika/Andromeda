@@ -3,8 +3,8 @@ cmake_minimum_required(VERSION 3.24)
 project(Api LANGUAGES CXX)
 
 # Static (header-only) library
-add_library(Api STATIC)
-set_target_properties(Api PROPERTIES LINKER_LANGUAGE CXX)
+add_library(Api INTERFACE)
+target_compile_features(Api INTERFACE cxx_std_23)
 
 # ==== Camera ====
 set(CAMERA_HEADERS
@@ -49,9 +49,8 @@ set(SCENE_HEADERS
     Scene/ISceneState.hpp
 )
 
-# Attach headers to the library (for IDEs / installs)
 target_sources(Api
-    PUBLIC
+    INTERFACE
         FILE_SET HEADERS
         BASE_DIRS ${CMAKE_CURRENT_SOURCE_DIR}
         FILES
@@ -62,18 +61,16 @@ target_sources(Api
             ${SCENE_HEADERS}
 )
 
-# Public include dirs for anything that links Api
 target_include_directories(Api
-    PUBLIC
+    INTERFACE
         ${CMAKE_CURRENT_SOURCE_DIR}
         ${CMAKE_CURRENT_SOURCE_DIR}/../Math/LinearAlgebra/include/
         ${CMAKE_CURRENT_SOURCE_DIR}/../PhysicalProperties/Light/interfaces/include/
         ${CMAKE_CURRENT_SOURCE_DIR}/../PhysicalProperties/Colors/include/
 )
 
-# Propagate dependencies: anything linking Api will also link these
 target_link_libraries(Api
-    PUBLIC
+    INTERFACE
         PrecompiledHeaders
         Math
         PhysicalProperties
