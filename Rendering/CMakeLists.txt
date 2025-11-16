@@ -70,16 +70,12 @@ set(RAYTRACING_HEADERS
 
 # ==== RenderableObjects ====
 set(RO_HEADERS
-    RenderableObjects/Abstracts/include/Geometry.hpp
     RenderableObjects/Abstracts/include/Luminous.hpp
+    RenderableObjects/Abstracts/include/Mesh.hpp
     RenderableObjects/Abstracts/include/RenderableObject.hpp
     RenderableObjects/Abstracts/include/RenderableObjectOpenGL.hpp
     RenderableObjects/Abstracts/include/Transformable.hpp
-    RenderableObjects/Interfaces/include/IGeometry.hpp
-    RenderableObjects/Interfaces/include/ILuminous.hpp
-    RenderableObjects/Interfaces/include/IRenderableObject.hpp
     RenderableObjects/Interfaces/include/IRenderableObjectOpenGL.hpp
-    RenderableObjects/Interfaces/include/ITransformable.hpp
     RenderableObjects/Objects/include/CubeObjectOpenGL.hpp
     RenderableObjects/Objects/include/CubeObjectOpenGLImpl.hpp
     RenderableObjects/Objects/include/GridOpenGL.hpp
@@ -90,16 +86,12 @@ set(RO_HEADERS
 )
 
 set(RO_SOURCES
-    RenderableObjects/Abstracts/src/Geometry.cpp
     RenderableObjects/Abstracts/src/Luminous.cpp
+    RenderableObjects/Abstracts/src/Mesh.cpp
     RenderableObjects/Abstracts/src/RenderableObject.cpp
     RenderableObjects/Abstracts/src/RenderableObjectOpenGL.cpp
     RenderableObjects/Abstracts/src/Transformable.cpp
-    RenderableObjects/Interfaces/src/IGeometry.cpp
-    RenderableObjects/Interfaces/src/ILuminous.cpp
-    RenderableObjects/Interfaces/src/IRenderableObject.cpp
     RenderableObjects/Interfaces/src/IRenderableObjectOpenGL.cpp
-    RenderableObjects/Interfaces/src/ITransformable.cpp
     RenderableObjects/Objects/src/CubeObjectOpenGL.cpp
     RenderableObjects/Objects/src/CubeObjectOpenGLImpl.cpp
     RenderableObjects/Objects/src/GridOpenGL.cpp
@@ -118,13 +110,8 @@ set(RENDERERS_HEADERS
     Renderers/Abstracts/include/Renderer.hpp
     Renderers/Abstracts/include/RendererOpenGL.hpp
     Renderers/Abstracts/include/SizeControl.hpp
-    Renderers/Interfaces/include/ICameraControl.hpp
     Renderers/Interfaces/include/IFrameBufferProvider.hpp
-    Renderers/Interfaces/include/IGridControl.hpp
-    Renderers/Interfaces/include/IIlluminationControl.hpp
-    Renderers/Interfaces/include/IRenderer.hpp
     Renderers/Interfaces/include/IRendererOpenGL.hpp
-    Renderers/Interfaces/include/ISizeControl.hpp
     Renderers/Renderers/include/OpenGLRenderer.hpp
     Renderers/Renderers/include/OpenGLRendererImpl.hpp
     Renderers/Support/include/FrameBufferOpenGL.hpp
@@ -138,13 +125,8 @@ set(RENDERERS_SOURCES
     Renderers/Abstracts/src/Renderer.cpp
     Renderers/Abstracts/src/RendererOpenGL.cpp
     Renderers/Abstracts/src/SizeControl.cpp
-    Renderers/Interfaces/src/ICameraControl.cpp
     Renderers/Interfaces/src/IFrameBufferProvider.cpp
-    Renderers/Interfaces/src/IGridControl.cpp
-    Renderers/Interfaces/src/IIlluminationControl.cpp
-    Renderers/Interfaces/src/IRenderer.cpp
     Renderers/Interfaces/src/IRendererOpenGL.cpp
-    Renderers/Interfaces/src/ISizeControl.cpp
     Renderers/Renderers/src/OpenGLRenderer.cpp
     Renderers/Renderers/src/OpenGLRendererImpl.cpp
     Renderers/Support/src/FrameBufferOpenGL.cpp
@@ -157,11 +139,6 @@ set(SCENE_HEADERS
     Scene/Abstracts/include/SceneLighting.hpp
     Scene/Abstracts/include/SceneObjects.hpp
     Scene/Abstracts/include/SceneState.hpp
-    Scene/Interfaces/include/IScene.hpp
-    Scene/Interfaces/include/ISceneEnvironment.hpp
-    Scene/Interfaces/include/ISceneLighting.hpp
-    Scene/Interfaces/include/ISceneObjects.hpp
-    Scene/Interfaces/include/ISceneState.hpp
     Scene/Scenes/include/OpenGLScene.hpp
     Scene/Scenes/include/OpenGLSceneImpl.hpp
     Scene/Support/include/SpecialIndices.hpp
@@ -173,11 +150,6 @@ set(SCENE_SOURCES
     Scene/Abstracts/src/SceneLighting.cpp
     Scene/Abstracts/src/SceneObjects.cpp
     Scene/Abstracts/src/SceneState.cpp
-    Scene/Interfaces/src/IScene.cpp
-    Scene/Interfaces/src/ISceneEnvironment.cpp
-    Scene/Interfaces/src/ISceneLighting.cpp
-    Scene/Interfaces/src/ISceneObjects.cpp
-    Scene/Interfaces/src/ISceneState.cpp
     Scene/Scenes/src/OpenGLScene.cpp
     Scene/Scenes/src/OpenGLSceneImpl.cpp
 )
@@ -264,24 +236,30 @@ target_include_directories(${PROJECT_NAME}
         ..//PhysicalProperties//Space//include//
         ..//PhysicalProperties//Transformations//include//
         ..//PhysicalProperties//Vertices//include//
+        ..//Api//Camera//
+        ..//Api//Scene//
+        ..//Api//RenderableObjects//
+        ..//Api//Renderer//
 )
 
 # Link GLFW and OpenGL to the executable
 target_link_libraries(${PROJECT_NAME} 
     PRIVATE
         PrecompiledHeaders
+        Math
+        Api
         Utils
         PhysicalProperties
         ExternalGraphicsLibs
-        Math
         spdlog::spdlog
 )
 
 add_dependencies(${PROJECT_NAME} 
     Utils
+    Math
+    Api
     PhysicalProperties
     ExternalGraphicsLibs
-    Math
 )
 
 

@@ -2,7 +2,7 @@
 #define RENDERING__ABSTRACTS__RENDERABLE_OBJECT__HPP
 
 
-#include "Geometry.hpp"
+#include "Mesh.hpp"
 #include "Luminous.hpp"
 #include "Transformable.hpp"
 #include "Colors.hpp"
@@ -11,7 +11,7 @@
 namespace Andromeda::Rendering
 {
     class RenderableObject :
-        public Geometry,
+        public Mesh,
         public Transformable,
         public Luminous
     {

@@ -4,7 +4,7 @@
 
 #include "pch.hpp"
 #include "LuminousBehavior.hpp"
-#include "../../../RenderableObjects/Interfaces/include/IRenderableObject.hpp"
+#include "IRenderableObject.hpp"
 #include "DirectionalLight.hpp"
 #include "PointLight.hpp"
 #include "LightTypes.hpp"

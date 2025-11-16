@@ -133,7 +133,7 @@ namespace Andromeda::Rendering
         if (!m_isInitialized)
             return;
 
-        SetBackgroundColor(scene.GetBackgroundColor());
+        SetBackgroundColor(MathUtils::ToGLM(scene.GetBackgroundColor()));
 
         BeginFrame();
 
@@ -183,7 +183,7 @@ namespace Andromeda::Rendering
             depthShader->SetUniform("u_model", MathUtils::ToGLM(obj->GetModelMatrix()));
             IRenderableObjectOpenGL* renderableObj = dynamic_cast<IRenderableObjectOpenGL*>(obj);
             glBindVertexArray(renderableObj->GetVAO());
-            glDrawElements(GL_TRIANGLES, obj->GetIndicesCount(), GL_UNSIGNED_INT, nullptr);
+            glDrawElements(GL_TRIANGLES, obj->GetIndexCount(), GL_UNSIGNED_INT, nullptr);
         }
 
         depthShader->UnBind();
@@ -251,7 +251,7 @@ namespace Andromeda::Rendering
             IRenderableObjectOpenGL* r = dynamic_cast<IRenderableObjectOpenGL*>(obj);
             depthCubeShader->SetUniform("u_model", MathUtils::ToGLM(obj->GetModelMatrix()));
             glBindVertexArray(r->GetVAO());
-            glDrawElements(GL_TRIANGLES, obj->GetIndicesCount(), GL_UNSIGNED_INT, nullptr);
+            glDrawElements(GL_TRIANGLES, obj->GetIndexCount(), GL_UNSIGNED_INT, nullptr);
         }
 
         depthCubeShader->UnBind();
@@ -317,7 +317,7 @@ namespace Andromeda::Rendering
                 lumShader->SetUniform("u_model", MathUtils::ToGLM(obj->GetModelMatrix()));
                 IRenderableObjectOpenGL* renderableObj = dynamic_cast<IRenderableObjectOpenGL*>(obj);
                 glBindVertexArray(renderableObj->GetVAO());
-                glDrawElements(GL_TRIANGLES, obj->GetIndicesCount(), GL_UNSIGNED_INT, nullptr);
+                glDrawElements(GL_TRIANGLES, obj->GetIndexCount(), GL_UNSIGNED_INT, nullptr);
             }
         }
         lumShader->UnBind();
@@ -339,7 +339,7 @@ namespace Andromeda::Rendering
                 shader->SetUniform("u_model", MathUtils::ToGLM(obj->GetModelMatrix()));
                 IRenderableObjectOpenGL* renderableObj = dynamic_cast<IRenderableObjectOpenGL*>(obj);
                 glBindVertexArray(renderableObj->GetVAO());
-                glDrawElements(GL_TRIANGLES, obj->GetIndicesCount(), GL_UNSIGNED_INT, nullptr);
+                glDrawElements(GL_TRIANGLES, obj->GetIndexCount(), GL_UNSIGNED_INT, nullptr);
             }
         }
         shader->UnBind();
@@ -365,7 +365,7 @@ namespace Andromeda::Rendering
         glBindVertexArray(object.GetVAO());
         glBindBuffer(GL_ARRAY_BUFFER, object.GetVBO());
         glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, object.GetEBO());
-        glDrawElements(GL_LINES, object.GetIndicesCount(), GL_UNSIGNED_INT, 0);
+        glDrawElements(GL_LINES, object.GetIndexCount(), GL_UNSIGNED_INT, 0);
 
         shader->UnBind();
     }
@@ -434,7 +434,7 @@ namespace Andromeda::Rendering
 
             shader.SetUniform("u_model", MathUtils::ToGLM(obj->GetModelMatrix()));
             glBindVertexArray(renderable->GetVAO());
-            glDrawElements(GL_TRIANGLES, obj->GetIndicesCount(), GL_UNSIGNED_INT, nullptr);
+            glDrawElements(GL_TRIANGLES, obj->GetIndexCount(), GL_UNSIGNED_INT, nullptr);
         }
     }
 
@@ -549,7 +549,7 @@ namespace Andromeda::Rendering
 
             IRenderableObjectOpenGL* renderableObj = dynamic_cast<IRenderableObjectOpenGL*>(obj);
             glBindVertexArray(renderableObj->GetVAO());
-            glDrawElements(GL_TRIANGLES, obj->GetIndicesCount(), GL_UNSIGNED_INT, nullptr);
+            glDrawElements(GL_TRIANGLES, obj->GetIndexCount(), GL_UNSIGNED_INT, nullptr);
         }
     }
 
@@ -618,10 +618,8 @@ namespace Andromeda::Rendering
         glm::vec3 lightDirection = MathUtils::ToGLM(light->GetDirection());
 
         glm::vec3 up(0.0f, 1.0f, 0.0f);
-        glm::vec3 lightPos = scene.GetSceneCenter() - lightDirection * 20.0f;
-
-        glm::mat4 lightView = glm::lookAt(lightPos, scene.GetSceneCenter(), up);
-
+        glm::vec3 lightPos = MathUtils::ToGLM(scene.GetSceneCenter()) - lightDirection * 20.0f;
+        glm::mat4 lightView = glm::lookAt(lightPos, MathUtils::ToGLM(scene.GetSceneCenter()), up);
         glm::mat4 lightProj = glm::ortho(
             -light->GetLightOrthographicHalfSize(),
             light->GetLightOrthographicHalfSize(),

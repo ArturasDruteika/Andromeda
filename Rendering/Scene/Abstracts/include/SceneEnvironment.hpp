@@ -2,6 +2,7 @@
 #define ENVIRONMENT__ABSTRACTS_SCENE_ENVIRONMENT__HPP
 
 
+#include "LinearAlgebraDataTypes.hpp"
 #include "glm/glm.hpp"
 
 
@@ -15,10 +16,10 @@ namespace Andromeda::Rendering
 
 		// Getters
 		float GetAmbientStrength() const;
-		const glm::vec4& GetBackgroundColor() const;
+		const Math::Vec4& GetBackgroundColor() const;
 		// Setters
 		void SetAmbientStrength(float ambientStrength);
-		void SetBackgroundColor(const glm::vec4& backroundColor);
+		void SetBackgroundColor(const Math::Vec4& backroundColor);
 
 		void ResizeGrid(float resizeFactor);
 

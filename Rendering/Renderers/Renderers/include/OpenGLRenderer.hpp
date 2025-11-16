@@ -4,8 +4,8 @@
 
 #include "../../../MacroExports/include/MacroExports.hpp"
 #include "../../Interfaces/include/IRendererOpenGL.hpp"
-#include "../../../Scene/Interfaces/include/IScene.hpp"
-#include "../../../Camera/Cameras/include/Camera.hpp"
+#include "IScene.hpp"
+#include "ICamera.hpp"
 
 
 namespace Andromeda::Rendering

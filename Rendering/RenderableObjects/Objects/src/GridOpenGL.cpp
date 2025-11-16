@@ -51,22 +51,22 @@ namespace Andromeda::Rendering
         return RenderableObjectOpenGL::GetEBO();
     }
 
-    unsigned int GridOpenGL::GetVerticesCount() const
+    unsigned int GridOpenGL::GetVertexCount() const
     {
         return m_vertices.size();
     }
 
-    unsigned int GridOpenGL::GetIndicesCount() const
+    unsigned int GridOpenGL::GetIndexCount() const
     {
         return m_indices.size();
     }
 
-    std::vector<unsigned int> GridOpenGL::GetIndices() const
+    const std::vector<unsigned int>& GridOpenGL::GetIndices() const
     {
         return std::vector<unsigned int>();
     }
 
-    std::vector<PhysicalProperties::Vertex> GridOpenGL::GetVertices() const
+    const std::vector<PhysicalProperties::Vertex>& GridOpenGL::GetVertices() const
     {
         return m_vertices;
     }

@@ -96,22 +96,22 @@ namespace Andromeda::Rendering
 	}
 
 	// === IGeometry ===
-	unsigned int SkyroomOpenGL::GetVerticesCount() const
+	unsigned int SkyroomOpenGL::GetVertexCount() const
 	{
-		return m_pSkyroomOpenGLImpl->GetVerticesCount();
+		return m_pSkyroomOpenGLImpl->GetVertexCount();
 	}
 
-	unsigned int SkyroomOpenGL::GetIndicesCount() const
+	unsigned int SkyroomOpenGL::GetIndexCount() const
 	{
-		return m_pSkyroomOpenGLImpl->GetIndicesCount();
+		return m_pSkyroomOpenGLImpl->GetIndexCount();
 	}
 
-	std::vector<unsigned int> SkyroomOpenGL::GetIndices() const
+	const std::vector<unsigned int>& SkyroomOpenGL::GetIndices() const
 	{
 		return m_pSkyroomOpenGLImpl->GetIndices();
 	}
 
-	std::vector<PhysicalProperties::Vertex> SkyroomOpenGL::GetVertices() const
+	const std::vector<PhysicalProperties::Vertex>& SkyroomOpenGL::GetVertices() const
 	{
 		return m_pSkyroomOpenGLImpl->GetVertices();
 	}

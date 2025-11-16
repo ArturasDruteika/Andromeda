@@ -41,10 +41,10 @@ namespace Andromeda::Rendering
 		void Scale(const Math::Vec3& scale) override;
 
 		// === Overrides from IGeometry ===
-		unsigned int GetVerticesCount() const override;
-		unsigned int GetIndicesCount() const override;
-		std::vector<unsigned int> GetIndices() const override;
-		std::vector<PhysicalProperties::Vertex> GetVertices() const override;
+		unsigned int GetVertexCount() const override;
+		unsigned int GetIndexCount() const override;
+		const std::vector<unsigned int>& GetIndices() const override;
+		const std::vector<PhysicalProperties::Vertex>& GetVertices() const override;
 
 		// === Overrides from IRenderableObject ===
 		PhysicalProperties::Color GetColor() const override;

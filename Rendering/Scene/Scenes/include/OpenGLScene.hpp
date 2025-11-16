@@ -4,7 +4,7 @@
 
 #include "../../../MacroExports/include/MacroExports.hpp"
 #include "pch.hpp"
-#include "../../Interfaces/include/IScene.hpp"
+#include "IScene.hpp"
 #include "../../../RenderableObjects/Interfaces/include/IRenderableObjectOpenGL.hpp"
 #include "../../../Light/Abstracts/include/LuminousBehavior.hpp"
 
@@ -28,9 +28,9 @@ namespace Andromeda::Rendering
 
 		// === From ISceneEnvironment ===
 		float GetAmbientStrength() const override;
-		const glm::vec4& GetBackgroundColor() const override;
+		const Math::Vec4& GetBackgroundColor() const override;
 		void SetAmbientStrength(float ambientStrength) override;
-		void SetBackgroundColor(const glm::vec4& backroundColor) override;
+		void SetBackgroundColor(const Math::Vec4& backroundColor) override;
 		void ResizeGrid(float resizeFactor) override;
 
 		// === From ISceneObjects ===
@@ -45,7 +45,7 @@ namespace Andromeda::Rendering
 		const std::unordered_map<int, PhysicalProperties::LuminousBehavior*>& GetLuminousObjects() const override;
 
 		// === From IScene ===
-		glm::vec3 GetSceneCenter() const override;
+		Math::Vec3 GetSceneCenter() const override;
 
 	private:
 		class OpenGLSceneImpl;

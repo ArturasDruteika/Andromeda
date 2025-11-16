@@ -1,4 +1,5 @@
 #include "../include/SceneEnvironment.hpp"
+#include "../../../Utils/include/MathUtils.hpp"
 
 
 namespace Andromeda::Rendering
@@ -17,9 +18,9 @@ namespace Andromeda::Rendering
 		return m_ambientStrength;
 	}
 
-	const glm::vec4& SceneEnvironment::GetBackgroundColor() const
+	const Math::Vec4& SceneEnvironment::GetBackgroundColor() const
 	{
-		return m_backroundColor;
+		return MathUtils::FromGLM(m_backroundColor);
 	}
 
 	void SceneEnvironment::SetAmbientStrength(float ambientStrength)
@@ -27,9 +28,9 @@ namespace Andromeda::Rendering
 		m_ambientStrength = ambientStrength;
 	}
 
-	void SceneEnvironment::SetBackgroundColor(const glm::vec4& backroundColor)
+	void SceneEnvironment::SetBackgroundColor(const Math::Vec4& backroundColor)
 	{
-		m_backroundColor = backroundColor;
+		m_backroundColor = MathUtils::ToGLM(backroundColor);
 	}
 
 	void SceneEnvironment::ResizeGrid(float resizeFactor)

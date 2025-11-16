@@ -39,22 +39,22 @@ namespace Andromeda::Rendering
 		return m_pSphereObjectOpenGLImpl->GetEBO();
 	}
 
-	unsigned int SphereObjectOpenGL::GetVerticesCount() const
+	unsigned int SphereObjectOpenGL::GetVertexCount() const
 	{
-		return m_pSphereObjectOpenGLImpl->GetVerticesCount();
+		return m_pSphereObjectOpenGLImpl->GetVertexCount();
 	}
 
-	unsigned int SphereObjectOpenGL::GetIndicesCount() const
+	unsigned int SphereObjectOpenGL::GetIndexCount() const
 	{
-		return m_pSphereObjectOpenGLImpl->GetIndicesCount();
+		return m_pSphereObjectOpenGLImpl->GetIndexCount();
 	}
 
-	std::vector<unsigned int> SphereObjectOpenGL::GetIndices() const
+	const std::vector<unsigned int>& SphereObjectOpenGL::GetIndices() const
 	{
 		return std::vector<unsigned int>();
 	}
 
-	std::vector<PhysicalProperties::Vertex> SphereObjectOpenGL::GetVertices() const
+	const std::vector<PhysicalProperties::Vertex>& SphereObjectOpenGL::GetVertices() const
 	{
 		return m_pSphereObjectOpenGLImpl->GetVertices();
 	}
