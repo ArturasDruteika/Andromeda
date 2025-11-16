@@ -35,6 +35,15 @@ set(APPLICATION_SOURCES
     Application/src/CameraInputMapper.cpp
 )
 
+# ==== Engine ====
+set(ENGINE_HEADERS
+    Engine/include/Engine.hpp
+)
+
+set(ENGINE_SOURCES
+    Engine/src/Engine.cpp
+)
+
 # ==== Macro Exports ====
 set(MACRO_EXPORTS_HEADERS
     MacroExports/include/MacroExports.hpp
@@ -59,6 +68,8 @@ add_library(${PROJECT_NAME}
     SHARED
         ${APPLICATION_HEADERS}
         ${APPLICATION_SOURCES}
+        ${ENGINE_HEADERS}
+        ${ENGINE_SOURCES}
         ${MACRO_EXPORTS_HEADERS}
         ${RENDERING_WINDOWS_HEADERS}
         ${RENDERING_WINDOWS_SOURCES}
@@ -70,6 +81,7 @@ target_include_directories(${PROJECT_NAME}
         ../Context/GLFWContext/include/
         ../Math/Constants/include/
         ../Math/Trigonometry/include/
+        ../Api/Engine/
         ../Rendering/Attributes/include/
         ../Rendering/Camera/Cameras/include/
         ../Rendering/Light/LightTypes/include/
@@ -91,6 +103,7 @@ target_link_libraries(${PROJECT_NAME}
     PRIVATE
         PrecompiledHeaders
         Math
+        Api
         Context
         ExternalGraphicsLibs
         OpenGL::GL
@@ -106,6 +119,7 @@ add_dependencies(${PROJECT_NAME}
     Context
     ExternalGraphicsLibs
     Math
+    Api
     Rendering
     Utils
     Window
@@ -154,6 +168,16 @@ source_group(
     FILES
         ${APPLICATION_HEADERS}
         ${APPLICATION_SOURCES}
+)
+
+source_group(
+    TREE
+        ${CMAKE_CURRENT_SOURCE_DIR}/Engine
+    PREFIX
+        "Engine"
+    FILES
+        ${ENGINE_HEADERS}
+        ${ENGINE_SOURCES}
 )
 
 source_group(
