@@ -3,15 +3,17 @@
 
 
 #include "ILuminous.hpp"
+#include "IMesh.hpp"
 #include "ITransformable.hpp"
 #include "Colors.hpp"
 
 
 namespace Andromeda
 {
-    class IRenderableObject :
-        public ITransformable,
-        public ILuminous
+    class IRenderableObject 
+        : public ITransformable
+        , public ILuminous
+        , public IMesh
     {
     public:
         virtual ~IRenderableObject();

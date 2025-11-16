@@ -1,17 +1,16 @@
-#ifndef ENVIRONMENT__I_SCENE_LIGHTING__HPP
-#define ENVIRONMENT__I_SCENE_LIGHTING__HPP
+#ifndef API__SCENE__I_SCENE_LIGHTING__HPP
+#define API__SCENE__I_SCENE_LIGHTING__HPP
 
 
-#include "../../../MacroExports/include/MacroExports.hpp"
 #include "pch.hpp"
 #include "DirectionalLight.hpp"
 #include "PointLight.hpp"
-#include "../../../RenderableObjects/Interfaces/include/IRenderableObject.hpp"
+#include "../RenderableObjects/IRenderableObject.hpp"
 
 
-namespace Andromeda::Rendering
+namespace Andromeda
 {
-    class RENDERING_API ISceneLighting
+    class ISceneLighting
     {
     public:
         virtual ~ISceneLighting();
@@ -24,4 +23,4 @@ namespace Andromeda::Rendering
 }
 
 
-#endif // ENVIRONMENT__I_SCENE_LIGHTING__HPP
+#endif // API__SCENE__I_SCENE_LIGHTING__HPP

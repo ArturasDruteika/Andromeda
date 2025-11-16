@@ -2,10 +2,9 @@ cmake_minimum_required(VERSION 3.24)
 
 project(Api LANGUAGES CXX)
 
-# Real target so Visual Studio shows a proper project
+# Static (header-only) library
 add_library(Api STATIC)
 set_target_properties(Api PROPERTIES LINKER_LANGUAGE CXX)
-target_compile_features(Api PUBLIC cxx_std_23)
 
 # ==== Camera ====
 set(CAMERA_HEADERS
@@ -25,6 +24,7 @@ set(ENGINE_HEADERS
 set(RENDERABLE_OBJECTS_HEADERS
     RenderableObjects/ICube.hpp
     RenderableObjects/ILuminous.hpp
+    RenderableObjects/IMesh.hpp
     RenderableObjects/IRenderableObject.hpp
     RenderableObjects/ISkyroom.hpp
     RenderableObjects/ISphere.hpp
@@ -43,10 +43,14 @@ set(RENDERER_HEADERS
 # ==== Scene ====
 set(SCENE_HEADERS
     Scene/IScene.hpp
+    Scene/ISceneEnvironment.hpp
+    Scene/ISceneLighting.hpp
+    Scene/ISceneObjects.hpp
+    Scene/ISceneState.hpp
 )
 
-# Attach headers to the target (nice for IDEs; works without install)
-target_sources(${PROJECT_NAME}
+# Attach headers to the library (for IDEs / installs)
+target_sources(Api
     PUBLIC
         FILE_SET HEADERS
         BASE_DIRS ${CMAKE_CURRENT_SOURCE_DIR}
@@ -58,30 +62,21 @@ target_sources(${PROJECT_NAME}
             ${SCENE_HEADERS}
 )
 
-# Include directories for anything that links Api
-target_include_directories(${PROJECT_NAME}
+# Public include dirs for anything that links Api
+target_include_directories(Api
     PUBLIC
         ${CMAKE_CURRENT_SOURCE_DIR}
-        ${CMAKE_CURRENT_SOURCE_DIR}/../Math/LinearAlgebra/include
-        ${CMAKE_CURRENT_SOURCE_DIR}/../PhysicalProperties/Light/interfaces/include
-        ${CMAKE_CURRENT_SOURCE_DIR}/../PhysicalProperties/Colors/include
+        ${CMAKE_CURRENT_SOURCE_DIR}/../Math/LinearAlgebra/include/
+        ${CMAKE_CURRENT_SOURCE_DIR}/../PhysicalProperties/Light/interfaces/include/
+        ${CMAKE_CURRENT_SOURCE_DIR}/../PhysicalProperties/Colors/include/
 )
 
-# Link PrecompiledHeaders and Math to this project
-target_link_libraries(${PROJECT_NAME}
-    PRIVATE
-        PrecompiledHeaders   # used only for PCH / build
+# Propagate dependencies: anything linking Api will also link these
+target_link_libraries(Api
     PUBLIC
-        Math                 # consumers of Api also see Math
+        PrecompiledHeaders
+        Math
         PhysicalProperties
-)
-
-target_precompile_headers(Api REUSE_FROM PrecompiledHeaders)
-
-# Ensure Math is built before Api (optional if CMake graph already guarantees it)
-add_dependencies(${PROJECT_NAME}
-    Math
-    PhysicalProperties
 )
 
 # ===== Visual Studio filters (Solution Explorer groups) =====

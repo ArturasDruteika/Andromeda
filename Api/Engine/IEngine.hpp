@@ -2,6 +2,7 @@
 #define API__ENGINE__I_ENGINE__HPP
 
 
+#include "pch.hpp"
 #include "GraphicsBackend.hpp"
 #include "../Renderer/IRenderer.hpp"
 #include "../Scene/IScene.hpp"
@@ -16,12 +17,14 @@ namespace Andromeda
 
 		virtual bool IsInitialized() const = 0;
 		virtual GraphicsBackend GetGraphicsBackend() const = 0;
-		virtual IScene& GetScene() const = 0;
-		virtual IRenderer& GetRenderer() const = 0;
+		virtual IScene* GetScene() const = 0;
+		virtual IRenderer* GetRenderer() const = 0;
 
 		virtual bool Init() = 0;
 		virtual void DeInit() = 0;
 	};
+
+	std::unique_ptr<IEngine> CreateEngine(const GraphicsBackend& graphicsBackend);
 }
 
 

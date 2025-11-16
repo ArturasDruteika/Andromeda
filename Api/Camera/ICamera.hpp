@@ -2,7 +2,6 @@
 #define API__CAMERA__I_CAMERA__HPP
 
 
-#include "pch.hpp"
 #include "ICameraController.hpp"
 #include "ICameraView.hpp"
 
