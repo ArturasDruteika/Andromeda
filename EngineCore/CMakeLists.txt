@@ -101,9 +101,6 @@ target_include_directories(${PROJECT_NAME}
 # Link libraries (alphabetical)
 target_link_libraries(${PROJECT_NAME}
     PRIVATE
-        PrecompiledHeaders
-        Math
-        Api
         Context
         ExternalGraphicsLibs
         OpenGL::GL
@@ -112,6 +109,11 @@ target_link_libraries(${PROJECT_NAME}
         glfw
         imgui
         spdlog::spdlog
+    PUBLIC
+        PrecompiledHeaders
+        Math
+        Api
+
 )
 
 # Explicit build ordering (alphabetical)
@@ -119,7 +121,6 @@ add_dependencies(${PROJECT_NAME}
     Context
     ExternalGraphicsLibs
     Math
-    Api
     Rendering
     Utils
     Window

@@ -1,13 +1,13 @@
 #ifndef ENGINECORE__ENGINE__HPP
 #define ENGINECORE__ENGINE__HPP
 
-
+#include "../../MacroExports/include/MacroExports.hpp"
 #include "IEngine.hpp"
 
 
 namespace Andromeda::EngineCore
 {
-	class Engine
+	class ENGINECORE_API Engine
 		: public IEngine
 	{
 	public:
@@ -37,7 +37,11 @@ namespace Andromeda::EngineCore
 		std::unique_ptr<IScene> m_scene;
 	};
 
+}
 
+
+namespace Andromeda
+{
 	std::unique_ptr<IEngine> CreateEngine(const GraphicsBackend& graphicsBackend);
 }
 

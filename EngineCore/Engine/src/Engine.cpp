@@ -306,8 +306,11 @@ namespace Andromeda::EngineCore
 
         spdlog::info("Engine::DestroyScene() finished, scene reset to nullptr.");
     }
+}
 
 
+namespace Andromeda
+{
     std::unique_ptr<IEngine> CreateEngine(const GraphicsBackend& graphicsBackend)
     {
         spdlog::info(
@@ -317,7 +320,7 @@ namespace Andromeda::EngineCore
 
         try
         {
-            auto engine = std::make_unique<Engine>(graphicsBackend);
+            auto engine = std::make_unique<EngineCore::Engine>(graphicsBackend);
             return engine;
         }
         catch (const std::exception& ex)
