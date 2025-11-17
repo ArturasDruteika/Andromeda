@@ -40,10 +40,4 @@ namespace Andromeda::EngineCore
 }
 
 
-namespace Andromeda
-{
-	std::unique_ptr<IEngine> CreateEngine(const GraphicsBackend& graphicsBackend);
-}
-
-
 #endif // ENGINECORE__ENGINE__HPP

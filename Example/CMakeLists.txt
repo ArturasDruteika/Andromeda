@@ -8,26 +8,32 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 add_executable(${PROJECT_NAME} main.cpp)
 
+target_compile_definitions(Example 
+    PRIVATE 
+        ANDROMEDA_ENGINECORE_USE_DLL
+)
+
 target_include_directories(${PROJECT_NAME} 
     PRIVATE
-	    ../ExternalGraphicsLibs/glm/
+	    # ../ExternalGraphicsLibs/glm/
         ../Math/LinearAlgebra/include/
         ../PhysicalProperties/Space/include/
         ../PhysicalProperties/Light/LightTypes/include/
         ../PhysicalProperties/Light/Abstracts/include/
         ../PhysicalProperties/Materials/include/
-        ../Rendering/RenderableObjects/Interfaces/include/
-        ../Rendering/RenderableObjects/Objects/include/
-        ../EngineCore/Application/include/
+        # ../Rendering/RenderableObjects/Interfaces/include/
+        # ../Rendering/RenderableObjects/Objects/include/
+        ../Api/Engine/
 )
 
 # Ensure EngineCore is linked
 target_link_libraries(${PROJECT_NAME} 
     PRIVATE 
-        PrecompiledHeaders
+        # PrecompiledHeaders
         Math
+        Api
         PhysicalProperties
-        Rendering
+        # Rendering
         EngineCore
 )
 
@@ -35,8 +41,8 @@ target_link_libraries(${PROJECT_NAME}
 add_dependencies(${PROJECT_NAME} 
     Math
     PhysicalProperties
-    ExternalGraphicsLibs
-    Rendering
+    # ExternalGraphicsLibs
+    # Rendering
     EngineCore
 )
 

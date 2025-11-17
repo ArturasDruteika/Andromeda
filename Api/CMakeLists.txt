@@ -67,6 +67,7 @@ target_include_directories(Api
         ${CMAKE_CURRENT_SOURCE_DIR}/../Math/LinearAlgebra/include/
         ${CMAKE_CURRENT_SOURCE_DIR}/../PhysicalProperties/Light/interfaces/include/
         ${CMAKE_CURRENT_SOURCE_DIR}/../PhysicalProperties/Colors/include/
+        ${CMAKE_CURRENT_SOURCE_DIR}/../PhysicalProperties/Vertices/include/
 )
 
 target_link_libraries(Api

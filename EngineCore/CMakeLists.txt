@@ -75,6 +75,11 @@ add_library(${PROJECT_NAME}
         ${RENDERING_WINDOWS_SOURCES}
 )
 
+target_compile_definitions(EngineCore 
+    PRIVATE 
+        ANDROMEDA_ENGINECORE_BUILD
+)
+
 # Include dirs (alphabetical)
 target_include_directories(${PROJECT_NAME}
     PRIVATE
