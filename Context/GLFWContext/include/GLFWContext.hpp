@@ -6,34 +6,31 @@
 #include "GLFW/glfw3.h"
 
 
-namespace Andromeda
+namespace Andromeda::Context
 {
-	namespace Context
+	class GLFWContext
 	{
-		class GLFWContext
-		{
-		public:
-			GLFWContext();
-			~GLFWContext();
+	public:
+		GLFWContext();
+		~GLFWContext();
 
-			GLFWContext(const GLFWContext& other) = delete;	// Prevent Copy Constructor
-			GLFWContext& operator=(const GLFWContext& other) = delete;	// Prevent Copy assignment
-			GLFWContext(GLFWContext&& other) noexcept = delete;	// Prevent Move constructor
-			GLFWContext& operator=(const GLFWContext&& other) noexcept = delete;	//Prevent Move assignment
+		GLFWContext(const GLFWContext& other) = delete;	// Prevent Copy Constructor
+		GLFWContext& operator=(const GLFWContext& other) = delete;	// Prevent Copy assignment
+		GLFWContext(GLFWContext&& other) noexcept = delete;	// Prevent Move constructor
+		GLFWContext& operator=(const GLFWContext&& other) noexcept = delete;	//Prevent Move assignment
 
-			void Init();
-			void TerminateGLFW();
-			void SetContextHints();
-			void MakeContextCurrent(GLFWwindow* window);
-			void SwapBuffers(GLFWwindow* window);
+		void Init();
+		void TerminateGLFW();
+		void SetContextHints();
+		void MakeContextCurrent(GLFWwindow* window);
+		void SwapBuffers(GLFWwindow* window);
 
-			bool IsInitialized();
-			GLFWglproc GetGLFWglproc();
+		bool IsInitialized();
+		GLFWglproc GetGLFWglproc();
 
-		private:
-			bool m_isInitialized;
-		};
-	}
+	private:
+		bool m_isInitialized;
+	};
 }
 
 
