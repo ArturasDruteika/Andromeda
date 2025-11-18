@@ -27,9 +27,10 @@ add_subdirectory(glfw)
 add_subdirectory(ExternalGraphicsLibs)
 add_subdirectory(EngineCore)
 add_subdirectory(Rendering)
+add_subdirectory(imgui)
 add_subdirectory(Window)
 add_subdirectory(Context)
-add_subdirectory(imgui)
+add_subdirectory(Platform)
 add_subdirectory(Example)
 
 # --- Install Rules ---
