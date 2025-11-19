@@ -18,10 +18,10 @@ namespace Andromeda
     {
         switch (backend)
         {
-        case GraphicsBackend::None:   return "None";
-        case GraphicsBackend::OpenGL: return "OpenGL";
-        case GraphicsBackend::Vulkan: return "Vulkan";
-        default:                      return "Unknown";
+            case GraphicsBackend::None:   return "None";
+            case GraphicsBackend::OpenGL: return "OpenGL";
+            case GraphicsBackend::Vulkan: return "Vulkan";
+            default:                      return "Unknown";
         }
     }
 }
