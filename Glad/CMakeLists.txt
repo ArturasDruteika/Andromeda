@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.24.0)
-project(ExternalGraphicsLibs)
+project(Glad)
 
 set(CMAKE_BUILD_PARALLEL_LEVEL)
 set(CMAKE_CXX_STANDARD 23)
@@ -21,7 +21,6 @@ set_target_properties(${PROJECT_NAME} PROPERTIES POSITION_INDEPENDENT_CODE ON)
 target_include_directories(${PROJECT_NAME} 
     PUBLIC
         glad/include
-	    glm/
         ${OPENGL_INCLUDE_DIRS}
 )
 

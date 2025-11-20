@@ -213,8 +213,8 @@ target_include_directories(${PROJECT_NAME}
     PRIVATE
         ..//Utils//FileOperations//include//
         ..//Utils//nlohmann_json//include//
-        ..//ExternalGraphicsLibs//glad//include//
-	    ..//ExternalGraphicsLibs//glm//
+        ..//Glad//glad//include//
+	    ..//Glad//glm//
     PUBLIC
         ..//Math//LinearAlgebra//include//
         ..//Math//Constants//include//
@@ -237,8 +237,9 @@ target_link_libraries(${PROJECT_NAME}
     PRIVATE
         PrecompiledHeaders
         Utils
-        ExternalGraphicsLibs
+        Glad
         spdlog::spdlog
+        glm::glm
     PUBLIC
         Math
         Api
@@ -249,7 +250,7 @@ add_dependencies(${PROJECT_NAME}
     Utils
     Math
     PhysicalProperties
-    ExternalGraphicsLibs
+    Glad
 )
 
 

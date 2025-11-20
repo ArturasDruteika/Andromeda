@@ -58,7 +58,7 @@ target_include_directories(${PROJECT_NAME}
 target_link_libraries(${PROJECT_NAME}
     PRIVATE
         Context
-        ExternalGraphicsLibs
+        Glad
         OpenGL::GL
         Window
         glfw
@@ -71,7 +71,7 @@ target_link_libraries(${PROJECT_NAME}
 # Explicit build ordering (alphabetical)
 add_dependencies(${PROJECT_NAME}
     Context
-    ExternalGraphicsLibs
+    Glad
     Utils
     Window
     glfw
