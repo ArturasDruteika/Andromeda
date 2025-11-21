@@ -1,4 +1,5 @@
 #include "../include/GraphicsContextGLFW.hpp"
+#include "Window/WindowGLFW/include/WindowGLFW.hpp"
 #include "spdlog/spdlog.h"
 
 
@@ -6,23 +7,50 @@ namespace Andromeda::GraphicsContext
 {
 	GraphicsContextGLFW::GraphicsContextGLFW()
 		: m_isInitialized{ false }
+		, m_pGLFWwindow{ nullptr }
 	{
 	}
 
 	GraphicsContextGLFW::~GraphicsContextGLFW() = default;
 
-	void GraphicsContextGLFW::Init()
+	void GraphicsContextGLFW::Init(IWindow& window)
 	{
+		Window::WindowGLFW* pWindowGLFW = dynamic_cast<Window::WindowGLFW*>(&window);
+		if (pWindowGLFW == nullptr)
+		{
+			spdlog::error("Failed to initialize GraphicsContextGLFW: Invalid window type.");
+			return;
+		}
+		m_pGLFWwindow = static_cast<GLFWwindow*>(pWindowGLFW->GetNativeHandle());
 		SetContextHints();
 		m_isInitialized = true;
 	}
 
-	void GraphicsContextGLFW::TerminateGLFW()
+	void GraphicsContextGLFW::MakeCurrent()
 	{
-		glfwTerminate();
-		spdlog::info("GLFW terminated.");
-		m_isInitialized = false;
+		// Make the OpenGL context current
+		glfwMakeContextCurrent(m_pGLFWwindow);
+
+		if (glfwGetCurrentContext() == nullptr)
+		{
+			spdlog::error("Failed to make OpenGL context current.");
+			glfwDestroyWindow(m_pGLFWwindow);
+			glfwTerminate();
+			return;
+		}
 	}
+
+	void GraphicsContextGLFW::Present()
+	{
+		glfwSwapBuffers(m_pGLFWwindow);
+	}
+
+	//void GraphicsContextGLFW::TerminateGLFW()
+	//{
+	//	glfwTerminate();
+	//	spdlog::info("GLFW terminated.");
+	//	m_isInitialized = false;
+	//}
 
 	void GraphicsContextGLFW::SetContextHints()
 	{
@@ -36,33 +64,13 @@ namespace Andromeda::GraphicsContext
 #endif
 	}
 
-	void GraphicsContextGLFW::MakeContextCurrent(GLFWwindow* window)
-	{
-		// Make the OpenGL context current
-		glfwMakeContextCurrent(window);
+	//bool GraphicsContextGLFW::IsInitialized()
+	//{
+	//	return m_isInitialized;
+	//}
 
-		if (glfwGetCurrentContext() == nullptr)
-		{
-			spdlog::error("Failed to make OpenGL context current.");
-			glfwDestroyWindow(window);
-			glfwTerminate();
-			return;
-		}
-	}
-
-	void GraphicsContextGLFW::SwapBuffers(GLFWwindow* window)
-	{
-		// Swap buffers and poll events
-		glfwSwapBuffers(window);
-	}
-
-	bool GraphicsContextGLFW::IsInitialized()
-	{
-		return m_isInitialized;
-	}
-
-	GLFWglproc GraphicsContextGLFW::GetGLFWglproc()
-	{
-		return reinterpret_cast<GLFWglproc>(glfwGetProcAddress);
-	}
+	//GLFWglproc GraphicsContextGLFW::GetGLFWglproc()
+	//{
+	//	return reinterpret_cast<GLFWglproc>(glfwGetProcAddress);
+	//}
 }
