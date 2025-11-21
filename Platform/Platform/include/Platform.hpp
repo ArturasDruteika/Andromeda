@@ -6,9 +6,9 @@
 // Forward declaration of GLFWwindow (from GLFW)
 struct GLFWwindow;
 
-namespace Andromeda::Context
+namespace Andromeda::GraphicsContext
 {
-    class GLFWContext;
+    class GraphicsContextGLFW;
 }
 
 namespace Andromeda::Window
@@ -50,7 +50,7 @@ namespace Andromeda::Platform
         int m_height;
         bool m_initialized;
 
-        std::unique_ptr<Context::GLFWContext> m_pContext;
+        std::unique_ptr<GraphicsContext::GraphicsContextGLFW> m_pContext;
         std::unique_ptr<Window::GLFWWindow> m_pWindow;
     };
 }

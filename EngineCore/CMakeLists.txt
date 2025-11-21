@@ -8,12 +8,12 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 add_definitions(-DENGINECORE_EXPORT)
 
-# OpenGL
-find_package(OpenGL REQUIRED)
-if (APPLE)
-    # Ignore macOS OpenGL deprecation warnings
-    target_compile_definitions(${PROJECT_NAME} PRIVATE GL_SILENCE_DEPRECATION)
-endif ()
+# # OpenGL
+# find_package(OpenGL REQUIRED)
+# if (APPLE)
+#     # Ignore macOS OpenGL deprecation warnings
+#     target_compile_definitions(${PROJECT_NAME} PRIVATE GL_SILENCE_DEPRECATION)
+# endif ()
 
 # SPDLog
 file(TO_CMAKE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/../../3rdParty/spdlog/ spdlog_root_path)
@@ -83,7 +83,7 @@ target_compile_definitions(EngineCore
 # Include dirs (alphabetical)
 target_include_directories(${PROJECT_NAME}
     PRIVATE
-        ../Context/GLFWContext/include/
+        # ../Context/GraphicsContextGLFW/include/
         ../Math/Constants/include/
         ../Math/Trigonometry/include/
         ../Api/Engine/
@@ -106,8 +106,8 @@ target_include_directories(${PROJECT_NAME}
 # Link libraries (alphabetical)
 target_link_libraries(${PROJECT_NAME}
     PRIVATE
-        Context
-        OpenGL::GL
+        # Context
+        # OpenGL::GL
         Rendering
         Window
         glfw
@@ -122,7 +122,7 @@ target_link_libraries(${PROJECT_NAME}
 
 # Explicit build ordering (alphabetical)
 add_dependencies(${PROJECT_NAME}
-    Context
+    # Context
     Glad
     Math
     Rendering

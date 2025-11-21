@@ -1,7 +1,7 @@
 #include "../include/Platform.hpp"
 #include "glad/gl.h"
 #include "GLFWWindow.hpp"
-#include "GLFWContext.hpp"
+#include "GraphicsContext/include/GraphicsContextGLFW.hpp"
 #include "spdlog/spdlog.h"
 
 
@@ -34,7 +34,7 @@ namespace Andromeda::Platform
             return false;
         }
 
-        m_pContext = std::make_unique<Context::GLFWContext>();
+        m_pContext = std::make_unique<GraphicsContext::GraphicsContextGLFW>();
         m_pContext->Init();
 
         m_pWindow = std::make_unique<Window::GLFWWindow>(width, height, title, true);

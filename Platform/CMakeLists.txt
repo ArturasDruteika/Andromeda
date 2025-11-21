@@ -46,7 +46,6 @@ target_include_directories(${PROJECT_NAME}
     PUBLIC
         ${CMAKE_CURRENT_SOURCE_DIR}/Platform/include
     PRIVATE
-        ../Context/GLFWContext/include/
         ../Window/GLFWWindow/include/
         ../glfw/
         ../glfw/include/
@@ -58,7 +57,7 @@ target_include_directories(${PROJECT_NAME}
 target_link_libraries(${PROJECT_NAME}
     PRIVATE
         PrecompiledHeaders
-        Context
+        GraphicsContext
         glfw
         Glad
         OpenGL::GL
@@ -69,7 +68,7 @@ target_link_libraries(${PROJECT_NAME}
 
 # Explicit build ordering (alphabetical)
 add_dependencies(${PROJECT_NAME}
-    Context
+    GraphicsContext
     Glad
     Utils
     Window
