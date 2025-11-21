@@ -17,10 +17,8 @@ namespace Andromeda
         virtual unsigned int GetHeight() const = 0;
 		virtual std::string GetTitle() const = 0;
         virtual void SetTitle(const std::string& title) = 0;
-
         virtual void PollEvents() = 0;
         virtual bool ShouldClose() const = 0;
-
         virtual void* GetNativeHandle() const = 0;  // For GL, Vulkan, DirectX
     };
 }

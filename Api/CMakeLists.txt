@@ -100,6 +100,15 @@ source_group(
 
 source_group(
     TREE
+        ${CMAKE_CURRENT_SOURCE_DIR}/GraphicsContext
+    PREFIX
+        "GraphicsContext"
+    FILES
+        ${GRAPHICS_CONTEXT_HEADERS}
+)
+
+source_group(
+    TREE
         ${CMAKE_CURRENT_SOURCE_DIR}/Engine
     PREFIX
         "Engine"
@@ -132,4 +141,13 @@ source_group(
         "Scene"
     FILES
         ${SCENE_HEADERS}
+)
+
+source_group(
+    TREE
+        ${CMAKE_CURRENT_SOURCE_DIR}/Window
+    PREFIX
+        "Window"
+    FILES
+        ${WINDOW_HEADERS}
 )
