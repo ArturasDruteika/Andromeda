@@ -13,16 +13,20 @@ target_compile_definitions(Example
         ANDROMEDA_ENGINECORE_USE_DLL
 )
 
+# SPDLog
+file(TO_CMAKE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/../../3rdParty/spdlog/ spdlog_root_path)
+file(TO_CMAKE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/../../3rdParty/spdlog/lib/cmake/spdlog/ spdlog_path)
+set(spdlog_DIR ${spdlog_path})
+find_package(spdlog REQUIRED)
+
 target_include_directories(${PROJECT_NAME} 
     PRIVATE
-	    # ../ExternalGraphicsLibs/glm/
         ../Math/LinearAlgebra/include/
         ../PhysicalProperties/Space/include/
         ../PhysicalProperties/Light/LightTypes/include/
         ../PhysicalProperties/Light/Abstracts/include/
         ../PhysicalProperties/Materials/include/
-        # ../Rendering/RenderableObjects/Interfaces/include/
-        # ../Rendering/RenderableObjects/Objects/include/
+        ../Platform/Platform/include/
         ../Api/Engine/
 )
 
@@ -33,16 +37,16 @@ target_link_libraries(${PROJECT_NAME}
         Math
         Api
         PhysicalProperties
-        # Rendering
+        Platform
         EngineCore
+        spdlog::spdlog
 )
 
 # Ensure Example waits for EngineCore to build
 add_dependencies(${PROJECT_NAME} 
     Math
     PhysicalProperties
-    # ExternalGraphicsLibs
-    # Rendering
+    Platform
     EngineCore
 )
 
