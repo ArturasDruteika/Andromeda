@@ -1,41 +1,39 @@
 cmake_minimum_required(VERSION 3.24.0)
-project(Glad)
 
-set(CMAKE_BUILD_PARALLEL_LEVEL)
-set(CMAKE_CXX_STANDARD 23)
-set(CMAKE_CXX_STANDARD_REQUIRED ON)
+project(Glad LANGUAGES C)
 
-# Find and configure OpenGL
-find_package(OpenGL REQUIRED)
+set(CMAKE_C_STANDARD 99)
+set(CMAKE_C_STANDARD_REQUIRED ON)
 
 # Add GLAD source code
 add_library(${PROJECT_NAME} 
-    STATIC 
-        ${CMAKE_CURRENT_SOURCE_DIR}/glad/include/glad/gl.h
-        ${CMAKE_CURRENT_SOURCE_DIR}/glad/src/gl.c
-        ${CMAKE_CURRENT_SOURCE_DIR}/glad/include/KHR/khrplatform.h
+    SHARED 
+        glad/include/glad/gl.h
+        glad/src/gl.c
+        glad/include/KHR/khrplatform.h
 )
 
+# Position independent code is implicitly ON for SHARED libs, but this is fine
 set_target_properties(${PROJECT_NAME} PROPERTIES POSITION_INDEPENDENT_CODE ON)
 
-target_include_directories(${PROJECT_NAME} 
+target_include_directories(${PROJECT_NAME}
     PUBLIC
-        glad/include
-        ${OPENGL_INCLUDE_DIRS}
+        ${CMAKE_CURRENT_SOURCE_DIR}/glad/include
 )
 
-target_link_libraries(${PROJECT_NAME} 
-    PUBLIC
-        ${OPENGL_LIBRARIES}
+target_compile_definitions(${PROJECT_NAME}
+    PRIVATE 
+        GLAD_API_CALL_EXPORT_BUILD
+    PUBLIC 
+        GLAD_API_CALL_EXPORT
 )
 
-
-# Organize files into Solution Explorer folders
+# Optional: nice grouping in IDE
 source_group(
-    TREE 
+    TREE
         ${CMAKE_CURRENT_SOURCE_DIR}/glad
-    PREFIX 
-        "glad"
+    PREFIX
+        "Glad"
     FILES
         glad/include/glad/gl.h
         glad/include/KHR/khrplatform.h
