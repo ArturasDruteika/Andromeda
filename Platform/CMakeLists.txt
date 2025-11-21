@@ -57,6 +57,7 @@ target_include_directories(${PROJECT_NAME}
 # Link libraries (alphabetical)
 target_link_libraries(${PROJECT_NAME}
     PRIVATE
+        PrecompiledHeaders
         Context
         glfw
         Glad
@@ -64,8 +65,6 @@ target_link_libraries(${PROJECT_NAME}
         Window
         imgui
         spdlog::spdlog
-    PUBLIC
-        PrecompiledHeaders
 )
 
 # Explicit build ordering (alphabetical)

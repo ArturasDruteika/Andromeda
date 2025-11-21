@@ -4,6 +4,7 @@
 #include "GLFWContext.hpp"
 #include "spdlog/spdlog.h"
 
+
 namespace Andromeda::Platform
 {
     Platform::Platform()
@@ -46,8 +47,6 @@ namespace Andromeda::Platform
 
         m_pContext->MakeContextCurrent(m_pWindow->GetWindow());
 
-        // === GLAD v2: load OpenGL function pointers ===
-        // gladLoadGL takes a loader function: (const char* name) -> void*
         int gladVersion = gladLoadGL(glfwGetProcAddress);
         if (gladVersion == 0)
         {
@@ -61,7 +60,6 @@ namespace Andromeda::Platform
             GLAD_VERSION_MAJOR(gladVersion),
             GLAD_VERSION_MINOR(gladVersion)
         );
-        // ==============================================
 
         m_pWindow->SetCallbackFunctions();
 
@@ -139,7 +137,7 @@ namespace Andromeda::Platform
         return m_height;
     }
 
-    GLFWwindow* Platform::GetNativeWindow() const
+    GLFWwindow* Platform::GetWindow() const
     {
         return m_pWindow->GetWindow();
     }
