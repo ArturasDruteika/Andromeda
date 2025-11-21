@@ -96,7 +96,6 @@ target_include_directories(${PROJECT_NAME}
         ../Rendering/Scene/Interfaces/include/
         ../Rendering/Scene/Scenes/include/
         ../Rendering/Vertices/include/
-        ../Window/GLFWWindow/include/
         ../glfw/
         ../glfw/include/
         ../imgui/imgui/
