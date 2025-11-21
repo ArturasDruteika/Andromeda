@@ -1,6 +1,6 @@
 #include "../include/Platform.hpp"
 #include "glad/gl.h"
-#include "GLFWWindow.hpp"
+#include "Window/WindowGLFW/include/WindowGLFW.hpp"
 #include "GraphicsContext/include/GraphicsContextGLFW.hpp"
 #include "spdlog/spdlog.h"
 
@@ -34,10 +34,7 @@ namespace Andromeda::Platform
             return false;
         }
 
-        m_pContext = std::make_unique<GraphicsContext::GraphicsContextGLFW>();
-        m_pContext->Init();
-
-        m_pWindow = std::make_unique<Window::GLFWWindow>(width, height, title, true);
+        m_pWindow = std::make_unique<Window::WindowGLFW>(width, height, title, true);
         if (!m_pWindow)
         {
             spdlog::error("Failed to create GLFW window.");
@@ -45,7 +42,9 @@ namespace Andromeda::Platform
             return false;
         }
 
-        m_pContext->MakeContextCurrent(m_pWindow->GetWindow());
+        m_pGraphicsContext = std::make_unique<GraphicsContext::GraphicsContextGLFW>();
+        m_pGraphicsContext->Init(*m_pWindow);
+        m_pGraphicsContext->MakeCurrent();
 
         int gladVersion = gladLoadGL(glfwGetProcAddress);
         if (gladVersion == 0)
@@ -61,7 +60,7 @@ namespace Andromeda::Platform
             GLAD_VERSION_MINOR(gladVersion)
         );
 
-        m_pWindow->SetCallbackFunctions();
+        //m_pWindow->SetCallbackFunctions();
 
         const char* version = reinterpret_cast<const char*>(glGetString(GL_VERSION));
         if (version)
@@ -89,11 +88,11 @@ namespace Andromeda::Platform
 
         if (m_pWindow)
         {
-            m_pWindow->DeInit();
+            //m_pWindow->DeInit();
             m_pWindow = nullptr;
         }
 
-        m_pContext->TerminateGLFW();
+        //m_pGraphicsContext->TerminateGLFW();
         m_initialized = false;
 
         spdlog::info("Platform shutdown completed.");
@@ -111,20 +110,12 @@ namespace Andromeda::Platform
 
     bool Platform::ShouldClose() const
     {
-        if (!m_pWindow)
-        {
-            return true;
-        }
-
-        return glfwWindowShouldClose(m_pWindow->GetWindow()) != 0;
+		return m_pWindow->ShouldClose();
     }
 
     void Platform::SwapBuffers() const
     {
-        if (m_pWindow)
-        {
-            glfwSwapBuffers(m_pWindow->GetWindow());
-        }
+        m_pGraphicsContext->Present();
     }
 
     int Platform::GetWindowWidth() const
@@ -137,8 +128,8 @@ namespace Andromeda::Platform
         return m_height;
     }
 
-    GLFWwindow* Platform::GetWindow() const
-    {
-        return m_pWindow->GetWindow();
-    }
+    //GLFWwindow* Platform::GetWindow() const
+    //{
+    //    return m_pWindow->GetWindow();
+    //}
 }

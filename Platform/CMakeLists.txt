@@ -46,7 +46,6 @@ target_include_directories(${PROJECT_NAME}
     PUBLIC
         ${CMAKE_CURRENT_SOURCE_DIR}/Platform/include
     PRIVATE
-        ../Window/GLFWWindow/include/
         ../glfw/
         ../glfw/include/
         ../imgui/imgui/
@@ -57,11 +56,12 @@ target_include_directories(${PROJECT_NAME}
 target_link_libraries(${PROJECT_NAME}
     PRIVATE
         PrecompiledHeaders
-        GraphicsContext
         glfw
-        Glad
         OpenGL::GL
+        GraphicsContext
+        Glad
         Window
+        Api
         imgui
         spdlog::spdlog
 )

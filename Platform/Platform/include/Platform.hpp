@@ -2,19 +2,11 @@
 #define PLATFORM__PLATFORM__PLATFORM__HPP
 
 #include "pch.hpp"
+#include "GraphicsContext/IGraphicsContext.hpp"
+#include "Window/IWindow.hpp"
 
 // Forward declaration of GLFWwindow (from GLFW)
-struct GLFWwindow;
-
-namespace Andromeda::GraphicsContext
-{
-    class GraphicsContextGLFW;
-}
-
-namespace Andromeda::Window
-{
-    class GLFWWindow;
-}
+//struct GLFWwindow;
 
 namespace Andromeda::Platform
 {
@@ -43,15 +35,15 @@ namespace Andromeda::Platform
         int GetWindowHeight() const;
 
         // Optional: expose native GLFW window if ImGui or other systems need it
-        GLFWwindow* GetWindow() const;
+        //GLFWwindow* GetWindow() const;
 
     private:
         int m_width;
         int m_height;
         bool m_initialized;
 
-        std::unique_ptr<GraphicsContext::GraphicsContextGLFW> m_pContext;
-        std::unique_ptr<Window::GLFWWindow> m_pWindow;
+        std::unique_ptr<IGraphicsContext> m_pGraphicsContext;
+        std::unique_ptr<IWindow> m_pWindow;
     };
 }
 
