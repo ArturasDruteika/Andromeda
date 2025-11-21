@@ -12,7 +12,7 @@ namespace Andromeda
     public:
         virtual ~IGraphicsContext() = default;
 
-        virtual void Initialize(IWindow &window) = 0;
+        virtual void Init(IWindow &window) = 0;
         virtual void MakeCurrent() = 0;
         virtual void Present() = 0;
     };
