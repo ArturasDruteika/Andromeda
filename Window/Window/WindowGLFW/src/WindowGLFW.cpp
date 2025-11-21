@@ -1,13 +1,17 @@
-#include "../include/GLFWWindow.hpp"
+#include "pch.hpp"
+#include "../include/WindowGLFW.hpp"
+#include "../../Events/include/FramebufferEvents.hpp"
+#include "../../Events/include/KeyEvents.hpp"
+#include "../../Events/include/MouseEvents.hpp"
 #include "spdlog/spdlog.h"
 
 
 namespace Andromeda::Window
 {
-	GLFWWindow::GLFWWindow(int width, int height, const std::string& windowName, bool initWindow)
+	WindowGLFW::WindowGLFW(int width, int height, const std::string& title, bool initWindow)
 		: m_width{ width }
 		, m_height{ height }
-		, m_windowName{ windowName }
+		, m_title{ title }
 		, m_window{ nullptr }
 		, m_isInitialized{ false }
 	{
@@ -17,12 +21,59 @@ namespace Andromeda::Window
 		}
 	}
 
-	GLFWWindow::~GLFWWindow()
+	WindowGLFW::~WindowGLFW()
 	{
 		DeInit();
 	}
 
-	void GLFWWindow::Init()
+	bool WindowGLFW::IsInitialized() const
+	{
+		return m_isInitialized;
+	}
+
+	unsigned int WindowGLFW::GetWidth() const
+	{
+		return m_width;
+	}
+
+	unsigned int WindowGLFW::GetHeight() const
+	{
+		return m_height;
+	}
+
+	std::string WindowGLFW::GetTitle() const
+	{
+		return m_title;
+	}
+
+	void WindowGLFW::SetTitle(const std::string& title)
+	{
+		m_title = title;
+	}
+
+	void WindowGLFW::PollEvents()
+	{
+		glfwPollEvents();
+	}
+
+	bool WindowGLFW::ShouldClose() const
+	{
+		if (!m_window)
+		{
+			// If there is no window, treat it as "should close"
+			return true;
+		}
+
+		return glfwWindowShouldClose(m_window) != 0;
+	}
+
+	void* WindowGLFW::GetNativeHandle() const
+	{
+		// This is what your GraphicsContextGLFW will cast back to GLFWwindow*
+		return static_cast<void*>(m_window);
+	}
+
+	void WindowGLFW::Init()
 	{
 		if (!m_isInitialized)
 		{
@@ -40,7 +91,7 @@ namespace Andromeda::Window
 		}
 	}
 
-	void GLFWWindow::DeInit()
+	void WindowGLFW::DeInit()
 	{
 		if (m_isInitialized)
 		{
@@ -49,9 +100,9 @@ namespace Andromeda::Window
 		}
 	}
 
-	void GLFWWindow::CreateNewWindow()
+	void WindowGLFW::CreateNewWindow()
 	{
-		m_window = glfwCreateWindow(m_width, m_height, m_windowName.c_str(), nullptr, nullptr);
+		m_window = glfwCreateWindow(m_width, m_height, m_title.c_str(), nullptr, nullptr);
 
 		if (!m_window)
 		{
@@ -63,7 +114,7 @@ namespace Andromeda::Window
 		glfwSetWindowUserPointer(m_window, this);
 	}
 
-	void GLFWWindow::SetCallbackFunctions()
+	void WindowGLFW::SetCallbackFunctions()
 	{
 		glfwSetFramebufferSizeCallback(m_window, ResizeWindow);
 		glfwSetWindowCloseCallback(m_window, WindowClose);
@@ -73,39 +124,19 @@ namespace Andromeda::Window
 		glfwSetCursorPosCallback(m_window, MouseMoveCallback);
 	}
 
-	unsigned int GLFWWindow::GetWidth() const
-	{
-		return m_width;
-	}
-
-	unsigned int GLFWWindow::GetHeight() const
-	{
-		return m_height;
-	}
-
-	std::string GLFWWindow::GetWindowName() const
-	{
-		return m_windowName;
-	}
-
-	bool GLFWWindow::IsInitialized() const
-	{
-		return m_isInitialized;
-	}
-
-	GLFWwindow* GLFWWindow::GetWindow() const
+	GLFWwindow* WindowGLFW::GetWindow() const
 	{
 		return m_window;
 	}
 
-	void GLFWWindow::SetEventCallback(const EventCallbackFn& callback)
+	void WindowGLFW::SetEventCallback(const EventCallbackFn& callback)
 	{
 		m_EventCallback = callback;
 	}
 
-	void GLFWWindow::ResizeWindow(GLFWwindow* window, int width, int height)
+	void WindowGLFW::ResizeWindow(GLFWwindow* window, int width, int height)
 	{
-		GLFWWindow* instance = static_cast<GLFWWindow*>(glfwGetWindowUserPointer(window));
+		WindowGLFW* instance = static_cast<WindowGLFW*>(glfwGetWindowUserPointer(window));
 		if (instance)
 		{
 			instance->m_width = width;
@@ -120,9 +151,9 @@ namespace Andromeda::Window
 		}
 	}
 
-	void GLFWWindow::WindowClose(GLFWwindow* window)
+	void WindowGLFW::WindowClose(GLFWwindow* window)
 	{
-		GLFWWindow* instance = static_cast<GLFWWindow*>(glfwGetWindowUserPointer(window));
+		WindowGLFW* instance = static_cast<WindowGLFW*>(glfwGetWindowUserPointer(window));
 		if (instance)
 		{
 			// spdlog::debug("Window close event triggered.");
@@ -134,9 +165,9 @@ namespace Andromeda::Window
 		}
 	}
 
-	void GLFWWindow::KeyCallback(GLFWwindow* window, int key, int scancode, int action, int mods)
+	void WindowGLFW::KeyCallback(GLFWwindow* window, int key, int scancode, int action, int mods)
 	{
-		GLFWWindow* instance = static_cast<GLFWWindow*>(glfwGetWindowUserPointer(window));
+		WindowGLFW* instance = static_cast<WindowGLFW*>(glfwGetWindowUserPointer(window));
 		if (instance)
 		{
 			if (instance->m_EventCallback)
@@ -157,9 +188,9 @@ namespace Andromeda::Window
 		}
 	}
 
-	void GLFWWindow::MouseButtonCallback(GLFWwindow* window, int button, int action, int mods)
+	void WindowGLFW::MouseButtonCallback(GLFWwindow* window, int button, int action, int mods)
 	{
-		GLFWWindow* instance = static_cast<GLFWWindow*>(glfwGetWindowUserPointer(window));
+		WindowGLFW* instance = static_cast<WindowGLFW*>(glfwGetWindowUserPointer(window));
 		if (instance)
 		{
 			if (instance->m_EventCallback)
@@ -180,9 +211,9 @@ namespace Andromeda::Window
 		}
 	}
 
-	void GLFWWindow::MouseScrollCallback(GLFWwindow* window, double xOffset, double yOffset)
+	void WindowGLFW::MouseScrollCallback(GLFWwindow* window, double xOffset, double yOffset)
 	{
-		GLFWWindow* instance = static_cast<GLFWWindow*>(glfwGetWindowUserPointer(window));
+		WindowGLFW* instance = static_cast<WindowGLFW*>(glfwGetWindowUserPointer(window));
 		if (instance)
 		{
 			if (instance->m_EventCallback)
@@ -194,9 +225,9 @@ namespace Andromeda::Window
 		}
 	}
 
-	void GLFWWindow::MouseMoveCallback(GLFWwindow* window, double xPos, double yPos)
+	void WindowGLFW::MouseMoveCallback(GLFWwindow* window, double xPos, double yPos)
 	{
-		GLFWWindow* instance = static_cast<GLFWWindow*>(glfwGetWindowUserPointer(window));
+		WindowGLFW* instance = static_cast<WindowGLFW*>(glfwGetWindowUserPointer(window));
 		if (instance)
 		{
 			if (instance->m_EventCallback)

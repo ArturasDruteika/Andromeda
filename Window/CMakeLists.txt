@@ -20,23 +20,46 @@ file(TO_CMAKE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/../../3rdParty/spdlog/lib/cmake/s
 set(spdlog_DIR ${spdlog_path})
 find_package(spdlog REQUIRED)
 
+# ==== Events ====
+set(EVENTS_HEADERS
+    Window/Events/include/Event.hpp
+    Window/Events/include/EventType.hpp
+    Window/Events/include/MouseEvents.hpp
+    Window/Events/include/KeyEvents.hpp
+    Window/Events/include/FramebufferEvents.hpp
+    Window/Events/include/EventDispatcher.hpp
+)
+
+set(EVENTS_SOURCES
+    Window/Events/src/Event.cpp
+    Window/Events/src/MouseEvents.cpp
+    Window/Events/src/FramebufferEvents.cpp
+    Window/Events/src/KeyEvents.cpp
+    Window/Events/src/EventDispatcher.cpp
+)
+
+# ==== MouseAndKeyEvents ====
+set(MOUSE_AND_KEY_EVENTS_HEADERS
+    Window/MouseAndKeyCodes/include/KeyCodes.hpp
+    Window/MouseAndKeyCodes/include/MouseCodes.hpp
+)
+
+# ==== WindowGLFW ====
+set(WINDOW_GLFW_HEADERS
+    Window/WindowGLFW/include/WindowGLFW.hpp
+)
+
+set(WINDOW_GLFW_SOURCES
+    Window/WindowGLFW/src/WindowGLFW.cpp
+)
+
 add_library(${PROJECT_NAME} 
     STATIC
-        GLFWWindow/include/GLFWWindow.hpp
-        GLFWWindow/src/GLFWWindow.cpp
-	    Events/include/Event.hpp
-	    Events/src/Event.cpp
-	    Events/include/EventType.hpp
-	    Events/include/MouseEvents.hpp
-	    Events/src/MouseEvents.cpp
-	    Events/include/FramebufferEvents.hpp
-	    Events/src/FramebufferEvents.cpp
-	    Events/include/KeyEvents.hpp
-	    Events/src/KeyEvents.cpp
-	    Events/include/EventDispatcher.hpp
-	    Events/src/EventDispatcher.cpp
-	    MouseAndKeyCodes/include/MouseCodes.hpp
-	    MouseAndKeyCodes/include/KeyCodes.hpp
+        ${EVENTS_HEADERS}
+        ${EVENTS_SOURCES}
+        ${MOUSE_AND_KEY_EVENTS_HEADERS}
+        ${WINDOW_GLFW_HEADERS}
+        ${WINDOW_GLFW_SOURCES}
 )
 
 set_target_properties(${PROJECT_NAME} PROPERTIES POSITION_INDEPENDENT_CODE ON)
@@ -45,7 +68,8 @@ target_include_directories(${PROJECT_NAME}
     PRIVATE
         ..//glfw//include//
         ..//glfw//src//
-
+    PUBLIC
+        ${CMAKE_CURRENT_SOURCE_DIR}/
 )
 
 # Link GLFW and OpenGL to the executable
@@ -56,6 +80,8 @@ target_link_libraries(${PROJECT_NAME}
         glfw
         OpenGL::GL
         spdlog::spdlog
+    PUBLIC
+        Api
 )
 
 add_dependencies(${PROJECT_NAME} 
@@ -67,39 +93,29 @@ add_dependencies(${PROJECT_NAME}
 # Organize files into Solution Explorer folders
 source_group(
     TREE 
-        ${CMAKE_CURRENT_SOURCE_DIR}/GLFWWindow 
-    PREFIX 
-        "GLFWWindow" 
-    FILES
-        GLFWWindow/include/GLFWWindow.hpp
-        GLFWWindow/src/GLFWWindow.cpp
-)
-
-source_group(
-    TREE 
-        ${CMAKE_CURRENT_SOURCE_DIR}/Events 
+        ${CMAKE_CURRENT_SOURCE_DIR}/${PROJECT_NAME}/Events 
     PREFIX 
         "Events" 
     FILES
-        Events/include/Event.hpp
-        Events/src/Event.cpp
-        Events/include/EventType.hpp
-        Events/include/MouseEvents.hpp
-        Events/src/MouseEvents.cpp
-        Events/include/FramebufferEvents.hpp
-        Events/src/FramebufferEvents.cpp
-        Events/include/KeyEvents.hpp
-        Events/src/KeyEvents.cpp
-        Events/include/EventDispatcher.hpp
-	    Events/src/EventDispatcher.cpp
+        ${EVENTS_HEADERS}
+        ${EVENTS_SOURCES}
 )
 
 source_group(
     TREE 
-        ${CMAKE_CURRENT_SOURCE_DIR}/MouseAndKeyCodes 
+        ${CMAKE_CURRENT_SOURCE_DIR}/${PROJECT_NAME}/MouseAndKeyCodes 
     PREFIX 
         "MouseAndKeyCodes" 
     FILES
-        MouseAndKeyCodes/include/MouseCodes.hpp
-        MouseAndKeyCodes/include/KeyCodes.hpp
+        ${MOUSE_AND_KEY_EVENTS_HEADERS}
+)
+
+source_group(
+    TREE 
+        ${CMAKE_CURRENT_SOURCE_DIR}/${PROJECT_NAME}/WindowGLFW 
+    PREFIX 
+        "WindowGLFW" 
+    FILES
+        ${WINDOW_GLFW_HEADERS}
+        ${WINDOW_GLFW_SOURCES}
 )

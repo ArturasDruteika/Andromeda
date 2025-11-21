@@ -1,12 +1,11 @@
 #ifndef WINDOW__GLFW_WINDOW__HPP_HPP
 #define WINDOW__GLFW_WINDOW__HPP_HPP
 
+
+#include "../../Events/include/Event.hpp"
+#include "Window/IWindow.hpp"
 #include <GLFW/glfw3.h>
 #include <functional>
-#include "../../Events/include/FramebufferEvents.hpp"
-#include "../../Events/include/KeyEvents.hpp"
-#include "../../Events/include/MouseEvents.hpp"
-#include "../../Events/include/EventDispatcher.hpp"
 
 
 constexpr int DEFAULT_WINDOW_WIDTH = 640;
@@ -15,30 +14,35 @@ constexpr int DEFAULT_WINDOW_HEIGHT = 640;
 
 namespace Andromeda::Window
 {
-	class GLFWWindow
+	class WindowGLFW
+		: public IWindow
 	{
 	public:
-		using EventCallbackFn = std::function<void(Window::Event&)>;
+		using EventCallbackFn = std::function<void(Event&)>;
 
-		GLFWWindow(
+		WindowGLFW(
 			int width = DEFAULT_WINDOW_WIDTH,
 			int height = DEFAULT_WINDOW_HEIGHT,
-			const std::string& windowName = "Andromeda Window",
+			const std::string& title = "Andromeda Window",
 			bool initWindow = true
 		);
-		~GLFWWindow();
+		~WindowGLFW() override;
+
+		bool IsInitialized() const override;
+		unsigned int GetWidth() const override;
+		unsigned int GetHeight() const override;
+		std::string GetTitle() const;
+		void SetTitle(const std::string& title) override;
+		virtual void PollEvents() override;
+		virtual bool ShouldClose() const override;
+		virtual void* GetNativeHandle() const override;
+
+		GLFWwindow* GetWindow() const;
 
 		void Init();
 		void DeInit();
 		void CreateNewWindow();
 		void SetCallbackFunctions();
-
-		unsigned int GetWidth() const;
-		unsigned int GetHeight() const;
-		std::string GetWindowName() const;
-		bool IsInitialized() const;
-		GLFWwindow* GetWindow() const;
-
 		void SetEventCallback(const EventCallbackFn& callback);
 
 	private:
@@ -50,11 +54,12 @@ namespace Andromeda::Window
 		static void MouseScrollCallback(GLFWwindow* window, double xOffset, double yOffset);
 		static void MouseMoveCallback(GLFWwindow* window, double xPos, double yPos);
 
-		int m_width, m_height;
-		std::string m_windowName;
-		GLFWwindow* m_window;
+	private:
 		bool m_isInitialized;
+		int m_width, m_height;
+		std::string m_title;
 		EventCallbackFn m_EventCallback;
+		GLFWwindow* m_window;
 	};
 }
 
