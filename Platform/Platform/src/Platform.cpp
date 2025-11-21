@@ -100,12 +100,7 @@ namespace Andromeda::Platform
 
     void Platform::PollEvents() const
     {
-        if (!m_initialized)
-        {
-            return;
-        }
-
-        glfwPollEvents();
+		m_pWindow->PollEvents();
     }
 
     bool Platform::ShouldClose() const
@@ -126,6 +121,24 @@ namespace Andromeda::Platform
     int Platform::GetWindowHeight() const
     {
         return m_height;
+    }
+
+    IGraphicsContext* Platform::GetGraphicsContext() const
+    {
+        if (!m_pGraphicsContext)
+        {
+            spdlog::warn("GraphicsContext() called but graphics context is nullptr.");
+        }
+        return m_pGraphicsContext.get();
+    }
+
+    IWindow* Platform::GetWindow() const
+    {
+        if (!m_pWindow)
+        {
+            spdlog::warn("Window() called but window is nullptr.");
+        }
+        return m_pWindow.get();
     }
 
     //GLFWwindow* Platform::GetWindow() const

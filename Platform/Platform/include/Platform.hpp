@@ -34,6 +34,9 @@ namespace Andromeda::Platform
         int GetWindowWidth() const;
         int GetWindowHeight() const;
 
+        IGraphicsContext* GetGraphicsContext() const;
+        IWindow* GetWindow() const;
+
         // Optional: expose native GLFW window if ImGui or other systems need it
         //GLFWwindow* GetWindow() const;
 
