@@ -22,18 +22,18 @@ set(spdlog_DIR ${spdlog_path})
 find_package(spdlog REQUIRED)
 
 
-# ==== Application ====
-set(APPLICATION_HEADERS
-    Application/include/Application.hpp
-    Application/include/ApplicationImpl.hpp
-    Application/include/CameraInputMapper.hpp
-)
-
-set(APPLICATION_SOURCES
-    Application/src/Application.cpp
-    Application/src/ApplicationImpl.cpp
-    Application/src/CameraInputMapper.cpp
-)
+# # ==== Application ====
+# set(APPLICATION_HEADERS
+#     Application/include/Application.hpp
+#     Application/include/ApplicationImpl.hpp
+#     Application/include/CameraInputMapper.hpp
+# )
+# 
+# set(APPLICATION_SOURCES
+#     Application/src/Application.cpp
+#     Application/src/ApplicationImpl.cpp
+#     Application/src/CameraInputMapper.cpp
+# )
 
 # ==== Engine ====
 set(ENGINE_HEADERS
@@ -107,7 +107,6 @@ target_include_directories(${PROJECT_NAME}
 target_link_libraries(${PROJECT_NAME}
     PRIVATE
         Context
-        Glad
         OpenGL::GL
         Rendering
         Window

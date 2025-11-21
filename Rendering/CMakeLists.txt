@@ -213,8 +213,6 @@ target_include_directories(${PROJECT_NAME}
     PRIVATE
         ..//Utils//FileOperations//include//
         ..//Utils//nlohmann_json//include//
-        ..//Glad//glad//include//
-	    ..//Glad//glm//
     PUBLIC
         ..//Math//LinearAlgebra//include//
         ..//Math//Constants//include//

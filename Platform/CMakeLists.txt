@@ -58,10 +58,10 @@ target_include_directories(${PROJECT_NAME}
 target_link_libraries(${PROJECT_NAME}
     PRIVATE
         Context
+        glfw
         Glad
         OpenGL::GL
         Window
-        glfw
         imgui
         spdlog::spdlog
     PUBLIC

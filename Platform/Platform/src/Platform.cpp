@@ -1,8 +1,8 @@
 #include "../include/Platform.hpp"
+#include "glad/gl.h"
 #include "GLFWWindow.hpp"
 #include "GLFWContext.hpp"
 #include "spdlog/spdlog.h"
-
 
 namespace Andromeda::Platform
 {
@@ -33,8 +33,9 @@ namespace Andromeda::Platform
             return false;
         }
 
-		m_pContext = std::make_unique<Context::GLFWContext>();
-		m_pContext->Init();
+        m_pContext = std::make_unique<Context::GLFWContext>();
+        m_pContext->Init();
+
         m_pWindow = std::make_unique<Window::GLFWWindow>(width, height, title, true);
         if (!m_pWindow)
         {
@@ -44,12 +45,30 @@ namespace Andromeda::Platform
         }
 
         m_pContext->MakeContextCurrent(m_pWindow->GetWindow());
+
+        // === GLAD v2: load OpenGL function pointers ===
+        // gladLoadGL takes a loader function: (const char* name) -> void*
+        int gladVersion = gladLoadGL(glfwGetProcAddress);
+        if (gladVersion == 0)
+        {
+            spdlog::error("Failed to initialize GLAD (gladLoadGL returned 0).");
+            glfwTerminate();
+            return false;
+        }
+
+        spdlog::info(
+            "GLAD loaded OpenGL {}.{}",
+            GLAD_VERSION_MAJOR(gladVersion),
+            GLAD_VERSION_MINOR(gladVersion)
+        );
+        // ==============================================
+
         m_pWindow->SetCallbackFunctions();
 
         const char* version = reinterpret_cast<const char*>(glGetString(GL_VERSION));
         if (version)
         {
-            spdlog::info("Platform initialized. OpenGL version: {}", std::string(version));
+            spdlog::info("Platform initialized. OpenGL version string: {}", std::string(version));
         }
         else
         {
