@@ -3,10 +3,10 @@
 
 
 #include "../MacroExports/MacroExports.hpp"
-#include "pch.hpp"
 #include "GraphicsBackend.hpp"
 #include "../Renderer/IRenderer.hpp"
 #include "../Scene/IScene.hpp"
+#include <memory>
 
 
 namespace Andromeda

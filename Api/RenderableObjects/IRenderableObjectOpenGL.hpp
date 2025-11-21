@@ -3,27 +3,23 @@
 
 
 #include "../../../MacroExports/include/MacroExports.hpp"
-#include "pch.hpp"
 #include "IRenderableObject.hpp"
 #include "../../../Vertices/include/VertexLayouts.hpp"
 
 
 namespace Andromeda
 {
-	namespace Rendering
-	{
-		class RENDERING_API IRenderableObjectOpenGL
-			: public IRenderableObject
-		{	
-		public:
-			virtual ~IRenderableObjectOpenGL() = default;
+	class RENDERING_API IRenderableObjectOpenGL
+		: public IRenderableObject
+	{	
+	public:
+		virtual ~IRenderableObjectOpenGL() = default;
 
-			// Getters
-			virtual unsigned int GetVBO() const = 0;
-			virtual unsigned int GetVAO() const = 0;
-			virtual unsigned int GetEBO() const = 0;
-		};
-	}
+		// Getters
+		virtual unsigned int GetVBO() const = 0;
+		virtual unsigned int GetVAO() const = 0;
+		virtual unsigned int GetEBO() const = 0;
+	};
 }
 
 

@@ -2,10 +2,10 @@
 #define API__SCENE__I_SCENE_LIGHTING__HPP
 
 
-#include "pch.hpp"
 #include "DirectionalLight.hpp"
 #include "PointLight.hpp"
 #include "../RenderableObjects/IRenderableObject.hpp"
+#include <map>
 
 
 namespace Andromeda

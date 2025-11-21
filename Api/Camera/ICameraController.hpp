@@ -2,7 +2,7 @@
 #define API__CAMERA__I_CAMERA_CONTROLLER__HPP
 
 
-#include "pch.hpp"
+#include <functional>
 
 
 namespace Andromeda

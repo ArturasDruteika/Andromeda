@@ -2,8 +2,8 @@
 #define API__SCENE__I_SCENE_OBJECTS__HPP
 
 
-#include "pch.hpp"
 #include "../RenderableObjects/IRenderableObject.hpp"
+#include <map>
 
 
 namespace Andromeda

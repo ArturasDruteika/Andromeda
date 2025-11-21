@@ -2,8 +2,8 @@
 #define API__RENDERABLE_OBJECTS__I_MESH__HPP
 
 
-#include "pch.hpp"
 #include "Vertex.hpp"
+#include <vector>
 
 
 namespace Andromeda

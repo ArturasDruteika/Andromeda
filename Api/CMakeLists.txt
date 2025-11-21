@@ -3,8 +3,8 @@ cmake_minimum_required(VERSION 3.24)
 project(Api LANGUAGES CXX)
 
 # Static (header-only) library
-add_library(Api INTERFACE)
-target_compile_features(Api INTERFACE cxx_std_23)
+add_library(${PROJECT_NAME} INTERFACE)
+target_compile_features(${PROJECT_NAME} INTERFACE cxx_std_23)
 
 # ==== Camera ====
 set(CAMERA_HEADERS
@@ -49,7 +49,7 @@ set(SCENE_HEADERS
     Scene/ISceneState.hpp
 )
 
-target_sources(Api
+target_sources(${PROJECT_NAME}
     INTERFACE
         FILE_SET HEADERS
         BASE_DIRS ${CMAKE_CURRENT_SOURCE_DIR}
@@ -61,7 +61,7 @@ target_sources(Api
             ${SCENE_HEADERS}
 )
 
-target_include_directories(Api
+target_include_directories(${PROJECT_NAME}
     INTERFACE
         ${CMAKE_CURRENT_SOURCE_DIR}
         ${CMAKE_CURRENT_SOURCE_DIR}/../Math/LinearAlgebra/include/
@@ -70,9 +70,8 @@ target_include_directories(Api
         ${CMAKE_CURRENT_SOURCE_DIR}/../PhysicalProperties/Vertices/include/
 )
 
-target_link_libraries(Api
+target_link_libraries(${PROJECT_NAME}
     INTERFACE
-        PrecompiledHeaders
         Math
         PhysicalProperties
 )
