@@ -20,6 +20,11 @@ set(ENGINE_HEADERS
     Engine/GraphicsBackend.hpp
 )
 
+# ==== GraphicsContext ====
+set(GRAPHICS_CONTEXT_HEADERS
+    GraphicsContext/IGraphicsContext.hpp
+)
+
 # ==== RenderableObjects ====
 set(RENDERABLE_OBJECTS_HEADERS
     RenderableObjects/ICube.hpp
@@ -49,6 +54,11 @@ set(SCENE_HEADERS
     Scene/ISceneState.hpp
 )
 
+# ==== Window ====
+set(WINDOW_HEADERS
+    Window/IWindow.hpp
+)
+
 target_sources(${PROJECT_NAME}
     INTERFACE
         FILE_SET HEADERS
@@ -56,9 +66,11 @@ target_sources(${PROJECT_NAME}
         FILES
             ${CAMERA_HEADERS}
             ${ENGINE_HEADERS}
+            ${GRAPHICS_CONTEXT_HEADERS}
             ${RENDERABLE_OBJECTS_HEADERS}
             ${RENDERER_HEADERS}
             ${SCENE_HEADERS}
+            ${WINDOW_HEADERS}
 )
 
 target_include_directories(${PROJECT_NAME}

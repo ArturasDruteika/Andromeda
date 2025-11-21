@@ -5,21 +5,23 @@
 #include <string>
 
 
-class IWindow
+namespace Andromeda
 {
-public:
-    virtual ~IWindow() = default;
+    class IWindow
+    {
+    public:
+        virtual ~IWindow() = default;
 
-    virtual void PollEvents() = 0;
-    virtual bool ShouldClose() const = 0;
+        virtual int GetWidth() const = 0;
+        virtual int GetHeight() const = 0;
+        virtual void SetTitle(const std::string& title) = 0;
 
-    virtual int GetWidth() const = 0;
-    virtual int GetHeight() const = 0;
+        virtual void PollEvents() = 0;
+        virtual bool ShouldClose() const = 0;
 
-    virtual void SetTitle(const std::string& title) = 0;
-
-    virtual void* GetNativeHandle() const = 0;  // For GL, Vulkan, DirectX
-};
+        virtual void* GetNativeHandle() const = 0;  // For GL, Vulkan, DirectX
+    };
+}
 
 
 #endif // API_WINDOW__I_WINDOW__HPP
