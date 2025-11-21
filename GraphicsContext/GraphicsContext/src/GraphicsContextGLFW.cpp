@@ -1,30 +1,30 @@
-#include "../include/GLFWContext.hpp"
+#include "../include/GraphicsContextGLFW.hpp"
 #include "spdlog/spdlog.h"
 
 
-namespace Andromeda::Context
+namespace Andromeda::GraphicsContext
 {
-	GLFWContext::GLFWContext()
+	GraphicsContextGLFW::GraphicsContextGLFW()
 		: m_isInitialized{ false }
 	{
 	}
 
-	GLFWContext::~GLFWContext() = default;
+	GraphicsContextGLFW::~GraphicsContextGLFW() = default;
 
-	void GLFWContext::Init()
+	void GraphicsContextGLFW::Init()
 	{
 		SetContextHints();
 		m_isInitialized = true;
 	}
 
-	void GLFWContext::TerminateGLFW()
+	void GraphicsContextGLFW::TerminateGLFW()
 	{
 		glfwTerminate();
 		spdlog::info("GLFW terminated.");
 		m_isInitialized = false;
 	}
 
-	void GLFWContext::SetContextHints()
+	void GraphicsContextGLFW::SetContextHints()
 	{
 		glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
 		glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 5);
@@ -36,7 +36,7 @@ namespace Andromeda::Context
 #endif
 	}
 
-	void GLFWContext::MakeContextCurrent(GLFWwindow* window)
+	void GraphicsContextGLFW::MakeContextCurrent(GLFWwindow* window)
 	{
 		// Make the OpenGL context current
 		glfwMakeContextCurrent(window);
@@ -50,18 +50,18 @@ namespace Andromeda::Context
 		}
 	}
 
-	void GLFWContext::SwapBuffers(GLFWwindow* window)
+	void GraphicsContextGLFW::SwapBuffers(GLFWwindow* window)
 	{
 		// Swap buffers and poll events
 		glfwSwapBuffers(window);
 	}
 
-	bool GLFWContext::IsInitialized()
+	bool GraphicsContextGLFW::IsInitialized()
 	{
 		return m_isInitialized;
 	}
 
-	GLFWglproc GLFWContext::GetGLFWglproc()
+	GLFWglproc GraphicsContextGLFW::GetGLFWglproc()
 	{
 		return reinterpret_cast<GLFWglproc>(glfwGetProcAddress);
 	}

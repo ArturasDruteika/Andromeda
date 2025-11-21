@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.24)
 
-project(Context)
+project(GraphicsContext)
 
 set(CMAKE_BUILD_PARALLEL_LEVEL)
 set(CMAKE_CXX_STANDARD 23)
@@ -14,10 +14,19 @@ if (APPLE)
     target_compile_definitions(${EXEC_NAME} PRIVATE GL_SILENCE_DEPRECATION)
 endif ()
 
+# ==== GraphicsContext ====
+set(GRAPHICS_CONTEXT_HEADERS
+    GraphicsContext/include/GraphicsContextGLFW.hpp
+)
+
+set(GRAPHICS_CONTEXT_SOURCES
+    GraphicsContext/src/GraphicsContextGLFW.cpp
+)
+
 add_library(${PROJECT_NAME} 
     STATIC
-        GLFWContext/include/GLFWContext.hpp
-	    GLFWContext/src/GLFWContext.cpp
+        ${GRAPHICS_CONTEXT_HEADERS}
+        ${GRAPHICS_CONTEXT_SOURCES}
 )
 
 # SPDLog
@@ -32,12 +41,15 @@ target_include_directories(${PROJECT_NAME}
     PRIVATE
         ..//glfw//include//
         ..//glfw//
+    PUBLIC
+        ${CMAKE_CURRENT_SOURCE_DIR}/
 )
 
 # Link GLFW and OpenGL to the executable
 target_link_libraries(${PROJECT_NAME} 
     PRIVATE
         PrecompiledHeaders
+        Api
         glfw
         OpenGL::GL
         spdlog::spdlog
@@ -51,10 +63,10 @@ add_dependencies(${PROJECT_NAME}
 # Organize files into Solution Explorer folders
 source_group(
     TREE 
-        ${CMAKE_CURRENT_SOURCE_DIR}/GLFWContext
+        ${CMAKE_CURRENT_SOURCE_DIR}/GraphicsContext
     PREFIX
-        "GLFWContext"
+        "GraphicsContext"
     FILES
-        GLFWContext/include/GLFWContext.hpp
-	    GLFWContext/src/GLFWContext.cpp
+        ${GRAPHICS_CONTEXT_HEADERS}
+        ${GRAPHICS_CONTEXT_SOURCES}
 )
