@@ -8,32 +8,12 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 add_definitions(-DENGINECORE_EXPORT)
 
-# # OpenGL
-# find_package(OpenGL REQUIRED)
-# if (APPLE)
-#     # Ignore macOS OpenGL deprecation warnings
-#     target_compile_definitions(${PROJECT_NAME} PRIVATE GL_SILENCE_DEPRECATION)
-# endif ()
-
 # SPDLog
 file(TO_CMAKE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/../../3rdParty/spdlog/ spdlog_root_path)
 file(TO_CMAKE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/../../3rdParty/spdlog/lib/cmake/spdlog/ spdlog_path)
 set(spdlog_DIR ${spdlog_path})
 find_package(spdlog REQUIRED)
 
-
-# # ==== Application ====
-# set(APPLICATION_HEADERS
-#     Application/include/Application.hpp
-#     Application/include/ApplicationImpl.hpp
-#     Application/include/CameraInputMapper.hpp
-# )
-# 
-# set(APPLICATION_SOURCES
-#     Application/src/Application.cpp
-#     Application/src/ApplicationImpl.cpp
-#     Application/src/CameraInputMapper.cpp
-# )
 
 # ==== Engine ====
 set(ENGINE_HEADERS
@@ -49,20 +29,6 @@ set(MACRO_EXPORTS_HEADERS
     MacroExports/include/MacroExports.hpp
 )
 
-# ==== RenderingWindows ====
-set(RENDERING_WINDOWS_HEADERS
-    RenderingWindows/include/GraphicalModalWindow.hpp
-    RenderingWindows/include/ImGuiDockspaceManager.hpp
-    RenderingWindows/include/RendererWindowOpenGL.hpp
-)
-
-set(RENDERING_WINDOWS_SOURCES
-    RenderingWindows/src/GraphicalModalWindow.cpp
-    RenderingWindows/src/ImGuiDockspaceManager.cpp
-    RenderingWindows/src/RendererWindowOpenGL.cpp
-)
-
-
 # ==== Target ====
 add_library(${PROJECT_NAME}
     SHARED
@@ -71,8 +37,6 @@ add_library(${PROJECT_NAME}
         ${ENGINE_HEADERS}
         ${ENGINE_SOURCES}
         ${MACRO_EXPORTS_HEADERS}
-        ${RENDERING_WINDOWS_HEADERS}
-        ${RENDERING_WINDOWS_SOURCES}
 )
 
 target_compile_definitions(${PROJECT_NAME}
@@ -86,7 +50,6 @@ target_include_directories(${PROJECT_NAME}
         # ../Context/GraphicsContextGLFW/include/
         ../Math/Constants/include/
         ../Math/Trigonometry/include/
-        ../Api/Engine/
         ../Rendering/Attributes/include/
         ../Rendering/Camera/Cameras/include/
         ../Rendering/Light/LightTypes/include/
@@ -96,21 +59,12 @@ target_include_directories(${PROJECT_NAME}
         ../Rendering/Scene/Interfaces/include/
         ../Rendering/Scene/Scenes/include/
         ../Rendering/Vertices/include/
-        ../glfw/
-        ../glfw/include/
-        ../imgui/imgui/
-        ../imgui/imgui/backends/
 )
 
 # Link libraries (alphabetical)
 target_link_libraries(${PROJECT_NAME}
     PRIVATE
-        # Context
-        # OpenGL::GL
         Rendering
-        Window
-        glfw
-        imgui
         spdlog::spdlog
     PUBLIC
         PrecompiledHeaders
@@ -121,14 +75,10 @@ target_link_libraries(${PROJECT_NAME}
 
 # Explicit build ordering (alphabetical)
 add_dependencies(${PROJECT_NAME}
-    # Context
-    Glad
     Math
     Rendering
     Utils
     Window
-    glfw
-    imgui
 )
 
 
@@ -166,16 +116,6 @@ endif()
 # ==== IDE Organization ====
 source_group(
     TREE
-        ${CMAKE_CURRENT_SOURCE_DIR}/Application
-    PREFIX
-        "Application"
-    FILES
-        ${APPLICATION_HEADERS}
-        ${APPLICATION_SOURCES}
-)
-
-source_group(
-    TREE
         ${CMAKE_CURRENT_SOURCE_DIR}/Engine
     PREFIX
         "Engine"
@@ -191,14 +131,4 @@ source_group(
         "MacroExports"
     FILES
         ${MACRO_EXPORTS_HEADERS}
-)
-
-source_group(
-    TREE
-        ${CMAKE_CURRENT_SOURCE_DIR}/RenderingWindows
-    PREFIX
-        "RenderingWindows"
-    FILES
-        ${RENDERING_WINDOWS_HEADERS}
-        ${RENDERING_WINDOWS_SOURCES}
 )

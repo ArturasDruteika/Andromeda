@@ -3,7 +3,7 @@
 
 #include "../../MacroExports/include/MacroExports.hpp"
 #include "Components/GraphicsBackend.hpp"
-#include "IEngine.hpp"
+#include "Engine/IEngine.hpp"
 
 
 namespace Andromeda::EngineCore
