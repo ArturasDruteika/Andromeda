@@ -320,7 +320,7 @@ namespace Andromeda
 
         try
         {
-            auto engine = std::make_unique<EngineCore::Engine>(graphicsBackend);
+            std::unique_ptr<IEngine> engine = std::make_unique<EngineCore::Engine>(graphicsBackend);
             return engine;
         }
         catch (const std::exception& ex)

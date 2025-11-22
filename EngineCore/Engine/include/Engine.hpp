@@ -2,6 +2,7 @@
 #define ENGINECORE__ENGINE__HPP
 
 #include "../../MacroExports/include/MacroExports.hpp"
+#include "Components/GraphicsBackend.hpp"
 #include "IEngine.hpp"
 
 
@@ -32,11 +33,9 @@ namespace Andromeda::EngineCore
 	private:
 		bool m_initialized;
 		GraphicsBackend m_graphicsBackend;
-
 		std::unique_ptr<IRenderer> m_renderer;
 		std::unique_ptr<IScene> m_scene;
 	};
-
 }
 
 
