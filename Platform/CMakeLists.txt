@@ -6,6 +6,8 @@ set(CMAKE_BUILD_PARALLEL_LEVEL)
 set(CMAKE_CXX_STANDARD 23)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
+add_definitions(-DPLATFORM_EXPORT)
+
 # OpenGL
 find_package(OpenGL REQUIRED)
 
@@ -14,6 +16,11 @@ file(TO_CMAKE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/../../3rdParty/spdlog/ spdlog_roo
 file(TO_CMAKE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/../../3rdParty/spdlog/lib/cmake/spdlog/ spdlog_path)
 set(spdlog_DIR ${spdlog_path})
 find_package(spdlog REQUIRED)
+
+# ==== MacroExports ====
+set(MACRO_EXPORTS_HEADERS
+    MacroExports/include/MacroExports.hpp
+)
 
 # ==== Platform ====
 set(PLATFORM_HEADERS
@@ -26,9 +33,15 @@ set(PLATFORM_SOURCES
 
 # ==== Target ====
 add_library(${PROJECT_NAME}
-    STATIC
+    SHARED
+        ${MACRO_EXPORTS_HEADERS}
         ${PLATFORM_HEADERS}
         ${PLATFORM_SOURCES}
+)
+
+target_compile_definitions(${PROJECT_NAME} 
+    PRIVATE 
+        ANDROMEDA_API_BUILD
 )
 
 # target_compile_definitions(${PROJECT_NAME}
@@ -97,6 +110,15 @@ elseif (CMAKE_SYSTEM_NAME STREQUAL "Linux")
 endif()
 
 # ==== IDE Organization ====
+source_group(
+    TREE
+        ${CMAKE_CURRENT_SOURCE_DIR}/MacroExports
+    PREFIX
+        "MacroExports"
+    FILES
+        ${MACRO_EXPORTS_HEADERS}
+)
+
 source_group(
     TREE
         ${CMAKE_CURRENT_SOURCE_DIR}/Platform

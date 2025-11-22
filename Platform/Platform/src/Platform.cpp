@@ -1,23 +1,30 @@
 #include "../include/Platform.hpp"
-#include "glad/gl.h"
-#include "Window/WindowGLFW/include/WindowGLFW.hpp"
 #include "GraphicsContext/include/GraphicsContextGLFW.hpp"
+#include "Window/WindowGLFW/include/WindowGLFW.hpp"
 #include "spdlog/spdlog.h"
 
 
 namespace Andromeda::Platform
 {
-    Platform::Platform()
-        : m_pWindow{ nullptr }
-        , m_width{ 0 }
-        , m_height{ 0 }
-        , m_initialized{ false }
+    Platform::Platform(const GraphicsBackend& graphicsBackend)
+        : m_initialized{ false }
+        , m_graphicsBackend{ graphicsBackend }
     {
     }
 
     Platform::~Platform()
     {
         Shutdown();
+    }
+
+    bool Platform::IsInitialized() const
+    {
+        return m_initialized;
+    }
+
+    GraphicsBackend Platform::GetGraphicsBackend() const
+    {
+        return m_graphicsBackend;
     }
 
     bool Platform::Init(int width, int height, const std::string& title)
@@ -28,55 +35,58 @@ namespace Andromeda::Platform
             return true;
         }
 
-        if (!glfwInit())
-        {
-            spdlog::error("Failed to initialize GLFW.");
-            return false;
-        }
-
-        m_pWindow = std::make_unique<Window::WindowGLFW>(width, height, title, true);
-        if (!m_pWindow)
-        {
-            spdlog::error("Failed to create GLFW window.");
-            glfwTerminate();
-            return false;
-        }
-
-        m_pGraphicsContext = std::make_unique<GraphicsContext::GraphicsContextGLFW>();
-        m_pGraphicsContext->Init(*m_pWindow);
-        m_pGraphicsContext->MakeCurrent();
-
-        int gladVersion = gladLoadGL(glfwGetProcAddress);
-        if (gladVersion == 0)
-        {
-            spdlog::error("Failed to initialize GLAD (gladLoadGL returned 0).");
-            glfwTerminate();
-            return false;
-        }
-
         spdlog::info(
-            "GLAD loaded OpenGL {}.{}",
-            GLAD_VERSION_MAJOR(gladVersion),
-            GLAD_VERSION_MINOR(gladVersion)
+            "Platform::Init() starting for backend {}",
+            GraphicsBackendString(m_graphicsBackend)
         );
 
-        //m_pWindow->SetCallbackFunctions();
-
-        const char* version = reinterpret_cast<const char*>(glGetString(GL_VERSION));
-        if (version)
+        // GLFW init is shared for now (OpenGL / Vulkan both need it in your current setup)
+        if (!glfwInit())
         {
-            spdlog::info("Platform initialized. OpenGL version string: {}", std::string(version));
-        }
-        else
-        {
-            spdlog::warn("Platform initialized, but could not query OpenGL version string.");
+            spdlog::error("Platform::Init() - Failed to initialize GLFW.");
+            return false;
         }
 
-        m_width = width;
-        m_height = height;
-        m_initialized = true;
+        try
+        {
+            CreateWindow(width, height, title);
+            if (!m_pWindow)
+            {
+                spdlog::error("Platform::Init() failed: window creation returned nullptr.");
+                glfwTerminate();
+                return false;
+            }
 
-        return true;
+            CreateGraphicsContext();
+            if (!m_pGraphicsContext)
+            {
+                spdlog::error("Platform::Init() failed: graphics context creation returned nullptr.");
+                m_pWindow.reset();
+                glfwTerminate();
+                return false;
+            }
+
+            m_pGraphicsContext->Init(*m_pWindow);
+            m_pGraphicsContext->MakeCurrent();
+
+            m_initialized = true;
+            spdlog::info("Platform::Init() succeeded.");
+            return true;
+        }
+        catch (const std::exception& ex)
+        {
+            spdlog::error("Exception during Platform::Init(): {}", ex.what());
+        }
+        catch (...)
+        {
+            spdlog::error("Unknown exception during Platform::Init().");
+        }
+
+        // Clean up on failure
+        m_pGraphicsContext.reset();
+        m_pWindow.reset();
+        glfwTerminate();
+        return false;
     }
 
     void Platform::Shutdown()
@@ -86,48 +96,31 @@ namespace Andromeda::Platform
             return;
         }
 
-        if (m_pWindow)
+        spdlog::info("Platform::Shutdown() starting.");
+
+        // Destroy window and context; GLFWWindow internally destroys GLFWwindow.
+        if (m_pGraphicsContext)
         {
-            //m_pWindow->DeInit();
-            m_pWindow = nullptr;
+            // no explicit DeInit on context for now; RAII via destructor
+            m_pGraphicsContext.reset();
         }
 
-        //m_pGraphicsContext->TerminateGLFW();
+        if (m_pWindow)
+        {
+            m_pWindow.reset();
+        }
+
+        glfwTerminate();
+
         m_initialized = false;
-
         spdlog::info("Platform shutdown completed.");
-    }
-
-    void Platform::PollEvents() const
-    {
-		m_pWindow->PollEvents();
-    }
-
-    bool Platform::ShouldClose() const
-    {
-		return m_pWindow->ShouldClose();
-    }
-
-    void Platform::SwapBuffers() const
-    {
-        m_pGraphicsContext->Present();
-    }
-
-    int Platform::GetWindowWidth() const
-    {
-        return m_width;
-    }
-
-    int Platform::GetWindowHeight() const
-    {
-        return m_height;
     }
 
     IGraphicsContext* Platform::GetGraphicsContext() const
     {
         if (!m_pGraphicsContext)
         {
-            spdlog::warn("GraphicsContext() called but graphics context is nullptr.");
+            spdlog::warn("Platform::GetGraphicsContext() called but graphics context is nullptr.");
         }
         return m_pGraphicsContext.get();
     }
@@ -136,13 +129,121 @@ namespace Andromeda::Platform
     {
         if (!m_pWindow)
         {
-            spdlog::warn("Window() called but window is nullptr.");
+            spdlog::warn("Platform::GetWindow() called but window is nullptr.");
         }
         return m_pWindow.get();
     }
 
-    //GLFWwindow* Platform::GetWindow() const
-    //{
-    //    return m_pWindow->GetWindow();
-    //}
+    void Platform::CreateWindow(int width, int height, const std::string& title)
+    {
+        spdlog::info(
+            "Platform::CreateWindow() for backend {}",
+            GraphicsBackendString(m_graphicsBackend)
+        );
+
+        try
+        {
+            switch (m_graphicsBackend)
+            {
+            case GraphicsBackend::OpenGL:
+            case GraphicsBackend::Vulkan:
+                // For now both use GLFWWindow
+                m_pWindow = std::make_unique<Window::WindowGLFW>(width, height, title, true);
+                if (!m_pWindow)
+                {
+                    spdlog::error("Platform::CreateWindow() - WindowGLFW creation returned nullptr.");
+                }
+                break;
+
+            case GraphicsBackend::None:
+            default:
+                spdlog::error(
+                    "Platform::CreateWindow(): Unsupported graphics backend {}.",
+                    GraphicsBackendString(m_graphicsBackend)
+                );
+                m_pWindow.reset();
+                break;
+            }
+        }
+        catch (const std::exception& ex)
+        {
+            spdlog::error("Exception in Platform::CreateWindow(): {}", ex.what());
+            m_pWindow.reset();
+        }
+        catch (...)
+        {
+            spdlog::error("Unknown exception in Platform::CreateWindow().");
+            m_pWindow.reset();
+        }
+    }
+
+    void Platform::CreateGraphicsContext()
+    {
+        spdlog::info(
+            "Platform::CreateGraphicsContext() for backend {}",
+            GraphicsBackendString(m_graphicsBackend)
+        );
+
+        try
+        {
+            switch (m_graphicsBackend)
+            {
+            case GraphicsBackend::OpenGL:
+                m_pGraphicsContext = std::make_unique<GraphicsContext::GraphicsContextGLFW>();
+                spdlog::info("Platform::CreateGraphicsContext() created OpenGL (GLFW) graphics context.");
+                break;
+
+            case GraphicsBackend::Vulkan:
+                spdlog::warn("Platform::CreateGraphicsContext(): Vulkan backend not implemented yet.");
+                m_pGraphicsContext.reset();
+                break;
+
+            case GraphicsBackend::None:
+            default:
+                spdlog::error(
+                    "Platform::CreateGraphicsContext(): Unsupported graphics backend {}.",
+                    GraphicsBackendString(m_graphicsBackend)
+                );
+                m_pGraphicsContext.reset();
+                break;
+            }
+        }
+        catch (const std::exception& ex)
+        {
+            spdlog::error("Exception in Platform::CreateGraphicsContext(): {}", ex.what());
+            m_pGraphicsContext.reset();
+        }
+        catch (...)
+        {
+            spdlog::error("Unknown exception in Platform::CreateGraphicsContext().");
+            m_pGraphicsContext.reset();
+        }
+    }
+}
+
+namespace Andromeda
+{
+    std::unique_ptr<IPlatform> CreatePlatform(const GraphicsBackend& graphicsBackend)
+    {
+        spdlog::info(
+            "CreatePlatform() called with backend {}",
+            GraphicsBackendString(graphicsBackend)
+        );
+
+        try
+        {
+            std::unique_ptr<IPlatform> platform = std::make_unique<Platform::Platform>(graphicsBackend);
+            return platform;
+        }
+        catch (const std::exception& ex)
+        {
+            spdlog::error("Exception in CreatePlatform(): {}", ex.what());
+        }
+        catch (...)
+        {
+            spdlog::error("Unknown exception in CreatePlatform().");
+        }
+
+        return nullptr;
+    }
 }

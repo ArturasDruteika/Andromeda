@@ -1,53 +1,42 @@
 #ifndef PLATFORM__PLATFORM__PLATFORM__HPP
 #define PLATFORM__PLATFORM__PLATFORM__HPP
 
+#include "../../MacroExports/include/MacroExports.hpp"
 #include "pch.hpp"
+#include "Components/GraphicsBackend.hpp"
 #include "GraphicsContext/IGraphicsContext.hpp"
+#include "Platform/IPlatform.hpp"
 #include "Window/IWindow.hpp"
 
-// Forward declaration of GLFWwindow (from GLFW)
-//struct GLFWwindow;
 
 namespace Andromeda::Platform
 {
-    class Platform
+    class PLATFORM_API Platform
+        : public IPlatform
     {
     public:
-        Platform();
-        ~Platform();
+        Platform(const GraphicsBackend& graphicsBackend);
+        ~Platform() override;
 
-        // Initialize GLFW, create window, make context current
-        bool Init(int width, int height, const std::string& title);
+        bool IsInitialized() const override;
+        GraphicsBackend GetGraphicsBackend() const override;
+        bool Init(int width, int height, const std::string& title) override;
+        void Shutdown() override;
 
-        // Destroy window and terminate GLFW
-        void Shutdown();
-
-        // Poll OS/window events
-        void PollEvents() const;
-
-        // Check if window should close
-        bool ShouldClose() const;
-
-        // Swap front/back buffers
-        void SwapBuffers() const;
-
-        int GetWindowWidth() const;
-        int GetWindowHeight() const;
-
-        IGraphicsContext* GetGraphicsContext() const;
-        IWindow* GetWindow() const;
-
-        // Optional: expose native GLFW window if ImGui or other systems need it
-        //GLFWwindow* GetWindow() const;
+        IGraphicsContext* GetGraphicsContext() const override;
+        IWindow* GetWindow() const override;
 
     private:
-        int m_width;
-        int m_height;
-        bool m_initialized;
+        void CreateWindow(int width, int height, const std::string& title);
+        void CreateGraphicsContext();
 
+    private:
+        bool m_initialized;
+        GraphicsBackend m_graphicsBackend;
         std::unique_ptr<IGraphicsContext> m_pGraphicsContext;
         std::unique_ptr<IWindow> m_pWindow;
     };
 }
+
 
 #endif // PLATFORM__PLATFORM__PLATFORM__HPP
