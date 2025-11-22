@@ -10,7 +10,7 @@ add_executable(${PROJECT_NAME} main.cpp)
 
 target_compile_definitions(Example 
     PRIVATE 
-        ANDROMEDA_ENGINECORE_USE_DLL
+        ANDROMEDA_API_USE_DLL
 )
 
 # SPDLog
@@ -26,8 +26,6 @@ target_include_directories(${PROJECT_NAME}
         ../PhysicalProperties/Light/LightTypes/include/
         ../PhysicalProperties/Light/Abstracts/include/
         ../PhysicalProperties/Materials/include/
-        ../Platform/Platform/include/
-        ../Api/Engine/
 )
 
 # Ensure EngineCore is linked

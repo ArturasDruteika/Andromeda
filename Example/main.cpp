@@ -1,13 +1,16 @@
-#include "IEngine.hpp"
-#include "Platform.hpp"
+#include "Engine/IEngine.hpp"
+#include "Platform/IPlatform.hpp"
 #include "spdlog/spdlog.h"
 
 
 int main(void)
 {
-	// 1. Init platform: window + context + GLAD
-	Andromeda::Platform::Platform platform;
-	if (!platform.Init(1280, 720, "Andromeda Example"))
+	unsigned int width = 800;
+	unsigned int height = 600;
+	std::string title = "Andromeda";
+
+	std::unique_ptr<Andromeda::IPlatform> pPlatform = Andromeda::CreatePlatform(Andromeda::GraphicsBackend::OpenGL);
+	if (!pPlatform->Init(width, height, title))
 	{
 		spdlog::error("Failed to initialize Platform.");
 		return -1;
@@ -30,8 +33,8 @@ int main(void)
 	Andromeda::IRenderer* pRenderer = pEngine->GetRenderer();
 	Andromeda::IScene* pScene = pEngine->GetScene();
 
-	Andromeda::IWindow* pWindow = platform.GetWindow();
-	Andromeda::IGraphicsContext* pContext = platform.GetGraphicsContext();
+	Andromeda::IWindow* pWindow = pPlatform->GetWindow();
+	Andromeda::IGraphicsContext* pContext = pPlatform->GetGraphicsContext();
 
 
 	while (!pWindow->ShouldClose())
@@ -41,7 +44,7 @@ int main(void)
 		pContext->Present();
 	}
 
-	platform.Shutdown();
+	pPlatform->Shutdown();
 
 	return 0;
 }
