@@ -2,8 +2,8 @@
 #define CONTEXT__GLFW_CONTEXT__HPP
 
 
-#include "GraphicsContext/IGraphicsContext.hpp"
-#include "Window/IWindow.hpp"
+#include "Andromeda/GraphicsContext/IGraphicsContext.hpp"
+#include "Andromeda/Window/IWindow.hpp"
 #include "glad/gl.h"
 #include "GLFW/glfw3.h"
 

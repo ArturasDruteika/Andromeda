@@ -6,7 +6,7 @@
 #include "../include/GridControl.hpp"
 #include "../include/IlluminationControl.hpp"
 #include "../include/SizeControl.hpp"
-#include "IScene.hpp"
+#include "Andromeda/Scene/IScene.hpp"
 
 
 namespace Andromeda::Rendering

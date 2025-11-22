@@ -4,7 +4,7 @@
 
 #include "../../../MacroExports/include/MacroExports.hpp"
 #include "pch.hpp"
-#include "IRenderableObject.hpp"
+#include "Andromeda/RenderableObjects/IRenderableObject.hpp"
 #include "../../../Vertices/include/VertexLayouts.hpp"
 
 

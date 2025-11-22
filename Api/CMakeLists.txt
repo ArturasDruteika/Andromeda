@@ -8,65 +8,65 @@ target_compile_features(${PROJECT_NAME} INTERFACE cxx_std_23)
 
 # ==== Camera ====
 set(CAMERA_HEADERS
-    Camera/ICamera.hpp
-    Camera/IPerspectiveControl.hpp
-    Camera/ICameraView.hpp
-    Camera/ICameraController.hpp
+    Andromeda/Camera/ICamera.hpp
+    Andromeda/Camera/IPerspectiveControl.hpp
+    Andromeda/Camera/ICameraView.hpp
+    Andromeda/Camera/ICameraController.hpp
 )
 
 # ==== Components ====
 set(COMPONENTS_HEADERS
-    Components/GraphicsBackend.hpp
+    Andromeda/Components/GraphicsBackend.hpp
 )
 
 # ==== Engine ====
 set(ENGINE_HEADERS
-    Engine/IEngine.hpp
-    Engine/GraphicsBackend.hpp
+    Andromeda/Engine/IEngine.hpp
+    Andromeda/Engine/GraphicsBackend.hpp
 )
 
 # ==== GraphicsContext ====
 set(GRAPHICS_CONTEXT_HEADERS
-    GraphicsContext/IGraphicsContext.hpp
+    Andromeda/GraphicsContext/IGraphicsContext.hpp
 )
 
 # ==== Platform ====
 set(PLATFORM_HEADERS
-    Platform/IPlatform.hpp
+    Andromeda/Platform/IPlatform.hpp
 )
 
 # ==== RenderableObjects ====
 set(RENDERABLE_OBJECTS_HEADERS
-    RenderableObjects/ICube.hpp
-    RenderableObjects/ILuminous.hpp
-    RenderableObjects/IMesh.hpp
-    RenderableObjects/IRenderableObject.hpp
-    RenderableObjects/ISkyroom.hpp
-    RenderableObjects/ISphere.hpp
-    RenderableObjects/ITransformable.hpp
+    Andromeda/RenderableObjects/ICube.hpp
+    Andromeda/RenderableObjects/ILuminous.hpp
+    Andromeda/RenderableObjects/IMesh.hpp
+    Andromeda/RenderableObjects/IRenderableObject.hpp
+    Andromeda/RenderableObjects/ISkyroom.hpp
+    Andromeda/RenderableObjects/ISphere.hpp
+    Andromeda/RenderableObjects/ITransformable.hpp
 )
 
 # ==== Renderer ====
 set(RENDERER_HEADERS
-    Renderer/ICameraControl.hpp
-    Renderer/IGridControl.hpp
-    Renderer/IIlluminationControl.hpp
-    Renderer/IRenderer.hpp
-    Renderer/ISizeControl.hpp
+    Andromeda/Renderer/ICameraControl.hpp
+    Andromeda/Renderer/IGridControl.hpp
+    Andromeda/Renderer/IIlluminationControl.hpp
+    Andromeda/Renderer/IRenderer.hpp
+    Andromeda/Renderer/ISizeControl.hpp
 )
 
 # ==== Scene ====
 set(SCENE_HEADERS
-    Scene/IScene.hpp
-    Scene/ISceneEnvironment.hpp
-    Scene/ISceneLighting.hpp
-    Scene/ISceneObjects.hpp
-    Scene/ISceneState.hpp
+    Andromeda/Scene/IScene.hpp
+    Andromeda/Scene/ISceneEnvironment.hpp
+    Andromeda/Scene/ISceneLighting.hpp
+    Andromeda/Scene/ISceneObjects.hpp
+    Andromeda/Scene/ISceneState.hpp
 )
 
 # ==== Window ====
 set(WINDOW_HEADERS
-    Window/IWindow.hpp
+    Andromeda/Window/IWindow.hpp
 )
 
 target_sources(${PROJECT_NAME}

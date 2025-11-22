@@ -1,5 +1,5 @@
-#include "Engine/IEngine.hpp"
-#include "Platform/IPlatform.hpp"
+#include "Andromeda/Engine/IEngine.hpp"
+#include "Andromeda/Platform/IPlatform.hpp"
 #include "spdlog/spdlog.h"
 
 

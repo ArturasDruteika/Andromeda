@@ -2,8 +2,8 @@
 #define ENGINECORE__ENGINE__HPP
 
 #include "../../MacroExports/include/MacroExports.hpp"
-#include "Components/GraphicsBackend.hpp"
-#include "Engine/IEngine.hpp"
+#include "Andromeda/Components/GraphicsBackend.hpp"
+#include "Andromeda/Engine/IEngine.hpp"
 
 
 namespace Andromeda::EngineCore

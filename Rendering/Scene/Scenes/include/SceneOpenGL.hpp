@@ -5,7 +5,7 @@
 #include "../../../MacroExports/include/MacroExports.hpp"
 #include "pch.hpp"
 #include "../../../RenderableObjects/Interfaces/include/IRenderableObjectOpenGL.hpp"
-#include "IScene.hpp"
+#include "Andromeda/Scene/IScene.hpp"
 #include "LuminousBehavior.hpp"
 
 

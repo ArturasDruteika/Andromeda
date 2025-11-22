@@ -2,9 +2,9 @@
 #define RENDERER__I_RENDERER_OPENGL__HPP
 
 
-#include "../../../MacroExports/include/MacroExports.hpp"
-#include "IRenderer.hpp"
 #include "../include/IFrameBufferProvider.hpp"
+#include "../../../MacroExports/include/MacroExports.hpp"
+#include "Andromeda/Renderer/IRenderer.hpp"
 
 
 namespace Andromeda::Rendering

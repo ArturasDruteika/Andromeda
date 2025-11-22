@@ -2,7 +2,7 @@
 #define ENVIRONMENT__ABSTRACTS_SCENE_STATE__HPP
 
 
-#include "IRenderableObject.hpp"
+#include "Andromeda/RenderableObjects/IRenderableObject.hpp"
 
 
 namespace Andromeda::Rendering

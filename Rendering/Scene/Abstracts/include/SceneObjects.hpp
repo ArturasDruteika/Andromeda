@@ -4,7 +4,7 @@
 
 #include "pch.hpp"
 #include "SceneLighting.hpp"
-#include "IRenderableObject.hpp"
+#include "Andromeda/RenderableObjects/IRenderableObject.hpp"
 
 
 namespace Andromeda::Rendering

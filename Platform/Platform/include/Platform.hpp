@@ -3,10 +3,10 @@
 
 #include "../../MacroExports/include/MacroExports.hpp"
 #include "pch.hpp"
-#include "Components/GraphicsBackend.hpp"
-#include "GraphicsContext/IGraphicsContext.hpp"
-#include "Platform/IPlatform.hpp"
-#include "Window/IWindow.hpp"
+#include "Andromeda/Components/GraphicsBackend.hpp"
+#include "Andromeda/GraphicsContext/IGraphicsContext.hpp"
+#include "Andromeda/Platform/IPlatform.hpp"
+#include "Andromeda/Window/IWindow.hpp"
 
 
 namespace Andromeda::Platform

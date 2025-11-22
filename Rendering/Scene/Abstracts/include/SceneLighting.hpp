@@ -4,11 +4,9 @@
 
 #include "pch.hpp"
 #include "LuminousBehavior.hpp"
-#include "IRenderableObject.hpp"
 #include "DirectionalLight.hpp"
 #include "PointLight.hpp"
 #include "LightTypes.hpp"
-#include "LinearAlgebraDataTypes.hpp"
 
 
 namespace Andromeda::Rendering

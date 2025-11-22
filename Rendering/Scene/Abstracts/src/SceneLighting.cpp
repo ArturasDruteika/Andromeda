@@ -1,5 +1,4 @@
 #include "../include/SceneLighting.hpp"
-#include "../../../Light/Abstracts/include/Light.hpp"
 #include "../../../Light/Abstracts/include/LuminousBehavior.hpp"
 
 
