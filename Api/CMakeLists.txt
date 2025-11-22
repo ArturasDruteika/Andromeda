@@ -14,6 +14,11 @@ set(CAMERA_HEADERS
     Camera/ICameraController.hpp
 )
 
+# ==== Components ====
+set(COMPONENTS_HEADERS
+    Components/GraphicsBackend.hpp
+)
+
 # ==== Engine ====
 set(ENGINE_HEADERS
     Engine/IEngine.hpp
@@ -23,6 +28,11 @@ set(ENGINE_HEADERS
 # ==== GraphicsContext ====
 set(GRAPHICS_CONTEXT_HEADERS
     GraphicsContext/IGraphicsContext.hpp
+)
+
+# ==== Platform ====
+set(PLATFORM_HEADERS
+    Platform/IPlatform.hpp
 )
 
 # ==== RenderableObjects ====
@@ -64,9 +74,12 @@ target_sources(${PROJECT_NAME}
         FILE_SET HEADERS
         BASE_DIRS ${CMAKE_CURRENT_SOURCE_DIR}
         FILES
+        FILES
             ${CAMERA_HEADERS}
+            ${COMPONENTS_HEADERS}
             ${ENGINE_HEADERS}
             ${GRAPHICS_CONTEXT_HEADERS}
+            ${PLATFORM_HEADERS}
             ${RENDERABLE_OBJECTS_HEADERS}
             ${RENDERER_HEADERS}
             ${SCENE_HEADERS}
@@ -100,6 +113,15 @@ source_group(
 
 source_group(
     TREE
+        ${CMAKE_CURRENT_SOURCE_DIR}/Components
+    PREFIX
+        "Components"
+    FILES
+        ${COMPONENTS_HEADERS}
+)
+
+source_group(
+    TREE
         ${CMAKE_CURRENT_SOURCE_DIR}/GraphicsContext
     PREFIX
         "GraphicsContext"
@@ -114,6 +136,15 @@ source_group(
         "Engine"
     FILES
         ${ENGINE_HEADERS}
+)
+
+source_group(
+    TREE
+        ${CMAKE_CURRENT_SOURCE_DIR}/Platform
+    PREFIX
+        "Platform"
+    FILES
+        ${PLATFORM_HEADERS}
 )
 
 source_group(

@@ -3,7 +3,7 @@
 
 
 #include "../MacroExports/MacroExports.hpp"
-#include "GraphicsBackend.hpp"
+#include "../Components/GraphicsBackend.hpp"
 #include "../Renderer/IRenderer.hpp"
 #include "../Scene/IScene.hpp"
 #include <memory>
@@ -25,7 +25,7 @@ namespace Andromeda
 		virtual void DeInit() = 0;
 	};
 
-	ANDROMEDA_ENGINE_API std::unique_ptr<IEngine> CreateEngine(const GraphicsBackend& graphicsBackend);
+	ANDROMEDA_API std::unique_ptr<IEngine> CreateEngine(const GraphicsBackend& graphicsBackend);
 }
 
 
