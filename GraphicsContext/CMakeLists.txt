@@ -51,6 +51,7 @@ target_link_libraries(${PROJECT_NAME}
         PrecompiledHeaders
         Api
         Window
+        Glad
         glfw
         OpenGL::GL
         spdlog::spdlog
@@ -58,6 +59,8 @@ target_link_libraries(${PROJECT_NAME}
 
 add_dependencies(${PROJECT_NAME} 
 	glfw
+    Glad
+    Window
 )
 
 

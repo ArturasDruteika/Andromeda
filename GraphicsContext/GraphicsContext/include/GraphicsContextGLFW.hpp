@@ -4,6 +4,7 @@
 
 #include "GraphicsContext/IGraphicsContext.hpp"
 #include "Window/IWindow.hpp"
+#include "glad/gl.h"
 #include "GLFW/glfw3.h"
 
 
@@ -21,18 +22,17 @@ namespace Andromeda::GraphicsContext
 		GraphicsContextGLFW(GraphicsContextGLFW&& other) noexcept = delete;	// Prevent Move constructor
 		GraphicsContextGLFW& operator=(const GraphicsContextGLFW&& other) noexcept = delete;	//Prevent Move assignment
 
-		void Init(IWindow& window) override;
+		bool IsInitialized() const override;
+		bool Init(IWindow& window) override;
 		void MakeCurrent() override;
 		void Present() override;
-
-		//void TerminateGLFW();
 		void SetContextHints();
 
-		//bool IsInitialized();
-		//GLFWglproc GetGLFWglproc();
+	private:
+		bool LoadGlad();
 
 	private:
-		bool m_isInitialized;
+		bool m_initialized;
 		GLFWwindow* m_pGLFWwindow;
 	};
 }
