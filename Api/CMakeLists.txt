@@ -66,6 +66,8 @@ set(SCENE_HEADERS
 
 # ==== Window ====
 set(WINDOW_HEADERS
+    Andromeda/Window/EventType.hpp
+    Andromeda/Window/IEvent.hpp
     Andromeda/Window/IWindow.hpp
 )
 
@@ -104,7 +106,7 @@ target_link_libraries(${PROJECT_NAME}
 # ===== Visual Studio filters (Solution Explorer groups) =====
 source_group(
     TREE
-        ${CMAKE_CURRENT_SOURCE_DIR}/Camera
+        ${CMAKE_CURRENT_SOURCE_DIR}/Andromeda/Camera
     PREFIX
         "Camera"
     FILES
@@ -113,7 +115,7 @@ source_group(
 
 source_group(
     TREE
-        ${CMAKE_CURRENT_SOURCE_DIR}/Components
+        ${CMAKE_CURRENT_SOURCE_DIR}/Andromeda/Components
     PREFIX
         "Components"
     FILES
@@ -122,7 +124,7 @@ source_group(
 
 source_group(
     TREE
-        ${CMAKE_CURRENT_SOURCE_DIR}/GraphicsContext
+        ${CMAKE_CURRENT_SOURCE_DIR}/Andromeda/GraphicsContext
     PREFIX
         "GraphicsContext"
     FILES
@@ -131,7 +133,7 @@ source_group(
 
 source_group(
     TREE
-        ${CMAKE_CURRENT_SOURCE_DIR}/Engine
+        ${CMAKE_CURRENT_SOURCE_DIR}/Andromeda/Engine
     PREFIX
         "Engine"
     FILES
@@ -140,7 +142,7 @@ source_group(
 
 source_group(
     TREE
-        ${CMAKE_CURRENT_SOURCE_DIR}/Platform
+        ${CMAKE_CURRENT_SOURCE_DIR}/Andromeda/Platform
     PREFIX
         "Platform"
     FILES
@@ -149,7 +151,7 @@ source_group(
 
 source_group(
     TREE
-        ${CMAKE_CURRENT_SOURCE_DIR}/RenderableObjects
+        ${CMAKE_CURRENT_SOURCE_DIR}/Andromeda/RenderableObjects
     PREFIX
         "RenderableObjects"
     FILES
@@ -158,7 +160,7 @@ source_group(
 
 source_group(
     TREE
-        ${CMAKE_CURRENT_SOURCE_DIR}/Renderer
+        ${CMAKE_CURRENT_SOURCE_DIR}/Andromeda/Renderer
     PREFIX
         "Renderer"
     FILES
@@ -167,7 +169,7 @@ source_group(
 
 source_group(
     TREE
-        ${CMAKE_CURRENT_SOURCE_DIR}/Scene
+        ${CMAKE_CURRENT_SOURCE_DIR}/Andromeda/Scene
     PREFIX
         "Scene"
     FILES
@@ -176,7 +178,7 @@ source_group(
 
 source_group(
     TREE
-        ${CMAKE_CURRENT_SOURCE_DIR}/Window
+        ${CMAKE_CURRENT_SOURCE_DIR}/Andromeda/Window
     PREFIX
         "Window"
     FILES
