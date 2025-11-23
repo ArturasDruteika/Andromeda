@@ -2,62 +2,70 @@
 #define WINDOW__KEY_EVENTS__HPP
 
 
-#include "EventType.hpp"
-#include "Event.hpp"
 #include "../../MouseAndKeyCodes/include/KeyCodes.hpp"
+#include "Andromeda/Window/EventType.hpp"
+#include "Andromeda/Window/IEvent.hpp"
+#include <string>
 
-namespace Andromeda
+
+namespace Andromeda::Window
 {
-	namespace Window
-	{
-		class KeyEvent : public Event
-		{
-		public:
-			KeyCode GetKeyCode() const;
+    class KeyEvent
+        : public IEvent
+    {
+    public:
+        explicit KeyEvent(KeyCode keycode);
+        virtual ~KeyEvent() override;
 
-			EVENT_CLASS_CATEGORY(EventCategoryKeyboard | EventCategoryInput)
+        bool IsInCategory(EventCategory category) override;
+        int GetCategoryFlags() const override;
 
-		protected:
-			KeyEvent(const KeyCode keycode);
+        KeyCode GetKeyCode() const;
 
-			KeyCode m_keyCode;
-		};
+    protected:
+        KeyCode m_keyCode;
+    };
 
-		class KeyPressedEvent : public KeyEvent
-		{
-		public:
-			KeyPressedEvent(const KeyCode keycode, bool isRepeat = false);
+    class KeyPressedEvent
+        : public KeyEvent
+    {
+    public:
+        KeyPressedEvent(KeyCode keycode, bool isRepeat);
+        ~KeyPressedEvent() override;
 
-			bool IsRepeat() const;
-			std::string ToString() const override;
+        bool IsRepeat() const;
 
-			EVENT_CLASS_TYPE(KeyPressed)
+        EventType GetEventType() const override;
+        std::string GetName() const override;
+        std::string ToString() const override;
 
-		private:
-			bool m_isRepeat;
-		};
+    private:
+        bool m_isRepeat;
+    };
 
-		class KeyReleasedEvent : public KeyEvent
-		{
-		public:
-			KeyReleasedEvent(const KeyCode keycode);
+    class KeyReleasedEvent
+        : public KeyEvent
+    {
+    public:
+        explicit KeyReleasedEvent(KeyCode keycode);
+        ~KeyReleasedEvent() override;
 
-			std::string ToString() const override;
+        EventType GetEventType() const override;
+        std::string GetName() const override;
+        std::string ToString() const override;
+    };
 
-			EVENT_CLASS_TYPE(KeyReleased)
-		};
+    class KeyTypedEvent
+        : public KeyEvent
+    {
+    public:
+        explicit KeyTypedEvent(KeyCode keycode);
+        ~KeyTypedEvent() override;
 
-		class KeyTypedEvent : public KeyEvent
-		{
-		public:
-			KeyTypedEvent(const KeyCode keycode);
-
-			std::string ToString() const override;
-
-			EVENT_CLASS_TYPE(KeyTyped)
-		};
-	}
+        EventType GetEventType() const override;
+        std::string GetName() const override;
+        std::string ToString() const override;
+    };
 }
-
 
 #endif // WINDOW__KEY_EVENTS__HPP

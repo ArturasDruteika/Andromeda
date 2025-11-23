@@ -2,7 +2,7 @@
 #define WINDOW__GLFW_WINDOW__HPP_HPP
 
 
-#include "../../Events/include/Event.hpp"
+#include "Andromeda/Window/IEvent.hpp"
 #include "Andromeda/Window/IWindow.hpp"
 #include <GLFW/glfw3.h>
 #include <functional>
@@ -18,7 +18,7 @@ namespace Andromeda::Window
 		: public IWindow
 	{
 	public:
-		using EventCallbackFn = std::function<void(Event&)>;
+		using EventCallbackFn = std::function<void(IEvent&)>;
 
 		WindowGLFW(
 			int width = DEFAULT_WINDOW_WIDTH,

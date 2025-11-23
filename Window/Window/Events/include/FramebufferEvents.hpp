@@ -1,68 +1,69 @@
-#ifndef WINDOW__FRAME_BUFFER_EVENTS__HPP
-#define WINDOW__FRAME_BUFFER_EVENTS__HPP
+#ifndef WINDOW__FRAMEBUFFER_EVENTS__HPP
+#define WINDOW__FRAMEBUFFER_EVENTS__HPP
 
 
-#include "EventType.hpp"
-#include "Event.hpp"
+#include "Andromeda/Window/EventType.hpp"
+#include "Andromeda/Window/IEvent.hpp"
+#include <string>
 
 
-namespace Andromeda
+namespace Andromeda::Window
 {
-	namespace Window
-	{
-		class WindowResizeEvent : public Event
-		{
-		public:
-			WindowResizeEvent(unsigned int width, unsigned int height);
+    class WindowResizeEvent
+        : public IEvent
+    {
+    public:
+        WindowResizeEvent(int width, int height);
+        ~WindowResizeEvent() override;
 
-			unsigned int GetWidth() const;
-			unsigned int GetHeight() const;
-			std::string ToString() const override;
+        int GetWidth() const;
+        int GetHeight() const;
 
-			EVENT_CLASS_TYPE(WindowResize)
-			EVENT_CLASS_CATEGORY(EventCategoryApplication)
+        bool IsInCategory(EventCategory category) override;
+        int GetCategoryFlags() const override;
+        std::string GetName() const override;
+        std::string ToString() const override;
+        EventType GetEventType() const override;
 
-		private:
-			unsigned int m_width, m_height;
-		};
+    private:
+        int m_width;
+        int m_height;
+    };
 
-		class WindowCloseEvent : public Event
-		{
-		public:
-			WindowCloseEvent() = default;
+    class WindowCloseEvent
+        : public IEvent
+    {
+    public:
+        WindowCloseEvent();
+        ~WindowCloseEvent() override;
 
-			EVENT_CLASS_TYPE(WindowClose)
-			EVENT_CLASS_CATEGORY(EventCategoryApplication)
-		};
+        bool IsInCategory(EventCategory category) override;
+        int GetCategoryFlags() const override;
+        std::string GetName() const override;
+        std::string ToString() const override;
+        EventType GetEventType() const override;
+    };
 
-		class AppTickEvent : public Event
-		{
-		public:
-			AppTickEvent() = default;
+    class FramebufferResizeEvent
+        : public IEvent
+    {
+    public:
+        FramebufferResizeEvent(int width, int height);
+        ~FramebufferResizeEvent() override;
 
-			EVENT_CLASS_TYPE(AppTick)
-			EVENT_CLASS_CATEGORY(EventCategoryApplication)
-		};
+        int GetWidth() const;
+        int GetHeight() const;
 
-		class AppUpdateEvent : public Event
-		{
-		public:
-			AppUpdateEvent() = default;
+        bool IsInCategory(EventCategory category) override;
+        int GetCategoryFlags() const override;
+        std::string GetName() const override;
+        std::string ToString() const override;
+        EventType GetEventType() const override;
 
-			EVENT_CLASS_TYPE(AppUpdate)
-			EVENT_CLASS_CATEGORY(EventCategoryApplication)
-		};
-
-		class AppRenderEvent : public Event
-		{
-		public:
-			AppRenderEvent() = default;
-
-			EVENT_CLASS_TYPE(AppRender)
-			EVENT_CLASS_CATEGORY(EventCategoryApplication)
-		};
-	}
+    private:
+        int m_width;
+        int m_height;
+    };
 }
 
-
-#endif // WINDOW__FRAME_BUFFER_EVENTS__HPP
+#endif // WINDOW__FRAMEBUFFER_EVENTS__HPP

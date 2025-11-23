@@ -1,89 +1,170 @@
 #include "../include/MouseEvents.hpp"
-#include "../include/EventType.hpp"
+#include <sstream>
 
 
-namespace Andromeda
+namespace Andromeda::Window
 {
-	namespace Window
-	{
-		MouseMovedEvent::MouseMovedEvent(const float x, const float y)
-			: m_x{ x }
-			, m_y{ y }
-		{
-		}
+    // MouseMovedEvent
 
-		float MouseMovedEvent::GetX() const
-		{
-			return m_x;
-		}
+    MouseMovedEvent::MouseMovedEvent(float x, float y)
+        : m_x{ x }
+        , m_y{ y }
+    {
+    }
 
-		float MouseMovedEvent::GetY() const
-		{
-			return m_y;
-		}
+    float MouseMovedEvent::GetX() const
+    {
+        return m_x;
+    }
 
-		std::string MouseMovedEvent::ToString() const
-		{
-			std::stringstream ss;
-			ss << "MouseMovedEvent: " << m_x << ", " << m_y;
-			return ss.str();
-		}
+    float MouseMovedEvent::GetY() const
+    {
+        return m_y;
+    }
 
-		MouseScrolledEvent::MouseScrolledEvent(const float xOffset, const float yOffset)
-			: m_xOffset{ xOffset }
-			, m_yOffset{ yOffset }
-		{
-		}
+    bool MouseMovedEvent::IsInCategory(Andromeda::EventCategory category)
+    {
+        return (GetCategoryFlags() & category) != 0;
+    }
 
-		float MouseScrolledEvent::GetXOffset() const
-		{
-			return m_xOffset;
-		}
+    int MouseMovedEvent::GetCategoryFlags() const
+    {
+        return Andromeda::EventCategoryMouse |
+            Andromeda::EventCategoryInput;
+    }
 
-		float MouseScrolledEvent::GetYOffset() const
-		{
-			return m_yOffset;
-		}
+    std::string MouseMovedEvent::GetName() const
+    {
+        return "MouseMoved";
+    }
 
-		std::string MouseScrolledEvent::ToString() const
-		{
-			std::stringstream ss;
-			ss << "MouseScrolledEvent: " << GetXOffset() << ", " << GetYOffset();
-			return ss.str();
-		}
+    std::string MouseMovedEvent::ToString() const
+    {
+        std::stringstream ss;
+        ss << "MouseMovedEvent: " << m_x << ", " << m_y;
+        return ss.str();
+    }
 
-		MouseCode MouseButtonEvent::GetMouseButton() const
-		{
-			return m_button;
-		}
+    Andromeda::EventType MouseMovedEvent::GetEventType() const
+    {
+        return Andromeda::EventType::MouseMoved;
+    }
 
-		MouseButtonEvent::MouseButtonEvent(const MouseCode button)
-			: m_button{ button }
-		{
-		}
+    // MouseScrolledEvent
 
-		MouseButtonPressedEvent::MouseButtonPressedEvent(const MouseCode button)
-			: MouseButtonEvent{ button }
-		{
-		}
+    MouseScrolledEvent::MouseScrolledEvent(float xOffset, float yOffset)
+        : m_xOffset{ xOffset }
+        , m_yOffset{ yOffset }
+    {
+    }
 
-		std::string MouseButtonPressedEvent::ToString() const
-		{
-			std::stringstream ss;
-			ss << "MouseButtonPressedEvent: " << m_button;
-			return ss.str();
-		}
+    float MouseScrolledEvent::GetXOffset() const
+    {
+        return m_xOffset;
+    }
 
-		MouseButtonReleasedEvent::MouseButtonReleasedEvent(const MouseCode button)
-			: MouseButtonEvent{ button }
-		{
-		}
+    float MouseScrolledEvent::GetYOffset() const
+    {
+        return m_yOffset;
+    }
 
-		std::string MouseButtonReleasedEvent::ToString() const
-		{
-			std::stringstream ss;
-			ss << "MouseButtonReleasedEvent: " << m_button;
-			return ss.str();
-		}
-	}
+    bool MouseScrolledEvent::IsInCategory(Andromeda::EventCategory category)
+    {
+        return (GetCategoryFlags() & category) != 0;
+    }
+
+    int MouseScrolledEvent::GetCategoryFlags() const
+    {
+        return Andromeda::EventCategoryMouse |
+            Andromeda::EventCategoryInput;
+    }
+
+    std::string MouseScrolledEvent::GetName() const
+    {
+        return "MouseScrolled";
+    }
+
+    std::string MouseScrolledEvent::ToString() const
+    {
+        std::stringstream ss;
+        ss << "MouseScrolledEvent: " << m_xOffset << ", " << m_yOffset;
+        return ss.str();
+    }
+
+    Andromeda::EventType MouseScrolledEvent::GetEventType() const
+    {
+        return Andromeda::EventType::MouseScrolled;
+    }
+
+    // MouseButtonEvent
+
+    MouseButtonEvent::MouseButtonEvent(Andromeda::MouseCode button)
+        : m_button{ button }
+    {
+    }
+
+    Andromeda::MouseCode MouseButtonEvent::GetMouseButton() const
+    {
+        return m_button;
+    }
+
+    bool MouseButtonEvent::IsInCategory(Andromeda::EventCategory category)
+    {
+        return (GetCategoryFlags() & category) != 0;
+    }
+
+    int MouseButtonEvent::GetCategoryFlags() const
+    {
+        return Andromeda::EventCategoryMouse |
+            Andromeda::EventCategoryInput |
+            Andromeda::EventCategoryMouseButton;
+    }
+
+    // MouseButtonPressedEvent
+
+    MouseButtonPressedEvent::MouseButtonPressedEvent(Andromeda::MouseCode button)
+        : MouseButtonEvent{ button }
+    {
+    }
+
+    std::string MouseButtonPressedEvent::GetName() const
+    {
+        return "MouseButtonPressed";
+    }
+
+    std::string MouseButtonPressedEvent::ToString() const
+    {
+        std::stringstream ss;
+        ss << "MouseButtonPressedEvent: " << static_cast<int>(m_button);
+        return ss.str();
+    }
+
+    Andromeda::EventType MouseButtonPressedEvent::GetEventType() const
+    {
+        return Andromeda::EventType::MouseButtonPressed;
+    }
+
+    // MouseButtonReleasedEvent
+
+    MouseButtonReleasedEvent::MouseButtonReleasedEvent(Andromeda::MouseCode button)
+        : MouseButtonEvent{ button }
+    {
+    }
+
+    std::string MouseButtonReleasedEvent::GetName() const
+    {
+        return "MouseButtonReleased";
+    }
+
+    std::string MouseButtonReleasedEvent::ToString() const
+    {
+        std::stringstream ss;
+        ss << "MouseButtonReleasedEvent: " << static_cast<int>(m_button);
+        return ss.str();
+    }
+
+    Andromeda::EventType MouseButtonReleasedEvent::GetEventType() const
+    {
+        return Andromeda::EventType::MouseButtonReleased;
+    }
 }

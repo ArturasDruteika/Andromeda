@@ -2,80 +2,94 @@
 #define WINDOW__MOUSE_EVENTS__HPP
 
 
-#include "EventType.hpp"
-#include "Event.hpp"
+#include "Andromeda/Window/EventType.hpp"
+#include "Andromeda/Window/IEvent.hpp"
 #include "../../MouseAndKeyCodes/include/MouseCodes.hpp"
 
 
-namespace Andromeda
+namespace Andromeda::Window
 {
-	namespace Window
-	{
-		class MouseMovedEvent : public Event
-		{
-		public:
-			MouseMovedEvent(const float x, const float y);
+    class MouseMovedEvent
+        : public IEvent
+    {
+    public:
+        MouseMovedEvent(float x, float y);
+        ~MouseMovedEvent() override = default;
 
-			float GetX() const;
-			float GetY() const;
-			std::string ToString() const override;
+        float GetX() const;
+        float GetY() const;
 
-			EVENT_CLASS_TYPE(MouseMoved)
-			EVENT_CLASS_CATEGORY(EventCategoryMouse | EventCategoryInput)
+        bool IsInCategory(EventCategory category) override;
+        int GetCategoryFlags() const override;
+        std::string GetName() const override;
+        std::string ToString() const override;
+        EventType GetEventType() const override;
 
-		private:
-			float m_x, m_y;
-		};
+    private:
+        float m_x;
+        float m_y;
+    };
 
-		class MouseScrolledEvent : public Event
-		{
-		public:
-			MouseScrolledEvent(const float xOffset, const float yOffset);
+    class MouseScrolledEvent
+        : public IEvent
+    {
+    public:
+        MouseScrolledEvent(float xOffset, float yOffset);
+        ~MouseScrolledEvent() override = default;
 
-			float GetXOffset() const;
-			float GetYOffset() const;
+        float GetXOffset() const;
+        float GetYOffset() const;
 
-			std::string ToString() const override;
+        bool IsInCategory(EventCategory category) override;
+        int GetCategoryFlags() const override;
+        std::string GetName() const override;
+        std::string ToString() const override;
+        EventType GetEventType() const override;
 
-			EVENT_CLASS_TYPE(MouseScrolled)
-			EVENT_CLASS_CATEGORY(EventCategoryMouse | EventCategoryInput)
-		private:
-			float m_xOffset, m_yOffset;
-		};
+    private:
+        float m_xOffset;
+        float m_yOffset;
+    };
 
-		class MouseButtonEvent : public Event
-		{
-		public:
-			MouseCode GetMouseButton() const;
+    class MouseButtonEvent
+        : public IEvent
+    {
+    public:
+        explicit MouseButtonEvent(MouseCode button);
+        virtual ~MouseButtonEvent() override = default;
 
-			EVENT_CLASS_CATEGORY(EventCategoryMouse | EventCategoryInput | EventCategoryMouseButton)
-		protected:
-			MouseButtonEvent(const MouseCode button);
+        MouseCode GetMouseButton() const;
 
-			MouseCode m_button;
-		};
+        bool IsInCategory(EventCategory category) override;
+        int GetCategoryFlags() const override;
 
-		class MouseButtonPressedEvent : public MouseButtonEvent
-		{
-		public:
-			MouseButtonPressedEvent(const MouseCode button);
+    protected:
+        MouseCode m_button;
+    };
 
-			std::string ToString() const override;
+    class MouseButtonPressedEvent
+        : public MouseButtonEvent
+    {
+    public:
+        explicit MouseButtonPressedEvent(MouseCode button);
+        ~MouseButtonPressedEvent() override = default;
 
-			EVENT_CLASS_TYPE(MouseButtonPressed)
-		};
-		
-		class MouseButtonReleasedEvent : public MouseButtonEvent
-		{
-		public:
-			MouseButtonReleasedEvent(const MouseCode button);
+        std::string GetName() const override;
+        std::string ToString() const override;
+        EventType GetEventType() const override;
+    };
 
-			std::string ToString() const override;
+    class MouseButtonReleasedEvent
+        : public MouseButtonEvent
+    {
+    public:
+        explicit MouseButtonReleasedEvent(MouseCode button);
+        ~MouseButtonReleasedEvent() override = default;
 
-			EVENT_CLASS_TYPE(MouseButtonReleased)
-		};
-	}
+        std::string GetName() const override;
+        std::string ToString() const override;
+        EventType GetEventType() const override;
+    };
 }
-
 
 #endif // WINDOW__MOUSE_EVENTS__HPP
