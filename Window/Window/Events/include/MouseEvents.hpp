@@ -2,15 +2,15 @@
 #define WINDOW__MOUSE_EVENTS__HPP
 
 
+#include "EventBase.hpp"
 #include "Andromeda/Window/EventType.hpp"
-#include "Andromeda/Window/IEvent.hpp"
 #include "../../MouseAndKeyCodes/include/MouseCodes.hpp"
 
 
 namespace Andromeda::Window
 {
     class MouseMovedEvent
-        : public IEvent
+        : public EventBase
     {
     public:
         MouseMovedEvent(float x, float y);
@@ -31,7 +31,7 @@ namespace Andromeda::Window
     };
 
     class MouseScrolledEvent
-        : public IEvent
+        : public EventBase
     {
     public:
         MouseScrolledEvent(float xOffset, float yOffset);
@@ -52,7 +52,7 @@ namespace Andromeda::Window
     };
 
     class MouseButtonEvent
-        : public IEvent
+        : public EventBase
     {
     public:
         explicit MouseButtonEvent(MouseCode button);

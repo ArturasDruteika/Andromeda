@@ -2,34 +2,38 @@
 #define WINDOW__EVENT_DISPATCHER__HPP
 
 
-#include "Event.hpp"
+#include "Andromeda/Window/IEvent.hpp"
 
 
-namespace Andromeda
+namespace Andromeda::Window
 {
-	namespace Window
+	class EventDispatcher
 	{
-		class EventDispatcher
-		{
-		public:
-			EventDispatcher(Event& event);
+	public:
+		EventDispatcher(IEvent& event);
+		~EventDispatcher();
 
-			// F will be deduced by the compiler
-			template<typename T, typename F>
-			bool Dispatch(const F& func)
-			{
-				if (m_event.GetEventType() == T::GetStaticType())
-				{
-					m_event.Handled |= func(static_cast<T&>(m_event));
-					return true;
-				}
-				return false;
-			}
+        // F will be deduced by the compiler
+        // F: bool(T&)
+        template<typename T, typename F>
+        bool Dispatch(const F& func)
+        {
+            // Prefer dynamic_cast so we don't need GetStaticType / macros
+            if (auto* e = dynamic_cast<T*>(&m_event))
+            {
+                bool handled = func(*e);
+                if (handled)
+                {
+                    m_event.SetHandled(true);
+                }
+                return handled;
+            }
+            return false;
+        }
 
-		private:
-			Event& m_event;
-		};
-	}
+	private:
+		IEvent& m_event;
+	};
 }
 
 

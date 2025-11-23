@@ -22,6 +22,7 @@ find_package(spdlog REQUIRED)
 
 # ==== Events ====
 set(EVENTS_HEADERS
+    Window/Events/include/EventBase.hpp
     Window/Events/include/MouseEvents.hpp
     Window/Events/include/KeyEvents.hpp
     Window/Events/include/FramebufferEvents.hpp
@@ -29,6 +30,7 @@ set(EVENTS_HEADERS
 )
 
 set(EVENTS_SOURCES
+    Window/Events/src/EventBase.cpp
     Window/Events/src/MouseEvents.cpp
     Window/Events/src/FramebufferEvents.cpp
     Window/Events/src/KeyEvents.cpp

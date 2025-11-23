@@ -13,6 +13,8 @@ namespace Andromeda
 	public:
 		virtual ~IEvent() = default;
 
+		virtual bool IsHandled() const = 0;
+		virtual void SetHandled(bool handled) = 0;
 		virtual bool IsInCategory(EventCategory category) = 0;
 		virtual int GetCategoryFlags() const = 0;
 		virtual std::string GetName() const = 0;

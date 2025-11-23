@@ -2,16 +2,16 @@
 #define WINDOW__KEY_EVENTS__HPP
 
 
+#include "EventBase.hpp"
 #include "../../MouseAndKeyCodes/include/KeyCodes.hpp"
 #include "Andromeda/Window/EventType.hpp"
-#include "Andromeda/Window/IEvent.hpp"
 #include <string>
 
 
 namespace Andromeda::Window
 {
     class KeyEvent
-        : public IEvent
+        : public EventBase
     {
     public:
         explicit KeyEvent(KeyCode keycode);

@@ -2,15 +2,15 @@
 #define WINDOW__FRAMEBUFFER_EVENTS__HPP
 
 
+#include "EventBase.hpp"
 #include "Andromeda/Window/EventType.hpp"
-#include "Andromeda/Window/IEvent.hpp"
 #include <string>
 
 
 namespace Andromeda::Window
 {
     class WindowResizeEvent
-        : public IEvent
+        : public EventBase
     {
     public:
         WindowResizeEvent(int width, int height);
@@ -31,7 +31,7 @@ namespace Andromeda::Window
     };
 
     class WindowCloseEvent
-        : public IEvent
+        : public EventBase
     {
     public:
         WindowCloseEvent();
@@ -45,7 +45,7 @@ namespace Andromeda::Window
     };
 
     class FramebufferResizeEvent
-        : public IEvent
+        : public EventBase
     {
     public:
         FramebufferResizeEvent(int width, int height);

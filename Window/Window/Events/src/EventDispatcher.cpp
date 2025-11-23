@@ -1,15 +1,13 @@
 #include "../include/EventDispatcher.hpp"
-#include "../include/Event.hpp"
 
 
-namespace Andromeda
+namespace Andromeda::Window
 {
-	namespace Window
+	EventDispatcher::EventDispatcher(IEvent& event)
+		: m_event{ event }
 	{
-		EventDispatcher::EventDispatcher(Event& event)
-			: m_event{ event }
-		{
-		}
 	}
+
+	EventDispatcher::~EventDispatcher() = default;
 }
 
