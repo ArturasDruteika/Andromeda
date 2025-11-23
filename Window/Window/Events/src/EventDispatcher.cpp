@@ -10,4 +10,3 @@ namespace Andromeda::Window
 
 	EventDispatcher::~EventDispatcher() = default;
 }
-

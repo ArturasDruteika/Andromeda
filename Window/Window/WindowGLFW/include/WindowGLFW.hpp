@@ -36,6 +36,7 @@ namespace Andromeda::Window
 		virtual void PollEvents() override;
 		virtual bool ShouldClose() const override;
 		virtual void* GetNativeHandle() const override;
+		void SetEventCallback(const EventCallbackFn& callback) override;
 
 		GLFWwindow* GetWindow() const;
 
@@ -43,7 +44,6 @@ namespace Andromeda::Window
 		void DeInit();
 		void CreateNewWindow();
 		void SetCallbackFunctions();
-		void SetEventCallback(const EventCallbackFn& callback);
 
 	private:
 		// GLFW Callbacks

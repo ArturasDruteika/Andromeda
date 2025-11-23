@@ -2,6 +2,7 @@
 #define API__WINDOW__I_WINDOW__HPP
 
 
+#include "IEvent.hpp"
 #include <string>
 
 
@@ -10,6 +11,8 @@ namespace Andromeda
     class IWindow
     {
     public:
+        using EventCallbackFn = std::function<void(IEvent&)>;
+
         virtual ~IWindow() = default;
 
 		virtual bool IsInitialized() const = 0;
@@ -20,6 +23,7 @@ namespace Andromeda
         virtual void PollEvents() = 0;
         virtual bool ShouldClose() const = 0;
         virtual void* GetNativeHandle() const = 0;  // For GL, Vulkan, DirectX
+        virtual void SetEventCallback(const EventCallbackFn& callback) = 0;
     };
 }
 

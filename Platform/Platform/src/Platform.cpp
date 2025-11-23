@@ -1,6 +1,8 @@
 #include "../include/Platform.hpp"
 #include "GraphicsContext/include/GraphicsContextGLFW.hpp"
 #include "Window/WindowGLFW/include/WindowGLFW.hpp"
+#include "Window/Events/include/EventDispatcher.hpp"
+#include "Window/Events/include/FrameBufferEvents.hpp"
 #include "spdlog/spdlog.h"
 
 
@@ -68,6 +70,27 @@ namespace Andromeda::Platform
 
             m_pGraphicsContext->Init(*m_pWindow);
             m_pGraphicsContext->MakeCurrent();
+
+            m_pWindow->SetEventCallback(
+                [this](IEvent& e)
+                {
+                    // Option A: just pass to engine / application
+                    // m_Engine->OnEvent(e);
+
+                    // Option B: handle some platform-level stuff here
+                    Window::EventDispatcher dispatcher(e);
+
+                    dispatcher.Dispatch<Window::WindowCloseEvent>(
+                        [this](Window::WindowCloseEvent& evt)
+                        {
+                            // maybe tell engine to stop, etc.
+                            return true;
+                        });
+
+                    // You can still forward to engine:
+                    // m_Engine->OnEvent(e);
+                }
+            );
 
             m_initialized = true;
             spdlog::info("Platform::Init() succeeded.");
