@@ -6,6 +6,7 @@
 #include "../Components/GraphicsBackend.hpp"
 #include "../Renderer/IRenderer.hpp"
 #include "../Scene/IScene.hpp"
+#include "../Window/IEvent.hpp"
 #include <memory>
 
 
@@ -23,6 +24,8 @@ namespace Andromeda
 
 		virtual bool Init() = 0;
 		virtual void DeInit() = 0;
+
+		virtual void OnEvent(IEvent& event) = 0;
 	};
 
 	ANDROMEDA_API std::unique_ptr<IEngine> CreateEngine(const GraphicsBackend& graphicsBackend);

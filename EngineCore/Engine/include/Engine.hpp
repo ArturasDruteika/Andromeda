@@ -23,6 +23,8 @@ namespace Andromeda::EngineCore
 		bool Init() override;
 		void DeInit() override;
 
+		void OnEvent(IEvent& event) override;
+
 	private:
 		void CreateRenderer();
 		void CreateScene();

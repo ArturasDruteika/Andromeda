@@ -172,6 +172,11 @@ namespace Andromeda::EngineCore
         spdlog::info("Engine::DeInit() finished. Engine is now deinitialized.");
     }
 
+    void Engine::OnEvent(IEvent& event)
+    {
+
+    }
+
     void Engine::CreateRenderer()
     {
         spdlog::info(
