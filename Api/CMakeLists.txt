@@ -57,6 +57,7 @@ set(RENDERER_HEADERS
 
 # ==== Scene ====
 set(SCENE_HEADERS
+    Andromeda/Scene/ICameraHandler.hpp
     Andromeda/Scene/IScene.hpp
     Andromeda/Scene/ISceneEnvironment.hpp
     Andromeda/Scene/ISceneLighting.hpp

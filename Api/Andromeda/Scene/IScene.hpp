@@ -2,6 +2,7 @@
 #define API__SCENE__I_SCENE__HPP
 
 
+#include "ICameraHandler.hpp"
 #include "ISceneEnvironment.hpp"
 #include "ISceneLighting.hpp"
 #include "ISceneObjects.hpp"
@@ -11,7 +12,8 @@
 namespace Andromeda
 {
 	class IScene
-		: public ISceneEnvironment
+		: public ICameraHandler
+		, public ISceneEnvironment
 		, public ISceneLighting
 		, public ISceneObjects
 		, public ISceneState

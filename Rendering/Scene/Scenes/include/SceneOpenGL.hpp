@@ -47,6 +47,10 @@ namespace Andromeda::Rendering
 		void ClearScene() override;
 		void ResetSceneState() override;
 
+		// === From ICameraHandler ===
+		ICamera* GetActiveCamera()override;
+		void SetActiveCamera(ICamera* camera) override;
+
 		// === From IScene ===
 		Math::Vec3 GetSceneCenter() const override;
 

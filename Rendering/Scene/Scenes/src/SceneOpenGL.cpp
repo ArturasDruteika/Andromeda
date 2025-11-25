@@ -87,6 +87,15 @@ namespace Andromeda::Rendering
 	{
 	}
 
+	ICamera* SceneOpenGL::GetActiveCamera()
+	{
+		return nullptr;
+	}
+
+	void SceneOpenGL::SetActiveCamera(ICamera* camera)
+	{
+	}
+
 	Math::Vec3 SceneOpenGL::GetSceneCenter() const
 	{
 		return m_pSceneOpenGLImpl->GetSceneCenter();;
