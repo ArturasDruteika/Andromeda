@@ -2,7 +2,7 @@
 #define API__SCENE__I_SCENE_OBJECTS__HPP
 
 
-#include "../RenderableObjects/IRenderableObject.hpp"
+#include "../Objects/IRenderableObject.hpp"
 #include <map>
 
 

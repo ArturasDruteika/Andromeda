@@ -30,20 +30,22 @@ set(GRAPHICS_CONTEXT_HEADERS
     Andromeda/GraphicsContext/IGraphicsContext.hpp
 )
 
+# ==== Objects ====
+set(OBJECTS_HEADERS
+    Andromeda/Objects/ICube.hpp
+    Andromeda/Objects/ILuminous.hpp
+    Andromeda/Objects/IMesh.hpp
+    Andromeda/Objects/IObject.hpp
+    Andromeda/Objects/IRenderableObject.hpp
+    Andromeda/Objects/IRenderableObject.hpp
+    Andromeda/Objects/ISkyroom.hpp
+    Andromeda/Objects/ISphere.hpp
+    Andromeda/Objects/ITransformable.hpp
+)
+
 # ==== Platform ====
 set(PLATFORM_HEADERS
     Andromeda/Platform/IPlatform.hpp
-)
-
-# ==== RenderableObjects ====
-set(RENDERABLE_OBJECTS_HEADERS
-    Andromeda/RenderableObjects/ICube.hpp
-    Andromeda/RenderableObjects/ILuminous.hpp
-    Andromeda/RenderableObjects/IMesh.hpp
-    Andromeda/RenderableObjects/IRenderableObject.hpp
-    Andromeda/RenderableObjects/ISkyroom.hpp
-    Andromeda/RenderableObjects/ISphere.hpp
-    Andromeda/RenderableObjects/ITransformable.hpp
 )
 
 # ==== Renderer ====
@@ -82,8 +84,8 @@ target_sources(${PROJECT_NAME}
             ${COMPONENTS_HEADERS}
             ${ENGINE_HEADERS}
             ${GRAPHICS_CONTEXT_HEADERS}
+            ${OBJECTS_HEADERS}
             ${PLATFORM_HEADERS}
-            ${RENDERABLE_OBJECTS_HEADERS}
             ${RENDERER_HEADERS}
             ${SCENE_HEADERS}
             ${WINDOW_HEADERS}
@@ -143,20 +145,20 @@ source_group(
 
 source_group(
     TREE
+        ${CMAKE_CURRENT_SOURCE_DIR}/Andromeda/Objects
+    PREFIX
+        "Objects"
+    FILES
+        ${OBJECTS_HEADERS}
+)
+
+source_group(
+    TREE
         ${CMAKE_CURRENT_SOURCE_DIR}/Andromeda/Platform
     PREFIX
         "Platform"
     FILES
         ${PLATFORM_HEADERS}
-)
-
-source_group(
-    TREE
-        ${CMAKE_CURRENT_SOURCE_DIR}/Andromeda/RenderableObjects
-    PREFIX
-        "RenderableObjects"
-    FILES
-        ${RENDERABLE_OBJECTS_HEADERS}
 )
 
 source_group(

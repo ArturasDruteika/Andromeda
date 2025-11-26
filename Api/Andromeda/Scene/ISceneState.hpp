@@ -2,7 +2,7 @@
 #define API__SCENE__I_SCENE_STATE__HPP
 
 
-#include "../RenderableObjects/IRenderableObject.hpp"
+#include "../Objects/IRenderableObject.hpp"
 
 
 namespace Andromeda

@@ -4,7 +4,7 @@
 
 #include "DirectionalLight.hpp"
 #include "PointLight.hpp"
-#include "../RenderableObjects/IRenderableObject.hpp"
+#include "../Objects/IRenderableObject.hpp"
 #include <map>
 
 
