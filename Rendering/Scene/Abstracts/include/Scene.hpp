@@ -2,10 +2,10 @@
 #define ENVIRONMENT__ABSTRACTS_SCENE__HPP
 
 
-#include "pch.hpp"
 #include "SceneObjects.hpp"
 #include "SceneEnvironment.hpp"
 #include "SceneState.hpp"
+#include "glm/glm.hpp"
 
 
 namespace Andromeda::Rendering

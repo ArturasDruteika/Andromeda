@@ -27,6 +27,9 @@ namespace Andromeda::Rendering
 		void Init(int width, int height, bool illuminationMode = false);
 		void DeInit();
 		void RenderFrame(IScene& scene);
+
+	protected:
+		bool m_initialized;
 	};
 }
 

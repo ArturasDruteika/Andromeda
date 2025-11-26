@@ -3,7 +3,6 @@
 
 
 #include "LinearAlgebraDataTypes.hpp"
-#include "glm/glm.hpp"
 
 
 namespace Andromeda::Rendering

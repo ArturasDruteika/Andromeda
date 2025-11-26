@@ -19,6 +19,11 @@ namespace Andromeda::Rendering
         return m_isGridVisible;
     }
 
+    float GridControl::GetGridSize() const
+    {
+        return m_gridSize;
+    }
+
     float GridControl::GetGridSpacing() const
     {
         return m_gridSpacing;
