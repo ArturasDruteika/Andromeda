@@ -37,7 +37,6 @@ set(OBJECTS_HEADERS
     Andromeda/Objects/IMesh.hpp
     Andromeda/Objects/IObject.hpp
     Andromeda/Objects/IRenderableObject.hpp
-    Andromeda/Objects/IRenderableObject.hpp
     Andromeda/Objects/ISkyroom.hpp
     Andromeda/Objects/ISphere.hpp
     Andromeda/Objects/ITransformable.hpp

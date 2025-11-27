@@ -1,5 +1,5 @@
-#ifndef API__RENDERABLE_OBJECTS__I_TRANSFORMABLE__HPP
-#define API__RENDERABLE_OBJECTS__I_TRANSFORMABLE__HPP
+#ifndef API__OBJECTS__I_TRANSFORMABLE__HPP
+#define API__OBJECTS__I_TRANSFORMABLE__HPP
 
 
 #include "Math/LinearAlgebra/include/LinearAlgebraDataTypes.hpp"
@@ -31,4 +31,4 @@ namespace Andromeda
 }
 
 
-#endif // API__RENDERABLE_OBJECTS__I_TRANSFORMABLE__HPP
+#endif // API__OBJECTS__I_TRANSFORMABLE__HPP

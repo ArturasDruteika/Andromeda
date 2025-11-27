@@ -1,5 +1,5 @@
-#ifndef API__RENDERABLE_OBJECTS__I_MESH__HPP
-#define API__RENDERABLE_OBJECTS__I_MESH__HPP
+#ifndef API__OBJECTS__I_MESH__HPP
+#define API__OBJECTS__I_MESH__HPP
 
 
 #include "Space/Vertices/include/Vertex.hpp"
@@ -21,4 +21,4 @@ namespace Andromeda
 }
 
 
-#endif // API__RENDERABLE_OBJECTS__I_MESH__HPP
+#endif // API__OBJECTS__I_MESH__HPP

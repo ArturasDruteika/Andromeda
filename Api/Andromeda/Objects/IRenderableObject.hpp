@@ -1,9 +1,10 @@
-#ifndef API__RENDERABLE_OBJECTS__I_RENDERABLE_OBJECT__HPP
-#define API__RENDERABLE_OBJECTS__I_RENDERABLE_OBJECT__HPP
+#ifndef API__OBJECTS__I_RENDERABLE_OBJECT__HPP
+#define API__OBJECTS__I_RENDERABLE_OBJECT__HPP
 
 
 #include "ILuminous.hpp"
 #include "IMesh.hpp"
+#include "IObject.hpp"
 #include "ITransformable.hpp"
 #include "Space/Colors/include/Colors.hpp"
 
@@ -14,6 +15,7 @@ namespace Andromeda
         : public ITransformable
         , public ILuminous
         , public IMesh
+        , public IObject
     {
     public:
         virtual ~IRenderableObject() = default;
@@ -26,4 +28,4 @@ namespace Andromeda
 }
 
 
-#endif // API__RENDERABLE_OBJECTS__I_RENDERABLE_OBJECT__HPP
+#endif // API__OBJECTS__I_RENDERABLE_OBJECT__HPP
