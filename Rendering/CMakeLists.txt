@@ -24,166 +24,166 @@ find_package(spdlog REQUIRED)
 
 # ==== Camera ====
 set(CAMERA_HEADERS
-    Camera/Abstracts/include/PerspectiveControl.hpp
-    Camera/Abstracts/include/CameraView.hpp
-    Camera/Abstracts/include/CameraController.hpp
-    Camera/Cameras/include/Camera.hpp
-    Camera/Cameras/include/CameraImpl.hpp
+    Rendering/Camera/Abstracts/include/PerspectiveControl.hpp
+    Rendering/Camera/Abstracts/include/CameraView.hpp
+    Rendering/Camera/Abstracts/include/CameraController.hpp
+    Rendering/Camera/Cameras/include/Camera.hpp
+    Rendering/Camera/Cameras/include/CameraImpl.hpp
 )
 
 set(CAMERA_SOURCES
-    Camera/Abstracts/src/PerspectiveControl.cpp
-    Camera/Abstracts/src/CameraView.cpp
-    Camera/Abstracts/src/CameraController.cpp
-    Camera/Cameras/src/Camera.cpp
-    Camera/Cameras/src/CameraImpl.cpp
+    Rendering/Camera/Abstracts/src/PerspectiveControl.cpp
+    Rendering/Camera/Abstracts/src/CameraView.cpp
+    Rendering/Camera/Abstracts/src/CameraController.cpp
+    Rendering/Camera/Cameras/src/Camera.cpp
+    Rendering/Camera/Cameras/src/CameraImpl.cpp
 )
 
 # ==== Macro Exports ====
 set(MACRO_EXPORTS_HEADERS
-    MacroExports/include/MacroExports.hpp
+    Rendering/MacroExports/include/MacroExports.hpp
 )
 
 # ==== OpenGLLoader ====
 set(LOADER_HEADERS
-    OpenGLLoader/include/OpenGLLoader.hpp
-    OpenGLLoader/include/OpenGLLoaderImpl.hpp
+    Rendering/OpenGLLoader/include/OpenGLLoader.hpp
+    Rendering/OpenGLLoader/include/OpenGLLoaderImpl.hpp
 )
 
 set(LOADER_SOURCES
-    OpenGLLoader/src/OpenGLLoader.cpp
-    OpenGLLoader/src/OpenGLLoaderImpl.cpp
+    Rendering/OpenGLLoader/src/OpenGLLoader.cpp
+    Rendering/OpenGLLoader/src/OpenGLLoaderImpl.cpp
 )
 
 # ==== RayTracing ====
 set(RAYTRACING_HEADERS
-    RayTracing/include/Ray.hpp
+    Rendering/RayTracing/include/Ray.hpp
 )
 
 # ==== RenderableObjects ====
 set(RO_HEADERS
-    RenderableObjects/Abstracts/include/Luminous.hpp
-    RenderableObjects/Abstracts/include/Mesh.hpp
-    RenderableObjects/Abstracts/include/RenderableObject.hpp
-    RenderableObjects/Abstracts/include/RenderableObjectOpenGL.hpp
-    RenderableObjects/Abstracts/include/Transformable.hpp
-    RenderableObjects/Interfaces/include/IRenderableObjectOpenGL.hpp
-    RenderableObjects/Objects/include/CubeObjectOpenGL.hpp
-    RenderableObjects/Objects/include/CubeObjectOpenGLImpl.hpp
-    RenderableObjects/Objects/include/GridOpenGL.hpp
-    RenderableObjects/Objects/include/SkyroomOpenGL.hpp
-    RenderableObjects/Objects/include/SkyroomOpenGLImpl.hpp
-    RenderableObjects/Objects/include/SphereObjectOpenGL.hpp
-    RenderableObjects/Objects/include/SphereObjectOpenGLImpl.hpp
+    Rendering/RenderableObjects/Abstracts/include/Luminous.hpp
+    Rendering/RenderableObjects/Abstracts/include/Mesh.hpp
+    Rendering/RenderableObjects/Abstracts/include/RenderableObject.hpp
+    Rendering/RenderableObjects/Abstracts/include/RenderableObjectOpenGL.hpp
+    Rendering/RenderableObjects/Abstracts/include/Transformable.hpp
+    Rendering/RenderableObjects/Interfaces/include/IRenderableObjectOpenGL.hpp
+    Rendering/RenderableObjects/Objects/include/CubeObjectOpenGL.hpp
+    Rendering/RenderableObjects/Objects/include/CubeObjectOpenGLImpl.hpp
+    Rendering/RenderableObjects/Objects/include/GridOpenGL.hpp
+    Rendering/RenderableObjects/Objects/include/SkyroomOpenGL.hpp
+    Rendering/RenderableObjects/Objects/include/SkyroomOpenGLImpl.hpp
+    Rendering/RenderableObjects/Objects/include/SphereObjectOpenGL.hpp
+    Rendering/RenderableObjects/Objects/include/SphereObjectOpenGLImpl.hpp
 )
 
 set(RO_SOURCES
-    RenderableObjects/Abstracts/src/Luminous.cpp
-    RenderableObjects/Abstracts/src/Mesh.cpp
-    RenderableObjects/Abstracts/src/RenderableObject.cpp
-    RenderableObjects/Abstracts/src/RenderableObjectOpenGL.cpp
-    RenderableObjects/Abstracts/src/Transformable.cpp
-    RenderableObjects/Interfaces/src/IRenderableObjectOpenGL.cpp
-    RenderableObjects/Objects/src/CubeObjectOpenGL.cpp
-    RenderableObjects/Objects/src/CubeObjectOpenGLImpl.cpp
-    RenderableObjects/Objects/src/GridOpenGL.cpp
-    RenderableObjects/Objects/src/SkyroomOpenGL.cpp
-    RenderableObjects/Objects/src/SkyroomOpenGLImpl.cpp
-    RenderableObjects/Objects/src/SphereObjectOpenGL.cpp
-    RenderableObjects/Objects/src/SphereObjectOpenGLImpl.cpp
+    Rendering/RenderableObjects/Abstracts/src/Luminous.cpp
+    Rendering/RenderableObjects/Abstracts/src/Mesh.cpp
+    Rendering/RenderableObjects/Abstracts/src/RenderableObject.cpp
+    Rendering/RenderableObjects/Abstracts/src/RenderableObjectOpenGL.cpp
+    Rendering/RenderableObjects/Abstracts/src/Transformable.cpp
+    Rendering/RenderableObjects/Interfaces/src/IRenderableObjectOpenGL.cpp
+    Rendering/RenderableObjects/Objects/src/CubeObjectOpenGL.cpp
+    Rendering/RenderableObjects/Objects/src/CubeObjectOpenGLImpl.cpp
+    Rendering/RenderableObjects/Objects/src/GridOpenGL.cpp
+    Rendering/RenderableObjects/Objects/src/SkyroomOpenGL.cpp
+    Rendering/RenderableObjects/Objects/src/SkyroomOpenGLImpl.cpp
+    Rendering/RenderableObjects/Objects/src/SphereObjectOpenGL.cpp
+    Rendering/RenderableObjects/Objects/src/SphereObjectOpenGLImpl.cpp
 )
 
 # ==== Renderers ====
 set(RENDERERS_HEADERS
-    Renderers/Abstracts/include/CameraControl.hpp
-    Renderers/Abstracts/include/FaceCullingControlOpenGL.hpp
-    Renderers/Abstracts/include/GridControl.hpp
-    Renderers/Abstracts/include/IlluminationControl.hpp
-    Renderers/Abstracts/include/Renderer.hpp
-    Renderers/Abstracts/include/SizeControl.hpp
-    Renderers/Interfaces/include/IFrameBufferProvider.hpp
-    Renderers/Interfaces/include/IRendererOpenGL.hpp
-    Renderers/Renderers/include/RendererOpenGL.hpp
-    Renderers/Renderers/include/RendererOpenGLImpl.hpp
-    Renderers/Support/include/FrameBufferOpenGL.hpp
+    Rendering/Renderers/Abstracts/include/CameraControl.hpp
+    Rendering/Renderers/Abstracts/include/FaceCullingControlOpenGL.hpp
+    Rendering/Renderers/Abstracts/include/GridControl.hpp
+    Rendering/Renderers/Abstracts/include/IlluminationControl.hpp
+    Rendering/Renderers/Abstracts/include/Renderer.hpp
+    Rendering/Renderers/Abstracts/include/SizeControl.hpp
+    Rendering/Renderers/Interfaces/include/IFrameBufferProvider.hpp
+    Rendering/Renderers/Interfaces/include/IRendererOpenGL.hpp
+    Rendering/Renderers/Renderers/include/RendererOpenGL.hpp
+    Rendering/Renderers/Renderers/include/RendererOpenGLImpl.hpp
+    Rendering/Renderers/Support/include/FrameBufferOpenGL.hpp
 )
 
 set(RENDERERS_SOURCES
-    Renderers/Abstracts/src/CameraControl.cpp
-    Renderers/Abstracts/src/FaceCullingControlOpenGL.cpp
-    Renderers/Abstracts/src/GridControl.cpp
-    Renderers/Abstracts/src/IlluminationControl.cpp
-    Renderers/Abstracts/src/Renderer.cpp
-    Renderers/Abstracts/src/SizeControl.cpp
-    Renderers/Interfaces/src/IFrameBufferProvider.cpp
-    Renderers/Interfaces/src/IRendererOpenGL.cpp
-    Renderers/Renderers/src/RendererOpenGL.cpp
-    Renderers/Renderers/src/RendererOpenGLImpl.cpp
-    Renderers/Support/src/FrameBufferOpenGL.cpp
+    Rendering/Renderers/Abstracts/src/CameraControl.cpp
+    Rendering/Renderers/Abstracts/src/FaceCullingControlOpenGL.cpp
+    Rendering/Renderers/Abstracts/src/GridControl.cpp
+    Rendering/Renderers/Abstracts/src/IlluminationControl.cpp
+    Rendering/Renderers/Abstracts/src/Renderer.cpp
+    Rendering/Renderers/Abstracts/src/SizeControl.cpp
+    Rendering/Renderers/Interfaces/src/IFrameBufferProvider.cpp
+    Rendering/Renderers/Interfaces/src/IRendererOpenGL.cpp
+    Rendering/Renderers/Renderers/src/RendererOpenGL.cpp
+    Rendering/Renderers/Renderers/src/RendererOpenGLImpl.cpp
+    Rendering/Renderers/Support/src/FrameBufferOpenGL.cpp
 )
 
 # ==== Scene ====
 set(SCENE_HEADERS
-    Scene/Abstracts/include/Scene.hpp
-    Scene/Abstracts/include/SceneEnvironment.hpp
-    Scene/Abstracts/include/SceneLighting.hpp
-    Scene/Abstracts/include/SceneObjects.hpp
-    Scene/Abstracts/include/SceneState.hpp
-    Scene/Scenes/include/SceneOpenGL.hpp
-    Scene/Scenes/include/SceneOpenGLImpl.hpp
-    Scene/Support/include/SpecialIndices.hpp
+    Rendering/Scene/Abstracts/include/Scene.hpp
+    Rendering/Scene/Abstracts/include/SceneEnvironment.hpp
+    Rendering/Scene/Abstracts/include/SceneLighting.hpp
+    Rendering/Scene/Abstracts/include/SceneObjects.hpp
+    Rendering/Scene/Abstracts/include/SceneState.hpp
+    Rendering/Scene/Scenes/include/SceneOpenGL.hpp
+    Rendering/Scene/Scenes/include/SceneOpenGLImpl.hpp
+    Rendering/Scene/Support/include/SpecialIndices.hpp
 )
 
 set(SCENE_SOURCES
-    Scene/Abstracts/src/Scene.cpp
-    Scene/Abstracts/src/SceneEnvironment.cpp
-    Scene/Abstracts/src/SceneLighting.cpp
-    Scene/Abstracts/src/SceneObjects.cpp
-    Scene/Abstracts/src/SceneState.cpp
-    Scene/Scenes/src/SceneOpenGL.cpp
-    Scene/Scenes/src/SceneOpenGLImpl.cpp
+    Rendering/Scene/Abstracts/src/Scene.cpp
+    Rendering/Scene/Abstracts/src/SceneEnvironment.cpp
+    Rendering/Scene/Abstracts/src/SceneLighting.cpp
+    Rendering/Scene/Abstracts/src/SceneObjects.cpp
+    Rendering/Scene/Abstracts/src/SceneState.cpp
+    Rendering/Scene/Scenes/src/SceneOpenGL.cpp
+    Rendering/Scene/Scenes/src/SceneOpenGLImpl.cpp
 )
 
 # ==== Shaders ====
 set(SHADERS_HEADERS
-    Shaders/Abstracts/include/ShaderProgramOpenGL.hpp
-    Shaders/Abstracts/include/ShaderSourceManagerOpenGL.hpp
-    Shaders/Interfaces/include/IShader.hpp
-    Shaders/Shaders/include/ShaderManager.hpp
-    Shaders/Shaders/include/ShaderOpenGL.hpp
-    Shaders/Support/include/ShaderCompilerOpenGL.hpp
-    Shaders/Support/include/ShaderOpenGLTypes.hpp
-    Shaders/Support/include/ShaderTypes.hpp
-    Shaders/Support/include/UniformSetterOpenGL.hpp
+    Rendering/Shaders/Abstracts/include/ShaderProgramOpenGL.hpp
+    Rendering/Shaders/Abstracts/include/ShaderSourceManagerOpenGL.hpp
+    Rendering/Shaders/Interfaces/include/IShader.hpp
+    Rendering/Shaders/Shaders/include/ShaderManager.hpp
+    Rendering/Shaders/Shaders/include/ShaderOpenGL.hpp
+    Rendering/Shaders/Support/include/ShaderCompilerOpenGL.hpp
+    Rendering/Shaders/Support/include/ShaderOpenGLTypes.hpp
+    Rendering/Shaders/Support/include/ShaderTypes.hpp
+    Rendering/Shaders/Support/include/UniformSetterOpenGL.hpp
 )
 
 set(SHADERS_SOURCES
-    Shaders/Abstracts/src/ShaderProgramOpenGL.cpp
-    Shaders/Abstracts/src/ShaderSourceManagerOpenGL.cpp
-    Shaders/Interfaces/src/IShader.cpp
-    Shaders/Shaders/src/ShaderManager.cpp
-    Shaders/Shaders/src/ShaderOpenGL.cpp
-    Shaders/Support/src/ShaderCompilerOpenGL.cpp
-    Shaders/Support/src/UniformSetterOpenGL.cpp
+    Rendering/Shaders/Abstracts/src/ShaderProgramOpenGL.cpp
+    Rendering/Shaders/Abstracts/src/ShaderSourceManagerOpenGL.cpp
+    Rendering/Shaders/Interfaces/src/IShader.cpp
+    Rendering/Shaders/Shaders/src/ShaderManager.cpp
+    Rendering/Shaders/Shaders/src/ShaderOpenGL.cpp
+    Rendering/Shaders/Support/src/ShaderCompilerOpenGL.cpp
+    Rendering/Shaders/Support/src/UniformSetterOpenGL.cpp
 )
 
 # ==== Utilities ====
 set(UTILS_HEADERS
-    Utils/include/MathUtils.hpp
+    Rendering/Utils/include/MathUtils.hpp
 )
 
 set(UTILS_SOURCES
-    Utils/src/MathUtils.cpp
+    Rendering/Utils/src/MathUtils.cpp
 )
 
 # ==== Vertices ====
 set(VERTEX_HEADERS
-    Vertices/include/VertexAttributes.hpp
-    Vertices/include/VertexLayouts.hpp
+    Rendering/Vertices/include/VertexAttributes.hpp
+    Rendering/Vertices/include/VertexLayouts.hpp
 )
 
 set(VERTEX_SOURCES
-    Vertices/src/VertexLayouts.cpp
+    Rendering/Vertices/src/VertexLayouts.cpp
 )
 
 add_library(${PROJECT_NAME} 
@@ -208,29 +208,12 @@ add_library(${PROJECT_NAME}
         ${VERTEX_SOURCES}
 )
 
-
 target_include_directories(${PROJECT_NAME} 
-    PRIVATE
-        ..//Utils//FileOperations//include//
-        ..//Utils//nlohmann_json//include//
     PUBLIC
-        ..//Math//LinearAlgebra//include//
-        ..//Math//Constants//include//
-        ..//PhysicalProperties//Colors//include//
-        ..//PhysicalProperties//Light//Abstracts//include//
-        ..//PhysicalProperties//Light//Interfaces//include//
-        ..//PhysicalProperties//Light//LightTypes//include//
-        ..//PhysicalProperties//Light//Support//include//
-        ..//PhysicalProperties//Space//include//
-        ..//PhysicalProperties//Transformations//include//
-        ..//PhysicalProperties//Vertices//include//
-        ..//Api//Camera//
-        ..//Api//Scene//
-        ..//Api//RenderableObjects//
-        ..//Api//Renderer//
+        ${CMAKE_CURRENT_SOURCE_DIR}/
 )
 
-# Link libraries – Api is INTERFACE, so this just pulls in its usage requirements
+# Link libraries ï¿½ Api is INTERFACE, so this just pulls in its usage requirements
 target_link_libraries(${PROJECT_NAME}
     PRIVATE
         PrecompiledHeaders
@@ -241,13 +224,13 @@ target_link_libraries(${PROJECT_NAME}
     PUBLIC
         Math
         Api
-        PhysicalProperties
+        Space
 )
 
 add_dependencies(${PROJECT_NAME}
     Utils
     Math
-    PhysicalProperties
+    Space
     Glad
 )
 
@@ -302,39 +285,10 @@ foreach(SHADER_PATH IN LISTS SHADER_SOURCE_PATHS)
     )
 endforeach()
 
-## Material properties
-set(MATERIAL_JSON_FILENAME "material_properties.json")
-set(MATERIAL_JSON_SOURCE
-    "${CMAKE_CURRENT_SOURCE_DIR}/../PhysicalProperties/MaterialProperties/${MATERIAL_JSON_FILENAME}"
-)
-
-# Put materials next to shaders (same assets root)
-if (CMAKE_SYSTEM_NAME STREQUAL "Windows")
-    set(MATERIAL_JSON_OUTPUT_DIR "${CMAKE_ASSETS_OUTPUT_DIRECTORY}/$<CONFIG>/material_properties")
-else()
-    set(MATERIAL_JSON_OUTPUT_DIR "${CMAKE_ASSETS_OUTPUT_DIRECTORY}/material_properties")
-endif()
-
-set(MATERIAL_JSON_OUTPUT "${MATERIAL_JSON_OUTPUT_DIR}/${MATERIAL_JSON_FILENAME}")
-
-add_custom_command(
-    TARGET ${PROJECT_NAME} POST_BUILD
-
-    COMMAND ${CMAKE_COMMAND} -E make_directory
-        "${MATERIAL_JSON_OUTPUT_DIR}"
-
-    COMMAND ${CMAKE_COMMAND} -E copy_if_different
-        "${MATERIAL_JSON_SOURCE}"
-        "${MATERIAL_JSON_OUTPUT}"
-
-    COMMENT "Copying ${MATERIAL_JSON_FILENAME} to ${MATERIAL_JSON_OUTPUT_DIR}"
-)
-
-
 # Organize files into Solution Explorer folders
 source_group(
     TREE 
-        ${CMAKE_CURRENT_SOURCE_DIR}/Camera
+        ${CMAKE_CURRENT_SOURCE_DIR}/${PROJECT_NAME}/Camera
     PREFIX
         "Camera"
     FILES
@@ -344,7 +298,7 @@ source_group(
 
 source_group(
     TREE 
-        ${CMAKE_CURRENT_SOURCE_DIR}/MacroExports
+        ${CMAKE_CURRENT_SOURCE_DIR}/${PROJECT_NAME}/MacroExports
     PREFIX
         "MacroExports"
     FILES
@@ -353,7 +307,7 @@ source_group(
 
 source_group(
     TREE 
-        ${CMAKE_CURRENT_SOURCE_DIR}/OpenGLLoader
+        ${CMAKE_CURRENT_SOURCE_DIR}/${PROJECT_NAME}/OpenGLLoader
     PREFIX
         "OpenGLLoader"
     FILES
@@ -363,7 +317,7 @@ source_group(
 
 source_group(
     TREE 
-        ${CMAKE_CURRENT_SOURCE_DIR}/RayTracing
+        ${CMAKE_CURRENT_SOURCE_DIR}/${PROJECT_NAME}/RayTracing
     PREFIX
         "RayTracing"
     FILES
@@ -372,7 +326,7 @@ source_group(
 
 source_group(
     TREE 
-        ${CMAKE_CURRENT_SOURCE_DIR}/RenderableObjects
+        ${CMAKE_CURRENT_SOURCE_DIR}/${PROJECT_NAME}/RenderableObjects
     PREFIX
         "RenderableObjects"
     FILES
@@ -382,7 +336,7 @@ source_group(
 
 source_group(
     TREE 
-        ${CMAKE_CURRENT_SOURCE_DIR}/Renderers
+        ${CMAKE_CURRENT_SOURCE_DIR}/${PROJECT_NAME}/Renderers
     PREFIX
         "Renderers"
     FILES
@@ -392,7 +346,7 @@ source_group(
 
 source_group(
     TREE 
-        ${CMAKE_CURRENT_SOURCE_DIR}/Scene
+        ${CMAKE_CURRENT_SOURCE_DIR}/${PROJECT_NAME}/Scene
     PREFIX
         "Scene"
     FILES
@@ -402,7 +356,7 @@ source_group(
 
 source_group(
     TREE 
-        ${CMAKE_CURRENT_SOURCE_DIR}/Shaders
+        ${CMAKE_CURRENT_SOURCE_DIR}/${PROJECT_NAME}/Shaders
     PREFIX
         "Shaders"
     FILES
@@ -412,7 +366,7 @@ source_group(
 
 source_group(
     TREE 
-        ${CMAKE_CURRENT_SOURCE_DIR}/Utils
+        ${CMAKE_CURRENT_SOURCE_DIR}/${PROJECT_NAME}/Utils
     PREFIX
         "Utils"
     FILES
@@ -422,7 +376,7 @@ source_group(
 
 source_group(
     TREE 
-        ${CMAKE_CURRENT_SOURCE_DIR}/Vertices
+        ${CMAKE_CURRENT_SOURCE_DIR}/${PROJECT_NAME}/Vertices
     PREFIX
         "Vertices"
     FILES

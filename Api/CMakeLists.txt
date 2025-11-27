@@ -91,19 +91,15 @@ target_sources(${PROJECT_NAME}
             ${WINDOW_HEADERS}
 )
 
-target_include_directories(${PROJECT_NAME}
+target_include_directories(${PROJECT_NAME} 
     INTERFACE
-        ${CMAKE_CURRENT_SOURCE_DIR}
-        ${CMAKE_CURRENT_SOURCE_DIR}/../Math/LinearAlgebra/include/
-        ${CMAKE_CURRENT_SOURCE_DIR}/../PhysicalProperties/Light/interfaces/include/
-        ${CMAKE_CURRENT_SOURCE_DIR}/../PhysicalProperties/Colors/include/
-        ${CMAKE_CURRENT_SOURCE_DIR}/../PhysicalProperties/Vertices/include/
+        ${CMAKE_CURRENT_SOURCE_DIR}/
 )
 
 target_link_libraries(${PROJECT_NAME}
     INTERFACE
         Math
-        PhysicalProperties
+        Space
 )
 
 # ===== Visual Studio filters (Solution Explorer groups) =====

@@ -19,22 +19,13 @@ file(TO_CMAKE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/../../3rdParty/spdlog/lib/cmake/s
 set(spdlog_DIR ${spdlog_path})
 find_package(spdlog REQUIRED)
 
-target_include_directories(${PROJECT_NAME} 
-    PRIVATE
-        ../Math/LinearAlgebra/include/
-        ../PhysicalProperties/Space/include/
-        ../PhysicalProperties/Light/LightTypes/include/
-        ../PhysicalProperties/Light/Abstracts/include/
-        ../PhysicalProperties/Materials/include/
-)
-
 # Ensure EngineCore is linked
 target_link_libraries(${PROJECT_NAME} 
     PRIVATE 
         # PrecompiledHeaders
         Math
         Api
-        PhysicalProperties
+        Space
         Platform
         EngineCore
         spdlog::spdlog
@@ -43,7 +34,7 @@ target_link_libraries(${PROJECT_NAME}
 # Ensure Example waits for EngineCore to build
 add_dependencies(${PROJECT_NAME} 
     Math
-    PhysicalProperties
+    Space
     Platform
     EngineCore
 )

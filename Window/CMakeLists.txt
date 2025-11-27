@@ -64,9 +64,6 @@ add_library(${PROJECT_NAME}
 set_target_properties(${PROJECT_NAME} PROPERTIES POSITION_INDEPENDENT_CODE ON)
 
 target_include_directories(${PROJECT_NAME} 
-    PRIVATE
-        ..//glfw//include//
-        ..//glfw//src//
     PUBLIC
         ${CMAKE_CURRENT_SOURCE_DIR}/
 )

@@ -2,7 +2,7 @@
 #define API__RENDERABLE_OBJECTS__I_TRANSFORMABLE__HPP
 
 
-#include "LinearAlgebraDataTypes.hpp"
+#include "Math/LinearAlgebra/include/LinearAlgebraDataTypes.hpp"
 
 
 namespace Andromeda

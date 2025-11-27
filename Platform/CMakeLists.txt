@@ -39,31 +39,20 @@ add_library(${PROJECT_NAME}
         ${PLATFORM_SOURCES}
 )
 
+target_include_directories(${PROJECT_NAME} 
+    PUBLIC
+        ${CMAKE_CURRENT_SOURCE_DIR}/
+)
+
 target_compile_definitions(${PROJECT_NAME} 
     PRIVATE 
         ANDROMEDA_API_BUILD
 )
 
-# target_compile_definitions(${PROJECT_NAME}
-#     PRIVATE
-#         ANDROMEDA_PLATFORM_BUILD
-# )
-
 if (APPLE)
     # Ignore macOS OpenGL deprecation warnings
     target_compile_definitions(${PROJECT_NAME} PRIVATE GL_SILENCE_DEPRECATION)
 endif ()
-
-# Include dirs (alphabetical)
-target_include_directories(${PROJECT_NAME}
-    PUBLIC
-        ${CMAKE_CURRENT_SOURCE_DIR}/Platform/include
-    PRIVATE
-        ../glfw/
-        ../glfw/include/
-        ../imgui/imgui/
-        ../imgui/imgui/backends/
-)
 
 # Link libraries (alphabetical)
 target_link_libraries(${PROJECT_NAME}

@@ -3,7 +3,7 @@
 
 
 #include "IPerspectiveControl.hpp"
-#include "LinearAlgebraDataTypes.hpp"
+#include "Math/LinearAlgebra/include/LinearAlgebraDataTypes.hpp"
 
 
 namespace Andromeda

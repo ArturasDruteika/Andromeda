@@ -17,31 +17,31 @@ find_package(spdlog REQUIRED)
 
 # ==== Constants ====
 set(CONSTANTS_HEADERS
-    Constants/include/Constants.hpp
+    Math/Constants/include/Constants.hpp
 )
 
 # ==== Linear Algebra ====
 set(LINEAR_ALGEBRA_HEADERS
-    LinearAlgebra/include/LinearAlgebraDataTypes.hpp
-    LinearAlgebra/include/LinearAlgebraOperations.hpp
+    Math/LinearAlgebra/include/LinearAlgebraDataTypes.hpp
+    Math/LinearAlgebra/include/LinearAlgebraOperations.hpp
 )
 
 set(LINEAR_ALGEBRA_SOURCES
-    LinearAlgebra/src/LinearAlgebraOperations.cpp
+    Math/LinearAlgebra/src/LinearAlgebraOperations.cpp
 )
 
 # ==== Macro Exports ====
 set(MACRO_EXPORTS_HEADERS
-    MacroExports/include/MacroExports.hpp
+    Math/MacroExports/include/MacroExports.hpp
 )
 
 # ==== Trigonometry ====
 set(TRIGONOMETRY_HEADERS
-    Trigonometry/include/Trigonometry.hpp
+    Math/Trigonometry/include/Trigonometry.hpp
 )
 
 set(TRIGONOMETRY_SOURCES
-    Trigonometry/src/Trigonometry.cpp
+    Math/Trigonometry/src/Trigonometry.cpp
 )
 
 
@@ -56,6 +56,11 @@ add_library(${PROJECT_NAME}
         ${TRIGONOMETRY_SOURCES}
 )
 
+target_include_directories(${PROJECT_NAME} 
+    PUBLIC
+        ${CMAKE_CURRENT_SOURCE_DIR}/
+)
+
 # ==== Link Libraries ====
 target_link_libraries(${PROJECT_NAME}
     PRIVATE
@@ -67,7 +72,7 @@ target_link_libraries(${PROJECT_NAME}
 # ==== IDE Organization ====
 source_group(
     TREE
-        ${CMAKE_CURRENT_SOURCE_DIR}/Constants
+        ${CMAKE_CURRENT_SOURCE_DIR}/${PROJECT_NAME}/Constants
     PREFIX
         "Constants"
     FILES
@@ -76,7 +81,7 @@ source_group(
 
 source_group(
     TREE
-        ${CMAKE_CURRENT_SOURCE_DIR}/LinearAlgebra
+        ${CMAKE_CURRENT_SOURCE_DIR}/${PROJECT_NAME}/LinearAlgebra
     PREFIX
         "LinearAlgebra"
     FILES
@@ -86,7 +91,7 @@ source_group(
 
 source_group(
     TREE
-        ${CMAKE_CURRENT_SOURCE_DIR}/MacroExports
+        ${CMAKE_CURRENT_SOURCE_DIR}/${PROJECT_NAME}/MacroExports
     PREFIX
         "MacroExports"
     FILES
@@ -95,7 +100,7 @@ source_group(
 
 source_group(
     TREE
-        ${CMAKE_CURRENT_SOURCE_DIR}/Trigonometry
+        ${CMAKE_CURRENT_SOURCE_DIR}/${PROJECT_NAME}/Trigonometry
     PREFIX
         "Trigonometry"
     FILES

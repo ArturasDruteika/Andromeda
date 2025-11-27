@@ -18,7 +18,7 @@ namespace Andromeda
 		
 		virtual void AddObject(int id, IRenderableObject* object) = 0;
 		virtual void RemoveObject(int id) = 0;
-		virtual void AddLuminousObject(int id, PhysicalProperties::LuminousBehavior* pLuminousObject) = 0;
+		virtual void AddLuminousObject(int id, Space::LuminousBehavior* pLuminousObject) = 0;
 	};
 }
 

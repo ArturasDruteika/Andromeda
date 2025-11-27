@@ -17,16 +17,16 @@ find_package(spdlog REQUIRED)
 
 # ==== Engine ====
 set(ENGINE_HEADERS
-    Engine/include/Engine.hpp
+    EngineCore/Engine/include/Engine.hpp
 )
 
 set(ENGINE_SOURCES
-    Engine/src/Engine.cpp
+    EngineCore/Engine/src/Engine.cpp
 )
 
 # ==== Macro Exports ====
 set(MACRO_EXPORTS_HEADERS
-    MacroExports/include/MacroExports.hpp
+    EngineCore/MacroExports/include/MacroExports.hpp
 )
 
 # ==== Target ====
@@ -39,26 +39,14 @@ add_library(${PROJECT_NAME}
         ${MACRO_EXPORTS_HEADERS}
 )
 
+target_include_directories(${PROJECT_NAME} 
+    PUBLIC
+        ${CMAKE_CURRENT_SOURCE_DIR}/
+)
+
 target_compile_definitions(${PROJECT_NAME}
     PRIVATE 
         ANDROMEDA_API_BUILD
-)
-
-# Include dirs (alphabetical)
-target_include_directories(${PROJECT_NAME}
-    PRIVATE
-        # ../Context/GraphicsContextGLFW/include/
-        ../Math/Constants/include/
-        ../Math/Trigonometry/include/
-        ../Rendering/Attributes/include/
-        ../Rendering/Camera/Cameras/include/
-        ../Rendering/Light/LightTypes/include/
-        ../Rendering/OpenGLLoader/include/
-        ../Rendering/RenderableObjects/Interfaces/include/
-        ../Rendering/Renderers/Renderers/include/
-        ../Rendering/Scene/Interfaces/include/
-        ../Rendering/Scene/Scenes/include/
-        ../Rendering/Vertices/include/
 )
 
 # Link libraries (alphabetical)
@@ -116,7 +104,7 @@ endif()
 # ==== IDE Organization ====
 source_group(
     TREE
-        ${CMAKE_CURRENT_SOURCE_DIR}/Engine
+        ${CMAKE_CURRENT_SOURCE_DIR}/${PROJECT_NAME}/Engine
     PREFIX
         "Engine"
     FILES
@@ -126,7 +114,7 @@ source_group(
 
 source_group(
     TREE
-        ${CMAKE_CURRENT_SOURCE_DIR}/MacroExports
+        ${CMAKE_CURRENT_SOURCE_DIR}/${PROJECT_NAME}/MacroExports
     PREFIX
         "MacroExports"
     FILES

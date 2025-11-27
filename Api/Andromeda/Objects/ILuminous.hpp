@@ -2,7 +2,7 @@
 #define API__RENDERABLE_OBJECTS__INTERFACES__I_LUMINOUS__HPP
 
 
-#include "ILightBehavior.hpp"
+#include "Space/Light/Interfaces/include/ILightBehavior.hpp"
 
 
 namespace Andromeda
@@ -14,9 +14,9 @@ namespace Andromeda
 		
 		// Getters
 		virtual bool IsLuminous() const = 0;
-		virtual PhysicalProperties::ILightBehavior* GetLightBehavior() const = 0;
+		virtual Space::ILightBehavior* GetLightBehavior() const = 0;
 		// Setters
-		virtual void SetLuminousBehavior(PhysicalProperties::ILightBehavior* behavior) = 0;
+		virtual void SetLuminousBehavior(Space::ILightBehavior* behavior) = 0;
 	};
 }
 

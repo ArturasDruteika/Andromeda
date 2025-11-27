@@ -2,7 +2,7 @@
 #define API__CAMERA__I_PERSPECTIVE_CONTROL__HPP
 
 
-#include "LinearAlgebraDataTypes.hpp"
+#include "Math/LinearAlgebra/include/LinearAlgebraDataTypes.hpp"
 
 
 namespace Andromeda

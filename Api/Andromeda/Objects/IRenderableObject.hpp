@@ -5,7 +5,7 @@
 #include "ILuminous.hpp"
 #include "IMesh.hpp"
 #include "ITransformable.hpp"
-#include "Colors.hpp"
+#include "Space/Colors/include/Colors.hpp"
 
 
 namespace Andromeda
@@ -19,9 +19,9 @@ namespace Andromeda
         virtual ~IRenderableObject() = default;
 
         // Getters
-        virtual PhysicalProperties::Color GetColor() const = 0;
+        virtual Space::Color GetColor() const = 0;
 		// Setters
-        virtual void SetColor(const PhysicalProperties::Color& color) = 0;
+        virtual void SetColor(const Space::Color& color) = 0;
     };
 }
 
