@@ -1,8 +1,5 @@
-#ifndef API__OBJECTS__INTERFACES__I_OBJECT__HPP
-#define API__OBJECTS__INTERFACES__I_OBJECT__HPP
-
-
-#include "IRenderableObject.hpp"
+#ifndef API__OBJECTS__I_OBJECT__HPP
+#define API__OBJECTS__I_OBJECT__HPP
 
 
 namespace Andromeda
@@ -10,6 +7,8 @@ namespace Andromeda
 	class IObject
 	{
 	public:
+		virtual ~IObject() = default;
+		
 		// Getters
 		virtual int GetID() const = 0;
         virtual const std::string& GetName() const = 0;
@@ -21,4 +20,4 @@ namespace Andromeda
 }
 
 
-#endif // API__OBJECTS__INTERFACES__I_OBJECT__HPP
+#endif // API__OBJECTS__I_OBJECT__HPP

@@ -32,7 +32,10 @@ set(GRAPHICS_CONTEXT_HEADERS
 
 # ==== Objects ====
 set(OBJECTS_HEADERS
+    Andromeda/Objects/ICameraObject.hpp
     Andromeda/Objects/ICube.hpp
+    Andromeda/Objects/IGeometricObject.hpp
+    Andromeda/Objects/ILightObject.hpp
     Andromeda/Objects/ILuminous.hpp
     Andromeda/Objects/IMesh.hpp
     Andromeda/Objects/IObject.hpp

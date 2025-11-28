@@ -1,5 +1,5 @@
-#ifndef API__OBJECTS__INTERFACES__I_LUMINOUS__HPP
-#define API__OBJECTS__INTERFACES__I_LUMINOUS__HPP
+#ifndef API__OBJECTS__I_LUMINOUS__HPP
+#define API__OBJECTS__I_LUMINOUS__HPP
 
 
 #include "Space/Light/Interfaces/include/ILightBehavior.hpp"
@@ -21,4 +21,4 @@ namespace Andromeda
 }
 
 
-#endif // API__OBJECTS__INTERFACES__I_LUMINOUS__HPP
+#endif // API__OBJECTS__I_LUMINOUS__HPP

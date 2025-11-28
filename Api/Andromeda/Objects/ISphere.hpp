@@ -1,5 +1,5 @@
-#ifndef API__OBJECTS__INTERFACES__I_SPHERE__HPP
-#define API__OBJECTS__INTERFACES__I_SPHERE__HPP
+#ifndef API__OBJECTS__I_SPHERE__HPP
+#define API__OBJECTS__I_SPHERE__HPP
 
 
 #include "IRenderableObject.hpp"
@@ -18,4 +18,4 @@ namespace Andromeda
 }
 
 
-#endif // API__OBJECTS__INTERFACES__I_SPHERE__HPP
+#endif // API__OBJECTS__I_SPHERE__HPP
