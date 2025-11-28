@@ -4,7 +4,7 @@
 
 #include "Space/Light/LightTypes/include/DirectionalLight.hpp"
 #include "Space/Light/LightTypes/include/PointLight.hpp"
-#include "../Objects/IRenderableObject.hpp"
+#include "../Objects/IGeometricObject.hpp"
 #include <map>
 
 

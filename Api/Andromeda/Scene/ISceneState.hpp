@@ -2,7 +2,7 @@
 #define API__SCENE__I_SCENE_STATE__HPP
 
 
-#include "../Objects/IRenderableObject.hpp"
+#include "../Objects/IGeometricObject.hpp"
 
 
 namespace Andromeda
@@ -12,7 +12,7 @@ namespace Andromeda
 	public:
 		virtual ~ISceneState() = default;
 
-		virtual bool StateChanged(const std::unordered_map<int, IRenderableObject*>& objects) const = 0;
+		virtual bool StateChanged(const std::unordered_map<int, IGeometricObject*>& objects) const = 0;
 	};
 }
 

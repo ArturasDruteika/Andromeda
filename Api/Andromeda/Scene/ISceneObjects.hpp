@@ -2,7 +2,7 @@
 #define API__SCENE__I_SCENE_OBJECTS__HPP
 
 
-#include "../Objects/IRenderableObject.hpp"
+#include "../Objects/IGeometricObject.hpp"
 #include <map>
 
 
@@ -14,9 +14,9 @@ namespace Andromeda
 		virtual ~ISceneObjects() = default;
 
 		// Getters
-		virtual const std::unordered_map<int, IRenderableObject*>& GetObjects() const = 0;
+		virtual const std::unordered_map<int, IGeometricObject*>& GetObjects() const = 0;
 		
-		virtual void AddObject(int id, IRenderableObject* object) = 0;
+		virtual void AddObject(int id, IGeometricObject* object) = 0;
 		virtual void RemoveObject(int id) = 0;
 		virtual void AddLuminousObject(int id, Space::LuminousBehavior* pLuminousObject) = 0;
 	};

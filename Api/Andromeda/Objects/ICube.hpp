@@ -2,13 +2,13 @@
 #define API__OBJECTS__INTERFACES__I_CUBE__HPP
 
 
-#include "IRenderableObject.hpp"
+#include "IGeometricObject.hpp"
 
 
 namespace Andromeda
 {
 	class ICube
-		: IRenderableObject
+		: IGeometricObject
 	{
 	public:
 		virtual ~ICube() = default;

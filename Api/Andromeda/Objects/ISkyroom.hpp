@@ -2,13 +2,13 @@
 #define API__OBJECTS__I_SKYROOM__HPP
 
 
-#include "IRenderableObject.hpp"
+#include "IGeometricObject.hpp"
 
 
 namespace Andromeda
 {
 	class ISkyroom
-		: IRenderableObject
+		: IGeometricObject
 	{
 	public:
 		virtual ~ISkyroom() = default;

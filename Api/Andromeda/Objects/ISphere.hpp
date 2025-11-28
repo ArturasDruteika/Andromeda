@@ -2,13 +2,13 @@
 #define API__OBJECTS__I_SPHERE__HPP
 
 
-#include "IRenderableObject.hpp"
+#include "IGeometricObject.hpp"
 
 
 namespace Andromeda
 {
 	class ISphere
-		: IRenderableObject
+		: IGeometricObject
 	{
 	public:
 		virtual ~ISphere() = default;
