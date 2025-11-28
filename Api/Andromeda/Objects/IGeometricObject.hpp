@@ -16,7 +16,11 @@ namespace Andromeda
 	public:
 		virtual ~IGeometricObject() = default;
 		
+		// Getters
         virtual const IMesh& GetMesh() const = 0;
+		virtual Space::Color GetColor() const = 0;
+		// Setters
+        virtual void SetColor(const Space::Color& color) = 0;
 	};
 }
 
