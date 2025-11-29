@@ -2,7 +2,7 @@
 #define API__OBJECTS__I_LUMINOUS__HPP
 
 
-#include "Space/Light/Interfaces/include/ILightBehavior.hpp"
+#include "../Light/ILightBehavior.hpp"
 
 
 namespace Andromeda
