@@ -30,6 +30,23 @@ set(GRAPHICS_CONTEXT_HEADERS
     Andromeda/GraphicsContext/IGraphicsContext.hpp
 )
 
+# ==== Light ====
+set(LIGHT_HEADERS
+    Andromeda/Light/IDirectionalLight.hpp
+    Andromeda/Light/ILightBehavior.hpp
+    Andromeda/Light/IPointLight.hpp
+    Andromeda/Light/ILight.hpp
+    Andromeda/Light/ISpotLight.hpp
+    Andromeda/Light/LightTypes.hpp
+    Andromeda/Light/ILuminousBehavior.hpp
+    Andromeda/Light/INonLuminousBehavior.hpp
+)
+
+# ==== Materials ====
+set(MATERIALS_HEADERS
+    Andromeda/Materials/IMaterial.hpp
+)
+
 # ==== Objects ====
 set(OBJECTS_HEADERS
     Andromeda/Objects/ICameraObject.hpp
@@ -80,7 +97,6 @@ target_sources(${PROJECT_NAME}
         FILE_SET HEADERS
         BASE_DIRS ${CMAKE_CURRENT_SOURCE_DIR}
         FILES
-        FILES
             ${CAMERA_HEADERS}
             ${COMPONENTS_HEADERS}
             ${ENGINE_HEADERS}
@@ -90,6 +106,8 @@ target_sources(${PROJECT_NAME}
             ${RENDERER_HEADERS}
             ${SCENE_HEADERS}
             ${WINDOW_HEADERS}
+            ${LIGHT_HEADERS}
+            ${MATERIALS_HEADERS}
 )
 
 target_include_directories(${PROJECT_NAME} 
@@ -138,6 +156,24 @@ source_group(
         "Engine"
     FILES
         ${ENGINE_HEADERS}
+)
+
+source_group(
+    TREE
+        ${CMAKE_CURRENT_SOURCE_DIR}/Andromeda/Light
+    PREFIX
+        "Light"
+    FILES
+        ${LIGHT_HEADERS}
+)
+
+source_group(
+    TREE
+        ${CMAKE_CURRENT_SOURCE_DIR}/Andromeda/Materials
+    PREFIX
+        "Materials"
+    FILES
+        ${MATERIAL_HEADERS}
 )
 
 source_group(
