@@ -1,5 +1,5 @@
-#ifndef RENDERING__CAMERA_CONTROLLER__HPP
-#define RENDERING__CAMERA_CONTROLLER__HPP
+#ifndef SPACE__CAMERA__CAMERA_CONTROLLER__HPP
+#define SPACE__CAMERA__CAMERA_CONTROLLER__HPP
 
 
 #include "CameraView.hpp"
@@ -10,7 +10,7 @@
 #include "glm/gtx/quaternion.hpp"
 
 
-namespace Andromeda::Rendering
+namespace Andromeda::Space
 {
 	class CameraController
 		: public CameraView
@@ -32,4 +32,4 @@ namespace Andromeda::Rendering
 }
 
 
-#endif // RENDERING__CAMERA_CONTROLLER__HPP
+#endif // SPACE__CAMERA__CAMERA_CONTROLLER__HPP

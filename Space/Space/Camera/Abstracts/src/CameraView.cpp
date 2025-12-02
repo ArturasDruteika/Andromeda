@@ -3,7 +3,7 @@
 #include <glm/gtc/matrix_transform.hpp>
 
 
-namespace Andromeda::Rendering
+namespace Andromeda::Space
 {
 	CameraView::CameraView(const glm::vec3& position, const glm::vec3& targetCoords)
 		: m_position{ position }

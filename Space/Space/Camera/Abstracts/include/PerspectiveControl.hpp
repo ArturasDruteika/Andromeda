@@ -1,11 +1,11 @@
-#ifndef RENDERING__PERSPECTIVE_CONTROL__HPP
-#define RENDERING__PERSPECTIVE_CONTROL__HPP
+#ifndef SPACE__CAMERA__PERSPECTIVE_CONTROL__HPP
+#define SPACE__CAMERA__PERSPECTIVE_CONTROL__HPP
 
 
 #include "Math/LinearAlgebra/include/LinearAlgebraDataTypes.hpp"
 
 
-namespace Andromeda::Rendering
+namespace Andromeda::Space
 {
 	class PerspectiveControl
 	{
@@ -37,4 +37,4 @@ namespace Andromeda::Rendering
 }
 
 
-#endif // RENDERING__PERSPECTIVE_CONTROL__HPP
+#endif // SPACE__CAMERA__PERSPECTIVE_CONTROL__HPP

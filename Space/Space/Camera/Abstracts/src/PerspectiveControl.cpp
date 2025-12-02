@@ -4,7 +4,7 @@
 #include <glm/gtc/matrix_transform.hpp>
 
 
-namespace Andromeda::Rendering
+namespace Andromeda::Space
 {
 	PerspectiveControl::PerspectiveControl()
 		: m_fovDeg{ 45.0f }

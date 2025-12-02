@@ -1,12 +1,12 @@
-#ifndef RENDERING__CAMERA_VIEW__HPP
-#define RENDERING__CAMERA_VIEW__HPP
+#ifndef SPACE__CAMERA__CAMERA_VIEW__HPP
+#define SPACE__CAMERA__CAMERA_VIEW__HPP
 
 
 #include "Math/LinearAlgebra/include/LinearAlgebraDataTypes.hpp"
 #include "glm/glm.hpp"
 
 
-namespace Andromeda::Rendering
+namespace Andromeda::Space
 {
 	class CameraView
 	{
@@ -38,4 +38,4 @@ namespace Andromeda::Rendering
 }
 
 
-#endif // RENDERING__CAMERA_VIEW__HPP
+#endif // SPACE__CAMERA__CAMERA_VIEW__HPP
