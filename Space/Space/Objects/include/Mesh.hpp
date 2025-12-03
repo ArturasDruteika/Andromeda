@@ -6,7 +6,7 @@
 #include "Space/Vertices/include/Vertex.hpp"
 
 
-namespace Andromeda::Rendering
+namespace Andromeda::Space
 {
 	class Mesh
 	{

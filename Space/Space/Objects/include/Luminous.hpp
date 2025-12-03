@@ -5,7 +5,7 @@
 #include "Space/Light/Interfaces/include/ILightBehavior.hpp"
 
 
-namespace Andromeda::Rendering
+namespace Andromeda::Space
 {
 	class Luminous
 	{

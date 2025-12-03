@@ -8,7 +8,7 @@
 #include "Space/Colors/include/Colors.hpp"
 
 
-namespace Andromeda::Rendering
+namespace Andromeda::Space
 {
     class RenderableObject :
         public Mesh,

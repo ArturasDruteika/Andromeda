@@ -8,7 +8,7 @@
 #include "glm/gtc/matrix_transform.hpp"
 
 
-namespace Andromeda::Rendering
+namespace Andromeda::Space
 {
     class Transformable
     {

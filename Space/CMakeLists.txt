@@ -15,9 +15,31 @@ set(spdlog_DIR ${spdlog_path})
 find_package(spdlog REQUIRED)
 
 
+# ==== Camera ====
+set(CAMERA_HEADERS
+    Space/Camera/Abstracts/include/PerspectiveControl.hpp
+    Space/Camera/Abstracts/include/CameraView.hpp
+    Space/Camera/Abstracts/include/CameraController.hpp
+    Space/Camera/Cameras/include/Camera.hpp
+    Space/Camera/Cameras/include/CameraImpl.hpp
+)
+
+set(CAMERA_SOURCES
+    Space/Camera/Abstracts/src/PerspectiveControl.cpp
+    Space/Camera/Abstracts/src/CameraView.cpp
+    Space/Camera/Abstracts/src/CameraController.cpp
+    Space/Camera/Cameras/src/Camera.cpp
+    Space/Camera/Cameras/src/CameraImpl.cpp
+)
+
 # ==== Colors ====
 set(COLORS_HEADERS
     Space/Colors/include/Colors.hpp
+)
+
+# ==== Coordinates ====
+set(COORDINATES_HEADERS
+    Space/Coordinates/include/Points.hpp
 )
 
 # ==== Light ====
@@ -25,19 +47,16 @@ set(LIGHT_HEADERS
     Space/Light/Abstracts/include/Light.hpp
     Space/Light/Abstracts/include/LuminousBehavior.hpp
     Space/Light/Abstracts/include/NonLuminousBehavior.hpp
-    Space/Light/Interfaces/include/ILightBehavior.hpp
     Space/Light/LightTypes/include/DirectionalLight.hpp
     Space/Light/LightTypes/include/PointLight.hpp
     Space/Light/LightTypes/include/SpotLight.hpp
     Space/Light/Support/include/LightData.hpp
-    Space/Light/Support/include/LightTypes.hpp
 )
 
 set(LIGHT_SOURCES
     Space/Light/Abstracts/src/Light.cpp
     Space/Light/Abstracts/src/LuminousBehavior.cpp
     Space/Light/Abstracts/src/NonLuminousBehavior.cpp
-    Space/Light/Interfaces/src/ILightBehavior.cpp
     Space/Light/LightTypes/src/DirectionalLight.cpp
     Space/Light/LightTypes/src/PointLight.cpp
     Space/Light/LightTypes/src/SpotLight.cpp
@@ -61,9 +80,31 @@ set(MATERIALS_SOURCES
     Space/Materials/src/MaterialsLibrary.cpp
 )
 
-# ==== Coordinates ====
-set(COORDINATES_HEADERS
-    Space/Coordinates/include/Points.hpp
+# ==== Objects ====
+set(OBJECTS_HEADERS
+    Space/Objects/include/CameraObject.hpp
+    Space/Objects/include/Cube.hpp
+    Space/Objects/include/GeometricObject.hpp
+    Space/Objects/include/LightObject.hpp
+    Space/Objects/include/Luminous.hpp
+    Space/Objects/include/Mesh.hpp
+    Space/Objects/include/Object.hpp
+    Space/Objects/include/Skyroom.hpp
+    Space/Objects/include/Sphere.hpp
+    Space/Objects/include/Transformable.hpp
+)
+
+set(OBJECTS_SOURCES
+    Space/Objects/src/CameraObject.cpp
+    Space/Objects/src/Cube.cpp
+    Space/Objects/src/GeometricObject.cpp
+    Space/Objects/src/LightObject.cpp
+    Space/Objects/src/Luminous.cpp
+    Space/Objects/src/Mesh.cpp
+    Space/Objects/src/Object.cpp
+    Space/Objects/src/Skyroom.cpp
+    Space/Objects/src/Sphere.cpp
+    Space/Objects/src/Transformable.cpp
 )
 
 # ==== Transformations ====
@@ -79,13 +120,17 @@ set(VERTICES_HEADERS
 # ==== Target ====
 add_library(${PROJECT_NAME}
     SHARED
+        ${CAMERA_HEADERS}
+        ${CAMERA_SOURCES}
         ${COLORS_HEADERS}
+        ${COORDINATES_HEADERS}
         ${LIGHT_HEADERS}
         ${LIGHT_SOURCES}
         ${MACRO_EXPORTS_HEADERS}
         ${MATERIALS_HEADERS}
         ${MATERIALS_SOURCES}
-        ${COORDINATES_HEADERS}
+        ${OBJECTS_HEADERS}
+        ${OBJECTS_SOURCES}
         ${TRANSFORMATIONS_HEADERS}
         ${VERTICES_HEADERS}
 )
@@ -99,9 +144,11 @@ target_include_directories(${PROJECT_NAME}
 target_link_libraries(${PROJECT_NAME}
     PRIVATE
         PrecompiledHeaders
+        Api
         Math
         Utils
         spdlog::spdlog
+        glm::glm
 )
 
 # ==== Dependencies ====
@@ -141,12 +188,31 @@ add_custom_command(
 
 # ==== IDE Organization ====
 source_group(
+    TREE 
+        ${CMAKE_CURRENT_SOURCE_DIR}/${PROJECT_NAME}/Camera
+    PREFIX
+        "Camera"
+    FILES
+        ${CAMERA_HEADERS}
+        ${CAMERA_SOURCES}
+)
+
+source_group(
     TREE
         ${CMAKE_CURRENT_SOURCE_DIR}/${PROJECT_NAME}/Colors
     PREFIX
         "Colors"
     FILES
         ${COLORS_HEADERS}
+)
+
+source_group(
+    TREE
+        ${CMAKE_CURRENT_SOURCE_DIR}/${PROJECT_NAME}/Coordinates
+    PREFIX
+        "Coordinates"
+    FILES
+        ${COORDINATES_HEADERS}
 )
 
 source_group(
@@ -180,11 +246,12 @@ source_group(
 
 source_group(
     TREE
-        ${CMAKE_CURRENT_SOURCE_DIR}/${PROJECT_NAME}/Coordinates
+        ${CMAKE_CURRENT_SOURCE_DIR}/${PROJECT_NAME}/Objects
     PREFIX
-        "Coordinates"
+        "Objects"
     FILES
-        ${COORDINATES_HEADERS}
+        ${OBJECTS_HEADERS}
+        ${OBJECTS_SOURCES}
 )
 
 source_group(
