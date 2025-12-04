@@ -13,7 +13,7 @@ namespace Andromeda
 		: public ILuminousBehavior
 	{
 	public:
-		virtual ~PointLight() = default;
+		virtual ~IPointLight() = default;
 
 		// Getters
 		virtual float GetAttenuationConstant() const = 0;

@@ -10,7 +10,7 @@
 namespace Andromeda
 {
 	class ILuminousBehavior
-		: public ILightBehavior
+		: public virtual ILightBehavior
 	{
 	public:
 		virtual ~ILuminousBehavior() = default;
