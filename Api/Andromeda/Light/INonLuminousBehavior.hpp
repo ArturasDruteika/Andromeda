@@ -15,7 +15,7 @@ namespace Andromeda
 		virtual ~INonLuminousBehavior() = default;
 
 		// Getters
-		virtual const IMaterial& GetMaterial() = 0;
+		virtual const IMaterial& GetMaterial() const = 0;
 		// Setters
 		virtual void SetMaterial(const IMaterial& material) = 0;
 	};

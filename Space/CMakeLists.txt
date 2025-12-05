@@ -44,23 +44,23 @@ set(COORDINATES_HEADERS
 
 # ==== Light ====
 set(LIGHT_HEADERS
-    Space/Light/Abstracts/include/Light.hpp
-    Space/Light/Abstracts/include/LuminousBehavior.hpp
-    Space/Light/Abstracts/include/NonLuminousBehavior.hpp
-    Space/Light/LightTypes/include/DirectionalLight.hpp
-    Space/Light/LightTypes/include/PointLight.hpp
-    Space/Light/LightTypes/include/SpotLight.hpp
-    Space/Light/Support/include/LightData.hpp
+    Space/Light/include/Light.hpp
+    Space/Light/include/LuminousBehavior.hpp
+    Space/Light/include/NonLuminousBehavior.hpp
+    Space/Light/include/DirectionalLight.hpp
+    Space/Light/include/PointLight.hpp
+    Space/Light/include/SpotLight.hpp
+    Space/Light/include/LightData.hpp
 )
 
 set(LIGHT_SOURCES
-    Space/Light/Abstracts/src/Light.cpp
-    Space/Light/Abstracts/src/LuminousBehavior.cpp
-    Space/Light/Abstracts/src/NonLuminousBehavior.cpp
-    Space/Light/LightTypes/src/DirectionalLight.cpp
-    Space/Light/LightTypes/src/PointLight.cpp
-    Space/Light/LightTypes/src/SpotLight.cpp
-    Space/Light/Support/src/LightData.cpp
+    Space/Light/src/Light.cpp
+    Space/Light/src/LuminousBehavior.cpp
+    Space/Light/src/NonLuminousBehavior.cpp
+    Space/Light/src/DirectionalLight.cpp
+    Space/Light/src/PointLight.cpp
+    Space/Light/src/SpotLight.cpp
+    Space/Light/src/LightData.cpp
 )
 
 # ==== Macro Exports ====

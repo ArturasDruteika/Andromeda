@@ -5,28 +5,30 @@
 #include "../../MacroExports/include/MacroExports.hpp"
 #include "pch.hpp"
 #include "Math/LinearAlgebra/include/LinearAlgebraDataTypes.hpp"
+#include "Andromeda/Materials/IMaterial.hpp"
 
 
 namespace Andromeda::Space
 {
     class SPACE_API Material
+		: public IMaterial
     {
     public:
         Material();
         ~Material();
 
         // Getters
-        float GetShininess() const;
-        std::string GetName() const;
-        Math::Vec3 GetAmbient() const;
-        Math::Vec3 GetDiffuse() const;
-        Math::Vec3 GetSpecular() const;
+        float GetShininess() const override;
+        const std::string& GetName() const override;
+        const Math::Vec3& GetAmbient() const override;
+        const Math::Vec3& GetDiffuse() const override;
+        const Math::Vec3& GetSpecular() const override;
         // Setters
-        void SetShininess(float shininess);
-        void SetName(const std::string& name);
-        void SetAmbient(const Math::Vec3& ambient);
-        void SetDiffuse(const Math::Vec3& diffuse);
-        void SetSpecular(const Math::Vec3& specular);
+        void SetShininess(float shininess) override;
+        void SetName(const std::string& name) override;
+        void SetAmbient(const Math::Vec3& ambient) override;
+        void SetDiffuse(const Math::Vec3& diffuse) override;
+        void SetSpecular(const Math::Vec3& specular) override;
 
     private:
         bool ValidateVec3Components(const Math::Vec3& vector);

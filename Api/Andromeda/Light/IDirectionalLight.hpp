@@ -17,7 +17,7 @@ namespace Andromeda
 		virtual float GetLightOrthographicHalfSize() const = 0;
 		virtual float GetLightNearPlane() const = 0;
 		virtual float GetLightFarPlane() const = 0;
-		virtual Math::Vec3 GetDirection() const = 0;
+		virtual const Math::Vec3& GetDirection() const = 0;
 		// Setters
 		virtual void SetLightOrthographicHalfSize(float halfSize) = 0;
 		virtual void SetLightNearPlane(float nearPlane) = 0;
