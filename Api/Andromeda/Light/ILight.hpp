@@ -9,6 +9,7 @@ namespace Andromeda
 {
 	class ILight
 	{
+	public:
 		virtual ~ILight() = default;
 
 		// Getters

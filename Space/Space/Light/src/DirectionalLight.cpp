@@ -48,7 +48,7 @@ namespace Andromeda::Space
 		return m_farPlane;
 	}
 
-	Math::Vec3 DirectionalLight::GetDirection() const
+	const Math::Vec3& DirectionalLight::GetDirection() const
 	{
 		return m_direction;
 	}

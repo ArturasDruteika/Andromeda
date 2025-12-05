@@ -2,7 +2,7 @@
 #define SPACE__LUMINOUS_BEHAVIOR__HPP
 
 
-#include "../../../MacroExports/include/MacroExports.hpp"
+#include "../../MacroExports/include/MacroExports.hpp"
 #include "Andromeda/Light/ILuminousBehavior.hpp"
 #include "Andromeda/Light/LightTypes.hpp"
 #include "Light.hpp"

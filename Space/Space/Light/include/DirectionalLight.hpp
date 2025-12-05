@@ -2,8 +2,8 @@
 #define SPACE__DIRECTIONAL_LIGHT__HPP
 
 
-#include "../../../MacroExports/include/MacroExports.hpp"
-#include "../../Abstracts/include/LuminousBehavior.hpp"
+#include "../../MacroExports/include/MacroExports.hpp"
+#include "LuminousBehavior.hpp"
 #include "Andromeda/Light/IDirectionalLight.hpp"
 #include "Math/LinearAlgebra/include/LinearAlgebraDataTypes.hpp"
 

@@ -2,8 +2,8 @@
 #define SPACE__NON_LUMINOUS_BEHAVIOR_HPP
 
 
-#include "../../../MacroExports/include/MacroExports.hpp"
-#include "../../../Materials/include/Materials.hpp"
+#include "../../MacroExports/include/MacroExports.hpp"
+#include "../../Materials/include/Materials.hpp"
 #include "Andromeda/Light/INonLuminousBehavior.hpp"
 
 

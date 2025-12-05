@@ -2,7 +2,7 @@
 #define SPACE__LIGHT__HPP
 
 
-#include "../../../MacroExports/include/MacroExports.hpp"
+#include "../../MacroExports/include/MacroExports.hpp"
 #include "Andromeda/Light/ILight.hpp"
 #include "Math/LinearAlgebra/include/LinearAlgebraDataTypes.hpp"
 
@@ -20,7 +20,7 @@ namespace Andromeda::Space
 			const Math::Vec3& diffuse,
 			const Math::Vec3& specular
 		);
-		virtual ~Light() override;
+		~Light() override;
 
 		// Getters
 		float GetIntensity() const override;

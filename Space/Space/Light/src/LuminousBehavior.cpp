@@ -1,6 +1,6 @@
 #include "../include/LuminousBehavior.hpp"
-#include "../../LightTypes/include/DirectionalLight.hpp"
-#include "../../LightTypes/include/PointLight.hpp"
+#include "../include/DirectionalLight.hpp"
+#include "../include/PointLight.hpp"
 
 
 namespace Andromeda::Space

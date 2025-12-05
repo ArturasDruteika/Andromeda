@@ -63,7 +63,7 @@ namespace Andromeda::Space
         return m_shadowFarPlane;
     }
 
-    Math::Vec3 PointLight::GetPosition() const
+    const Math::Vec3& PointLight::GetPosition() const
     {
         return m_position;
     }
