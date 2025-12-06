@@ -8,10 +8,10 @@ target_compile_features(${PROJECT_NAME} INTERFACE cxx_std_23)
 
 # ==== Camera ====
 set(CAMERA_HEADERS
-    Andromeda/Camera/ICamera.hpp
-    Andromeda/Camera/IPerspectiveControl.hpp
-    Andromeda/Camera/ICameraView.hpp
-    Andromeda/Camera/ICameraController.hpp
+    Andromeda/Space/Camera/ICamera.hpp
+    Andromeda/Space/Camera/IPerspectiveControl.hpp
+    Andromeda/Space/Camera/ICameraView.hpp
+    Andromeda/Space/Camera/ICameraController.hpp
 )
 
 # ==== Components ====
@@ -32,14 +32,14 @@ set(GRAPHICS_CONTEXT_HEADERS
 
 # ==== Light ====
 set(LIGHT_HEADERS
-    Andromeda/Light/IDirectionalLight.hpp
-    Andromeda/Light/ILightBehavior.hpp
-    Andromeda/Light/IPointLight.hpp
-    Andromeda/Light/ILight.hpp
-    Andromeda/Light/ISpotLight.hpp
-    Andromeda/Light/LightTypes.hpp
-    Andromeda/Light/ILuminousBehavior.hpp
-    Andromeda/Light/INonLuminousBehavior.hpp
+    Andromeda/Space/Light/IDirectionalLight.hpp
+    Andromeda/Space/Light/ILightBehavior.hpp
+    Andromeda/Space/Light/IPointLight.hpp
+    Andromeda/Space/Light/ILight.hpp
+    Andromeda/Space/Light/ISpotLight.hpp
+    Andromeda/Space/Light/LightTypes.hpp
+    Andromeda/Space/Light/ILuminousBehavior.hpp
+    Andromeda/Space/Light/INonLuminousBehavior.hpp
 )
 
 # ==== Materials ====
@@ -49,16 +49,16 @@ set(MATERIALS_HEADERS
 
 # ==== Objects ====
 set(OBJECTS_HEADERS
-    Andromeda/Objects/ICameraObject.hpp
-    Andromeda/Objects/ICube.hpp
-    Andromeda/Objects/IGeometricObject.hpp
-    Andromeda/Objects/ILightObject.hpp
-    Andromeda/Objects/ILuminous.hpp
-    Andromeda/Objects/IMesh.hpp
-    Andromeda/Objects/IObject.hpp
-    Andromeda/Objects/ISkyroom.hpp
-    Andromeda/Objects/ISphere.hpp
-    Andromeda/Objects/ITransformable.hpp
+    Andromeda/Space/Objects/ICameraObject.hpp
+    Andromeda/Space/Objects/ICube.hpp
+    Andromeda/Space/Objects/IGeometricObject.hpp
+    Andromeda/Space/Objects/ILightObject.hpp
+    Andromeda/Space/Objects/ILuminous.hpp
+    Andromeda/Space/Objects/IMesh.hpp
+    Andromeda/Space/Objects/IObject.hpp
+    Andromeda/Space/Objects/ISkyroom.hpp
+    Andromeda/Space/Objects/ISphere.hpp
+    Andromeda/Space/Objects/ITransformable.hpp
 )
 
 # ==== Platform ====
@@ -77,12 +77,12 @@ set(RENDERER_HEADERS
 
 # ==== Scene ====
 set(SCENE_HEADERS
-    Andromeda/Scene/ICameraHandler.hpp
-    Andromeda/Scene/IScene.hpp
-    Andromeda/Scene/ISceneEnvironment.hpp
-    Andromeda/Scene/ISceneLighting.hpp
-    Andromeda/Scene/ISceneObjects.hpp
-    Andromeda/Scene/ISceneState.hpp
+    Andromeda/Space/Scene/ICameraHandler.hpp
+    Andromeda/Space/Scene/IScene.hpp
+    Andromeda/Space/Scene/ISceneEnvironment.hpp
+    Andromeda/Space/Scene/ISceneLighting.hpp
+    Andromeda/Space/Scene/ISceneObjects.hpp
+    Andromeda/Space/Scene/ISceneState.hpp
 )
 
 # ==== Window ====
@@ -124,7 +124,7 @@ target_link_libraries(${PROJECT_NAME}
 # ===== Visual Studio filters (Solution Explorer groups) =====
 source_group(
     TREE
-        ${CMAKE_CURRENT_SOURCE_DIR}/Andromeda/Camera
+        ${CMAKE_CURRENT_SOURCE_DIR}/Andromeda/Space/Camera
     PREFIX
         "Camera"
     FILES
@@ -160,7 +160,7 @@ source_group(
 
 source_group(
     TREE
-        ${CMAKE_CURRENT_SOURCE_DIR}/Andromeda/Light
+        ${CMAKE_CURRENT_SOURCE_DIR}/Andromeda/Space/Light
     PREFIX
         "Light"
     FILES
@@ -169,7 +169,7 @@ source_group(
 
 source_group(
     TREE
-        ${CMAKE_CURRENT_SOURCE_DIR}/Andromeda/Materials
+        ${CMAKE_CURRENT_SOURCE_DIR}/Andromeda/Space/Materials
     PREFIX
         "Materials"
     FILES
@@ -178,7 +178,7 @@ source_group(
 
 source_group(
     TREE
-        ${CMAKE_CURRENT_SOURCE_DIR}/Andromeda/Objects
+        ${CMAKE_CURRENT_SOURCE_DIR}/Andromeda/Space/Objects
     PREFIX
         "Objects"
     FILES
@@ -205,7 +205,7 @@ source_group(
 
 source_group(
     TREE
-        ${CMAKE_CURRENT_SOURCE_DIR}/Andromeda/Scene
+        ${CMAKE_CURRENT_SOURCE_DIR}/Andromeda/Space/Scene
     PREFIX
         "Scene"
     FILES
