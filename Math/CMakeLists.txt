@@ -24,10 +24,12 @@ set(CONSTANTS_HEADERS
 set(LINEAR_ALGEBRA_HEADERS
     Math/LinearAlgebra/include/LinearAlgebraDataTypes.hpp
     Math/LinearAlgebra/include/LinearAlgebraOperations.hpp
+    Math/LinearAlgebra/include/Quaternions.hpp
 )
 
 set(LINEAR_ALGEBRA_SOURCES
     Math/LinearAlgebra/src/LinearAlgebraOperations.cpp
+    Math/LinearAlgebra/src/Quaternions.cpp
 )
 
 # ==== Macro Exports ====
@@ -66,6 +68,7 @@ target_link_libraries(${PROJECT_NAME}
     PRIVATE
         PrecompiledHeaders
         spdlog::spdlog
+        glm::glm
 )
 
 

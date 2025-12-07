@@ -35,6 +35,8 @@ namespace Andromeda
 			static Vec2 Normalize(const Vec2& v, float epsilon = 1e-8f);
 			static Vec3 Normalize(const Vec3& v, float epsilon = 1e-8f);
 			static Vec4 Normalize(const Vec4& v, float epsilon = 1e-8f);
+
+			static Mat4 Perspective(float fovYRadians, float aspect, float zNear, float zFar);
 		};
 	}
 }

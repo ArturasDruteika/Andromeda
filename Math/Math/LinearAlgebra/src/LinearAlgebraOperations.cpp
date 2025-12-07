@@ -151,5 +151,71 @@ namespace Andromeda
 			float invLen = 1.0f / std::sqrt(lenSq);
 			return Vec4{ v[0] * invLen, v[1] * invLen, v[2] * invLen, v[3] * invLen };
 		}
+
+		Mat4 LinAlgOps::Perspective(float fovYRadians, float aspect, float zNear, float zFar)
+		{
+			// Basic safety: avoid division by zero or nonsense parameters
+			const float epsilon = 1e-6f;
+			if (aspect <= epsilon)
+			{
+				// You might want to assert or log here in your real engine
+				return Mat4{};
+			}
+
+			if (zNear <= 0.0f || zFar <= zNear)
+			{
+				// Also a good place for an assert/log
+				return Mat4{};
+			}
+
+			const float tanHalfFovY = std::tan(fovYRadians * 0.5f);
+			if (std::abs(tanHalfFovY) <= epsilon)
+			{
+				return Mat4{};
+			}
+
+			const float f = 1.0f / tanHalfFovY;
+
+			Mat4 result;
+
+			// Row 0
+			result[0] = Vec4
+			{
+				f / aspect,
+				0.0f,
+				0.0f,
+				0.0f
+			};
+
+			// Row 1
+			result[1] = Vec4
+			{
+				0.0f,
+				f,
+				0.0f,
+				0.0f
+			};
+
+			// Row 2
+			result[2] = Vec4
+			{
+				0.0f,
+				0.0f,
+				(zFar + zNear) / (zNear - zFar),
+				-1.0f
+			};
+
+			// Row 3
+			result[3] = Vec4
+			{
+				0.0f,
+				0.0f,
+				(2.0f * zFar * zNear) / (zNear - zFar),
+				0.0f
+			};
+
+			return result;
+		}
+
 	}
 }
