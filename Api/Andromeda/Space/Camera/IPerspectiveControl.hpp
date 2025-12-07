@@ -19,10 +19,13 @@ namespace Andromeda
 		virtual float GetAspect() const = 0;
 		virtual const Math::Mat4& GetProjection() const = 0;
 		// Setters
-		virtual void SetFieldOfViewDegrees(float fovDeg) = 0;
-		virtual void SetNearPlane(float nearPlane) = 0;
-		virtual void SetFarPlane(float farPlane) = 0;
-		virtual void SetAspect(float aspect) = 0;
+		virtual void SetFieldOfViewDegrees(float fovDeg, bool updateProjection = true) = 0;
+		virtual void SetNearPlane(float nearPlane, bool updateProjection = true) = 0;
+		virtual void SetFarPlane(float farPlane, bool updateProjection = true) = 0;
+		virtual void SetAspect(float aspect, bool updateProjection = true) = 0;
+
+		// Update projection matrix
+		virtual void UpdateProjection() = 0;
     };
 }
 
