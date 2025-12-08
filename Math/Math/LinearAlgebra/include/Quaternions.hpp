@@ -2,30 +2,54 @@
 #define MATH__LINEAR_ALGEBRA__QUATERNIONS__HPP
 
 
+#include "LinearAlgebraDataTypes.hpp"
+
+
 namespace Andromeda::Math
 {
-    struct Vec3;
-
-    class Quaternion
+    // Lightweight value type
+    struct Quaternion
     {
-    public:
         float w;
         float x;
         float y;
         float z;
 
-        Quaternion();
-        Quaternion(float w_, float x_, float y_, float z_);
+        Quaternion()
+            : w(1.0f)
+            , x(0.0f)
+            , y(0.0f)
+            , z(0.0f)
+        {
+        }
 
-        static Quaternion Identity();
+        Quaternion(float w_, float x_, float y_, float z_)
+            : w(w_)
+            , x(x_)
+            , y(y_)
+            , z(z_)
+        {
+        }
 
+        static Quaternion Identity()
+        {
+            return Quaternion(1.0f, 0.0f, 0.0f, 0.0f);
+        }
+    };
+
+    // All operations live here and will be implemented with glm in the .cpp
+    class QuaternionOps
+    {
+    public:
         // Construction
+        static Quaternion Identity();
         static Quaternion FromAxisAngle(const Vec3& axis, float angleRadians);
 
-        // Basic ops
+        // Basic properties
         static float Length(const Quaternion& q);
         static float LengthSquared(const Quaternion& q);
 
+        // Unary ops
         static Quaternion Normalize(const Quaternion& q, float epsilon = 1e-6f);
         static Quaternion Conjugate(const Quaternion& q);
         static Quaternion Inverse(const Quaternion& q, float epsilon = 1e-6f);
@@ -38,12 +62,13 @@ namespace Andromeda::Math
         // Dot
         static float Dot(const Quaternion& a, const Quaternion& b);
 
-        // Slerp
+        // Spherical linear interpolation, t in [0, 1]
         static Quaternion Slerp(const Quaternion& a, const Quaternion& b, float t, float epsilon = 1e-6f);
 
-        // Rotate vector
+        // Rotate a vector by a quaternion (q * v * q^-1)
         static Vec3 RotateVector(const Quaternion& q, const Vec3& v);
     };
 }
 
-#endif
+
+#endif // MATH__LINEAR_ALGEBRA__QUATERNIONS__HPP

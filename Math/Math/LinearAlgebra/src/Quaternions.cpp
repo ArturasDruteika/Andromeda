@@ -1,11 +1,10 @@
 #include "../include/Quaternions.hpp"
-#include "../include/LinearAlgebraDataTypes.hpp"
+
+#define GLM_ENABLE_EXPERIMENTAL
 
 #include <glm/glm.hpp>
 #include <glm/gtc/quaternion.hpp>
 #include <glm/gtx/quaternion.hpp>
-
-#include <cmath>
 
 
 namespace Andromeda::Math
@@ -33,45 +32,29 @@ namespace Andromeda::Math
         }
     }
 
-    Quaternion::Quaternion()
-        : w(1.0f)
-        , x(0.0f)
-        , y(0.0f)
-        , z(0.0f)
+    Quaternion QuaternionOps::Identity()
     {
+        return Quaternion::Identity();
     }
 
-    Quaternion::Quaternion(float w_, float x_, float y_, float z_)
-        : w(w_)
-        , x(x_)
-        , y(y_)
-        , z(z_)
-    {
-    }
-
-    Quaternion Quaternion::Identity()
-    {
-        return Quaternion(1.0f, 0.0f, 0.0f, 0.0f);
-    }
-
-    Quaternion Quaternion::FromAxisAngle(const Vec3& axis, float angleRadians)
+    Quaternion QuaternionOps::FromAxisAngle(const Vec3& axis, float angleRadians)
     {
         glm::vec3 gAxis = ToGlm(axis);
         glm::quat gq = glm::angleAxis(angleRadians, glm::normalize(gAxis));
         return FromGlm(gq);
     }
 
-    float Quaternion::Length(const Quaternion& q)
+    float QuaternionOps::Length(const Quaternion& q)
     {
         return std::sqrt(LengthSquared(q));
     }
 
-    float Quaternion::LengthSquared(const Quaternion& q)
+    float QuaternionOps::LengthSquared(const Quaternion& q)
     {
         return q.w * q.w + q.x * q.x + q.y * q.y + q.z * q.z;
     }
 
-    Quaternion Quaternion::Normalize(const Quaternion& q, float epsilon)
+    Quaternion QuaternionOps::Normalize(const Quaternion& q, float epsilon)
     {
         glm::quat g = ToGlm(q);
         float lenSq = glm::dot(g, g);
@@ -85,12 +68,12 @@ namespace Andromeda::Math
         return FromGlm(g);
     }
 
-    Quaternion Quaternion::Conjugate(const Quaternion& q)
+    Quaternion QuaternionOps::Conjugate(const Quaternion& q)
     {
         return Quaternion(q.w, -q.x, -q.y, -q.z);
     }
 
-    Quaternion Quaternion::Inverse(const Quaternion& q, float epsilon)
+    Quaternion QuaternionOps::Inverse(const Quaternion& q, float epsilon)
     {
         glm::quat g = ToGlm(q);
         float lenSq = glm::dot(g, g);
@@ -104,29 +87,39 @@ namespace Andromeda::Math
         return FromGlm(g);
     }
 
-    Quaternion Quaternion::Multiply(const Quaternion& a, const Quaternion& b)
+    Quaternion QuaternionOps::Multiply(const Quaternion& a, const Quaternion& b)
     {
         glm::quat ga = ToGlm(a);
         glm::quat gb = ToGlm(b);
-        return FromGlm(ga * gb);
+        glm::quat gr = ga * gb;
+        return FromGlm(gr);
     }
 
-    Quaternion Quaternion::Add(const Quaternion& a, const Quaternion& b)
+    Quaternion QuaternionOps::Add(const Quaternion& a, const Quaternion& b)
     {
-        return Quaternion(a.w + b.w, a.x + b.x, a.y + b.y, a.z + b.z);
+        return Quaternion(a.w + b.w,
+            a.x + b.x,
+            a.y + b.y,
+            a.z + b.z);
     }
 
-    Quaternion Quaternion::Sub(const Quaternion& a, const Quaternion& b)
+    Quaternion QuaternionOps::Sub(const Quaternion& a, const Quaternion& b)
     {
-        return Quaternion(a.w - b.w, a.x - b.x, a.y - b.y, a.z - b.z);
+        return Quaternion(a.w - b.w,
+            a.x - b.x,
+            a.y - b.y,
+            a.z - b.z);
     }
 
-    float Quaternion::Dot(const Quaternion& a, const Quaternion& b)
+    float QuaternionOps::Dot(const Quaternion& a, const Quaternion& b)
     {
-        return a.w * b.w + a.x * b.x + a.y * b.y + a.z * b.z;
+        return a.w * b.w +
+            a.x * b.x +
+            a.y * b.y +
+            a.z * b.z;
     }
 
-    Quaternion Quaternion::Slerp(const Quaternion& a, const Quaternion& b, float t, float epsilon)
+    Quaternion QuaternionOps::Slerp(const Quaternion& a, const Quaternion& b, float t, float epsilon)
     {
         if (t <= 0.0f)
         {
@@ -151,7 +144,7 @@ namespace Andromeda::Math
         return FromGlm(gRes);
     }
 
-    Vec3 Quaternion::RotateVector(const Quaternion& q, const Vec3& v)
+    Vec3 QuaternionOps::RotateVector(const Quaternion& q, const Vec3& v)
     {
         glm::quat gq = ToGlm(q);
         glm::vec3 gv = ToGlm(v);
