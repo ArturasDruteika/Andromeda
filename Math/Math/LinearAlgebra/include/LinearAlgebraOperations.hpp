@@ -36,7 +36,14 @@ namespace Andromeda
 			static Vec3 Normalize(const Vec3& v, float epsilon = 1e-8f);
 			static Vec4 Normalize(const Vec4& v, float epsilon = 1e-8f);
 
+			// Cross product (3D)
+			static Vec3 Cross(const Vec3& a, const Vec3& b);
+
+			// Projection matrix (OpenGL-style)
 			static Mat4 Perspective(float fovYRadians, float aspect, float zNear, float zFar);
+
+			// View matrix (glm::lookAt analog, OpenGL-style RH, -Z forward, Y up)
+			static Mat4 LookAt(const Vec3& eye, const Vec3& center, const Vec3& up);
 		};
 	}
 }

@@ -152,6 +152,16 @@ namespace Andromeda
 			return Vec4{ v[0] * invLen, v[1] * invLen, v[2] * invLen, v[3] * invLen };
 		}
 
+		Vec3 LinAlgOps::Cross(const Vec3& a, const Vec3& b)
+		{
+			return Vec3
+			{
+				a[1] * b[2] - a[2] * b[1],
+				a[2] * b[0] - a[0] * b[2],
+				a[0] * b[1] - a[1] * b[0]
+			};
+		}
+
 		Mat4 LinAlgOps::Perspective(float fovYRadians, float aspect, float zNear, float zFar)
 		{
 			// Basic safety: avoid division by zero or nonsense parameters
@@ -217,5 +227,54 @@ namespace Andromeda
 			return result;
 		}
 
+		Mat4 LinAlgOps::LookAt(const Vec3& eye, const Vec3& center, const Vec3& up)
+		{
+			// Forward vector (from eye to center)
+			Vec3 f = Normalize(center - eye);
+			// Side vector
+			Vec3 s = Normalize(Cross(f, up));
+			// Recomputed orthonormal up vector
+			Vec3 u = Cross(s, f);
+
+			Mat4 result;
+
+			// Row 0
+			result[0] = Vec4
+			{
+				s[0],
+				s[1],
+				s[2],
+				-DotProd(s, eye)
+			};
+
+			// Row 1
+			result[1] = Vec4
+			{
+				u[0],
+				u[1],
+				u[2],
+				-DotProd(u, eye)
+			};
+
+			// Row 2
+			result[2] = Vec4
+			{
+				-f[0],
+				-f[1],
+				-f[2],
+				DotProd(f, eye)
+			};
+
+			// Row 3
+			result[3] = Vec4
+			{
+				0.0f,
+				0.0f,
+				0.0f,
+				1.0f
+			};
+
+			return result;
+		}
 	}
 }
