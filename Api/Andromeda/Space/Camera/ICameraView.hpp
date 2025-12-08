@@ -15,11 +15,12 @@ namespace Andromeda
         virtual ~ICameraView() = default;
 
         // Getters
-        virtual Math::Mat4 GetViewMatrix() const = 0;
-        virtual Math::Vec3 GetPosition() const = 0;
-        virtual Math::Vec3 GetForward() const = 0;
-        virtual Math::Vec3 GetRight() const = 0;
-        virtual Math::Vec3 GetUp() const = 0;
+        virtual const Math::Vec3& GetPosition() const = 0;
+        virtual const Math::Vec3& GetTargetCoords() const = 0;
+        virtual const Math::Vec3& GetForward() const = 0;
+        virtual const Math::Vec3& GetRight() const = 0;
+        virtual const Math::Vec3& GetUp() const = 0;
+        virtual const Math::Mat4& GetViewMatrix() const = 0;
     };
 }
 
