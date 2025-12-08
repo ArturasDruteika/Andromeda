@@ -67,6 +67,12 @@ namespace Andromeda::Math
 
         // Rotate a vector by a quaternion (q * v * q^-1)
         static Vec3 RotateVector(const Quaternion& q, const Vec3& v);
+
+		// Create a quaternion representing a rotation of angleRadians around axis
+        static Quaternion AngleAxis(float angleRadians, const Vec3& axis);
+
+		// Rotate vector v by quaternion q
+        static Vec3 Rotate(const Quaternion& q, const Vec3& v);
     };
 }
 

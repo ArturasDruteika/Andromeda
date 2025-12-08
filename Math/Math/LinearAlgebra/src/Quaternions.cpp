@@ -151,4 +151,14 @@ namespace Andromeda::Math
         glm::vec3 gvRot = glm::rotate(gq, gv);
         return FromGlm(gvRot);
     }
+
+    Quaternion QuaternionOps::AngleAxis(float angleRadians, const Vec3& axis)
+    {
+        return FromAxisAngle(axis, angleRadians);
+    }
+
+    Vec3 QuaternionOps::Rotate(const Quaternion& q, const Vec3& v)
+    {
+        return RotateVector(q, v);
+    }
 }

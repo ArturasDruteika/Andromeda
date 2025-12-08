@@ -39,11 +39,31 @@ namespace Andromeda
 			// Cross product (3D)
 			static Vec3 Cross(const Vec3& a, const Vec3& b);
 
+			// Rotate vector around axis by angle (glm::rotate(vec, angle, axis))
+			static Vec2 Rotate(const Vec2& v, float angleRadians);
+			static Vec3 Rotate(const Vec3& v, float angleRadians, const Vec3& axis);
+			static Vec4 Rotate(const Vec4& v, float angleRadians, const Vec3& axis);
+
 			// Projection matrix (OpenGL-style)
 			static Mat4 Perspective(float fovYRadians, float aspect, float zNear, float zFar);
 
 			// View matrix (glm::lookAt analog, OpenGL-style RH, -Z forward, Y up)
 			static Mat4 LookAt(const Vec3& eye, const Vec3& center, const Vec3& up);
+
+			// Clamps a value between minValue and maxValue
+			template <typename T>
+			static T Clamp(const T& value, const T& minValue, const T& maxValue)
+			{
+				if (value < minValue)
+				{
+					return minValue;
+				}
+				if (value > maxValue)
+				{
+					return maxValue;
+				}
+				return value;
+			}
 		};
 	}
 }

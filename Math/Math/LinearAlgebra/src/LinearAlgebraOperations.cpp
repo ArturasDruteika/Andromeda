@@ -162,6 +162,77 @@ namespace Andromeda
 			};
 		}
 
+		Vec2 LinAlgOps::Rotate(const Vec2& v, float angleRadians)
+		{
+			float cosA = std::cos(angleRadians);
+			float sinA = std::sin(angleRadians);
+
+			return Vec2
+			{
+				v[0] * cosA - v[1] * sinA,
+				v[0] * sinA + v[1] * cosA
+			};
+		}
+
+		Vec3 LinAlgOps::Rotate(const Vec3& v, float angleRadians, const Vec3& axis)
+		{
+			// Equivalent to glm::rotate(v, angle, axis)
+			// Uses Rodrigues rotation formula.
+
+			Vec3 axisNorm = Normalize(axis);
+			float cosA = std::cos(angleRadians);
+			float sinA = std::sin(angleRadians);
+
+			// term1 = v * cosA
+			Vec3 term1
+			{
+				v[0] * cosA,
+				v[1] * cosA,
+				v[2] * cosA
+			};
+
+			// term2 = cross(axis, v) * sinA
+			Vec3 crossAv = Cross(axisNorm, v);
+			Vec3 term2
+			{
+				crossAv[0] * sinA,
+				crossAv[1] * sinA,
+				crossAv[2] * sinA
+			};
+
+			// term3 = axis * dot(axis, v) * (1 - cosA)
+			float dotAv = DotProd(axisNorm, v);
+			float k = (1.0f - cosA) * dotAv;
+			Vec3 term3
+			{
+				axisNorm[0] * k,
+				axisNorm[1] * k,
+				axisNorm[2] * k
+			};
+
+			return Vec3
+			{
+				term1[0] + term2[0] + term3[0],
+				term1[1] + term2[1] + term3[1],
+				term1[2] + term2[2] + term3[2]
+			};
+		}
+
+		Vec4 LinAlgOps::Rotate(const Vec4& v, float angleRadians, const Vec3& axis)
+		{
+			Vec3 xyz{ v[0], v[1], v[2] };
+
+			Vec3 rotated = Rotate(xyz, angleRadians, axis);
+
+			return Vec4
+			{
+				rotated[0],
+				rotated[1],
+				rotated[2],
+				v[3]   // w unchanged
+			};
+		}
+
 		Mat4 LinAlgOps::Perspective(float fovYRadians, float aspect, float zNear, float zFar)
 		{
 			// Basic safety: avoid division by zero or nonsense parameters
