@@ -1,7 +1,7 @@
 #include "../include/PerspectiveControl.hpp"
 #include "Math/LinearAlgebra/include/LinearAlgebraDataTypes.hpp"
-#include "../../../Utils/include/MathUtils.hpp"
-#include <glm/gtc/matrix_transform.hpp>
+#include "Math/LinearAlgebra/include/LinearAlgebraOperations.hpp"
+#include "Math/Trigonometry/include/Trigonometry.hpp"
 
 
 namespace Andromeda::Space
@@ -82,7 +82,11 @@ namespace Andromeda::Space
 
 	void PerspectiveControl::UpdateProjection()
 	{
-		glm::mat4 projection = glm::perspective(glm::radians(m_fovDeg), m_aspect, m_nearPlane, m_farPlane);
-		m_projection = MathUtils::FromGLM(projection);
+		m_projection = Math::LinAlgOps::Perspective(
+			Math::Trigonometry::Deg2Rad(m_fovDeg), 
+			m_aspect, 
+			m_nearPlane, 
+			m_farPlane
+		);
 	}
 }

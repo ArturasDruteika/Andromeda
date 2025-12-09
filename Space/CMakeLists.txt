@@ -17,19 +17,17 @@ find_package(spdlog REQUIRED)
 
 # ==== Camera ====
 set(CAMERA_HEADERS
-    Space/Camera/Abstracts/include/PerspectiveControl.hpp
-    Space/Camera/Abstracts/include/CameraView.hpp
-    Space/Camera/Abstracts/include/CameraController.hpp
-    Space/Camera/Cameras/include/Camera.hpp
-    Space/Camera/Cameras/include/CameraImpl.hpp
+    Space/Camera/include/PerspectiveControl.hpp
+    Space/Camera/include/CameraView.hpp
+    Space/Camera/include/CameraController.hpp
+    Space/Camera/include/Camera.hpp
 )
 
 set(CAMERA_SOURCES
-    Space/Camera/Abstracts/src/PerspectiveControl.cpp
-    Space/Camera/Abstracts/src/CameraView.cpp
-    Space/Camera/Abstracts/src/CameraController.cpp
-    Space/Camera/Cameras/src/Camera.cpp
-    Space/Camera/Cameras/src/CameraImpl.cpp
+    Space/Camera/src/PerspectiveControl.cpp
+    Space/Camera/src/CameraView.cpp
+    Space/Camera/src/CameraController.cpp
+    Space/Camera/src/Camera.cpp
 )
 
 # ==== Colors ====
