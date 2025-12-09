@@ -1,29 +1,38 @@
-#include "../include/Mesh.hpp"
+#include "../include/Object.hpp"
 
 
 namespace Andromeda::Space
 {
-	Mesh::Mesh() = default;
-
-	Mesh::~Mesh() = default;
-
-	unsigned int Mesh::GetIndexCount() const
+	Object::Object()
+		: m_isActive{ false }
+		, m_id{ -1 }
 	{
-		return m_indices.size();
 	}
 
-	unsigned int Mesh::GetVertexCount() const
+	Object::~Object() = default;
+
+	bool Object::IsActive() const
 	{
-		return m_vertices.size();
+		return m_isActive;
 	}
 
-	const std::vector<unsigned int>& Mesh::GetIndices() const
+	int Object::GetID() const
 	{
-		return m_indices;
+		return m_id;
 	}
 
-	const std::vector<Space::Vertex>& Mesh::GetVertices() const
+	const std::string& Object::GetName() const
 	{
-		return m_vertices;
+		return m_name;
+	}
+
+	void Object::Active(bool active)
+	{
+		m_isActive = active;
+	}
+
+	void Object::SetName(const std::string& name)
+	{
+		m_name = name;
 	}
 }

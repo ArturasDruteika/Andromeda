@@ -10,12 +10,12 @@ namespace Andromeda
 		virtual ~IObject() = default;
 		
 		// Getters
+		virtual bool IsActive() const = 0;
 		virtual int GetID() const = 0;
         virtual const std::string& GetName() const = 0;
-        virtual bool IsActive() const = 0;
         // Setters
+		virtual void Active(bool active) = 0;
         virtual void SetName(const std::string& name) = 0;
-        virtual void SetActive(bool active) = 0;
 	};
 }
 
