@@ -233,6 +233,176 @@ namespace Andromeda
 			};
 		}
 
+		Mat4 LinAlgOps::Rotate(const Mat4& matrix, float angleRadians, const Vec3& axis)
+		{
+			Vec3 n = Normalize(axis);
+
+			float c = std::cos(angleRadians);
+			float s = std::sin(angleRadians);
+			float oneMinusC = 1.0f - c;
+
+			// Build a standard 3D rotation matrix around axis
+			Mat4 R;
+
+			R[0] = Vec4(
+				c + n[0] * n[0] * oneMinusC,
+				n[0] * n[1] * oneMinusC - n[2] * s,
+				n[0] * n[2] * oneMinusC + n[1] * s,
+				0.0f
+			);
+
+			R[1] = Vec4(
+				n[1] * n[0] * oneMinusC + n[2] * s,
+				c + n[1] * n[1] * oneMinusC,
+				n[1] * n[2] * oneMinusC - n[0] * s,
+				0.0f
+			);
+
+			R[2] = Vec4(
+				n[2] * n[0] * oneMinusC - n[1] * s,
+				n[2] * n[1] * oneMinusC + n[0] * s,
+				c + n[2] * n[2] * oneMinusC,
+				0.0f
+			);
+
+			R[3] = Vec4(0.0f, 0.0f, 0.0f, 1.0f);
+
+			// GLM behavior: Rotate(mat, angle, axis) == mat * R
+			return matrix * R;
+		}
+
+		Mat4 LinAlgOps::Translate(const Vec3& translation)
+		{
+			Mat4 result;
+
+			// Start with identity
+			result[0] = Vec4{ 1.0f, 0.0f, 0.0f, translation[0] };
+			result[1] = Vec4{ 0.0f, 1.0f, 0.0f, translation[1] };
+			result[2] = Vec4{ 0.0f, 0.0f, 1.0f, translation[2] };
+			result[3] = Vec4{ 0.0f, 0.0f, 0.0f, 1.0f };
+
+			return result;
+		}
+
+		Mat4 LinAlgOps::Translate(const Mat4& matrix, const Vec3& translation)
+		{
+			Mat4 result = matrix;
+
+			// Add translation to the last column, like glm::translate
+			result[0][3] += translation[0];
+			result[1][3] += translation[1];
+			result[2][3] += translation[2];
+
+			return result;
+		}
+
+		Vec2 LinAlgOps::Scale(const Vec2& v, float s)
+		{
+			return Vec2
+			{
+				v[0] * s,
+				v[1] * s
+			};
+		}
+
+		Vec3 LinAlgOps::Scale(const Vec3& v, float s)
+		{
+			return Vec3
+			{
+				v[0] * s,
+				v[1] * s,
+				v[2] * s
+			};
+		}
+
+		Vec4 LinAlgOps::Scale(const Vec4& v, float s)
+		{
+			return Vec4
+			{
+				v[0] * s,
+				v[1] * s,
+				v[2] * s,
+				v[3] * s
+			};
+		}
+
+		// === Matrix uniform scaling (scalar) ===
+
+		Mat2 LinAlgOps::Scale(const Mat2& m, float s)
+		{
+			Mat2 result;
+
+			result[0] = Scale(m[0], s);
+			result[1] = Scale(m[1], s);
+
+			return result;
+		}
+
+		Mat3 LinAlgOps::Scale(const Mat3& m, float s)
+		{
+			Mat3 result;
+
+			result[0] = Scale(m[0], s);
+			result[1] = Scale(m[1], s);
+			result[2] = Scale(m[2], s);
+
+			return result;
+		}
+
+		Mat4 LinAlgOps::Scale(const Mat4& m, float s)
+		{
+			Mat4 result;
+
+			result[0] = Scale(m[0], s);
+			result[1] = Scale(m[1], s);
+			result[2] = Scale(m[2], s);
+			result[3] = Scale(m[3], s);
+
+			return result;
+		}
+
+
+		// === Matrix non-uniform scaling (per-axis) ===
+
+		// Mat2 non-uniform scale: x, y
+		Mat2 LinAlgOps::Scale(const Mat2& m, const Vec2& s)
+		{
+			Mat2 S;
+
+			// diag(sx, sy)
+			S[0] = Vec2(s[0], 0.0f);
+			S[1] = Vec2(0.0f, s[1]);
+
+			return m * S;
+		}
+
+		// Mat3 non-uniform scale: x, y, z
+		Mat3 LinAlgOps::Scale(const Mat3& m, const Vec3& s)
+		{
+			Mat3 S;
+
+			// diag(sx, sy, sz)
+			S[0] = Vec3(s[0], 0.0f, 0.0f);
+			S[1] = Vec3(0.0f, s[1], 0.0f);
+			S[2] = Vec3(0.0f, 0.0f, s[2]);
+
+			return m * S;
+		}
+
+		// Mat4 non-uniform scale: x, y, z (TRS-style, like glm::scale)
+		Mat4 LinAlgOps::Scale(const Mat4& m, const Vec3& s)
+		{
+			Mat4 S;
+
+			// diag(sx, sy, sz, 1)
+			S[0] = Vec4(s[0], 0.0f, 0.0f, 0.0f);
+			S[1] = Vec4(0.0f, s[1], 0.0f, 0.0f);
+			S[2] = Vec4(0.0f, 0.0f, s[2], 0.0f);
+			S[3] = Vec4(0.0f, 0.0f, 0.0f, 1.0f);
+
+			return m * S;
+		}
+
 		Mat4 LinAlgOps::Perspective(float fovYRadians, float aspect, float zNear, float zFar)
 		{
 			// Basic safety: avoid division by zero or nonsense parameters
