@@ -1,29 +1,27 @@
-#include "../include/Mesh.hpp"
+#include "../include/GeometricObject.hpp"
 
 
 namespace Andromeda::Space
 {
-	Mesh::Mesh() = default;
-
-	Mesh::~Mesh() = default;
-
-	unsigned int Mesh::GetIndexCount() const
+	GeometricObject::GeometricObject(const Math::Vec3& centerPosition)
+		: Transformable(centerPosition)
 	{
-		return m_indices.size();
 	}
 
-	unsigned int Mesh::GetVertexCount() const
+	GeometricObject::~GeometricObject() = default;
+
+	const Mesh& GeometricObject::GetMesh() const
 	{
-		return m_vertices.size();
+		return m_mesh;
 	}
 
-	const std::vector<unsigned int>& Mesh::GetIndices() const
+	Space::Color GeometricObject::GetColor() const
 	{
-		return m_indices;
+		return m_color;
 	}
 
-	const std::vector<Space::Vertex>& Mesh::GetVertices() const
+	void GeometricObject::SetColor(const Space::Color& color)
 	{
-		return m_vertices;
+		m_color = color;
 	}
 }

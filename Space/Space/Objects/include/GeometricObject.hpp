@@ -1,34 +1,35 @@
-#ifndef RENDERING__ABSTRACTS__RENDERABLE_OBJECT__HPP
-#define RENDERING__ABSTRACTS__RENDERABLE_OBJECT__HPP
+#ifndef ANDROMEDA__SPACE__GEOMETRIC_OBJECT__HPP
+#define ANDROMEDA__SPACE__GEOMETRIC_OBJECT__HPP
 
 
-#include "Mesh.hpp"
-#include "Luminous.hpp"
+#include "Andromeda/Space/Objects/IGeometricObject.hpp"
+#include "Object.hpp"
 #include "Transformable.hpp"
-#include "Space/Colors/include/Colors.hpp"
+#include "Mesh.hpp"
 
 
 namespace Andromeda::Space
 {
-    class RenderableObject :
-        public Mesh,
-        public Transformable,
-        public Luminous
-    {
-    public:
-        RenderableObject(const Math::Vec3& centerPosition, const Space::Color& color);
-        ~RenderableObject();
+	class GeometricObject
+		: public virtual IGeometricObject
+		, public Object
+		, public Transformable
+	{
+	public:
+		GeometricObject(const Math::Vec3& centerPosition);
+		~GeometricObject();
 
-        // Getters
-        Space::Color GetColor() const;
+		// Getters
+		const Mesh& GetMesh() const;
+		Space::Color GetColor() const;
 		// Setters
 		void SetColor(const Space::Color& color);
 
-    protected:
-        Space::Color m_color;
-
-    };
+	private:
+		Space::Color m_color;
+		Mesh m_mesh;
+	};
 }
 
 
-#endif // RENDERING__ABSTRACTS__RENDERABLE_OBJECT__HPP
+#endif // ANDROMEDA__SPACE__GEOMETRIC_OBJECT__HPP
