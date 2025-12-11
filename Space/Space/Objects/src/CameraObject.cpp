@@ -1,29 +1,12 @@
-#include "../include/Mesh.hpp"
+#include "../include/CameraObject.hpp"
 
 
 namespace Andromeda::Space
 {
-	Mesh::Mesh() = default;
-
-	Mesh::~Mesh() = default;
-
-	unsigned int Mesh::GetIndexCount() const
+	CameraObject::CameraObject(const Math::Vec3& centerPosition)
+		: Transformable(centerPosition)
 	{
-		return m_indices.size();
 	}
 
-	unsigned int Mesh::GetVertexCount() const
-	{
-		return m_vertices.size();
-	}
-
-	const std::vector<unsigned int>& Mesh::GetIndices() const
-	{
-		return m_indices;
-	}
-
-	const std::vector<Space::Vertex>& Mesh::GetVertices() const
-	{
-		return m_vertices;
-	}
+	CameraObject::~CameraObject() = default;
 }
