@@ -2,53 +2,53 @@
 #define RENDERING__ABSTRACTS__TRANSFORMABLE__HPP
 
 
-#include "Space/Transformations/include/TransformationTypes.hpp"
+#include "../../Transformations/include/TransformationTypes.hpp"
 #include "Math/LinearAlgebra/include/LinearAlgebraDataTypes.hpp"
-#include "glm/glm.hpp"
-#include "glm/gtc/matrix_transform.hpp"
+#include "Andromeda/Space/Objects/ITransformable.hpp"
 
 
 namespace Andromeda::Space
 {
     class Transformable
+        : public virtual ITransformable
     {
     public:
         Transformable(const Math::Vec3& centerPosition);
         ~Transformable();
 
-		// Getters
-        bool StateChanged() const;
-		Math::Vec3 GetCenterPosition() const;
-        Math::Mat4 GetModelMatrix() const;
-		// Setters
-        void SetModelMatrix(const Math::Mat4& modelMatrix);
+        // Getters
+        bool StateChanged() const override;
+        Math::Vec3 GetCenterPosition() const override;
+        Math::Mat4 GetModelMatrix() const override;
+        // Setters
+        void SetModelMatrix(const Math::Mat4& modelMatrix) override;
 
-        void ResetState();
-        void Translate(const Math::Vec3& translation);
-        void TranslateDelta(const Math::Vec3& translationDelta);
-        void Rotate(const Math::Vec3& rotation);
-        void RotateX(float angle);
-        void RotateY(float angle);
-        void RotateZ(float angle);
-        void Scale(const Math::Vec3& scale);
+        void ResetState() override;
+        void Translate(const Math::Vec3& translation) override;
+        void TranslateDelta(const Math::Vec3& translationDelta) override;
+        void Rotate(const Math::Vec3& rotation) override;
+        void RotateX(float angle) override;
+        void RotateY(float angle) override;
+        void RotateZ(float angle) override;
+        void Scale(const Math::Vec3& scale) override;
         void UpdateModelMatrix(const Space::TransformationType& transformationType);
 
     private:
         // Transformation matrices
-        glm::mat4 ConstructTranslationMatrix() const;
-        glm::mat4 ConstructRotationMatrix() const;
-        glm::mat4 ConstructScaleMatrix() const;
+        Math::Mat4 ConstructTranslationMatrix() const;
+        Math::Mat4 ConstructRotationMatrix() const;
+        Math::Mat4 ConstructScaleMatrix() const;
 
     protected:
         bool m_stateChanged;
         // Transform components
-        glm::vec3 m_centerPosition;
-        glm::vec3 m_rotation;
-        glm::vec3 m_scale;
-        glm::mat4 m_translationMatrix;
-        glm::mat4 m_rotationMatrix;
-        glm::mat4 m_scaleMatrix;
-        glm::mat4 m_modelMatrix;
+        Math::Vec3 m_centerPosition;
+        Math::Vec3 m_rotation;
+        Math::Vec3 m_scale;
+        Math::Mat4 m_translationMatrix;
+        Math::Mat4 m_rotationMatrix;
+        Math::Mat4 m_scaleMatrix;
+        Math::Mat4 m_modelMatrix;
     };
 }
 

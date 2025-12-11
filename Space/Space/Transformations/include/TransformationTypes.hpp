@@ -6,10 +6,10 @@ namespace Andromeda::Space
 {
 	enum class TransformationType
 	{
-		TRANSLATE,
-		ROTATE,
-		SCALE,
-		ALL
+		Translation,
+		Rotation,
+		Scale,
+		All
 	};
 }
 
