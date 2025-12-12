@@ -5,7 +5,7 @@
 #include "../../MacroExports/include/MacroExports.hpp"
 #include "pch.hpp"
 #include "Math/LinearAlgebra/include/LinearAlgebraDataTypes.hpp"
-#include "Andromeda/Materials/IMaterial.hpp"
+#include "Andromeda/Space/Materials/IMaterial.hpp"
 
 
 namespace Andromeda::Space

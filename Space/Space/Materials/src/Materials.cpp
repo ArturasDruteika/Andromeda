@@ -22,22 +22,22 @@ namespace Andromeda::Space
 		return m_shininess;
 	}
 
-	std::string Material::GetName() const
+	const std::string& Material::GetName() const
 	{
 		return m_name;
 	}
 
-	Math::Vec3 Material::GetAmbient() const
+	const Math::Vec3& Material::GetAmbient() const
 	{
 		return m_ambient;
 	}
 
-	Math::Vec3 Material::GetDiffuse() const
+	const Math::Vec3& Material::GetDiffuse() const
 	{
 		return m_diffuse;
 	}
 
-	Math::Vec3 Material::GetSpecular() const
+	const Math::Vec3& Material::GetSpecular() const
 	{
 		return m_specular;
 	}
