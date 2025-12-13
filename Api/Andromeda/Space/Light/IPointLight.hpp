@@ -3,14 +3,15 @@
 
 
 #include "ILight.hpp"
-#include "ILuminousBehavior.hpp"
+#include "../Objects/ILightObject.hpp"
 #include "Math/LinearAlgebra/include/LinearAlgebraDataTypes.hpp"
 
 
 namespace Andromeda
 {
 	class IPointLight
-		: public ILuminousBehavior
+		: public virtual ILight
+		, public virtual ILightObject
 	{
 	public:
 		virtual ~IPointLight() = default;

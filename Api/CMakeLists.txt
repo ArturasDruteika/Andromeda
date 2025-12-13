@@ -33,13 +33,10 @@ set(GRAPHICS_CONTEXT_HEADERS
 # ==== Light ====
 set(LIGHT_HEADERS
     Andromeda/Space/Light/IDirectionalLight.hpp
-    Andromeda/Space/Light/ILightBehavior.hpp
     Andromeda/Space/Light/IPointLight.hpp
     Andromeda/Space/Light/ILight.hpp
     Andromeda/Space/Light/ISpotLight.hpp
     Andromeda/Space/Light/LightTypes.hpp
-    Andromeda/Space/Light/ILuminousBehavior.hpp
-    Andromeda/Space/Light/INonLuminousBehavior.hpp
 )
 
 # ==== Materials ====
@@ -53,12 +50,10 @@ set(OBJECTS_HEADERS
     Andromeda/Space/Objects/ICube.hpp
     Andromeda/Space/Objects/IGeometricObject.hpp
     Andromeda/Space/Objects/ILightObject.hpp
-    Andromeda/Space/Objects/ILuminous.hpp
     Andromeda/Space/Objects/IMesh.hpp
     Andromeda/Space/Objects/IObject.hpp
     Andromeda/Space/Objects/ISkyroom.hpp
     Andromeda/Space/Objects/ISphere.hpp
-    Andromeda/Space/Objects/ITransformable.hpp
 )
 
 # ==== Platform ====

@@ -3,8 +3,9 @@
 
 
 #include "IObject.hpp"
-#include "ITransformable.hpp"
 #include "IMesh.hpp"
+#include "../Transformations/ITransformable.hpp"
+#include "Math/LinearAlgebra/include/LinearAlgebraDataTypes.hpp"
 
 
 namespace Andromeda
@@ -18,7 +19,7 @@ namespace Andromeda
 		
 		// Getters
         virtual const IMesh& GetMesh() const = 0;
-		virtual Space::Color GetColor() const = 0;
+		virtual Math::Vec4 GetColor() const = 0;
 		// Setters
         virtual void SetColor(const Space::Color& color) = 0;
 	};

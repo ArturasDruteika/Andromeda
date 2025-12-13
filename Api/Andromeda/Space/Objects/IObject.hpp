@@ -2,6 +2,9 @@
 #define API__OBJECTS__I_OBJECT__HPP
 
 
+#include <string>
+
+
 namespace Andromeda
 {
 	class IObject
