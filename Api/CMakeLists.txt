@@ -85,6 +85,15 @@ set(SCENE_HEADERS
     Andromeda/Space/Scene/ISceneState.hpp
 )
 
+# ==== Transformations ====
+set(TRANSFORMATION_HEADERS
+    Andromeda/Space/Transformations/IRotatable.hpp
+    Andromeda/Space/Transformations/IScalable.hpp
+    Andromeda/Space/Transformations/ITransformable.hpp
+    Andromeda/Space/Transformations/ITranslatable.hpp
+    Andromeda/Space/Transformations/TransformationTypes.hpp
+)
+
 # ==== Window ====
 set(WINDOW_HEADERS
     Andromeda/Window/EventType.hpp
@@ -108,6 +117,7 @@ target_sources(${PROJECT_NAME}
             ${WINDOW_HEADERS}
             ${LIGHT_HEADERS}
             ${MATERIALS_HEADERS}
+            ${TRANSFORMATION_HEADERS}
 )
 
 target_include_directories(${PROJECT_NAME} 
@@ -210,6 +220,15 @@ source_group(
         "Scene"
     FILES
         ${SCENE_HEADERS}
+)
+
+source_group(
+    TREE
+        ${CMAKE_CURRENT_SOURCE_DIR}/Andromeda/Space/Transformations
+    PREFIX
+        "Transformations"
+    FILES
+        ${TRANSFORMATION_HEADERS}
 )
 
 source_group(
