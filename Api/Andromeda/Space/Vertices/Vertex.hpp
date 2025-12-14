@@ -1,30 +1,29 @@
-#ifndef RENDERING__VERTEX__HPP
-#define RENDERING__VERTEX__HPP
+#ifndef API__SPACE__VERTICES__VERTEX__HPP
+#define API__SPACE__VERTICES__VERTEX__HPP
 
 
-#include "../../Colors/include/Colors.hpp"
-#include "../../Coordinates/include/Points.hpp"
+#include "../Colors/Colors.hpp"
 #include "Math/LinearAlgebra/include/LinearAlgebraDataTypes.hpp"
 
 
-namespace Andromeda::Space
+namespace Andromeda
 {
 	struct Vertex
 	{
-		Point3D position;
+		Math::Vec3 position;
 		Color color;
 		Math::Vec3 normal;
 
 		Vertex() = default;
 
-		Vertex(const Point3D& pos, const Color& col)
+		Vertex(const Math::Vec3& pos, const Color& col)
 			: position(pos)
 			, color(col)
 			, normal(0.0f, 0.0f, 0.0f)
 		{
 		}
 
-		Vertex(const Point3D& pos, const Color& col, const Math::Vec3& normal)
+		Vertex(const Math::Vec3& pos, const Color& col, const Math::Vec3& normal)
 			: position(pos)
 			, color(col)
 			, normal(normal)
@@ -40,4 +39,4 @@ namespace Andromeda::Space
 	};
 }
 
-#endif // RENDERING__VERTEX__HPP
+#endif // API__SPACE__VERTICES__VERTEX__HPP

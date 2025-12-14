@@ -14,6 +14,11 @@ set(CAMERA_HEADERS
     Andromeda/Space/Camera/ICameraController.hpp
 )
 
+# ==== Colors ====
+set(COLORS_HEADERS
+    Andromeda/Space/Colors/Colors.hpp
+)
+
 # ==== Components ====
 set(COMPONENTS_HEADERS
     Andromeda/Components/GraphicsBackend.hpp
@@ -89,6 +94,11 @@ set(TRANSFORMATION_HEADERS
     Andromeda/Space/Transformations/TransformationTypes.hpp
 )
 
+# ==== Vertices ====
+set(VERTICES_HEADERS
+    Andromeda/Space/Vertices/Vertex.hpp
+)
+
 # ==== Window ====
 set(WINDOW_HEADERS
     Andromeda/Window/EventType.hpp
@@ -102,6 +112,7 @@ target_sources(${PROJECT_NAME}
         BASE_DIRS ${CMAKE_CURRENT_SOURCE_DIR}
         FILES
             ${CAMERA_HEADERS}
+            ${COLORS_HEADERS}
             ${COMPONENTS_HEADERS}
             ${ENGINE_HEADERS}
             ${GRAPHICS_CONTEXT_HEADERS}
@@ -113,6 +124,7 @@ target_sources(${PROJECT_NAME}
             ${LIGHT_HEADERS}
             ${MATERIALS_HEADERS}
             ${TRANSFORMATION_HEADERS}
+            ${VERTICES_HEADERS}
 )
 
 target_include_directories(${PROJECT_NAME} 
@@ -123,7 +135,6 @@ target_include_directories(${PROJECT_NAME}
 target_link_libraries(${PROJECT_NAME}
     INTERFACE
         Math
-        Space
 )
 
 # ===== Visual Studio filters (Solution Explorer groups) =====
@@ -135,6 +146,16 @@ source_group(
     FILES
         ${CAMERA_HEADERS}
 )
+
+source_group(
+    TREE
+        ${CMAKE_CURRENT_SOURCE_DIR}/Andromeda/Space/Colors
+    PREFIX
+        "Colors"
+    FILES
+        ${COLORS_HEADERS}
+)
+
 
 source_group(
     TREE
@@ -224,6 +245,15 @@ source_group(
         "Transformations"
     FILES
         ${TRANSFORMATION_HEADERS}
+)
+
+source_group(
+    TREE
+        ${CMAKE_CURRENT_SOURCE_DIR}/Andromeda/Space/Vertices
+    PREFIX
+        "Vertices"
+    FILES
+        ${VERTICES_HEADERS}
 )
 
 source_group(

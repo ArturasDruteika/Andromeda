@@ -3,14 +3,16 @@
 
 
 #include "IObject.hpp"
-#include "ITransformable.hpp"
+#include "../Transformations/IRotatable.hpp"
+#include "../Transformations/ITranslatable.hpp"
 
 
 namespace Andromeda
 {
 	class ICameraObject
-		: public IObject
-		, public ITransformable
+		: public virtual IObject
+		, public virtual IRotatable
+		, public virtual ITranslatable
 	{
 	public:
 		virtual ~ICameraObject() = default;

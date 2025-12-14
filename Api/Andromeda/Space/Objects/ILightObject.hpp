@@ -3,6 +3,7 @@
 
 
 #include "IObject.hpp"
+#include "../Light/LightTypes.hpp"
 
 
 namespace Andromeda
@@ -12,6 +13,9 @@ namespace Andromeda
 	{
 	public:
 		virtual ~ILightObject() = default;
+
+		// Getters
+		virtual const LightType& GetLightType() const = 0;
 	};
 }
 

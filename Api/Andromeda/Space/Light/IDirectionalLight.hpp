@@ -26,7 +26,7 @@ namespace Andromeda
         virtual void SetLightFarPlane(float farPlane) = 0;
 
         // Direction of the light in world space (should be normalized)
-        virtual Math::Vec3 GetDirection() const = 0;
+        virtual const Math::Vec3& GetDirection() const = 0;
         virtual void SetDirection(const Math::Vec3& direction) = 0;
     };
 }

@@ -1,11 +1,11 @@
-#ifndef SPACE__COLORS__HPP
-#define SPACE__COLORS__HPP
+#ifndef API__SPACE__COLORS__COLORS__HPP
+#define API__SPACE__COLORS__COLORS__HPP
 
 
 #include "Math/LinearAlgebra/include/LinearAlgebraDataTypes.hpp"
 
 
-namespace Andromeda::Space
+namespace Andromeda
 {
     // TODO: consider using Math::Vec4 vector to store data for speed
     struct Color
@@ -33,4 +33,4 @@ namespace Andromeda::Space
 }
 
 
-#endif // SPACE__COLORS__HPP
+#endif // API__SPACE__COLORS__COLORS__HPP
