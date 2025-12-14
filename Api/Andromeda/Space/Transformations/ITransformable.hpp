@@ -11,20 +11,16 @@
 namespace Andromeda
 {
     class ITransformable
-    : public virtual IRotatable
-    , public virtual IScalable
-    , public virtual ITranslatable
+        : public virtual IRotatable
+        , public virtual IScalable
+        , public virtual ITranslatable
     {
     public:
         virtual ~ITransformable() = default;
 
         // Getters
 		virtual bool StateChanged() const = 0;
-        virtual Math::Mat4 GetModelMatrix() const = 0;
-
-		// Getters
-		virtual Math::Vec3 GetCenterPosition() const = 0;
-        virtual Math::Mat4 GetModelMatrix() const = 0;
+        virtual Math::Mat4 GetModelMatrix() = 0;
 		// Setters
         virtual void SetModelMatrix(const Math::Mat4& modelMatrix) = 0;
 

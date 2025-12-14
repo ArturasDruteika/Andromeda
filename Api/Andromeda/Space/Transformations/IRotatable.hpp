@@ -14,8 +14,13 @@ namespace Andromeda
         virtual ~IRotatable() = default;
 
         // Getters
-        virtual Math::Vec3 GetRotation() const = 0;
+        virtual bool StateChanged() const = 0;
+        virtual const Math::Vec3& GetRotation() const = 0;
+        virtual const Math::Mat4& GetRotationMatrix() const = 0;
+        virtual const Math::Quaternion& GetOrientation() const = 0;
+
         // Setters
+        virtual void ResetState() = 0;
         virtual void SetRotation(const Math::Vec3& rotation) = 0;
         virtual void Rotate(const Math::Vec3& rotation) = 0;
         virtual void Rotate(const Math::Quaternion& delta) = 0;
