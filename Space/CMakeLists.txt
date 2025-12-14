@@ -107,7 +107,18 @@ set(OBJECTS_SOURCES
 
 # ==== Transformations ====
 set(TRANSFORMATIONS_HEADERS
+    Space/Transformations/include/Rotatable.hpp
+    Space/Transformations/include/Scalable.hpp
+    Space/Transformations/include/Transformable.hpp
     Space/Transformations/include/TransformationTypes.hpp
+    Space/Transformations/include/Translatable.hpp
+)
+
+set(TRANSFORMATIONS_SOURCES
+    Space/Transformations/src/Rotatable.cpp
+    Space/Transformations/src/Scalable.cpp
+    Space/Transformations/src/Transformable.cpp
+    Space/Transformations/src/Translatable.cpp
 )
 
 # ==== Vertices ====
@@ -130,6 +141,7 @@ add_library(${PROJECT_NAME}
         ${OBJECTS_HEADERS}
         ${OBJECTS_SOURCES}
         ${TRANSFORMATIONS_HEADERS}
+        ${TRANSFORMATIONS_SOURCES}
         ${VERTICES_HEADERS}
 )
 
@@ -259,6 +271,7 @@ source_group(
         "Transformations"
     FILES
         ${TRANSFORMATIONS_HEADERS}
+        ${TRANSFORMATIONS_SOURCES}
 )
 
 source_group(
