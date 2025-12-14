@@ -5,6 +5,7 @@
 #include <glm/glm.hpp>
 #include <glm/gtc/quaternion.hpp>
 #include <glm/gtx/quaternion.hpp>
+#include <glm/gtx/euler_angles.hpp>
 
 
 namespace Andromeda::Math
@@ -29,6 +30,32 @@ namespace Andromeda::Math
         inline Vec3 FromGlm(const glm::vec3& gv)
         {
             return Vec3(gv.x, gv.y, gv.z);
+        }
+
+        inline glm::mat4 ToGlm(const Mat4& m)
+        {
+            glm::mat4 gm(1.0f);
+            for (int c = 0; c < 4; ++c)
+            {
+                for (int r = 0; r < 4; ++r)
+                {
+                    gm[c][r] = m[c][r];
+                }
+            }
+            return gm;
+        }
+
+        inline Mat4 FromGlm(const glm::mat4& gm)
+        {
+            Mat4 m(1.0f);
+            for (int c = 0; c < 4; ++c)
+            {
+                for (int r = 0; r < 4; ++r)
+                {
+                    m[c][r] = gm[c][r];
+                }
+            }
+            return m;
         }
     }
 
@@ -160,5 +187,30 @@ namespace Andromeda::Math
     Vec3 QuaternionOps::Rotate(const Quaternion& q, const Vec3& v)
     {
         return RotateVector(q, v);
+    }
+
+    Quaternion QuaternionOps::FromEulerXYZ(float xRadians, float yRadians, float zRadians)
+    {
+        // Build rotation matrix from Euler XYZ, then convert to quaternion.
+        glm::mat4 R = glm::eulerAngleXYZ(xRadians, yRadians, zRadians);
+        glm::quat q = glm::quat_cast(R);
+        return FromGlm(q);
+    }
+
+    Vec3 QuaternionOps::ToEulerXYZ(const Quaternion& q)
+    {
+        glm::quat gq = ToGlm(q);
+
+        // glm::eulerAngles returns a vec3 of Euler angles (in radians).
+        // Interpretation corresponds to the chosen extraction convention.
+        glm::vec3 e = glm::eulerAngles(gq);
+        return FromGlm(e);
+    }
+
+    Mat4 QuaternionOps::ToMat4(const Quaternion& q)
+    {
+        glm::quat gq = ToGlm(q);
+        glm::mat4 gm = glm::toMat4(gq);
+        return FromGlm(gm);
     }
 }

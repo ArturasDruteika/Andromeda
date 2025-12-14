@@ -73,6 +73,11 @@ namespace Andromeda::Math
 
 		// Rotate vector v by quaternion q
         static Vec3 Rotate(const Quaternion& q, const Vec3& v);
+
+        // Conversion
+        static Quaternion FromEulerXYZ(float xRadians, float yRadians, float zRadians);
+        static Vec3 ToEulerXYZ(const Quaternion& q);
+        static Mat4 ToMat4(const Quaternion& q);
     };
 }
 
