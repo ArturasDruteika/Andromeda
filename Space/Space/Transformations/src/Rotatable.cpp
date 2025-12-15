@@ -43,7 +43,7 @@ namespace Andromeda
     void Rotatable::SetRotation(const Math::Vec3& rotation)
     {
         // rotation is Euler XYZ in radians
-        m_orientation = Math::QuaternionOps::FromEulerXYZ(rotation.x, rotation.y, rotation.z);
+        m_orientation = Math::QuaternionOps::FromEulerXYZ(rotation[0], rotation[1], rotation[2]);
         m_orientation = Math::QuaternionOps::Normalize(m_orientation);
 
         UpdateRotationDerivedData();

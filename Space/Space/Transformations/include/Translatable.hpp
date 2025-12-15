@@ -12,6 +12,7 @@ namespace Andromeda
 	{
 	public:
 		Translatable();
+		Translatable(const Math::Vec3& position);
 		~Translatable() override;
 
 		// Getters

@@ -22,7 +22,7 @@ namespace Andromeda::Space
 		return m_indices;
 	}
 
-	const std::vector<Space::Vertex>& Mesh::GetVertices() const
+	const std::vector<Vertex>& Mesh::GetVertices() const
 	{
 		return m_vertices;
 	}

@@ -2,9 +2,10 @@
 #define ANDROMEDA__SPACE__GEOMETRIC_OBJECT__HPP
 
 
-#include "Andromeda/Space/Objects/IGeometricObject.hpp"
 #include "Object.hpp"
-#include "Transformable.hpp"
+#include "Andromeda/Space/Colors/Colors.hpp"
+#include "Andromeda/Space/Objects/IGeometricObject.hpp"
+#include "../../Transformations/include/Transformable.hpp"
 #include "Mesh.hpp"
 
 
@@ -16,17 +17,18 @@ namespace Andromeda::Space
 		, public Transformable
 	{
 	public:
+		GeometricObject();
 		GeometricObject(const Math::Vec3& centerPosition);
-		~GeometricObject();
+		~GeometricObject() override;
 
 		// Getters
-		const Mesh& GetMesh() const;
-		Space::Color GetColor() const;
+		const Mesh& GetMesh() const override;
+		Color GetColor() const override;
 		// Setters
-		void SetColor(const Space::Color& color);
+		void SetColor(const Color& color) override;
 
 	private:
-		Space::Color m_color;
+		Color m_color;
 		Mesh m_mesh;
 	};
 }

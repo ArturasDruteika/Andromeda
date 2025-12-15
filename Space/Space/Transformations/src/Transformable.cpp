@@ -9,6 +9,13 @@ namespace Andromeda
 	{
 	}
 
+	Transformable::Transformable(const Math::Vec3& position)
+		: Translatable{ position }
+		, m_stateChanged{ false }
+		, m_modelMatrix{ 1.0f }
+	{
+	}
+
 	Transformable::~Transformable() = default;
 
 	bool Transformable::StateChanged() const

@@ -3,14 +3,14 @@
 
 
 #include "../../MacroExports/include/MacroExports.hpp"
-#include "Andromeda/Light/ILight.hpp"
+#include "Andromeda/Space/Light/ILight.hpp"
 #include "Math/LinearAlgebra/include/LinearAlgebraDataTypes.hpp"
 
 
 namespace Andromeda::Space
 {
 	class SPACE_API Light
-		: public ILight
+		: public virtual ILight
 	{
 	public:
 		Light(

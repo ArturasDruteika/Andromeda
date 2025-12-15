@@ -11,6 +11,13 @@ namespace Andromeda
 	{
 	}
 
+	Translatable::Translatable(const Math::Vec3& position)
+		: m_stateChanged{ false }
+		, m_position{ position }
+		, m_translationMatrix{ 1.0f }
+	{
+	}
+
 	Translatable::~Translatable() = default;
 
 	bool Translatable::StateChanged() const
@@ -25,7 +32,7 @@ namespace Andromeda
 
 	const Math::Mat4& Translatable::GetTranslationMatrix() const
 	{
-		m_translationMatrix;
+		return m_translationMatrix;
 	}
 
 	void Translatable::ResetState()

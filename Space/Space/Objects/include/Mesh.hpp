@@ -3,7 +3,7 @@
 
 
 #include "pch.hpp"
-#include "Space/Vertices/include/Vertex.hpp"
+#include "Andromeda/Space/Vertices/Vertex.hpp"
 #include "Andromeda/Space/Objects/IMesh.hpp"
 
 
@@ -20,11 +20,11 @@ namespace Andromeda::Space
 		unsigned int GetIndexCount() const override;
 		unsigned int GetVertexCount() const override;
 		const std::vector<unsigned int>& GetIndices() const override;
-		const std::vector<Space::Vertex>& GetVertices() const override;
+		const std::vector<Vertex>& GetVertices() const override;
 
 	protected:
 		std::vector<unsigned int> m_indices;
-		std::vector<Space::Vertex> m_vertices;
+		std::vector<Vertex> m_vertices;
 	};
 }
 

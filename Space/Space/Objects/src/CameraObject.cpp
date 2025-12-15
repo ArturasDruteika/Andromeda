@@ -3,8 +3,10 @@
 
 namespace Andromeda::Space
 {
+	CameraObject::CameraObject() = default;
+
 	CameraObject::CameraObject(const Math::Vec3& centerPosition)
-		: Transformable(centerPosition)
+		: Translatable{ centerPosition }
 	{
 	}
 

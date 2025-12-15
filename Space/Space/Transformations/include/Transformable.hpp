@@ -18,6 +18,7 @@ namespace Andromeda
 	{
 	public:
 		Transformable();
+		Transformable(const Math::Vec3& position);
 		~Transformable() override;
 
 		// Getters

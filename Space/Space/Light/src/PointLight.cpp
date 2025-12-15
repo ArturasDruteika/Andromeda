@@ -17,16 +17,14 @@ namespace Andromeda::Space
         float shadowNearPlane,
         float shadowFarPlane
     )
-        : LuminousBehavior{ 
-            Light{
-                color,
-                intensity,
-                ambient,
-                diffuse,
-                specular
-            },
-            LightType::Point
+        : Light{
+            color,
+            intensity,
+            ambient,
+            diffuse,
+            specular
         }
+        , LightObject{ LightType::Point }
         , m_attenuationConstant{ attenuationConstant }
         , m_attenuationLinear{ attenuationLinear }
         , m_attenuationQuadratic{ attenuationQuadratic }

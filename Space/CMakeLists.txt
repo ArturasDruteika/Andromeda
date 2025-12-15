@@ -30,11 +30,6 @@ set(CAMERA_SOURCES
     Space/Camera/src/Camera.cpp
 )
 
-# ==== Colors ====
-set(COLORS_HEADERS
-    Space/Colors/include/Colors.hpp
-)
-
 # ==== Coordinates ====
 set(COORDINATES_HEADERS
     Space/Coordinates/include/Points.hpp
@@ -43,8 +38,6 @@ set(COORDINATES_HEADERS
 # ==== Light ====
 set(LIGHT_HEADERS
     Space/Light/include/Light.hpp
-    Space/Light/include/LuminousBehavior.hpp
-    Space/Light/include/NonLuminousBehavior.hpp
     Space/Light/include/DirectionalLight.hpp
     Space/Light/include/PointLight.hpp
     Space/Light/include/SpotLight.hpp
@@ -53,8 +46,6 @@ set(LIGHT_HEADERS
 
 set(LIGHT_SOURCES
     Space/Light/src/Light.cpp
-    Space/Light/src/LuminousBehavior.cpp
-    Space/Light/src/NonLuminousBehavior.cpp
     Space/Light/src/DirectionalLight.cpp
     Space/Light/src/PointLight.cpp
     Space/Light/src/SpotLight.cpp
@@ -89,7 +80,6 @@ set(OBJECTS_HEADERS
     Space/Objects/include/Object.hpp
     Space/Objects/include/Skyroom.hpp
     Space/Objects/include/Sphere.hpp
-    Space/Objects/include/Transformable.hpp
 )
 
 set(OBJECTS_SOURCES
@@ -102,7 +92,6 @@ set(OBJECTS_SOURCES
     Space/Objects/src/Object.cpp
     Space/Objects/src/Skyroom.cpp
     Space/Objects/src/Sphere.cpp
-    Space/Objects/src/Transformable.cpp
 )
 
 # ==== Transformations ====
@@ -121,17 +110,11 @@ set(TRANSFORMATIONS_SOURCES
     Space/Transformations/src/Translatable.cpp
 )
 
-# ==== Vertices ====
-set(VERTICES_HEADERS
-    Space/Vertices/include/Vertex.hpp
-)
-
 # ==== Target ====
 add_library(${PROJECT_NAME}
     SHARED
         ${CAMERA_HEADERS}
         ${CAMERA_SOURCES}
-        ${COLORS_HEADERS}
         ${COORDINATES_HEADERS}
         ${LIGHT_HEADERS}
         ${LIGHT_SOURCES}
@@ -142,7 +125,6 @@ add_library(${PROJECT_NAME}
         ${OBJECTS_SOURCES}
         ${TRANSFORMATIONS_HEADERS}
         ${TRANSFORMATIONS_SOURCES}
-        ${VERTICES_HEADERS}
 )
 
 target_include_directories(${PROJECT_NAME} 
@@ -209,15 +191,6 @@ source_group(
 
 source_group(
     TREE
-        ${CMAKE_CURRENT_SOURCE_DIR}/${PROJECT_NAME}/Colors
-    PREFIX
-        "Colors"
-    FILES
-        ${COLORS_HEADERS}
-)
-
-source_group(
-    TREE
         ${CMAKE_CURRENT_SOURCE_DIR}/${PROJECT_NAME}/Coordinates
     PREFIX
         "Coordinates"
@@ -272,13 +245,4 @@ source_group(
     FILES
         ${TRANSFORMATIONS_HEADERS}
         ${TRANSFORMATIONS_SOURCES}
-)
-
-source_group(
-    TREE
-        ${CMAKE_CURRENT_SOURCE_DIR}/${PROJECT_NAME}/Vertices
-    PREFIX
-        "Vertices"
-    FILES
-        ${VERTICES_HEADERS}
 )

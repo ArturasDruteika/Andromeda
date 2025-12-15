@@ -1,29 +1,17 @@
-#include "../include/Mesh.hpp"
+#include "../include/LightObject.hpp"
 
 
 namespace Andromeda::Space
 {
-	Mesh::Mesh() = default;
-
-	Mesh::~Mesh() = default;
-
-	unsigned int Mesh::GetIndexCount() const
+	LightObject::LightObject(const LightType& lightType)
+		: m_lightType{ lightType }
 	{
-		return m_indices.size();
 	}
 
-	unsigned int Mesh::GetVertexCount() const
-	{
-		return m_vertices.size();
-	}
+	LightObject::~LightObject() = default;
 
-	const std::vector<unsigned int>& Mesh::GetIndices() const
+	const LightType& LightObject::GetLightType() const
 	{
-		return m_indices;
-	}
-
-	const std::vector<Space::Vertex>& Mesh::GetVertices() const
-	{
-		return m_vertices;
+		return m_lightType;
 	}
 }

@@ -2,7 +2,7 @@
 #define SPACE__LIGHT_DATA__HPP
 
 
-#include "Andromeda/Light/LightTypes.hpp"
+#include "Andromeda/Space/Light/LightTypes.hpp"
 #include "Math/LinearAlgebra/include/LinearAlgebraDataTypes.hpp"
 
 

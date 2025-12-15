@@ -3,7 +3,8 @@
 
 
 #include "Object.hpp"
-#include "Transformable.hpp"
+#include "../../Transformations/include/Rotatable.hpp"
+#include "../../Transformations/include/Translatable.hpp"
 #include "Andromeda/Space/Objects/ICameraObject.hpp"
 
 
@@ -12,9 +13,11 @@ namespace Andromeda::Space
 	class CameraObject
 		: public virtual ICameraObject
 		, public Object
-		, public Transformable
+		, public Rotatable
+		, public Translatable
 	{
 	public:
+		CameraObject();
 		CameraObject(const Math::Vec3& centerPosition);
 		~CameraObject() override;
 	};

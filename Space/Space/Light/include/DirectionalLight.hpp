@@ -2,17 +2,19 @@
 #define SPACE__DIRECTIONAL_LIGHT__HPP
 
 
+#include "Light.hpp"
+#include "../../Objects/include/LightObject.hpp"
 #include "../../MacroExports/include/MacroExports.hpp"
-#include "LuminousBehavior.hpp"
-#include "Andromeda/Light/IDirectionalLight.hpp"
+#include "Andromeda/Space/Light/IDirectionalLight.hpp"
 #include "Math/LinearAlgebra/include/LinearAlgebraDataTypes.hpp"
 
 
 namespace Andromeda::Space
 {
 	class SPACE_API DirectionalLight
-		: public LuminousBehavior
-		, public IDirectionalLight
+		: public virtual IDirectionalLight
+		, public Light
+		, public LightObject
 	{
 	public:
 		DirectionalLight(

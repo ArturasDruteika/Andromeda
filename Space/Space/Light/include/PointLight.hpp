@@ -2,17 +2,19 @@
 #define SPACE__POINT_LIGHT__HPP
 
 
+#include "Light.hpp"
+#include "../../Objects/include/LightObject.hpp"
 #include "../../MacroExports/include/MacroExports.hpp"
-#include "LuminousBehavior.hpp"
-#include "Andromeda/Light/IPointLight.hpp"
+#include "Andromeda/Space/Light/IPointLight.hpp"
 #include "Math/LinearAlgebra/include/LinearAlgebraDataTypes.hpp"
 
 
 namespace Andromeda::Space
 {
 	class SPACE_API PointLight
-		: public LuminousBehavior
-		, public IPointLight
+		: public virtual IPointLight
+		, public Light
+		, public LightObject
 	{
 	public:
 		PointLight(
