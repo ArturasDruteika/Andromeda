@@ -3,6 +3,7 @@
 
 
 #include "LinearAlgebraDataTypes.hpp"
+#include "../../MacroExports/include/MacroExports.hpp"
 
 
 namespace Andromeda::Math
@@ -38,7 +39,8 @@ namespace Andromeda::Math
     };
 
     // All operations live here and will be implemented with glm in the .cpp
-    class QuaternionOps
+    // Later GLM will be replaced
+    class MATH_API QuaternionOps
     {
     public:
         // Construction
