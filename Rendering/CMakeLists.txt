@@ -22,37 +22,9 @@ file(TO_CMAKE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/../../3rdParty/spdlog/lib/cmake/s
 set(spdlog_DIR ${spdlog_path})
 find_package(spdlog REQUIRED)
 
-# ==== Camera ====
-set(CAMERA_HEADERS
-    Rendering/Camera/Abstracts/include/PerspectiveControl.hpp
-    Rendering/Camera/Abstracts/include/CameraView.hpp
-    Rendering/Camera/Abstracts/include/CameraController.hpp
-    Rendering/Camera/Cameras/include/Camera.hpp
-    Rendering/Camera/Cameras/include/CameraImpl.hpp
-)
-
-set(CAMERA_SOURCES
-    Rendering/Camera/Abstracts/src/PerspectiveControl.cpp
-    Rendering/Camera/Abstracts/src/CameraView.cpp
-    Rendering/Camera/Abstracts/src/CameraController.cpp
-    Rendering/Camera/Cameras/src/Camera.cpp
-    Rendering/Camera/Cameras/src/CameraImpl.cpp
-)
-
 # ==== Macro Exports ====
 set(MACRO_EXPORTS_HEADERS
     Rendering/MacroExports/include/MacroExports.hpp
-)
-
-# ==== OpenGLLoader ====
-set(LOADER_HEADERS
-    Rendering/OpenGLLoader/include/OpenGLLoader.hpp
-    Rendering/OpenGLLoader/include/OpenGLLoaderImpl.hpp
-)
-
-set(LOADER_SOURCES
-    Rendering/OpenGLLoader/src/OpenGLLoader.cpp
-    Rendering/OpenGLLoader/src/OpenGLLoaderImpl.cpp
 )
 
 # ==== RayTracing ====
@@ -62,35 +34,12 @@ set(RAYTRACING_HEADERS
 
 # ==== RenderableObjects ====
 set(RO_HEADERS
-    Rendering/RenderableObjects/Abstracts/include/Luminous.hpp
-    Rendering/RenderableObjects/Abstracts/include/Mesh.hpp
-    Rendering/RenderableObjects/Abstracts/include/RenderableObject.hpp
-    Rendering/RenderableObjects/Abstracts/include/RenderableObjectOpenGL.hpp
-    Rendering/RenderableObjects/Abstracts/include/Transformable.hpp
-    Rendering/RenderableObjects/Interfaces/include/IRenderableObjectOpenGL.hpp
-    Rendering/RenderableObjects/Objects/include/CubeObjectOpenGL.hpp
-    Rendering/RenderableObjects/Objects/include/CubeObjectOpenGLImpl.hpp
-    Rendering/RenderableObjects/Objects/include/GridOpenGL.hpp
-    Rendering/RenderableObjects/Objects/include/SkyroomOpenGL.hpp
-    Rendering/RenderableObjects/Objects/include/SkyroomOpenGLImpl.hpp
-    Rendering/RenderableObjects/Objects/include/SphereObjectOpenGL.hpp
-    Rendering/RenderableObjects/Objects/include/SphereObjectOpenGLImpl.hpp
+    Rendering/RenderableObjects/include/RenderableObjectOpenGL.hpp
+    Rendering/RenderableObjects/include/IRenderableObjectOpenGL.hpp
 )
 
 set(RO_SOURCES
-    Rendering/RenderableObjects/Abstracts/src/Luminous.cpp
-    Rendering/RenderableObjects/Abstracts/src/Mesh.cpp
-    Rendering/RenderableObjects/Abstracts/src/RenderableObject.cpp
-    Rendering/RenderableObjects/Abstracts/src/RenderableObjectOpenGL.cpp
-    Rendering/RenderableObjects/Abstracts/src/Transformable.cpp
-    Rendering/RenderableObjects/Interfaces/src/IRenderableObjectOpenGL.cpp
-    Rendering/RenderableObjects/Objects/src/CubeObjectOpenGL.cpp
-    Rendering/RenderableObjects/Objects/src/CubeObjectOpenGLImpl.cpp
-    Rendering/RenderableObjects/Objects/src/GridOpenGL.cpp
-    Rendering/RenderableObjects/Objects/src/SkyroomOpenGL.cpp
-    Rendering/RenderableObjects/Objects/src/SkyroomOpenGLImpl.cpp
-    Rendering/RenderableObjects/Objects/src/SphereObjectOpenGL.cpp
-    Rendering/RenderableObjects/Objects/src/SphereObjectOpenGLImpl.cpp
+    Rendering/RenderableObjects/src/RenderableObjectOpenGL.cpp
 )
 
 # ==== Renderers ====
@@ -120,28 +69,6 @@ set(RENDERERS_SOURCES
     Rendering/Renderers/Renderers/src/RendererOpenGL.cpp
     Rendering/Renderers/Renderers/src/RendererOpenGLImpl.cpp
     Rendering/Renderers/Support/src/FrameBufferOpenGL.cpp
-)
-
-# ==== Scene ====
-set(SCENE_HEADERS
-    Rendering/Scene/Abstracts/include/Scene.hpp
-    Rendering/Scene/Abstracts/include/SceneEnvironment.hpp
-    Rendering/Scene/Abstracts/include/SceneLighting.hpp
-    Rendering/Scene/Abstracts/include/SceneObjects.hpp
-    Rendering/Scene/Abstracts/include/SceneState.hpp
-    Rendering/Scene/Scenes/include/SceneOpenGL.hpp
-    Rendering/Scene/Scenes/include/SceneOpenGLImpl.hpp
-    Rendering/Scene/Support/include/SpecialIndices.hpp
-)
-
-set(SCENE_SOURCES
-    Rendering/Scene/Abstracts/src/Scene.cpp
-    Rendering/Scene/Abstracts/src/SceneEnvironment.cpp
-    Rendering/Scene/Abstracts/src/SceneLighting.cpp
-    Rendering/Scene/Abstracts/src/SceneObjects.cpp
-    Rendering/Scene/Abstracts/src/SceneState.cpp
-    Rendering/Scene/Scenes/src/SceneOpenGL.cpp
-    Rendering/Scene/Scenes/src/SceneOpenGLImpl.cpp
 )
 
 # ==== Shaders ====
@@ -188,11 +115,7 @@ set(VERTEX_SOURCES
 
 add_library(${PROJECT_NAME} 
     SHARED
-        ${CAMERA_HEADERS}
-        ${CAMERA_SOURCES}
         ${MACRO_EXPORTS_HEADERS}
-        ${LOADER_HEADERS}
-        ${LOADER_SOURCES}
         ${RAYTRACING_HEADERS}
         ${RENDERERS_HEADERS}
         ${RENDERERS_SOURCES}
@@ -224,13 +147,11 @@ target_link_libraries(${PROJECT_NAME}
     PUBLIC
         Math
         Api
-        Space
 )
 
 add_dependencies(${PROJECT_NAME}
     Utils
     Math
-    Space
     Glad
 )
 
@@ -288,31 +209,11 @@ endforeach()
 # Organize files into Solution Explorer folders
 source_group(
     TREE 
-        ${CMAKE_CURRENT_SOURCE_DIR}/${PROJECT_NAME}/Camera
-    PREFIX
-        "Camera"
-    FILES
-        ${CAMERA_HEADERS}
-        ${CAMERA_SOURCES}
-)
-
-source_group(
-    TREE 
         ${CMAKE_CURRENT_SOURCE_DIR}/${PROJECT_NAME}/MacroExports
     PREFIX
         "MacroExports"
     FILES
         ${MACRO_EXPORTS_HEADERS}
-)
-
-source_group(
-    TREE 
-        ${CMAKE_CURRENT_SOURCE_DIR}/${PROJECT_NAME}/OpenGLLoader
-    PREFIX
-        "OpenGLLoader"
-    FILES
-        ${LOADER_HEADERS}
-        ${LOADER_SOURCES}
 )
 
 source_group(
