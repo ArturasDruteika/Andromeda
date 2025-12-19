@@ -20,7 +20,7 @@ namespace Andromeda
 		
 		// Getters
         virtual const IMesh& GetMesh() const = 0;
-		virtual Color GetColor() const = 0;
+		virtual const Color& GetColor() const = 0;
 		// Setters
         virtual void SetColor(const Color& color) = 0;
 	};

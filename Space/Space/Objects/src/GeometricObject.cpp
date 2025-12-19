@@ -5,8 +5,9 @@ namespace Andromeda::Space
 {
 	GeometricObject::GeometricObject() = default;
 
-	GeometricObject::GeometricObject(const Math::Vec3& centerPosition)
+	GeometricObject::GeometricObject(const Math::Vec3& centerPosition, const Color& color)
 		: Transformable{ centerPosition }
+		, m_color{ color }
 	{
 	}
 
@@ -17,9 +18,14 @@ namespace Andromeda::Space
 		return m_mesh;
 	}
 
-	Color GeometricObject::GetColor() const
+	const Color& GeometricObject::GetColor() const
 	{
 		return m_color;
+	}
+
+	void GeometricObject::SetMesh(const Mesh& mesh)
+	{
+		m_mesh = mesh;
 	}
 
 	void GeometricObject::SetColor(const Color& color)

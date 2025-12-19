@@ -18,16 +18,17 @@ namespace Andromeda::Space
 	{
 	public:
 		GeometricObject();
-		GeometricObject(const Math::Vec3& centerPosition);
+		GeometricObject(const Math::Vec3& centerPosition, const Color& color);
 		~GeometricObject() override;
 
 		// Getters
 		const Mesh& GetMesh() const override;
-		Color GetColor() const override;
+		const Color& GetColor() const override;
 		// Setters
+		void SetMesh(const Mesh& mesh);
 		void SetColor(const Color& color) override;
 
-	private:
+	protected:
 		Color m_color;
 		Mesh m_mesh;
 	};
