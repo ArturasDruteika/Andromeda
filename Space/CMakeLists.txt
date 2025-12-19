@@ -75,7 +75,6 @@ set(OBJECTS_HEADERS
     Space/Objects/include/Cube.hpp
     Space/Objects/include/GeometricObject.hpp
     Space/Objects/include/LightObject.hpp
-    Space/Objects/include/Luminous.hpp
     Space/Objects/include/Mesh.hpp
     Space/Objects/include/Object.hpp
     Space/Objects/include/Skyroom.hpp
@@ -87,7 +86,6 @@ set(OBJECTS_SOURCES
     Space/Objects/src/Cube.cpp
     Space/Objects/src/GeometricObject.cpp
     Space/Objects/src/LightObject.cpp
-    Space/Objects/src/Luminous.cpp
     Space/Objects/src/Mesh.cpp
     Space/Objects/src/Object.cpp
     Space/Objects/src/Skyroom.cpp
@@ -140,7 +138,6 @@ target_link_libraries(${PROJECT_NAME}
         Math
         Utils
         spdlog::spdlog
-        glm::glm
 )
 
 # ==== Dependencies ====
