@@ -2,53 +2,48 @@
 #define RENDERING__ABSTRACTS__TRANSFORMABLE__HPP
 
 
-#include "Space/Transformations/include/TransformationTypes.hpp"
+#include "Andromeda/Space/Colors/Colors.hpp"
+#include "Andromeda/Space/Objects/ISphere.hpp"
+#include "Space/Objects/include/GeometricObject.hpp"
 #include "Math/LinearAlgebra/include/LinearAlgebraDataTypes.hpp"
-#include "glm/glm.hpp"
-#include "glm/gtc/matrix_transform.hpp"
 
 
 namespace Andromeda::Space
 {
-    class Transformable
+    class Sphere
+        : public virtual ISphere
+        , public GeometricObject
     {
     public:
-        Transformable(const Math::Vec3& centerPosition);
-        ~Transformable();
+        Sphere(float radius, const Math::Vec3& position, const Color& color);
+        ~Sphere();
 
-		// Getters
-        bool StateChanged() const;
-		Math::Vec3 GetCenterPosition() const;
-        Math::Mat4 GetModelMatrix() const;
+        // Getters
+        float GetRadius() const;
 		// Setters
-        void SetModelMatrix(const Math::Mat4& modelMatrix);
-
-        void ResetState();
-        void Translate(const Math::Vec3& translation);
-        void TranslateDelta(const Math::Vec3& translationDelta);
-        void Rotate(const Math::Vec3& rotation);
-        void RotateX(float angle);
-        void RotateY(float angle);
-        void RotateZ(float angle);
-        void Scale(const Math::Vec3& scale);
-        void UpdateModelMatrix(const Space::TransformationType& transformationType);
+        void SetRadius(float radius);
 
     private:
-        // Transformation matrices
-        glm::mat4 ConstructTranslationMatrix() const;
-        glm::mat4 ConstructRotationMatrix() const;
-        glm::mat4 ConstructScaleMatrix() const;
+        void ConstructSphere(float radius, int sectorCount, int stackCount, const Color& color);
+        void ValidateSphereParams(int& sectorCount, int& stackCount) const;
+        void GenerateSphereVertices(
+            float radius,
+            int sectorCount,
+            int stackCount,
+            const Color& color,
+            std::vector<Vertex>& outVertices
+        ) const;
 
-    protected:
-        bool m_stateChanged;
-        // Transform components
-        glm::vec3 m_centerPosition;
-        glm::vec3 m_rotation;
-        glm::vec3 m_scale;
-        glm::mat4 m_translationMatrix;
-        glm::mat4 m_rotationMatrix;
-        glm::mat4 m_scaleMatrix;
-        glm::mat4 m_modelMatrix;
+        void GenerateSphereIndices(
+            int sectorCount,
+            int stackCount,
+            std::vector<unsigned int>& outIndices
+        ) const;
+
+        static Math::Vec3 ComputeSphereNormal(float x, float y, float z);
+
+    private:
+        float m_radius;
     };
 }
 
