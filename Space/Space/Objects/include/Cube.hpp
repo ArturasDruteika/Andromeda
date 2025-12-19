@@ -1,56 +1,51 @@
-#ifndef RENDERING__ABSTRACTS__TRANSFORMABLE__HPP
-#define RENDERING__ABSTRACTS__TRANSFORMABLE__HPP
+#ifndef SPACE__OBJECTS__CUBE__HPP
+#define SPACE__OBJECTS__CUBE__HPP
 
 
-#include "Space/Transformations/include/TransformationTypes.hpp"
+#include "GeometricObject.hpp"
 #include "Math/LinearAlgebra/include/LinearAlgebraDataTypes.hpp"
-#include "glm/glm.hpp"
-#include "glm/gtc/matrix_transform.hpp"
+#include "Andromeda/Space/Colors/Colors.hpp"
+#include "Andromeda/Space/Objects/ICube.hpp"
 
 
 namespace Andromeda::Space
 {
-    class Transformable
+    struct CubeFaceData
+    {
+        Math::Vec3 normal;
+        std::array<Math::Vec3, 4> vertices;
+    };
+
+    class Cube
+        : public virtual ICube
+        , public GeometricObject
     {
     public:
-        Transformable(const Math::Vec3& centerPosition);
-        ~Transformable();
+        Cube(float halfExtent, const Math::Vec3& position, const Color& color);
+        ~Cube();
 
 		// Getters
-        bool StateChanged() const;
-		Math::Vec3 GetCenterPosition() const;
-        Math::Mat4 GetModelMatrix() const;
+		float GetHalfExtent() const;
 		// Setters
-        void SetModelMatrix(const Math::Mat4& modelMatrix);
-
-        void ResetState();
-        void Translate(const Math::Vec3& translation);
-        void TranslateDelta(const Math::Vec3& translationDelta);
-        void Rotate(const Math::Vec3& rotation);
-        void RotateX(float angle);
-        void RotateY(float angle);
-        void RotateZ(float angle);
-        void Scale(const Math::Vec3& scale);
-        void UpdateModelMatrix(const Space::TransformationType& transformationType);
+		void SetHalfExtent(float halfExtent);
+    
+    private:
+        void ConstructCube(float halfExtent, const Color& color);
+        static std::array<CubeFaceData, 6> BuildCubeFaces(float halfExtent);
+        static void ReserveCubeBuffers(std::vector<Vertex>& vertices, std::vector<unsigned int>& indices);
+        static void AppendFace(
+            const CubeFaceData& face,
+            const Color& color,
+            std::vector<Vertex>& outVertices,
+            std::vector<unsigned int>& outIndices,
+            unsigned int& indexOffset
+        );
 
     private:
-        // Transformation matrices
-        glm::mat4 ConstructTranslationMatrix() const;
-        glm::mat4 ConstructRotationMatrix() const;
-        glm::mat4 ConstructScaleMatrix() const;
+		float m_halfExtent;
 
-    protected:
-        bool m_stateChanged;
-        // Transform components
-        glm::vec3 m_centerPosition;
-        glm::vec3 m_rotation;
-        glm::vec3 m_scale;
-        glm::mat4 m_translationMatrix;
-        glm::mat4 m_rotationMatrix;
-        glm::mat4 m_scaleMatrix;
-        glm::mat4 m_modelMatrix;
     };
 }
 
 
-#endif // RENDERING__ABSTRACTS__TRANSFORMABLE__HPP
+#endif // SPACE__OBJECTS__CUBE__HPP
