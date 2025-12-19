@@ -21,6 +21,11 @@ namespace Andromeda::Space
 		unsigned int GetVertexCount() const override;
 		const std::vector<unsigned int>& GetIndices() const override;
 		const std::vector<Vertex>& GetVertices() const override;
+		// Setters
+		void SetData(
+			const std::vector<Vertex>& vertices,
+			const std::vector<unsigned int>& indices
+		);
 
 	protected:
 		std::vector<unsigned int> m_indices;
