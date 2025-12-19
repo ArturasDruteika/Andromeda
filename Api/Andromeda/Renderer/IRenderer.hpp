@@ -6,7 +6,7 @@
 #include "IGridControl.hpp"
 #include "IIlluminationControl.hpp"
 #include "ISizeControl.hpp"
-#include "../Scene/IScene.hpp"
+#include "../Space/Scene/IScene.hpp"
 #include "../MacroExports/MacroExports.hpp"
 #include "../Components/GraphicsBackend.hpp"
 

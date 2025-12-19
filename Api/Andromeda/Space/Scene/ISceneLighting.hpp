@@ -2,9 +2,9 @@
 #define API__SCENE__I_SCENE_LIGHTING__HPP
 
 
-#include "Space/Light/LightTypes/include/DirectionalLight.hpp"
-#include "Space/Light/LightTypes/include/PointLight.hpp"
-#include "../Objects/IGeometricObject.hpp"
+#include "../Light/IDirectionalLight.hpp"
+#include "../Light/IPointLight.hpp"
+#include "../Objects/ILightObject.hpp"
 #include <map>
 
 
@@ -16,9 +16,9 @@ namespace Andromeda
         virtual ~ISceneLighting() = default;
 
         // Getters
-        virtual const std::unordered_map<int, const Space::DirectionalLight*> GetDirectionalLights() const = 0;
-        virtual const std::unordered_map<int, const Space::PointLight*> GetPointLights() const = 0;
-        virtual const std::unordered_map<int, Space::LuminousBehavior*>& GetLuminousObjects() const = 0;
+        virtual const std::unordered_map<int, const IDirectionalLight*>& GetDirectionalLights() const = 0;
+        virtual const std::unordered_map<int, const IPointLight*>& GetPointLights() const = 0;
+        virtual const std::unordered_map<int, const ILightObject*>& GetLuminousObjects() const = 0;
     };
 }
 

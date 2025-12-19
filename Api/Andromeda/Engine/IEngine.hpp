@@ -5,7 +5,7 @@
 #include "../MacroExports/MacroExports.hpp"
 #include "../Components/GraphicsBackend.hpp"
 #include "../Renderer/IRenderer.hpp"
-#include "../Scene/IScene.hpp"
+#include "../Space/Scene/IScene.hpp"
 #include "../Window/IEvent.hpp"
 #include <memory>
 

@@ -2,7 +2,7 @@
 #define API__RENDERER__I_CAMERA_CONTROL__HPP
 
 
-#include "../Camera/ICamera.hpp"
+#include "../Space/Camera/ICamera.hpp"
 
 
 namespace Andromeda
