@@ -81,7 +81,7 @@ namespace Andromeda::Space
                 }
             },
 
-                SkyroomFaceData
+            SkyroomFaceData
             {
                 Math::Vec3(0.0f, 0.0f, -1.0f), // inward for front (+Z)
                 {
@@ -92,7 +92,7 @@ namespace Andromeda::Space
                 }
             },
 
-                SkyroomFaceData
+            SkyroomFaceData
             {
                 Math::Vec3(1.0f, 0.0f, 0.0f), // inward for left (-X)
                 {
@@ -103,7 +103,7 @@ namespace Andromeda::Space
                 }
             },
 
-                SkyroomFaceData
+            SkyroomFaceData
             {
                 Math::Vec3(-1.0f, 0.0f, 0.0f), // inward for right (+X)
                 {
@@ -114,7 +114,7 @@ namespace Andromeda::Space
                 }
             },
 
-                SkyroomFaceData
+            SkyroomFaceData
             {
                 Math::Vec3(0.0f, 1.0f, 0.0f), // inward for bottom (-Y)
                 {
@@ -125,7 +125,7 @@ namespace Andromeda::Space
                 }
             },
 
-                SkyroomFaceData
+            SkyroomFaceData
             {
                 Math::Vec3(0.0f, -1.0f, 0.0f), // inward for top (+Y)
                 {
