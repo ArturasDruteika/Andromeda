@@ -1,22 +1,25 @@
 #include "../include/RenderableObjectOpenGL.hpp"
-#include "../../../Utils/include/MathUtils.hpp"
-#include "Space/Light/Abstracts/include/LuminousBehavior.hpp"
-#include "Space/Light/Abstracts/include/NonLuminousBehavior.hpp"
+#include "Andromeda/Space/Vertices/Vertex.hpp"
 #include "glad/gl.h"
 
 
 namespace Andromeda::Rendering
 {
-	RenderableObjectOpenGL::RenderableObjectOpenGL(const Math::Vec3& centerPosition, const Space::Color& color, const VertexLayout& vertexLayout)
-		: RenderableObject(centerPosition, color)
-		, m_VBO{ 0 }
-		, m_VAO{ 0 }
-		, m_EBO{ 0 }
-		, m_vertexLayout{ vertexLayout }
+	RenderableObjectOpenGL::RenderableObjectOpenGL(const IMesh& mesh, const VertexLayout& vertexLayout)
+		: m_VBO(0)
+		, m_VAO(0)
+		, m_EBO(0)
+		, m_vertexLayout(vertexLayout)
 	{
+		Init(mesh);
 	}
 
-	RenderableObjectOpenGL::~RenderableObjectOpenGL() = default;
+	RenderableObjectOpenGL::~RenderableObjectOpenGL()
+	{
+		glDeleteBuffers(1, &m_VBO);
+		glDeleteBuffers(1, &m_EBO);
+		glDeleteVertexArrays(1, &m_VAO);
+	}
 
 	unsigned int RenderableObjectOpenGL::GetVBO() const
 	{
@@ -33,11 +36,11 @@ namespace Andromeda::Rendering
 		return m_EBO;
 	}
 
-	void RenderableObjectOpenGL::Init()
+	void RenderableObjectOpenGL::Init(const IMesh& mesh)
 	{
 		CreateAndBindVertexAttributes();
-		CreateAndBindVertexBuffers(m_vertices);
-		GenerateAndBindElementBuffer(m_indices);
+		CreateAndBindVertexBuffers(mesh.GetVertices());
+		GenerateAndBindElementBuffer(mesh.GetIndices());
 		SetVertexAttributePointers();
 		UnbindVertexAttributes();
 	}
@@ -49,12 +52,12 @@ namespace Andromeda::Rendering
 		glBindVertexArray(m_VAO);
 	}
 
-	void RenderableObjectOpenGL::CreateAndBindVertexBuffers(const std::vector<Space::Vertex>& vertices)
+	void RenderableObjectOpenGL::CreateAndBindVertexBuffers(const std::vector<Vertex>& vertices)
 	{
 		// Generate and bind VBO
 		glCreateBuffers(1, &m_VBO);
 		glBindBuffer(GL_ARRAY_BUFFER, m_VBO);
-		glBufferData(GL_ARRAY_BUFFER, vertices.size() * sizeof(Space::Vertex), vertices.data(), GL_STATIC_DRAW);
+		glBufferData(GL_ARRAY_BUFFER, vertices.size() * sizeof(Vertex), vertices.data(), GL_STATIC_DRAW);
 	}
 
 	void RenderableObjectOpenGL::GenerateAndBindElementBuffer(const std::vector<unsigned int>& indices)

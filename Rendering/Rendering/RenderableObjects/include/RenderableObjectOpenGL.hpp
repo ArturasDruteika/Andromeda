@@ -3,18 +3,17 @@
 
 
 #include "pch.hpp"
-#include "RenderableObject.hpp"
-#include "../../../Vertices/include/VertexLayouts.hpp"
+#include "../../Vertices/include/VertexLayouts.hpp"
 #include "Math/LinearAlgebra/include/LinearAlgebraDataTypes.hpp"
+#include "Andromeda/Space/Objects/IMesh.hpp"
 
 
 namespace Andromeda::Rendering
 {
 	class RenderableObjectOpenGL
-		: public RenderableObject
 	{	
 	public:
-		RenderableObjectOpenGL(const Math::Vec3& centerPosition, const Space::Color& color, const VertexLayout& vertexLayout);
+		RenderableObjectOpenGL(const IMesh& mesh, const VertexLayout& vertexLayout);
 		~RenderableObjectOpenGL();
 
 		RenderableObjectOpenGL(const RenderableObjectOpenGL& other) = delete;	// Prevent Copy Constructor
@@ -28,9 +27,9 @@ namespace Andromeda::Rendering
 		unsigned int GetEBO() const;
 
 	protected:
-		void Init();
+		void Init(const IMesh& mesh);
 		void CreateAndBindVertexAttributes();
-		void CreateAndBindVertexBuffers(const std::vector<Space::Vertex>& vertices);
+		void CreateAndBindVertexBuffers(const std::vector<Vertex>& vertices);
 		void GenerateAndBindElementBuffer(const std::vector<unsigned int>& indices);
 		void SetVertexAttributePointers();
 		void UnbindVertexAttributes();
