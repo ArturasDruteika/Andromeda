@@ -1,8 +1,5 @@
-#ifndef RENDERER__FRAME_BUFFER_OPENGL__HPP
-#define RENDERER__FRAME_BUFFER_OPENGL__HPP
-
-
-#include "pch.hpp"
+#ifndef RENDERER__OPENGL__SUPPORTFRAME_BUFFER_OPENGL__HPP
+#define RENDERER__OPENGL__SUPPORTFRAME_BUFFER_OPENGL__HPP
 
 
 namespace Andromeda::Rendering
@@ -66,4 +63,4 @@ namespace Andromeda::Rendering
 }
 
 
-#endif // RENDERER__FRAME_BUFFER_OPENGL__HPP
+#endif // RENDERER__OPENGL__SUPPORTFRAME_BUFFER_OPENGL__HPP
