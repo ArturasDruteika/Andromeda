@@ -32,16 +32,6 @@ set(RAYTRACING_HEADERS
     Rendering/RayTracing/include/Ray.hpp
 )
 
-# ==== RenderableObjects ====
-set(RO_HEADERS
-    Rendering/RenderableObjects/include/RenderableObjectOpenGL.hpp
-    Rendering/RenderableObjects/include/IRenderableObjectOpenGL.hpp
-)
-
-set(RO_SOURCES
-    Rendering/RenderableObjects/src/RenderableObjectOpenGL.cpp
-)
-
 # ==== Renderers ====
 set(RENDERERS_HEADERS
     Rendering/Renderers/Abstracts/include/CameraControl.hpp
@@ -54,7 +44,6 @@ set(RENDERERS_HEADERS
     Rendering/Renderers/Interfaces/include/IRendererOpenGL.hpp
     Rendering/Renderers/Renderers/include/RendererOpenGL.hpp
     Rendering/Renderers/Renderers/include/RendererOpenGLImpl.hpp
-    Rendering/Renderers/Support/include/FrameBufferOpenGL.hpp
 )
 
 set(RENDERERS_SOURCES
@@ -68,7 +57,6 @@ set(RENDERERS_SOURCES
     Rendering/Renderers/Interfaces/src/IRendererOpenGL.cpp
     Rendering/Renderers/Renderers/src/RendererOpenGL.cpp
     Rendering/Renderers/Renderers/src/RendererOpenGLImpl.cpp
-    Rendering/Renderers/Support/src/FrameBufferOpenGL.cpp
 )
 
 # ==== Shaders ====
@@ -103,24 +91,39 @@ set(UTILS_SOURCES
     Rendering/Utils/src/MathUtils.cpp
 )
 
-# ==== Vertices ====
+# ==== Vertices (API agnostic) ====
 set(VERTEX_HEADERS
+    Rendering/Vertices/include/VertexFormat.hpp
     Rendering/Vertices/include/VertexAttributes.hpp
     Rendering/Vertices/include/VertexLayouts.hpp
+    Rendering/Vertices/include/VertexLocationPolicy.hpp
 )
 
 set(VERTEX_SOURCES
+    Rendering/Vertices/src/VertexFormat.cpp
     Rendering/Vertices/src/VertexLayouts.cpp
+    Rendering/Vertices/src/VertexLocationPolicy.cpp
 )
 
-add_library(${PROJECT_NAME} 
+# ==== OpenGL backend (platform specific) ====
+set(OPENGL_HEADERS
+    Rendering/OpenGL/Geometry/include/GpuMeshOpenGL.hpp
+    Rendering/OpenGL/Support/include/FrameBufferOpenGL.hpp
+    Rendering/OpenGL/Vertices/include/VertexLayoutOpenGL.hpp
+)
+
+set(OPENGL_SOURCES
+    Rendering/OpenGL/Geometry/src/GpuMeshOpenGL.cpp
+    Rendering/OpenGL/Support/src/FrameBufferOpenGL.cpp
+    Rendering/OpenGL/Vertices/src/VertexLayoutOpenGL.cpp
+)
+
+add_library(${PROJECT_NAME}
     SHARED
         ${MACRO_EXPORTS_HEADERS}
         ${RAYTRACING_HEADERS}
         ${RENDERERS_HEADERS}
         ${RENDERERS_SOURCES}
-        ${RO_HEADERS}
-        ${RO_SOURCES}
         ${SCENE_HEADERS}
         ${SCENE_SOURCES}
         ${SHADERS_HEADERS}
@@ -129,14 +132,16 @@ add_library(${PROJECT_NAME}
         ${UTILS_SOURCES}
         ${VERTEX_HEADERS}
         ${VERTEX_SOURCES}
+        ${OPENGL_HEADERS}
+        ${OPENGL_SOURCES}
 )
 
-target_include_directories(${PROJECT_NAME} 
+target_include_directories(${PROJECT_NAME}
     PUBLIC
         ${CMAKE_CURRENT_SOURCE_DIR}/
 )
 
-# Link libraries � Api is INTERFACE, so this just pulls in its usage requirements
+# Link libraries - Api is INTERFACE, so this just pulls in its usage requirements
 target_link_libraries(${PROJECT_NAME}
     PRIVATE
         PrecompiledHeaders
@@ -154,7 +159,6 @@ add_dependencies(${PROJECT_NAME}
     Math
     Glad
 )
-
 
 ### Post builds
 
@@ -197,7 +201,7 @@ add_custom_command(
 )
 
 # Copy shaders with echo for each
-foreach(SHADER_PATH IN LISTS SHADER_SOURCE_PATHS) 
+foreach(SHADER_PATH IN LISTS SHADER_SOURCE_PATHS)
     get_filename_component(FILE_NAME "${SHADER_PATH}" NAME)
     add_custom_command(
         TARGET ${PROJECT_NAME} POST_BUILD
@@ -208,7 +212,7 @@ endforeach()
 
 # Organize files into Solution Explorer folders
 source_group(
-    TREE 
+    TREE
         ${CMAKE_CURRENT_SOURCE_DIR}/${PROJECT_NAME}/MacroExports
     PREFIX
         "MacroExports"
@@ -217,7 +221,7 @@ source_group(
 )
 
 source_group(
-    TREE 
+    TREE
         ${CMAKE_CURRENT_SOURCE_DIR}/${PROJECT_NAME}/RayTracing
     PREFIX
         "RayTracing"
@@ -226,17 +230,7 @@ source_group(
 )
 
 source_group(
-    TREE 
-        ${CMAKE_CURRENT_SOURCE_DIR}/${PROJECT_NAME}/RenderableObjects
-    PREFIX
-        "RenderableObjects"
-    FILES
-        ${RO_HEADERS}
-        ${RO_SOURCES}
-)
-
-source_group(
-    TREE 
+    TREE
         ${CMAKE_CURRENT_SOURCE_DIR}/${PROJECT_NAME}/Renderers
     PREFIX
         "Renderers"
@@ -246,7 +240,7 @@ source_group(
 )
 
 source_group(
-    TREE 
+    TREE
         ${CMAKE_CURRENT_SOURCE_DIR}/${PROJECT_NAME}/Scene
     PREFIX
         "Scene"
@@ -256,7 +250,7 @@ source_group(
 )
 
 source_group(
-    TREE 
+    TREE
         ${CMAKE_CURRENT_SOURCE_DIR}/${PROJECT_NAME}/Shaders
     PREFIX
         "Shaders"
@@ -266,7 +260,7 @@ source_group(
 )
 
 source_group(
-    TREE 
+    TREE
         ${CMAKE_CURRENT_SOURCE_DIR}/${PROJECT_NAME}/Utils
     PREFIX
         "Utils"
@@ -276,11 +270,21 @@ source_group(
 )
 
 source_group(
-    TREE 
+    TREE
         ${CMAKE_CURRENT_SOURCE_DIR}/${PROJECT_NAME}/Vertices
     PREFIX
         "Vertices"
     FILES
         ${VERTEX_HEADERS}
         ${VERTEX_SOURCES}
+)
+
+source_group(
+    TREE
+        ${CMAKE_CURRENT_SOURCE_DIR}/${PROJECT_NAME}/OpenGL
+    PREFIX
+        "OpenGL"
+    FILES
+        ${OPENGL_HEADERS}
+        ${OPENGL_SOURCES}
 )
