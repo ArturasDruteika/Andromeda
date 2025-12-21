@@ -1,33 +1,45 @@
-#ifndef RENDERING__VERTEX_LAYOUTS_IMPL__HPP
-#define RENDERING__VERTEX_LAYOUTS_IMPL__HPP
+#ifndef RENDERING__VERTICES__VERTEX_LAYOUTS__HPP
+#define RENDERING__VERTICES__VERTEX_LAYOUTS__HPP
 
-
-#include "../include/VertexAttributes.hpp"
-
+#include "VertexFormat.hpp"
+#include "pch.hpp"
 
 namespace Andromeda::Rendering
 {
-	class VertexLayout
-	{
-	public:
-		VertexLayout(const std::vector<VertexAttributes>& vertexAttributes);
-		~VertexLayout();
+    enum class InputRate
+    {
+        PerVertex,
+        PerInstance
+    };
 
-		VertexLayout(const VertexLayout& other);
-		VertexLayout& operator=(const VertexLayout& other) = delete;	// Prevent Copy Assignment
-		VertexLayout(VertexLayout&& other) noexcept = delete;	// Prevent Move Constructor
-		VertexLayout& operator=(VertexLayout&& other) noexcept = delete;	// Prevent Move Assignment
+    struct VertexAttributeDesc
+    {
+        VertexSemantic semantic = VertexSemantic::Position;
+        ComponentType componentType = ComponentType::Float32;
+        uint32_t componentCount = 0;
+        bool normalized = false;
 
-		const std::vector<VertexAttributes>& GetVerticesAttributesVec() const;
-		size_t GetStride() const;
+        size_t offsetBytes = 0;
+    };
 
-	private:
-		void CalculateStride(const std::vector<VertexAttributes>& vertexAttributes);
+    class VertexLayout
+    {
+    public:
+        VertexLayout();
+        explicit VertexLayout(const std::vector<VertexAttributeDesc>& attributes, InputRate inputRate = InputRate::PerVertex);
 
-		std::vector<VertexAttributes> m_verticesAttributesVec;
-		size_t m_stride;
-	};
+        const std::vector<VertexAttributeDesc>& GetAttributes() const;
+        size_t GetStrideBytes() const;
+        InputRate GetInputRate() const;
+
+    private:
+        void CalculateOffsetsAndStride();
+
+    private:
+        std::vector<VertexAttributeDesc> m_attributes;
+        size_t m_strideBytes;
+        InputRate m_inputRate;
+    };
 }
 
-
-#endif // RENDERING__VERTEX_LAYOUTS_IMPL__HPP
+#endif // RENDERING__VERTICES__VERTEX_LAYOUTS__HPP

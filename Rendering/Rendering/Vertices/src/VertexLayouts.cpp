@@ -3,35 +3,46 @@
 
 namespace Andromeda::Rendering
 {
-	VertexLayout::VertexLayout(const std::vector<VertexAttributes>& vertexAttributes)
-		: m_verticesAttributesVec{ vertexAttributes }
-		, m_stride{ 0 }
-	{
-		CalculateStride(vertexAttributes);
-	}
+    VertexLayout::VertexLayout()
+        : m_attributes{}
+        , m_strideBytes{ 0 }
+        , m_inputRate{ InputRate::PerVertex }
+    {
+    }
 
-	VertexLayout::~VertexLayout() = default;
+    VertexLayout::VertexLayout(const std::vector<VertexAttributeDesc>& attributes, InputRate inputRate)
+        : m_attributes(attributes)
+        , m_strideBytes(0)
+        , m_inputRate(inputRate)
+    {
+        CalculateOffsetsAndStride();
+    }
 
-	VertexLayout::VertexLayout(const VertexLayout& other)
-		: m_verticesAttributesVec(other.m_verticesAttributesVec), m_stride(other.m_stride)
-	{
-	}
+    const std::vector<VertexAttributeDesc>& VertexLayout::GetAttributes() const
+    {
+        return m_attributes;
+    }
 
-	const std::vector<VertexAttributes>& VertexLayout::GetVerticesAttributesVec() const
-	{
-		return m_verticesAttributesVec;
-	}
+    size_t VertexLayout::GetStrideBytes() const
+    {
+        return m_strideBytes;
+    }
 
-	size_t VertexLayout::GetStride() const
-	{
-		return m_stride;
-	}
+    InputRate VertexLayout::GetInputRate() const
+    {
+        return m_inputRate;
+    }
 
-	void VertexLayout::CalculateStride(const std::vector<VertexAttributes>& vertexAttributes)
-	{
-		for (const VertexAttributes& attr : vertexAttributes)
-		{
-			m_stride += attr.size * sizeof(float); // Assuming float-based attributes
-		}
-	}
+    void VertexLayout::CalculateOffsetsAndStride()
+    {
+        size_t offset = 0;
+
+        for (auto& attr : m_attributes)
+        {
+            attr.offsetBytes = offset;
+            offset += static_cast<size_t>(attr.componentCount) * ComponentTypeSizeBytes(attr.componentType);
+        }
+
+        m_strideBytes = offset;
+    }
 }
