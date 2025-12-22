@@ -11,7 +11,7 @@
 namespace Andromeda::Space
 {
     class SPACE_API Material
-		: public IMaterial
+		: public virtual IMaterial
     {
     public:
         Material();
