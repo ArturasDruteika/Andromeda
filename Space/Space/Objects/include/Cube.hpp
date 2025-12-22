@@ -3,6 +3,7 @@
 
 
 #include "GeometricObject.hpp"
+#include "SurfaceObject.hpp"
 #include "Math/LinearAlgebra/include/LinearAlgebraDataTypes.hpp"
 #include "Andromeda/Space/Colors/Colors.hpp"
 #include "Andromeda/Space/Objects/ICube.hpp"
@@ -19,6 +20,7 @@ namespace Andromeda::Space
     class Cube
         : public virtual ICube
         , public GeometricObject
+		, public SurfaceObject
     {
     public:
         Cube(float halfExtent, const Math::Vec3& position, const Color& color);

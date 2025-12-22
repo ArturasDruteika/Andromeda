@@ -79,6 +79,7 @@ set(OBJECTS_HEADERS
     Space/Objects/include/Object.hpp
     Space/Objects/include/Skyroom.hpp
     Space/Objects/include/Sphere.hpp
+    Space/Objects/include/SurfaceObject.hpp
 )
 
 set(OBJECTS_SOURCES
@@ -90,6 +91,7 @@ set(OBJECTS_SOURCES
     Space/Objects/src/Object.cpp
     Space/Objects/src/Skyroom.cpp
     Space/Objects/src/Sphere.cpp
+    Space/Objects/src/SurfaceObject.cpp
 )
 
 # ==== Transformations ====

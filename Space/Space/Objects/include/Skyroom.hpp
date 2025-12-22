@@ -1,9 +1,11 @@
-#ifndef RENDERING__ABSTRACTS__TRANSFORMABLE__HPP
-#define RENDERING__ABSTRACTS__TRANSFORMABLE__HPP
+#ifndef ANDROMEDA__SPACE__OBJECTS__SKYROOM__HPP
+#define ANDROMEDA__SPACE__OBJECTS__SKYROOM__HPP
 
 
 #include "GeometricObject.hpp"
+#include "SurfaceObject.hpp"
 #include "Math/LinearAlgebra/include/LinearAlgebraDataTypes.hpp"
+#include "Andromeda/Space/Objects/ISkyroom.hpp"
 #include "Andromeda/Space/Colors/Colors.hpp"
 #include "pch.hpp"
 
@@ -16,14 +18,19 @@ namespace Andromeda::Space
         std::array<Math::Vec3, 4> vertices;
     };
 
-    class Skyroom : public GeometricObject
+    class Skyroom
+		: public virtual ISkyroom
+        , public GeometricObject
+		, public SurfaceObject
     {
     public:
         Skyroom(float halfExtent, const Math::Vec3& position, const Color& color);
         ~Skyroom();
 
-        float GetHalfExtent() const;
-        void SetHalfExtent(float halfExtent);
+		// Getters
+        float GetHalfExtent() const override;
+		// Setters
+        void SetHalfExtent(float halfExtent) override;
 
     private:
         void ConstructSkyroom(float halfExtent, const Color& color);
@@ -46,4 +53,4 @@ namespace Andromeda::Space
 }
 
 
-#endif // RENDERING__ABSTRACTS__TRANSFORMABLE__HPP
+#endif // ANDROMEDA__SPACE__OBJECTS__SKYROOM__HPP

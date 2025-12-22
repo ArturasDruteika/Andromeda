@@ -1,10 +1,11 @@
-#ifndef RENDERING__ABSTRACTS__TRANSFORMABLE__HPP
-#define RENDERING__ABSTRACTS__TRANSFORMABLE__HPP
+#ifndef ANDROMEDA__SPACE__OBJECTS__SPHERE__HPP
+#define ANDROMEDA__SPACE__OBJECTS__SPHERE__HPP
 
 
+#include "GeometricObject.hpp"
+#include "SurfaceObject.hpp"
 #include "Andromeda/Space/Colors/Colors.hpp"
 #include "Andromeda/Space/Objects/ISphere.hpp"
-#include "Space/Objects/include/GeometricObject.hpp"
 #include "Math/LinearAlgebra/include/LinearAlgebraDataTypes.hpp"
 
 
@@ -13,6 +14,7 @@ namespace Andromeda::Space
     class Sphere
         : public virtual ISphere
         , public GeometricObject
+		, public SurfaceObject
     {
     public:
         Sphere(float radius, const Math::Vec3& position, const Color& color);
@@ -48,4 +50,4 @@ namespace Andromeda::Space
 }
 
 
-#endif // RENDERING__ABSTRACTS__TRANSFORMABLE__HPP
+#endif // ANDROMEDA__SPACE__OBJECTS__SPHERE__HPP
