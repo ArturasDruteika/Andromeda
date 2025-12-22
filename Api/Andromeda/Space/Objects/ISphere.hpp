@@ -3,12 +3,14 @@
 
 
 #include "IGeometricObject.hpp"
+#include "ISurfaceObject.hpp"
 
 
 namespace Andromeda
 {
 	class ISphere
-		: IGeometricObject
+		: public virtual IGeometricObject
+		, public virtual ISurfaceObject
 	{
 	public:
 		virtual ~ISphere() = default;

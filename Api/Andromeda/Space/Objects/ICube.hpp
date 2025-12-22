@@ -3,12 +3,14 @@
 
 
 #include "IGeometricObject.hpp"
+#include "ISurfaceObject.hpp"
 
 
 namespace Andromeda
 {
 	class ICube
-		: IGeometricObject
+		: public virtual IGeometricObject
+		, public virtual ISurfaceObject
 	{
 	public:
 		virtual ~ICube() = default;

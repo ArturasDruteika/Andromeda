@@ -3,17 +3,22 @@
 
 
 #include "IGeometricObject.hpp"
+#include "ISurfaceObject.hpp"
 
 
 namespace Andromeda
 {
 	class ISkyroom
-		: IGeometricObject
+		: public virtual IGeometricObject
+		, public virtual ISurfaceObject
 	{
 	public:
 		virtual ~ISkyroom() = default;
 
-		virtual float GetHalfExtent() = 0;
+		// Getters
+		virtual float GetHalfExtent() const = 0;
+		// Setters
+		virtual void SetHalfExtent(float halfExtent) = 0;
 	};
 }
 
