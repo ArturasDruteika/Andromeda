@@ -1,0 +1,30 @@
+#ifndef SPACE__SCENE__SCENE_API__SCENE__HPP
+#define SPACE__SCENE__SCENE_API__SCENE__HPP
+
+
+#include "Andromeda/Space/Scene/ISceneEnvironment.hpp"
+#include "Math/LinearAlgebra/include/LinearAlgebraDataTypes.hpp"
+
+
+namespace Andromeda::Space
+{
+	class SceneEnvironment
+		: public virtual ISceneEnvironment
+	{
+	public:
+		SceneEnvironment();
+		~SceneEnvironment() override;
+
+		// Getters
+		float GetAmbientStrength() const override;
+		const Math::Vec4& GetBackgroundColor() const override;
+		// Setters
+		void SetAmbientStrength(float ambientStrength) override;
+		void SetBackgroundColor(const Math::Vec4& backroundColor) override;
+
+		void ResizeGrid(float resizeFactor) override;
+	};
+}
+
+
+#endif // SPACE__SCENE__SCENE_API__SCENE__HPP

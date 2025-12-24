@@ -94,6 +94,25 @@ set(OBJECTS_SOURCES
     Space/Objects/src/SurfaceObject.cpp
 )
 
+# ==== Scene ====
+set(SCENE_HEADERS
+    Space/Scene/include/CameraHandler.hpp
+    Space/Scene/include/Scene.hpp
+    Space/Scene/include/SceneEnvironment.hpp
+    Space/Scene/include/SceneLighting.hpp
+    Space/Scene/include/SceneObjects.hpp
+    Space/Scene/include/SceneState.hpp
+)
+
+set(SCENE_SOURCES
+    Space/Scene/src/CameraHandler.cpp
+    Space/Scene/src/Scene.cpp
+    Space/Scene/src/SceneEnvironment.cpp
+    Space/Scene/src/SceneLighting.cpp
+    Space/Scene/src/SceneObjects.cpp
+    Space/Scene/src/SceneState.cpp
+)
+
 # ==== Transformations ====
 set(TRANSFORMATIONS_HEADERS
     Space/Transformations/include/Rotatable.hpp
@@ -123,6 +142,8 @@ add_library(${PROJECT_NAME}
         ${MATERIALS_SOURCES}
         ${OBJECTS_HEADERS}
         ${OBJECTS_SOURCES}
+        ${SCENE_HEADERS}
+        ${SCENE_SOURCES}
         ${TRANSFORMATIONS_HEADERS}
         ${TRANSFORMATIONS_SOURCES}
 )
@@ -234,6 +255,16 @@ source_group(
     FILES
         ${OBJECTS_HEADERS}
         ${OBJECTS_SOURCES}
+)
+
+source_group(
+    TREE
+        ${CMAKE_CURRENT_SOURCE_DIR}/${PROJECT_NAME}/Scene
+    PREFIX
+        "Scene"
+    FILES
+        ${SCENE_HEADERS}
+        ${SCENE_SOURCES}
 )
 
 source_group(
