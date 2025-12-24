@@ -4,6 +4,7 @@
 
 #include "../../../Vertices/include/VertexLayouts.hpp"
 #include "pch.hpp"
+#include "Andromeda/Space/Objects/IMesh.hpp"
 
 
 namespace Andromeda::Rendering
@@ -29,6 +30,9 @@ namespace Andromeda::Rendering
             const Andromeda::Rendering::VertexLayout& layout
         );
 
+        // New high-level API (renderer should use this)
+        void Create(const IMesh& mesh, const VertexLayout& layout);
+
         void Destroy();
 
         uint32_t GetVAO() const;
@@ -43,7 +47,7 @@ namespace Andromeda::Rendering
         uint32_t m_VAO;
         uint32_t m_VBO;
         uint32_t m_EBO;
-        uint32_t m_IndexCount;
+        uint32_t m_indexCount;
     };
 }
 

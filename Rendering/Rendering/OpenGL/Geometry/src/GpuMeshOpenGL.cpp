@@ -9,7 +9,7 @@ namespace Andromeda::Rendering
         : m_VAO{ 0 }
         , m_VBO{ 0 }
         , m_EBO{ 0 }
-        , m_IndexCount{ 0 }
+        , m_indexCount{ 0 }
     {
     }
 
@@ -22,7 +22,7 @@ namespace Andromeda::Rendering
         : m_VAO{ 0 }
         , m_VBO{ 0 }
         , m_EBO{ 0 }
-        , m_IndexCount{ 0 }
+        , m_indexCount{ 0 }
     {
         MoveFrom(other);
     }
@@ -42,12 +42,12 @@ namespace Andromeda::Rendering
         m_VAO = other.m_VAO;
         m_VBO = other.m_VBO;
         m_EBO = other.m_EBO;
-        m_IndexCount = other.m_IndexCount;
+        m_indexCount = other.m_indexCount;
 
         other.m_VAO = 0;
         other.m_VBO = 0;
         other.m_EBO = 0;
-        other.m_IndexCount = 0;
+        other.m_indexCount = 0;
     }
 
     bool GpuMeshOpenGL::IsValid() const
@@ -64,7 +64,7 @@ namespace Andromeda::Rendering
     {
         Destroy();
 
-        m_IndexCount = static_cast<uint32_t>(indices.size());
+        m_indexCount = static_cast<uint32_t>(indices.size());
 
         glGenVertexArrays(1, &m_VAO);
         glGenBuffers(1, &m_VBO);
@@ -81,6 +81,26 @@ namespace Andromeda::Rendering
         VertexLayoutOpenGL::Apply(layout);
 
         glBindVertexArray(0);
+    }
+
+    void GpuMeshOpenGL::Create(const IMesh& mesh, const VertexLayout& layout)
+    {
+        const auto& vertices = mesh.GetVertices();
+        const auto& indicesUI = mesh.GetIndices();
+
+        std::vector<uint32_t> indicesU32;
+        indicesU32.reserve(indicesUI.size());
+        for (unsigned int idx : indicesUI)
+        {
+            indicesU32.push_back(static_cast<uint32_t>(idx));
+        }
+
+        Create(
+            vertices.data(),
+            vertices.size() * sizeof(Vertex),
+            indicesU32,
+            layout
+        );
     }
 
     void GpuMeshOpenGL::Destroy()
@@ -101,7 +121,7 @@ namespace Andromeda::Rendering
             m_VAO = 0;
         }
 
-        m_IndexCount = 0;
+        m_indexCount = 0;
     }
 
     uint32_t GpuMeshOpenGL::GetVAO() const
@@ -121,6 +141,6 @@ namespace Andromeda::Rendering
 
     uint32_t GpuMeshOpenGL::GetIndexCount() const
     {
-        return m_IndexCount;
+        return m_indexCount;
     }
 }
