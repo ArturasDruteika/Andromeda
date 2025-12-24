@@ -17,7 +17,6 @@ namespace Andromeda::EngineCore
 
 		bool IsInitialized() const override;
 		GraphicsBackend GetGraphicsBackend() const override;
-		IScene* GetScene() const override;
 		IRenderer* GetRenderer() const override;
 
 		bool Init() override;
@@ -27,16 +26,12 @@ namespace Andromeda::EngineCore
 
 	private:
 		void CreateRenderer();
-		void CreateScene();
-
 		void DestroyRenderer();
-		void DestroyScene();
 
 	private:
 		bool m_initialized;
 		GraphicsBackend m_graphicsBackend;
 		std::unique_ptr<IRenderer> m_renderer;
-		std::unique_ptr<IScene> m_scene;
 	};
 }
 

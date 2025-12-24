@@ -19,7 +19,6 @@ namespace Andromeda
 
 		virtual bool IsInitialized() const = 0;
 		virtual GraphicsBackend GetGraphicsBackend() const = 0;
-		virtual IScene* GetScene() const = 0;
 		virtual IRenderer* GetRenderer() const = 0;
 
 		virtual bool Init() = 0;

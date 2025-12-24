@@ -1,6 +1,5 @@
 #include "../include/Engine.hpp"
 #include "Rendering/Renderers/Renderers/include/RendererOpenGL.hpp"
-#include "Rendering/Scene/Scenes/include/SceneOpenGL.hpp"
 #include "spdlog/spdlog.h"
 
 
@@ -50,15 +49,6 @@ namespace Andromeda::EngineCore
         return m_graphicsBackend;
     }
 
-    IScene* Engine::GetScene() const
-    {
-        if (!m_scene)
-        {
-            spdlog::warn("Engine::GetScene() called but scene is nullptr.");
-        }
-        return m_scene.get();
-    }
-
     IRenderer* Engine::GetRenderer() const
     {
         if (!m_renderer)
@@ -89,21 +79,12 @@ namespace Andromeda::EngineCore
                 spdlog::error("Engine::Init() failed: renderer creation returned nullptr.");
                 return false;
             }
-
-            CreateScene();
-            if (!m_scene)
-            {
-                spdlog::error("Engine::Init() failed: scene creation returned nullptr.");
-                DestroyRenderer();
-                return false;
-            }
         }
         catch (const std::exception& ex)
         {
             spdlog::error("Exception during Engine::Init(): {}", ex.what());
             try
             {
-                DestroyScene();
                 DestroyRenderer();
             }
             catch (...)
@@ -117,7 +98,6 @@ namespace Andromeda::EngineCore
             spdlog::error("Unknown exception during Engine::Init().");
             try
             {
-                DestroyScene();
                 DestroyRenderer();
             }
             catch (...)
@@ -141,19 +121,6 @@ namespace Andromeda::EngineCore
         }
 
         spdlog::info("Engine::DeInit() starting.");
-
-        try
-        {
-            DestroyScene();
-        }
-        catch (const std::exception& ex)
-        {
-            spdlog::error("Exception in Engine::DeInit() while destroying scene: {}", ex.what());
-        }
-        catch (...)
-        {
-            spdlog::error("Unknown exception in Engine::DeInit() while destroying scene.");
-        }
 
         try
         {
@@ -218,47 +185,6 @@ namespace Andromeda::EngineCore
         }
     }
 
-    void Engine::CreateScene()
-    {
-        spdlog::info(
-            "Engine::CreateScene() for backend {}",
-            GraphicsBackendString(m_graphicsBackend)
-        );
-
-        try
-        {
-            switch (m_graphicsBackend)
-            {
-            case GraphicsBackend::OpenGL:
-                m_scene = std::make_unique<Rendering::SceneOpenGL>();
-                spdlog::info("Engine::CreateScene() created OpenGL scene.");
-                break;
-
-            case GraphicsBackend::Vulkan:
-                spdlog::warn("Engine::CreateScene(): Vulkan backend not implemented yet.");
-                m_scene.reset();
-                break;
-
-            case GraphicsBackend::None:
-            default:
-                spdlog::error("Engine::CreateScene(): Unknown graphics backend {}.",
-                    GraphicsBackendString(m_graphicsBackend));
-                m_scene.reset();
-                break;
-            }
-        }
-        catch (const std::exception& ex)
-        {
-            spdlog::error("Exception in Engine::CreateScene(): {}", ex.what());
-            m_scene.reset();
-        }
-        catch (...)
-        {
-            spdlog::error("Unknown exception in Engine::CreateScene().");
-            m_scene.reset();
-        }
-    }
-
     void Engine::DestroyRenderer()
     {
         if (!m_renderer)
@@ -284,32 +210,6 @@ namespace Andromeda::EngineCore
 
         m_renderer.reset();
         spdlog::info("Engine::DestroyRenderer() finished, renderer reset to nullptr.");
-    }
-
-    void Engine::DestroyScene()
-    {
-        if (!m_scene)
-        {
-            spdlog::warn("Engine::DestroyScene() called but scene is already nullptr.");
-            return;
-        }
-
-        spdlog::info("Engine::DestroyScene() starting.");
-
-        try
-        {
-            m_scene.reset();
-        }
-        catch (const std::exception& ex)
-        {
-            spdlog::error("Exception in Engine::DestroyScene(): {}", ex.what());
-        }
-        catch (...)
-        {
-            spdlog::error("Unknown exception in Engine::DestroyScene().");
-        }
-
-        spdlog::info("Engine::DestroyScene() finished, scene reset to nullptr.");
     }
 }
 
