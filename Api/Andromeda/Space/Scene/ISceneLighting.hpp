@@ -18,7 +18,7 @@ namespace Andromeda
         // Getters
         virtual const std::unordered_map<int, const IDirectionalLight*>& GetDirectionalLights() const = 0;
         virtual const std::unordered_map<int, const IPointLight*>& GetPointLights() const = 0;
-        virtual const std::unordered_map<int, const ILightObject*>& GetLuminousObjects() const = 0;
+        virtual const std::unordered_map<int, const ILightObject*>& GetLightObjects() const = 0;
     };
 }
 

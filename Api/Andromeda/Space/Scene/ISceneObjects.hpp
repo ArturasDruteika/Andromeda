@@ -19,7 +19,7 @@ namespace Andromeda
 		
 		virtual void AddObject(int id, IGeometricObject* object) = 0;
 		virtual void RemoveObject(int id) = 0;
-		virtual void AddLuminousObject(int id, ILightObject* pLuminousObject) = 0;
+		virtual void AddLightObject(int id, ILightObject* pLightObject) = 0;
 	};
 }
 
