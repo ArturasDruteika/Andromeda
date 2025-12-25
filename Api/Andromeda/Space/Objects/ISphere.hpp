@@ -15,7 +15,7 @@ namespace Andromeda
 	public:
 		virtual ~ISphere() = default;
 
-		virtual float GetRadius() = 0;
+		virtual float GetRadius() const = 0;
 	};
 }
 

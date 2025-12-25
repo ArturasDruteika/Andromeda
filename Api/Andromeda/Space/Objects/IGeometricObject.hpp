@@ -12,8 +12,8 @@
 namespace Andromeda
 {
 	class IGeometricObject
-        : public IObject
-        , public ITransformable
+        : public virtual IObject
+        , public virtual ITransformable
 	{
 	public:
 		virtual ~IGeometricObject() = default;
