@@ -23,6 +23,10 @@ namespace Andromeda::Space
 		void SetBackgroundColor(const Math::Vec4& backroundColor) override;
 
 		void ResizeGrid(float resizeFactor) override;
+
+	protected:
+		float m_ambientStrength;
+		Math::Vec4 m_backgroundColor;
 	};
 }
 

@@ -22,6 +22,9 @@ namespace Andromeda::Space
         const std::unordered_map<int, const IPointLight*>& GetPointLights() const override;
         const std::unordered_map<int, const ILightObject*>& GetLightObjects() const override;
 
+        void AddLightObject(int id, const ILightObject* pLightObject);
+		void RemoveLightObject(int id);
+
     protected:
         std::unordered_map<int, const IDirectionalLight*> m_directionalLights;
         std::unordered_map<int, const IPointLight*> m_pointLights;

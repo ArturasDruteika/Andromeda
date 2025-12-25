@@ -24,6 +24,10 @@ namespace Andromeda::Space
 		Scene();
 		~Scene() override;
 
+		void AddObject(int id, IGeometricObject* object) override;
+		void RemoveObject(int id) override;
+
+		// Getters
 		Math::Vec3 GetSceneCenter() const override;
 
 		void ClearScene() override;
