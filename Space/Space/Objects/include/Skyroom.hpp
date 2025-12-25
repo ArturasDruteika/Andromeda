@@ -4,6 +4,7 @@
 
 #include "GeometricObject.hpp"
 #include "SurfaceObject.hpp"
+#include "../../MacroExports/include/MacroExports.hpp"
 #include "Math/LinearAlgebra/include/LinearAlgebraDataTypes.hpp"
 #include "Andromeda/Space/Objects/ISkyroom.hpp"
 #include "Andromeda/Space/Colors/Colors.hpp"
@@ -18,7 +19,7 @@ namespace Andromeda::Space
         std::array<Math::Vec3, 4> vertices;
     };
 
-    class Skyroom
+    class SPACE_API Skyroom
 		: public virtual ISkyroom
         , public GeometricObject
 		, public SurfaceObject

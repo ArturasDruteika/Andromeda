@@ -2,12 +2,13 @@
 #define SPACE__TRANSFORMATIONS__SCALABLE__HPP
 
 
+#include "../../MacroExports/include/MacroExports.hpp"
 #include "Andromeda/Space/Transformations/IScalable.hpp"
 
 
 namespace Andromeda
 {
-	class Scalable
+	class SPACE_API Scalable
 		: public virtual IScalable
 	{
 	public:

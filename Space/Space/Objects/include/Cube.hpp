@@ -4,6 +4,7 @@
 
 #include "GeometricObject.hpp"
 #include "SurfaceObject.hpp"
+#include "../../MacroExports/include/MacroExports.hpp"
 #include "Math/LinearAlgebra/include/LinearAlgebraDataTypes.hpp"
 #include "Andromeda/Space/Colors/Colors.hpp"
 #include "Andromeda/Space/Objects/ICube.hpp"
@@ -17,7 +18,7 @@ namespace Andromeda::Space
         std::array<Math::Vec3, 4> vertices;
     };
 
-    class Cube
+    class SPACE_API Cube
         : public virtual ICube
         , public GeometricObject
 		, public SurfaceObject

@@ -2,12 +2,13 @@
 #define SPACE__TRANSFORMATIONS__TRANSLATABLE__HPP
 
 
+#include "../../MacroExports/include/MacroExports.hpp"
 #include "Andromeda/Space/Transformations/ITranslatable.hpp"
 
 
 namespace Andromeda
 {
-	class Translatable
+	class SPACE_API Translatable
 		: public virtual ITranslatable
 	{
 	public:

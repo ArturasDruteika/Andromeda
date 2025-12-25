@@ -1,6 +1,8 @@
 #ifndef SPACE__TRANSFORMATIONS__ROTATABLE__HPP
 #define SPACE__TRANSFORMATIONS__ROTATABLE__HPP
 
+
+#include "../../MacroExports/include/MacroExports.hpp"
 #include "Andromeda/Space/Transformations/IRotatable.hpp"
 #include "Math/LinearAlgebra/include/LinearAlgebraDataTypes.hpp"
 #include "Math/LinearAlgebra/include/Quaternions.hpp"
@@ -8,7 +10,7 @@
 
 namespace Andromeda
 {
-    class Rotatable
+    class SPACE_API Rotatable
         : public virtual IRotatable
     {
     public:

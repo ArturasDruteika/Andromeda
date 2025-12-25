@@ -2,12 +2,13 @@
 #define SPACE__OBJECTS__OBJECT__HPP
 
 
+#include "../../MacroExports/include/MacroExports.hpp"
 #include "Andromeda/Space/Objects/IObject.hpp"
 
 
 namespace Andromeda::Space
 {
-    class Object
+    class SPACE_API Object
         : public virtual IObject
     {
     public:

@@ -2,14 +2,15 @@
 #define ANDROMEDA__SPACE__LIGHT_OBJECT__HPP
 
 
+#include "Object.hpp"
+#include "../../MacroExports/include/MacroExports.hpp"
 #include "Andromeda/Space/Light/LightTypes.hpp"
 #include "Andromeda/Space/Objects/ILightObject.hpp"
-#include "Object.hpp"
 
 
 namespace Andromeda::Space
 {
-	class LightObject
+	class SPACE_API LightObject
 		: public virtual ILightObject
 		, public Object
 	{

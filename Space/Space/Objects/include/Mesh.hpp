@@ -2,6 +2,7 @@
 #define ANDROMEDA__SPACE__MESH__HPP
 
 
+#include "../../MacroExports/include/MacroExports.hpp"
 #include "pch.hpp"
 #include "Andromeda/Space/Vertices/Vertex.hpp"
 #include "Andromeda/Space/Objects/IMesh.hpp"
@@ -9,7 +10,7 @@
 
 namespace Andromeda::Space
 {
-	class Mesh
+	class SPACE_API Mesh
 		: public virtual IMesh
 	{
 	public:

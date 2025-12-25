@@ -3,15 +3,16 @@
 
 
 #include "CameraView.hpp"
+#include "../../MacroExports/include/MacroExports.hpp"
 #include "Math/LinearAlgebra/include/Quaternions.hpp"
 #include "Andromeda/Space/Camera/ICameraController.hpp"
 
 
 namespace Andromeda::Space
 {
-	class CameraController
-		: public CameraView
-		, public virtual ICameraController
+	class SPACE_API CameraController
+		: public virtual ICameraController
+		, public CameraView
 	{
 	public:
 		CameraController(const Math::Vec3& position, const Math::Vec3& targetCoords = Math::Vec3(0.0f, 0.0f, 0.0f));

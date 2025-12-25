@@ -2,13 +2,14 @@
 #define SPACE__CAMERA__PERSPECTIVE_CONTROL__HPP
 
 
+#include "../../MacroExports/include/MacroExports.hpp"
 #include "Andromeda/Space/Camera/IPerspectiveControl.hpp"
 #include "Math/LinearAlgebra/include/LinearAlgebraDataTypes.hpp"
 
 
 namespace Andromeda::Space
 {
-	class PerspectiveControl
+	class SPACE_API PerspectiveControl
 		: public virtual IPerspectiveControl
 	{
 	public:

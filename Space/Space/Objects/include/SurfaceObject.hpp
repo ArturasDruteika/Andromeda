@@ -2,6 +2,7 @@
 #define SPACE__OBJECTS__SURFACE_OBJECT__HPP
 
 
+#include "../../MacroExports/include/MacroExports.hpp"
 #include "Andromeda/Space/Objects/ISurfaceObject.hpp"
 
 
@@ -9,7 +10,7 @@ namespace Andromeda::Space
 {
     class Material;
 
-    class SurfaceObject
+    class SPACE_API SurfaceObject
         : public virtual ISurfaceObject
     {
     public:

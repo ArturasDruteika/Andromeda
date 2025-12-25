@@ -2,14 +2,15 @@
 #define SPACE__CAMERA__CAMERA_VIEW__HPP
 
 
+#include "../../MacroExports/include/MacroExports.hpp"
 #include "Math/LinearAlgebra/include/LinearAlgebraDataTypes.hpp"
 #include "Andromeda/Space/Camera/ICameraView.hpp"
 
 
 namespace Andromeda::Space
 {
-	class CameraView
-		: public ICameraView
+	class SPACE_API CameraView
+		: public virtual ICameraView
 	{
 	public:
 		CameraView(const Math::Vec3& position, const Math::Vec3& targetCoords = Math::Vec3(0.0f, 0.0f, 0.0f));

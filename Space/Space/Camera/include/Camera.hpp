@@ -1,20 +1,19 @@
 #ifndef RENDERING__CAMERA__HPP
 #define RENDERING__CAMERA__HPP
 
-#define GLM_ENABLE_EXPERIMENTAL
 
-#include "Camera.hpp"
 #include "PerspectiveControl.hpp"
 #include "CameraController.hpp"
+#include "../../MacroExports/include/MacroExports.hpp"
 #include "Andromeda/Space/Camera/ICamera.hpp"
 
 
 namespace Andromeda::Space
 {
-    class Camera
-        : public PerspectiveControl
+    class SPACE_API Camera
+        : public virtual ICamera
+        , public PerspectiveControl
         , public CameraController
-        , public ICamera
     {
     public:
         Camera();

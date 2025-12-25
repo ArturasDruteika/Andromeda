@@ -4,6 +4,7 @@
 
 #include "GeometricObject.hpp"
 #include "SurfaceObject.hpp"
+#include "../../MacroExports/include/MacroExports.hpp"
 #include "Andromeda/Space/Colors/Colors.hpp"
 #include "Andromeda/Space/Objects/ISphere.hpp"
 #include "Math/LinearAlgebra/include/LinearAlgebraDataTypes.hpp"
@@ -11,7 +12,7 @@
 
 namespace Andromeda::Space
 {
-    class Sphere
+    class SPACE_API Sphere
         : public virtual ISphere
         , public GeometricObject
 		, public SurfaceObject
@@ -21,7 +22,7 @@ namespace Andromeda::Space
         ~Sphere();
 
         // Getters
-        float GetRadius() const;
+        float GetRadius() const override;
 		// Setters
         void SetRadius(float radius);
 

@@ -5,12 +5,13 @@
 #include "Rotatable.hpp"
 #include "Scalable.hpp"
 #include "Translatable.hpp"
+#include "../../MacroExports/include/MacroExports.hpp"
 #include "Andromeda/Space/Transformations/ITransformable.hpp"
 
 
 namespace Andromeda
 {
-	class Transformable
+	class SPACE_API Transformable
 		: public virtual ITransformable
 		, public Rotatable
 		, public Scalable

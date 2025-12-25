@@ -2,13 +2,14 @@
 #define SPACE__LIGHT_DATA__HPP
 
 
+#include "../../MacroExports/include/MacroExports.hpp"
 #include "Andromeda/Space/Light/LightTypes.hpp"
 #include "Math/LinearAlgebra/include/LinearAlgebraDataTypes.hpp"
 
 
 namespace Andromeda::Space
 {
-    class LightData
+    class SPACE_API LightData
     {
     public:
         LightData(
