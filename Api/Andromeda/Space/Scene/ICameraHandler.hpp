@@ -12,7 +12,9 @@ namespace Andromeda
 	public:
 		virtual ~ICameraHandler() = default;
 
-		virtual ICamera* GetActiveCamera() = 0;
+		// Getters
+		virtual ICamera* GetActiveCamera() const = 0;
+		// Setters
 		virtual void SetActiveCamera(ICamera* camera) = 0;
 	};
 }

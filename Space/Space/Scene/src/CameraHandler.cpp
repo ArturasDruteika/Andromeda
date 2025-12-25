@@ -13,7 +13,7 @@ namespace Andromeda::Space
 		delete m_camera;
 	}
 
-	ICamera* Space::CameraHandler::GetActiveCamera()
+	ICamera* Space::CameraHandler::GetActiveCamera() const
 	{
 		return m_camera;
 	}

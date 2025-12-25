@@ -12,11 +12,11 @@
 namespace Andromeda
 {
 	class IScene
-		: public ICameraHandler
-		, public ISceneEnvironment
-		, public ISceneLighting
-		, public ISceneObjects
-		, public ISceneState
+		: public virtual ICameraHandler
+		, public virtual ISceneEnvironment
+		, public virtual ISceneLighting
+		, public virtual ISceneObjects
+		, public virtual ISceneState
 	{
 	public:
 		virtual ~IScene() = default;

@@ -7,12 +7,13 @@
 #include "SceneLighting.hpp"
 #include "SceneObjects.hpp"
 #include "SceneState.hpp"
+#include "../../MacroExports/include/MacroExports.hpp"
 #include "Andromeda/Space/Scene/IScene.hpp"
 
 
 namespace Andromeda::Space
 {
-	class Scene
+	class SPACE_API Scene
 		: public virtual IScene
 		, public CameraHandler
 		, public SceneEnvironment

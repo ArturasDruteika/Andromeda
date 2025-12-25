@@ -4,13 +4,14 @@
 
 #include "../../Objects/include/GeometricObject.hpp"
 #include "../../Objects/include/LightObject.hpp"
+#include "../../MacroExports/include/MacroExports.hpp"
 #include "Andromeda/Space/Scene/ISceneObjects.hpp"
 #include <map>
 
 
 namespace Andromeda::Space
 {
-	class SceneObjects
+	class SPACE_API SceneObjects
 		: public virtual ISceneObjects
 	{
 	public:

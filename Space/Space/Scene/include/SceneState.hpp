@@ -3,12 +3,13 @@
 
 
 #include "../../Objects/include/GeometricObject.hpp"
+#include "../../MacroExports/include/MacroExports.hpp"
 #include "Andromeda/Space/Scene/ISceneState.hpp"
 
 
 namespace Andromeda::Space
 {
-	class SceneState
+	class SPACE_API SceneState
 		: public virtual ISceneState
 	{
 	public:

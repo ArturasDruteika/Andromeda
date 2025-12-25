@@ -5,12 +5,13 @@
 #include "../../Light/include/DirectionalLight.hpp"
 #include "../../Light/include/PointLight.hpp"
 #include "../../Objects/include/LightObject.hpp"
+#include "../../MacroExports/include/MacroExports.hpp"
 #include "Andromeda/Space/Scene/ISceneLighting.hpp"
 
 
 namespace Andromeda::Space
 {
-    class SceneLighting
+    class SPACE_API SceneLighting
 		: public virtual ISceneLighting
     {
     public:

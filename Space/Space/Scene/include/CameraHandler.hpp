@@ -3,19 +3,20 @@
 
 
 #include "../../Camera/include/Camera.hpp"
+#include "../../MacroExports/include/MacroExports.hpp"
 #include "Andromeda/Space/Scene/ICameraHandler.hpp"
 
 
 namespace Andromeda::Space
 {
-	class CameraHandler
-		: public ICameraHandler
+	class SPACE_API CameraHandler
+		: public virtual ICameraHandler
 	{
 	public:
 		CameraHandler();
 		~CameraHandler() override;
 
-		ICamera* GetActiveCamera() override;
+		ICamera* GetActiveCamera() const override;
 		void SetActiveCamera(ICamera* camera) override;
 
 	protected:

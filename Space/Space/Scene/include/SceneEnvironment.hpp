@@ -2,13 +2,14 @@
 #define SPACE__SCENE__SCENE_API__SCENE__HPP
 
 
+#include "../../MacroExports/include/MacroExports.hpp"
 #include "Andromeda/Space/Scene/ISceneEnvironment.hpp"
 #include "Math/LinearAlgebra/include/LinearAlgebraDataTypes.hpp"
 
 
 namespace Andromeda::Space
 {
-	class SceneEnvironment
+	class SPACE_API SceneEnvironment
 		: public virtual ISceneEnvironment
 	{
 	public:
