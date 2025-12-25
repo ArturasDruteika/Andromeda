@@ -2,7 +2,7 @@
 #define RENDERER__GRID_CONTROL__HPP
 
 
-#include "Space/Colors/include/Colors.hpp"
+#include "Andromeda/Space/Colors//Colors.hpp"
 
 
 namespace Andromeda::Rendering
@@ -18,13 +18,13 @@ namespace Andromeda::Rendering
 		float GetGridSize() const;
 		float GetGridSpacing() const;
 		float GetGridLineWidth() const;
-		const Space::Color& GetGridColor() const;
+		const Color& GetGridColor() const;
 		// Setters
 		void SetGridVisible(bool visible);
 		void SetGridSize(float size);
 		void SetGridSpacing(float spacing);
 		void SetGridLineWidth(float lineWidth);
-		void SetGridColor(const Space::Color& color);
+		void SetGridColor(const Color& color);
 
 
 	protected:
@@ -32,7 +32,7 @@ namespace Andromeda::Rendering
 		float m_gridSize;     // Size of the grid
 		float m_gridSpacing;  // Spacing between grid lines
 		float m_gridLineWidth; // Width of the grid lines
-		Space::Color m_gridColor; // Color of the grid lines
+		Color m_gridColor; // Color of the grid lines
 	};
 }
 
