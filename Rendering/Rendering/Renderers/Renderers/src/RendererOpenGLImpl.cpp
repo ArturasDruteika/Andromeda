@@ -25,27 +25,27 @@
 namespace Andromeda::Rendering
 {
     RendererOpenGL::RendererOpenGLImpl::RendererOpenGLImpl()
-        : m_isInitialized(false)
-        , m_directionalShadowResolution(2048)
-        , m_shadowCubeResolution(1024)
-        , m_shadowMapLightSpace(glm::mat4(1.0f))
-        , m_mainFBO()
-        , m_directionalShadowFBO()
-        , m_pointShadowFBO()
-        , m_pShaderManager(nullptr)
-        , m_defaultVertexLayout()
-        , m_gpuMeshes()
+        : m_isInitialized{ false }
+        , m_directionalShadowResolution{ 2048 }
+        , m_shadowCubeResolution{ 1024 }
+        , m_shadowMapLightSpace{ glm::mat4{ 1.0f } }
+        , m_mainFBO{}
+        , m_directionalShadowFBO{}
+        , m_pointShadowFBO{}
+        , m_pShaderManager{ nullptr }
+        , m_defaultVertexLayout{}
+        , m_gpuMeshes{}
     {
         m_pShaderManager = new ShaderManager(true);
         SetCameraAspect(m_width, m_height);
 
-        // Default layout: adjust this to exactly match your Andromeda::Vertex struct memory layout
-        // Example assumes: Position (vec3), Normal (vec3), TexCoord0 (vec2)
-        m_defaultVertexLayout = VertexLayout({
-            { VertexSemantic::Position, ComponentType::Float32, 3, false, 0 },
-            { VertexSemantic::Normal,   ComponentType::Float32, 3, false, 0 },
-            { VertexSemantic::TexCoord0,ComponentType::Float32, 2, false, 0 }
-            });
+        m_defaultVertexLayout = VertexLayout(
+            {
+                { VertexSemantic::Position, ComponentType::Float32, 3, false, 0 },
+                { VertexSemantic::Normal,   ComponentType::Float32, 3, false, 0 },
+                { VertexSemantic::Color0,   ComponentType::Float32, 2, false, 0 }
+            }
+        );
     }
 
     RendererOpenGL::RendererOpenGLImpl::~RendererOpenGLImpl()
@@ -180,19 +180,14 @@ namespace Andromeda::Rendering
                 continue;
             }
 
-            const int objId = obj->GetID();
-            sceneIds.insert(objId);
+            sceneIds.insert(id);
 
-            auto it = m_gpuMeshes.find(objId);
+            auto it = m_gpuMeshes.find(id);
             if (it == m_gpuMeshes.end())
             {
                 GpuMeshOpenGL gpuMesh;
-
-                // This assumes your scene object exposes a mesh via GetMesh() returning const IMesh&
-                // and you want to use a renderer-wide default VertexLayout.
                 gpuMesh.Create(obj->GetMesh(), m_defaultVertexLayout);
-
-                m_gpuMeshes.emplace(objId, std::move(gpuMesh));
+                m_gpuMeshes.emplace(id, std::move(gpuMesh));
             }
         }
 

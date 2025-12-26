@@ -85,8 +85,8 @@ namespace Andromeda::Rendering
 
     void GpuMeshOpenGL::Create(const IMesh& mesh, const VertexLayout& layout)
     {
-        const auto& vertices = mesh.GetVertices();
-        const auto& indicesUI = mesh.GetIndices();
+        const std::vector<Vertex>& vertices = mesh.GetVertices();
+        const std::vector<unsigned int>& indicesUI = mesh.GetIndices();
 
         std::vector<uint32_t> indicesU32;
         indicesU32.reserve(indicesUI.size());
