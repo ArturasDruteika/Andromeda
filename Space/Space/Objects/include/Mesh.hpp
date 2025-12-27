@@ -11,7 +11,7 @@
 namespace Andromeda::Space
 {
 	class SPACE_API Mesh
-		: public virtual IMesh
+		: public IMesh
 	{
 	public:
 		Mesh();
