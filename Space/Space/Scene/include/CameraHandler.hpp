@@ -2,13 +2,16 @@
 #define SPACE__SCENE__CAMERA_HANDLER__HPP
 
 
-#include "../../Camera/include/Camera.hpp"
 #include "../../MacroExports/include/MacroExports.hpp"
 #include "Andromeda/Space/Scene/ICameraHandler.hpp"
 
 
 namespace Andromeda::Space
 {
+	// Forward declaration
+	class Camera;
+
+
 	class SPACE_API CameraHandler
 		: public virtual ICameraHandler
 	{
@@ -20,7 +23,7 @@ namespace Andromeda::Space
 		void SetActiveCamera(ICamera* camera) override;
 
 	protected:
-		Camera* m_camera;
+		Camera* m_pCamera;
 	};
 }
 
