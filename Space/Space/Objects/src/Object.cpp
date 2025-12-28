@@ -3,9 +3,12 @@
 
 namespace Andromeda::Space
 {
+	std::atomic<int> Object::s_nextId{ 0 };
+
 	Object::Object()
 		: m_isActive{ false }
-		, m_id{ -1 }
+		, m_id{ s_nextId++ }
+		, m_name{}
 	{
 	}
 

@@ -4,6 +4,7 @@
 
 #include "../../MacroExports/include/MacroExports.hpp"
 #include "Andromeda/Space/Objects/IObject.hpp"
+#include "pch.hpp"
 
 
 namespace Andromeda::Space
@@ -27,6 +28,7 @@ namespace Andromeda::Space
         bool m_isActive;
         int m_id;
         std::string m_name;
+        static std::atomic<int> s_nextId;
     };
 }
 

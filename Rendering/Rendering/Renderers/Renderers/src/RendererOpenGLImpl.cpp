@@ -194,7 +194,8 @@ namespace Andromeda::Rendering
             {
                 GpuMeshOpenGL gpuMesh;
                 gpuMesh.Create(obj->GetMesh(), m_defaultVertexLayout);
-                m_gpuMeshes.emplace(id, std::move(gpuMesh));
+                int objID = obj->GetID();
+                m_gpuMeshes.emplace(objID, std::move(gpuMesh));
             }
         }
 
@@ -448,8 +449,8 @@ namespace Andromeda::Rendering
                 continue;
             }
 
-            const int objId = obj->GetID();
-            const GpuMeshOpenGL* mesh = TryGetGpuMesh(objId);
+			int objID = obj->GetID();
+            const GpuMeshOpenGL* mesh = TryGetGpuMesh(objID);
             if (!mesh)
             {
                 continue;
