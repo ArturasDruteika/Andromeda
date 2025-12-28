@@ -32,7 +32,6 @@ namespace Andromeda::Rendering
 		// Setters
 		void SetGridVisible(bool visible) override;
 		void SetIlluminationMode(bool mode) override;
-		void SetCamera(ICamera* camera) override;
 
 		void Init(int width, int height, bool illuminationMode = false) override;
 		void DeInit() override;

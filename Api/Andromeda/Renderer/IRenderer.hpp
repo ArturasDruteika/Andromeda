@@ -2,7 +2,6 @@
 #define API__RENDERER__I_RENDERER__HPP
 
 
-#include "ICameraControl.hpp"
 #include "IGridControl.hpp"
 #include "IIlluminationControl.hpp"
 #include "ISizeControl.hpp"
@@ -14,8 +13,7 @@
 namespace Andromeda
 {
 	class IRenderer 
-		: public ICameraControl
-		, public IGridControl
+		: public IGridControl
 		, public IIlluminationControl
 		, public ISizeControl
 	{

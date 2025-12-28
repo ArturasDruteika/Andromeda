@@ -68,7 +68,6 @@ set(PLATFORM_HEADERS
 
 # ==== Renderer ====
 set(RENDERER_HEADERS
-    Andromeda/Renderer/ICameraControl.hpp
     Andromeda/Renderer/IGridControl.hpp
     Andromeda/Renderer/IIlluminationControl.hpp
     Andromeda/Renderer/IRenderer.hpp

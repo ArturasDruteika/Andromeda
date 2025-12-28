@@ -54,11 +54,6 @@ namespace Andromeda::Rendering
 		m_pRendererOpenGLImpl->SetIlluminationMode(mode);
 	}
 
-	void RendererOpenGL::SetCamera(ICamera* camera)
-	{
-		m_pRendererOpenGLImpl->SetCamera(camera);
-	}
-		
 	void RendererOpenGL::Init(int width, int height, bool illuminationMode)
 	{
 		m_pRendererOpenGLImpl->Init(width, height, illuminationMode);

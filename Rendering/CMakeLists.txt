@@ -34,7 +34,6 @@ set(RAYTRACING_HEADERS
 
 # ==== Renderers ====
 set(RENDERERS_HEADERS
-    Rendering/Renderers/Abstracts/include/CameraControl.hpp
     Rendering/Renderers/Abstracts/include/FaceCullingControlOpenGL.hpp
     Rendering/Renderers/Abstracts/include/GridControl.hpp
     Rendering/Renderers/Abstracts/include/IlluminationControl.hpp
@@ -47,7 +46,6 @@ set(RENDERERS_HEADERS
 )
 
 set(RENDERERS_SOURCES
-    Rendering/Renderers/Abstracts/src/CameraControl.cpp
     Rendering/Renderers/Abstracts/src/FaceCullingControlOpenGL.cpp
     Rendering/Renderers/Abstracts/src/GridControl.cpp
     Rendering/Renderers/Abstracts/src/IlluminationControl.cpp

@@ -2,7 +2,6 @@
 #define RENDERER__RENDERER__HPP
 
 
-#include "../include/CameraControl.hpp"
 #include "../include/GridControl.hpp"
 #include "../include/IlluminationControl.hpp"
 #include "../include/SizeControl.hpp"
@@ -12,8 +11,7 @@
 namespace Andromeda::Rendering
 {
 	class Renderer
-		: public CameraControl
-		, public GridControl
+		: public GridControl
 		, public IlluminationControl
 		, public SizeControl
 	{

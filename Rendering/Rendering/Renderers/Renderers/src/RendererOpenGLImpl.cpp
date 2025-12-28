@@ -37,7 +37,7 @@ namespace Andromeda::Rendering
         , m_gpuMeshes{}
     {
         m_pShaderManager = new ShaderManager(true);
-        SetCameraAspect(m_width, m_height);
+        //SetCameraAspect(m_width, m_height);
 
         m_defaultVertexLayout = VertexLayout(
             {
@@ -122,7 +122,7 @@ namespace Andromeda::Rendering
         }
 
         ConfigurePointShadowDepthTexture();
-        SetCameraAspect(width, height);
+        //SetCameraAspect(width, height);
         m_isInitialized = true;
     }
 
@@ -138,7 +138,7 @@ namespace Andromeda::Rendering
     void RendererOpenGL::RendererOpenGLImpl::Resize(int width, int height)
     {
         SizeControl::Resize(width, height);
-        SetCameraAspect(width, height);
+        //SetCameraAspect(width, height);
         m_mainFBO.Resize(width, height);
     }
 
@@ -146,6 +146,13 @@ namespace Andromeda::Rendering
     {
         if (!m_isInitialized)
         {
+            return;
+        }
+
+        const ICamera* pCamera = scene.GetActiveCamera();
+        if (!pCamera)
+        {
+            spdlog::info("Active camera is nullptr");
             return;
         }
 
@@ -157,11 +164,11 @@ namespace Andromeda::Rendering
 
         if (m_isIlluminationMode)
         {
-            RenderLuminousMode(scene);
+            RenderLuminousMode(scene, *pCamera);
         }
         else
         {
-            RenderObjects(scene);
+            RenderObjects(scene, *pCamera);
         }
 
         EndFrame();
@@ -341,7 +348,7 @@ namespace Andromeda::Rendering
         DisableFaceCulling();
     }
 
-    void RendererOpenGL::RendererOpenGLImpl::RenderNonLuminousObjectsCombined(const IScene& scene, bool hasDir, bool hasPoint) const
+    void RendererOpenGL::RendererOpenGLImpl::RenderNonLuminousObjectsCombined(const IScene& scene, const ICamera& rCamera, bool hasDir, bool hasPoint) const
     {
         glViewport(0, 0, m_width, m_height);
         EnableFaceCulling(GL_BACK, GL_CCW);
@@ -363,9 +370,9 @@ namespace Andromeda::Rendering
         ShaderOpenGL* shader = m_pShaderManager->GetShader(ShaderOpenGLTypes::RenderableObjectsNonLuminous);
         shader->Bind();
 
-        shader->SetUniform("u_view", MathUtils::ToGLM(m_pCamera->GetViewMatrix()));
-        shader->SetUniform("u_projection", MathUtils::ToGLM(m_pCamera->GetProjection()));
-        shader->SetUniform("u_cameraPosWS", MathUtils::ToGLM(m_pCamera->GetPosition()));
+        shader->SetUniform("u_view", MathUtils::ToGLM(rCamera.GetViewMatrix()));
+        shader->SetUniform("u_projection", MathUtils::ToGLM(rCamera.GetProjection()));
+        shader->SetUniform("u_cameraPosWS", MathUtils::ToGLM(rCamera.GetPosition()));
 
         if (hasDir)
         {
@@ -385,12 +392,12 @@ namespace Andromeda::Rendering
         DisableFaceCulling();
     }
 
-    void RendererOpenGL::RendererOpenGLImpl::RenderLuminousObjects(const IScene& scene) const
+    void RendererOpenGL::RendererOpenGLImpl::RenderLuminousObjects(const IScene& scene, const ICamera& rCamera) const
     {
         ShaderOpenGL* lumShader = m_pShaderManager->GetShader(ShaderOpenGLTypes::RenderableObjectsLuminous);
         lumShader->Bind();
-        lumShader->SetUniform("u_view", MathUtils::ToGLM(m_pCamera->GetViewMatrix()));
-        lumShader->SetUniform("u_projection", MathUtils::ToGLM(m_pCamera->GetProjection()));
+        lumShader->SetUniform("u_view", MathUtils::ToGLM(rCamera.GetViewMatrix()));
+        lumShader->SetUniform("u_projection", MathUtils::ToGLM(rCamera.GetProjection()));
 
         for (const auto& [id, obj] : scene.GetObjects())
         {
@@ -420,14 +427,14 @@ namespace Andromeda::Rendering
         DisableFaceCulling();
     }
 
-    void RendererOpenGL::RendererOpenGLImpl::RenderObjects(const IScene& scene) const
+    void RendererOpenGL::RendererOpenGLImpl::RenderObjects(const IScene& scene, const ICamera& rCamera) const
     {
         EnableFaceCulling(GL_BACK, GL_CCW);
 
         ShaderOpenGL* shader = m_pShaderManager->GetShader(ShaderOpenGLTypes::RenderableObjects);
         shader->Bind();
-        shader->SetUniform("u_view", MathUtils::ToGLM(m_pCamera->GetViewMatrix()));
-        shader->SetUniform("u_projection", MathUtils::ToGLM(m_pCamera->GetProjection()));
+        shader->SetUniform("u_view", MathUtils::ToGLM(rCamera.GetViewMatrix()));
+        shader->SetUniform("u_projection", MathUtils::ToGLM(rCamera.GetProjection()));
 
         for (const auto& [id, obj] : scene.GetObjects())
         {
@@ -459,22 +466,22 @@ namespace Andromeda::Rendering
 
     void RendererOpenGL::RendererOpenGLImpl::RenderGrid(const GpuMeshOpenGL& mesh) const
     {
-        if (m_width == 0 || m_height == 0)
-        {
-            spdlog::error("Framebuffer dimensions are zero. Cannot render grid.");
-            return;
-        }
+        //if (m_width == 0 || m_height == 0)
+        //{
+        //    spdlog::error("Framebuffer dimensions are zero. Cannot render grid.");
+        //    return;
+        //}
 
-        ShaderOpenGL* shader = m_pShaderManager->GetShader(ShaderOpenGLTypes::Grid);
-        shader->Bind();
+        //ShaderOpenGL* shader = m_pShaderManager->GetShader(ShaderOpenGLTypes::Grid);
+        //shader->Bind();
 
-        shader->SetUniform("u_view", MathUtils::ToGLM(m_pCamera->GetViewMatrix()));
-        shader->SetUniform("u_projection", MathUtils::ToGLM(m_pCamera->GetProjection()));
+        //shader->SetUniform("u_view", MathUtils::ToGLM(m_pCamera->GetViewMatrix()));
+        //shader->SetUniform("u_projection", MathUtils::ToGLM(m_pCamera->GetProjection()));
 
-        glBindVertexArray(mesh.GetVAO());
-        glDrawElements(GL_LINES, static_cast<GLsizei>(mesh.GetIndexCount()), GL_UNSIGNED_INT, nullptr);
+        //glBindVertexArray(mesh.GetVAO());
+        //glDrawElements(GL_LINES, static_cast<GLsizei>(mesh.GetIndexCount()), GL_UNSIGNED_INT, nullptr);
 
-        shader->UnBind();
+        //shader->UnBind();
     }
 
     void RendererOpenGL::RendererOpenGLImpl::PopulatePointLightUniforms(ShaderOpenGL& shader, const IScene& scene) const
@@ -720,7 +727,7 @@ namespace Andromeda::Rendering
         glBindTexture(GL_TEXTURE_CUBE_MAP, 0);
     }
 
-    void RendererOpenGL::RendererOpenGLImpl::RenderLuminousMode(const IScene& scene)
+    void RendererOpenGL::RendererOpenGLImpl::RenderLuminousMode(const IScene& scene, const ICamera& rCamera)
     {
         const auto dirLights = scene.GetDirectionalLights();
         const bool hasDir = !dirLights.empty();
@@ -743,8 +750,8 @@ namespace Andromeda::Rendering
             ShadowCubeDepthPass(scene, lightPos, nearPlane, farPlane);
         }
 
-        RenderNonLuminousObjectsCombined(scene, hasDir, hasPoint);
-        RenderLuminousObjects(scene);
+        RenderNonLuminousObjectsCombined(scene, rCamera, hasDir, hasPoint);
+        RenderLuminousObjects(scene, rCamera);
 
         RenderGridIfVisible(scene);
     }
