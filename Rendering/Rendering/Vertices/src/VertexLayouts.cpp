@@ -11,9 +11,9 @@ namespace Andromeda::Rendering
     }
 
     VertexLayout::VertexLayout(const std::vector<VertexAttributeDesc>& attributes, InputRate inputRate)
-        : m_attributes(attributes)
-        , m_strideBytes(0)
-        , m_inputRate(inputRate)
+        : m_attributes{ attributes }
+        , m_strideBytes{ 0 }
+        , m_inputRate{ inputRate }
     {
         CalculateOffsetsAndStride();
     }

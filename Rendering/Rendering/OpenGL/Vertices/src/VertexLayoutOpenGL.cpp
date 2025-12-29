@@ -27,22 +27,22 @@ namespace Andromeda::Rendering
 
     void VertexLayoutOpenGL::Apply(const Andromeda::Rendering::VertexLayout& layout)
     {
-        const auto& attrs = layout.GetAttributes();
+        const std::vector<VertexAttributeDesc>& attrs = layout.GetAttributes();
         const GLsizei stride = static_cast<GLsizei>(layout.GetStrideBytes());
 
-        for (const auto& a : attrs)
+        for (const VertexAttributeDesc& attr : attrs)
         {
-            const GLuint location = static_cast<GLuint>(Andromeda::Rendering::VertexLocationPolicy::GetLocation(a.semantic));
-            const void* offsetPtr = reinterpret_cast<const void*>(a.offsetBytes);
+            const GLuint location = static_cast<GLuint>(Andromeda::Rendering::VertexLocationPolicy::GetLocation(attr.semantic));
+            const void* offsetPtr = reinterpret_cast<const void*>(attr.offsetBytes);
 
             glEnableVertexAttribArray(location);
 
-            if (IsIntegerType(a.componentType))
+            if (IsIntegerType(attr.componentType))
             {
                 glVertexAttribIPointer(
                     location,
-                    static_cast<GLint>(a.componentCount),
-                    ToGLComponentType(a.componentType),
+                    static_cast<GLint>(attr.componentCount),
+                    ToGLComponentType(attr.componentType),
                     stride,
                     offsetPtr
                 );
@@ -51,9 +51,9 @@ namespace Andromeda::Rendering
             {
                 glVertexAttribPointer(
                     location,
-                    static_cast<GLint>(a.componentCount),
-                    ToGLComponentType(a.componentType),
-                    a.normalized ? GL_TRUE : GL_FALSE,
+                    static_cast<GLint>(attr.componentCount),
+                    ToGLComponentType(attr.componentType),
+                    attr.normalized ? GL_TRUE : GL_FALSE,
                     stride,
                     offsetPtr
                 );

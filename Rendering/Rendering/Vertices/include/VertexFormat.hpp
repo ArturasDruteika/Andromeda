@@ -10,10 +10,10 @@ namespace Andromeda::Rendering
     enum class VertexSemantic
     {
         Position,
+        Color0,
         Normal,
         Tangent,
         Bitangent,
-        Color0,
         TexCoord0,
         TexCoord1,
         Joints0,
