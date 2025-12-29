@@ -15,7 +15,7 @@ namespace Andromeda
 	public:
 		virtual ~ICube() = default;
 
-		virtual float GetHalfExtent() = 0;
+		virtual float GetHalfExtent() const = 0;
 	};
 }
 

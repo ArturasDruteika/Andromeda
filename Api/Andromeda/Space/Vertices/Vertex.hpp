@@ -17,16 +17,16 @@ namespace Andromeda
 		Vertex() = default;
 
 		Vertex(const Math::Vec3& pos, const Color& col)
-			: position(pos)
-			, color(col)
-			, normal(0.0f, 0.0f, 0.0f)
+			: position{ pos }
+			, color{ col }
+			, normal{ 0.0f, 0.0f, 0.0f }
 		{
 		}
 
 		Vertex(const Math::Vec3& pos, const Color& col, const Math::Vec3& normal)
-			: position(pos)
-			, color(col)
-			, normal(normal)
+			: position{ pos }
+			, color{ col }
+			, normal{ normal }
 		{
 		}
 
