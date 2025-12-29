@@ -2,9 +2,6 @@
 #define RENDERING__VERTICES__VERTEX_FORMAT__HPP
 
 
-#include "pch.hpp"
-
-
 namespace Andromeda::Rendering
 {
     enum class VertexSemantic

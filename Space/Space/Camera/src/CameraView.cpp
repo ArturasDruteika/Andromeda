@@ -8,7 +8,7 @@ namespace Andromeda::Space
 		: m_position{ position }
 		, m_targetCoords{ targetCoords }
 		, m_forward{ Math::LinAlgOps::Normalize(m_targetCoords - m_position) }
-		, m_right{ Math::LinAlgOps::Normalize(Math::LinAlgOps::Cross(m_forward, Math::Vec3(0.0f, 0.0f, 1.0f))) }
+		, m_right{ Math::LinAlgOps::Normalize(Math::LinAlgOps::Cross(m_forward, Math::Vec3(0.0f, 1.0f, 0.0f))) }
 		, m_up{ Math::LinAlgOps::Cross(m_right, m_forward) }
 	{
 		CalculateViewMatrix();

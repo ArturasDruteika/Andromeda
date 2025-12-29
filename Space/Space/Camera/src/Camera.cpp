@@ -1,11 +1,13 @@
 #include "../include/Camera.hpp"
-#include "Math/Constants/include/Constants.hpp"
+
+
+constexpr Andromeda::Math::Vec3 DEFAULT_CAMERA_POSITION = { 10.0f, 10.0f , 10.0f };
 
 
 namespace Andromeda::Space
 {
     Camera::Camera()
-        : Camera(Math::Vec3(20.0f, 20.0f, 25.0f), -Math::PI_HALF, 0.0f)
+        : Camera(DEFAULT_CAMERA_POSITION, -Math::PI_HALF, 0.0f)
     {
     }
 

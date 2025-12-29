@@ -1,8 +1,10 @@
 #ifndef RENDERING__VERTICES__VERTEX_LAYOUTS__HPP
 #define RENDERING__VERTICES__VERTEX_LAYOUTS__HPP
 
+
 #include "VertexFormat.hpp"
 #include "pch.hpp"
+
 
 namespace Andromeda::Rendering
 {

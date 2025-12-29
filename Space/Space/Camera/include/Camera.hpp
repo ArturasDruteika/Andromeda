@@ -6,6 +6,7 @@
 #include "CameraController.hpp"
 #include "../../MacroExports/include/MacroExports.hpp"
 #include "Andromeda/Space/Camera/ICamera.hpp"
+#include "Math/Constants/include/Constants.hpp"
 
 
 namespace Andromeda::Space
@@ -17,7 +18,7 @@ namespace Andromeda::Space
     {
     public:
         Camera();
-        Camera(const Math::Vec3& position, float yawRadians, float pitchRadians);
+        Camera(const Math::Vec3& position, float yawRadians = -Math::PI_HALF, float pitchRadians = 0.0f);
         ~Camera();
 
         void Zoom(float deltaDistance);

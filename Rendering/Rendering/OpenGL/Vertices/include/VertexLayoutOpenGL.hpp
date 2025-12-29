@@ -10,7 +10,7 @@ namespace Andromeda::Rendering
     class VertexLayoutOpenGL
     {
     public:
-        static void Apply(const Andromeda::Rendering::VertexLayout& layout);
+        static void Apply(const VertexLayout& layout);
     };
 }
 

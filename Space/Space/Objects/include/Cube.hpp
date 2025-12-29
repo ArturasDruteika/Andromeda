@@ -28,7 +28,7 @@ namespace Andromeda::Space
         ~Cube();
 
 		// Getters
-		float GetHalfExtent() const;
+		float GetHalfExtent() const override;
 		// Setters
 		void SetHalfExtent(float halfExtent);
     

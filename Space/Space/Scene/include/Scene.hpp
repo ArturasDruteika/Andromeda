@@ -29,7 +29,7 @@ namespace Andromeda::Space
 		void RemoveObject(int id) override;
 
 		// Getters
-		Math::Vec3 GetSceneCenter() const override;
+		const Math::Vec3& GetSceneCenter() const override;
 
 		void ClearScene() override;
 		void ResetSceneState() override;

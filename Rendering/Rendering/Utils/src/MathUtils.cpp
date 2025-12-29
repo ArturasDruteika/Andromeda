@@ -39,7 +39,7 @@ namespace Andromeda::Rendering
 		{
 			for (int row = 0; row < 2; ++row)
 			{
-				glmMat[col][row] = mat[col][row];
+				glmMat[col][row] = mat[row][col];
 			}
 		}
 		return glmMat;
@@ -52,7 +52,7 @@ namespace Andromeda::Rendering
 		{
 			for (int row = 0; row < 2; ++row)
 			{
-				mat[col][row] = glmMat[col][row];
+				mat[row][col] = glmMat[col][row];
 			}
 		}
 		return mat;
@@ -65,7 +65,7 @@ namespace Andromeda::Rendering
 		{
 			for (int row = 0; row < 3; ++row)
 			{
-				glmMat[col][row] = mat[col][row];
+				glmMat[col][row] = mat[row][col];
 			}
 		}
 		return glmMat;
@@ -78,7 +78,7 @@ namespace Andromeda::Rendering
 		{
 			for (int row = 0; row < 3; ++row)
 			{
-				mat[col][row] = glmMat[col][row];
+				mat[row][col] = glmMat[col][row];
 			}
 		}
 		return mat;
@@ -91,7 +91,7 @@ namespace Andromeda::Rendering
 		{
 			for (int row = 0; row < 4; ++row)
 			{
-				glmMat[col][row] = mat[col][row];
+				glmMat[col][row] = mat[row][col];
 			}
 		}
 		return glmMat;
@@ -104,7 +104,7 @@ namespace Andromeda::Rendering
 		{
 			for (int row = 0; row < 4; ++row)
 			{
-				mat[col][row] = glmMat[col][row];
+				mat[row][col] = glmMat[col][row];
 			}
 		}
 		return mat;

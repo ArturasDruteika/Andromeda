@@ -37,7 +37,7 @@ namespace Andromeda::Space
 		}
 	}
 
-	Math::Vec3 Scene::GetSceneCenter() const
+	const Math::Vec3& Scene::GetSceneCenter() const
 	{
 		return m_sceneCenter;
 	}

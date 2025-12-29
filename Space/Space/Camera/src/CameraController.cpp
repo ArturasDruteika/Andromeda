@@ -60,10 +60,13 @@ namespace Andromeda::Space
 
     void CameraController::UpdateDirection()
     {
-        // In Z-up world, forward is Y - we orbit backward along it
-        Math::Vec3 offset = Math::QuaternionOps::Rotate(m_orientation, Math::Vec3(0.0f, 0.0f, m_distance));
+        // Forward is -Z in local space (OpenGL convention)
+        Math::Vec3 localOffset(0.0f, 0.0f, m_distance);
+
+        Math::Vec3 offset = Math::QuaternionOps::Rotate(m_orientation, localOffset);
         m_position = m_targetCoords + offset;
-        m_up = Math::QuaternionOps::Rotate(m_orientation, Math::Vec3(0, 1, 0));
+
+        m_up = Math::QuaternionOps::Rotate(m_orientation, Math::Vec3(0.0f, 1.0f, 0.0f));
 
         CalculateViewMatrix();
     }
