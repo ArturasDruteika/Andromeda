@@ -5,9 +5,9 @@
 namespace Andromeda
 {
     Rotatable::Rotatable()
-        : m_stateChanged(false)
-        , m_rotation(0.0f)
-        , m_rotationMatrix(1.0f)
+        : m_stateChanged{ false }
+        , m_rotation{ 0.0f }
+        , m_rotationMatrix{}
         , m_orientation(Math::Quaternion::Identity())
     {
         UpdateRotationDerivedData();

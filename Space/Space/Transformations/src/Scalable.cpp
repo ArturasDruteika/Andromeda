@@ -7,7 +7,7 @@ namespace Andromeda
 	Scalable::Scalable()
 		: m_stateChanged{ false}
 		, m_scale{ 1.0f }
-		, m_scaleMatrix{ 1.0f }
+		, m_scaleMatrix{}
 	{
 	}
 

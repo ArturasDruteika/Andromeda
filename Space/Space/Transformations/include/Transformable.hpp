@@ -31,6 +31,9 @@ namespace Andromeda
 		void ResetState() override;
 
 	private:
+		void UpdateModelMatrix();
+
+	private:
 		bool m_stateChanged;
 		Math::Mat4 m_modelMatrix;
 	};

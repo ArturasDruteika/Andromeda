@@ -7,15 +7,15 @@ namespace Andromeda
 	Translatable::Translatable()
 		: m_stateChanged{ false }
 		, m_position{ 0.0f }
-		, m_translationMatrix{ 1.0f }
+		, m_translationMatrix{}
 	{
 	}
 
 	Translatable::Translatable(const Math::Vec3& position)
 		: m_stateChanged{ false }
 		, m_position{ position }
-		, m_translationMatrix{ 1.0f }
 	{
+		UpdateTranslationMatrix();
 	}
 
 	Translatable::~Translatable() = default;

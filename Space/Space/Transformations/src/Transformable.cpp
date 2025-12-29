@@ -12,8 +12,8 @@ namespace Andromeda
 	Transformable::Transformable(const Math::Vec3& position)
 		: Translatable{ position }
 		, m_stateChanged{ false }
-		, m_modelMatrix{ 1.0f }
 	{
+		UpdateModelMatrix();
 	}
 
 	Transformable::~Transformable() = default;
@@ -32,8 +32,12 @@ namespace Andromeda
 	{
 		if (StateChanged())
 		{
-			m_modelMatrix = Translatable::GetTranslationMatrix() * Rotatable::GetRotationMatrix() * Scalable::GetScaleMatrix();
+			UpdateModelMatrix();
+			// Clear all dirty flags so subsequent calls do not rebuild again.
 			m_stateChanged = false;
+			Rotatable::ResetState();
+			Scalable::ResetState();
+			Translatable::ResetState();
 		}
 		return m_modelMatrix;
 	}
@@ -50,5 +54,15 @@ namespace Andromeda
 		Rotatable::ResetState();
 		Scalable::ResetState();
 		Translatable::ResetState();
+	}
+
+	void Transformable::UpdateModelMatrix()
+	{
+		// Rebuild model matrix from current component matrices.
+		// Order matches your existing GetModelMatrix(): T * R * S
+		m_modelMatrix =
+			Translatable::GetTranslationMatrix()
+			* Rotatable::GetRotationMatrix()
+			* Scalable::GetScaleMatrix();
 	}
 }
