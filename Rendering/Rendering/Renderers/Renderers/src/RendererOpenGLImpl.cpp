@@ -11,6 +11,7 @@
 #include "Andromeda/Space/Objects/ISurfaceObject.hpp"
 #include "Andromeda/Space/Light/ILight.hpp"
 #include "Andromeda/Space/Materials/IMaterial.hpp"
+#include "pch.hpp"
 
 #include "glad/gl.h"
 #include "glm/glm.hpp"
@@ -19,8 +20,6 @@
 
 #include "spdlog/spdlog.h"
 
-#include <unordered_set>
-#include <vector>
 
 namespace Andromeda::Rendering
 {
@@ -33,7 +32,6 @@ namespace Andromeda::Rendering
         , m_directionalShadowFBO{}
         , m_pointShadowFBO{}
         , m_pShaderManager{ nullptr }
-        , m_defaultVertexLayout{}
         , m_gpuMeshes{}
     {
         m_pShaderManager = new ShaderManager(true);
@@ -42,8 +40,8 @@ namespace Andromeda::Rendering
         m_defaultVertexLayout = VertexLayout(
             {
                 { VertexSemantic::Position, ComponentType::Float32, 3, false, 0 },
-                { VertexSemantic::Normal,   ComponentType::Float32, 3, false, 0 },
-                { VertexSemantic::Color0,   ComponentType::Float32, 2, false, 0 }
+                { VertexSemantic::Color0,   ComponentType::Float32, 4, true, sizeof(Math::Vec3) },
+                { VertexSemantic::Normal,   ComponentType::Float32, 3, true, sizeof(Math::Vec3) + sizeof(Math::Vec4) }
             }
         );
     }
@@ -145,21 +143,15 @@ namespace Andromeda::Rendering
     void RendererOpenGL::RendererOpenGLImpl::RenderFrame(IScene& scene)
     {
         if (!m_isInitialized)
-        {
             return;
-        }
 
         const ICamera* pCamera = scene.GetActiveCamera();
         if (!pCamera)
-        {
-            spdlog::info("Active camera is nullptr");
             return;
-        }
 
-        SyncGpuMeshes(scene);
+        SyncGpuMeshes(scene.GetObjects());
 
         SetBackgroundColor(MathUtils::ToGLM(scene.GetBackgroundColor()));
-
         BeginFrame();
 
         if (m_isIlluminationMode)
@@ -168,40 +160,41 @@ namespace Andromeda::Rendering
         }
         else
         {
-            RenderObjects(scene, *pCamera);
+            RenderObjects(scene.GetObjects(), *pCamera);
         }
 
         EndFrame();
-        LogFPS();
+        //LogFPS();
     }
 
-    void RendererOpenGL::RendererOpenGLImpl::SyncGpuMeshes(const IScene& scene)
-    {
-        std::unordered_set<int> sceneIds;
-        sceneIds.reserve(scene.GetObjects().size());
 
-        for (const auto& [id, obj] : scene.GetObjects())
+    void RendererOpenGL::RendererOpenGLImpl::SyncGpuMeshes(const std::unordered_map<int, IGeometricObject*>& objects)
+    {
+        std::unordered_set<int> objIds;
+        objIds.reserve(objects.size());
+
+        for (const auto& [sceneKey, obj] : objects)
         {
             if (!obj)
             {
                 continue;
             }
 
-            sceneIds.insert(id);
+            const int objId = obj->GetID();
+            objIds.insert(objId);
 
-            auto it = m_gpuMeshes.find(id);
+            auto it = m_gpuMeshes.find(objId);
             if (it == m_gpuMeshes.end())
             {
                 GpuMeshOpenGL gpuMesh;
                 gpuMesh.Create(obj->GetMesh(), m_defaultVertexLayout);
-                int objID = obj->GetID();
-                m_gpuMeshes.emplace(objID, std::move(gpuMesh));
+                m_gpuMeshes.emplace(objId, std::move(gpuMesh));
             }
         }
 
         for (auto it = m_gpuMeshes.begin(); it != m_gpuMeshes.end();)
         {
-            if (sceneIds.find(it->first) == sceneIds.end())
+            if (objIds.find(it->first) == objIds.end())
             {
                 it = m_gpuMeshes.erase(it);
             }
@@ -222,7 +215,7 @@ namespace Andromeda::Rendering
         return &it->second;
     }
 
-    void RendererOpenGL::RendererOpenGLImpl::ShadowMapDepthPass(const IScene& scene) const
+    void RendererOpenGL::RendererOpenGLImpl::ShadowMapDepthPass(const std::unordered_map<int, IGeometricObject*>& objects) const
     {
         EnableFaceCulling(GL_FRONT, GL_CCW);
 
@@ -244,7 +237,7 @@ namespace Andromeda::Rendering
         depthShader->Bind();
         depthShader->SetUniform("u_lightSpaceMatrix", m_shadowMapLightSpace);
 
-        for (const auto& [id, obj] : scene.GetObjects())
+        for (const auto& [id, obj] : objects)
         {
             if (!obj)
             {
@@ -271,7 +264,7 @@ namespace Andromeda::Rendering
     }
 
     void RendererOpenGL::RendererOpenGLImpl::ShadowCubeDepthPass(
-        const IScene& scene,
+        const std::unordered_map<int, IGeometricObject*>& objects,
         const glm::vec3& lightPos,
         float nearPlane,
         float farPlane
@@ -320,7 +313,7 @@ namespace Andromeda::Rendering
         depthCubeShader->SetUniform("u_lightPos", lightPos);
         depthCubeShader->SetUniform("u_farPlane", farPlane);
 
-        for (const auto& [id, obj] : scene.GetObjects())
+        for (const auto& [id, obj] : objects)
         {
             if (!obj)
             {
@@ -379,28 +372,31 @@ namespace Andromeda::Rendering
         {
             shader->SetUniform("u_dirShadowMap", DIR_UNIT);
             shader->SetUniform("u_lightSpaceMatrix", m_shadowMapLightSpace);
-            PopulateLightUniforms(*shader, scene);
+            PopulateLightUniforms(*shader, scene.GetDirectionalLights());
         }
 
         if (hasPoint)
         {
             shader->SetUniform("u_pointShadowCube", POINT_UNIT);
-            PopulatePointLightUniforms(*shader, scene);
+            PopulatePointLightUniforms(*shader, scene.GetPointLights());
         }
 
-        RenderEachNonLuminousObject(*shader, scene);
+        RenderEachNonLuminousObject(*shader, scene.GetObjects());
         shader->UnBind();
         DisableFaceCulling();
     }
 
-    void RendererOpenGL::RendererOpenGLImpl::RenderLuminousObjects(const IScene& scene, const ICamera& rCamera) const
+    void RendererOpenGL::RendererOpenGLImpl::RenderLuminousObjects(
+        const std::unordered_map<int, IGeometricObject*>& objects, 
+        const ICamera& rCamera
+    ) const
     {
         ShaderOpenGL* lumShader = m_pShaderManager->GetShader(ShaderOpenGLTypes::RenderableObjectsLuminous);
         lumShader->Bind();
         lumShader->SetUniform("u_view", MathUtils::ToGLM(rCamera.GetViewMatrix()));
         lumShader->SetUniform("u_projection", MathUtils::ToGLM(rCamera.GetProjection()));
 
-        for (const auto& [id, obj] : scene.GetObjects())
+        for (const auto& [id, obj] : objects)
         {
             if (!obj)
             {
@@ -428,41 +424,38 @@ namespace Andromeda::Rendering
         DisableFaceCulling();
     }
 
-    void RendererOpenGL::RendererOpenGLImpl::RenderObjects(const IScene& scene, const ICamera& rCamera) const
-    {
-        EnableFaceCulling(GL_BACK, GL_CCW);
+    void RendererOpenGL::RendererOpenGLImpl::RenderObjects(
+        const std::unordered_map<int, IGeometricObject*>& objects, 
+        const ICamera& rCamera) const 
+    { 
+        EnableFaceCulling(GL_BACK, GL_CCW); 
+        ShaderOpenGL* shader = m_pShaderManager->GetShader(ShaderOpenGLTypes::RenderableObjects); 
+        shader->Bind(); 
 
-        ShaderOpenGL* shader = m_pShaderManager->GetShader(ShaderOpenGLTypes::RenderableObjects);
-        shader->Bind();
         shader->SetUniform("u_view", MathUtils::ToGLM(rCamera.GetViewMatrix()));
-        shader->SetUniform("u_projection", MathUtils::ToGLM(rCamera.GetProjection()));
+        shader->SetUniform("u_projection", glm::transpose(MathUtils::ToGLM(rCamera.GetProjection())));
 
-        for (const auto& [id, obj] : scene.GetObjects())
-        {
-            if (!obj)
-            {
+        for (const auto& [id, obj] : objects) 
+        { 
+            if (!obj) 
                 continue;
-            }
-
-            if (id < 0)
-            {
+            if (id < 0) 
                 continue;
-            }
 
-			int objID = obj->GetID();
-            const GpuMeshOpenGL* mesh = TryGetGpuMesh(objID);
-            if (!mesh)
-            {
+            int objID = obj->GetID(); 
+            const GpuMeshOpenGL* mesh = TryGetGpuMesh(objID); 
+
+            if (!mesh) 
                 continue;
-            }
 
-            shader->SetUniform("u_model", MathUtils::ToGLM(obj->GetModelMatrix()));
-            glBindVertexArray(mesh->GetVAO());
-            glDrawElements(GL_TRIANGLES, static_cast<GLsizei>(mesh->GetIndexCount()), GL_UNSIGNED_INT, nullptr);
-        }
+            const Math::Mat4& modelMatrix = obj->GetModelMatrix(); 
+            shader->SetUniform("u_model", MathUtils::ToGLM(modelMatrix)); 
+            glBindVertexArray(mesh->GetVAO()); 
+            glDrawElements(GL_TRIANGLES, static_cast<GLsizei>(mesh->GetIndexCount()), GL_UNSIGNED_INT, nullptr); 
+        } 
 
-        shader->UnBind();
-        DisableFaceCulling();
+        shader->UnBind(); 
+        DisableFaceCulling(); 
     }
 
     void RendererOpenGL::RendererOpenGLImpl::RenderGrid(const GpuMeshOpenGL& mesh) const
@@ -485,24 +478,25 @@ namespace Andromeda::Rendering
         //shader->UnBind();
     }
 
-    void RendererOpenGL::RendererOpenGLImpl::PopulatePointLightUniforms(ShaderOpenGL& shader, const IScene& scene) const
+    void RendererOpenGL::RendererOpenGLImpl::PopulatePointLightUniforms(
+        ShaderOpenGL& shader, 
+        const std::unordered_map<int, const IPointLight*>& pointLights
+    ) const
     {
-        const auto& pointLightMap = scene.GetPointLights();
-
         std::vector<glm::vec3> positions, ambient, diffuse, specular;
         std::vector<float> intensities, constant, linear, quadratic, farPlanes;
 
-        positions.reserve(pointLightMap.size());
-        intensities.reserve(pointLightMap.size());
-        ambient.reserve(pointLightMap.size());
-        diffuse.reserve(pointLightMap.size());
-        specular.reserve(pointLightMap.size());
-        constant.reserve(pointLightMap.size());
-        linear.reserve(pointLightMap.size());
-        quadratic.reserve(pointLightMap.size());
-        farPlanes.reserve(pointLightMap.size());
+        positions.reserve(pointLights.size());
+        intensities.reserve(pointLights.size());
+        ambient.reserve(pointLights.size());
+        diffuse.reserve(pointLights.size());
+        specular.reserve(pointLights.size());
+        constant.reserve(pointLights.size());
+        linear.reserve(pointLights.size());
+        quadratic.reserve(pointLights.size());
+        farPlanes.reserve(pointLights.size());
 
-        for (const auto& [id, pl] : pointLightMap)
+        for (const auto& [id, pl] : pointLights)
         {
             positions.push_back(MathUtils::ToGLM(pl->GetPosition()));
             intensities.push_back(pl->GetIntensity());
@@ -530,9 +524,12 @@ namespace Andromeda::Rendering
         shader.SetUniform("u_pointLightFarPlanes", farPlanes);
     }
 
-    void RendererOpenGL::RendererOpenGLImpl::RenderEachObjectDepthOnly(ShaderOpenGL& shader, const IScene& scene) const
+    void RendererOpenGL::RendererOpenGLImpl::RenderEachObjectDepthOnly(
+        ShaderOpenGL& shader, 
+        const std::unordered_map<int, IGeometricObject*>& objects
+    ) const
     {
-        for (const auto& [id, obj] : scene.GetObjects())
+        for (const auto& [id, obj] : objects)
         {
             if (!obj)
             {
@@ -567,9 +564,24 @@ namespace Andromeda::Rendering
 
     void RendererOpenGL::RendererOpenGLImpl::EndFrame() const
     {
-        FrameBufferOpenGL::Unbind();
-        glViewport(0, 0, m_width, m_height);
-        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+        // Blit FBO color to default framebuffer
+        glBindFramebuffer(GL_READ_FRAMEBUFFER, m_mainFBO.GetId());
+        glBindFramebuffer(GL_DRAW_FRAMEBUFFER, 0);
+
+        glBlitFramebuffer(
+            0, 0, m_width, m_height,          // src rect
+            0, 0, m_width, m_height,          // dst rect
+            GL_COLOR_BUFFER_BIT,
+            GL_NEAREST
+        );
+
+        // If you also want to blit depth (for further drawing on default):
+        // glBlitFramebuffer(0, 0, m_width, m_height,
+        //                   0, 0, m_width, m_height,
+        //                   GL_DEPTH_BUFFER_BIT, GL_NEAREST);
+
+        // Return to default framebuffer bound
+        glBindFramebuffer(GL_FRAMEBUFFER, 0);
     }
 
     void RendererOpenGL::RendererOpenGLImpl::LogFPS() const
@@ -646,16 +658,17 @@ namespace Andromeda::Rendering
         }
     }
 
-    void RendererOpenGL::RendererOpenGLImpl::PopulateLightUniforms(ShaderOpenGL& shader, const IScene& scene) const
+    void RendererOpenGL::RendererOpenGLImpl::PopulateLightUniforms(
+        ShaderOpenGL& shader, 
+        const std::unordered_map<int, const IDirectionalLight*>& directionalLights
+    ) const
     {
-        const auto& directionalLightMap = scene.GetDirectionalLights();
-
         std::vector<glm::vec3> lightDirections;
         std::vector<glm::vec3> lightAmbientValues;
         std::vector<glm::vec3> lightDiffuseValues;
         std::vector<glm::vec3> lightSpecularValues;
 
-        for (const auto& [id, directionalLight] : directionalLightMap)
+        for (const auto& [id, directionalLight] : directionalLights)
         {
             lightDirections.push_back(MathUtils::ToGLM(directionalLight->GetDirection()));
             lightAmbientValues.push_back(glm::vec3(0.9f));
@@ -670,9 +683,12 @@ namespace Andromeda::Rendering
         shader.SetUniform("u_dirLightSpecular", lightSpecularValues);
     }
 
-    void RendererOpenGL::RendererOpenGLImpl::RenderEachNonLuminousObject(ShaderOpenGL& shader, const IScene& scene) const
+    void RendererOpenGL::RendererOpenGLImpl::RenderEachNonLuminousObject(
+        ShaderOpenGL& shader, 
+        const std::unordered_map<int, IGeometricObject*>& objects
+    ) const
     {
-        for (const auto& [id, obj] : scene.GetObjects())
+        for (const auto& [id, obj] : objects)
         {
             if (!obj)
             {
@@ -738,8 +754,8 @@ namespace Andromeda::Rendering
 
         if (hasDir)
         {
-            m_shadowMapLightSpace = ComputeLightSpaceMatrix(scene);
-            ShadowMapDepthPass(scene);
+            m_shadowMapLightSpace = ComputeLightSpaceMatrix(scene.GetDirectionalLights(), scene.GetSceneCenter());
+            ShadowMapDepthPass(scene.GetObjects());
         }
 
         if (hasPoint)
@@ -748,11 +764,11 @@ namespace Andromeda::Rendering
             const glm::vec3 lightPos = MathUtils::ToGLM(pl->GetPosition());
             const float nearPlane = pl->GetShadowNearPlane();
             const float farPlane = pl->GetShadowFarPlane();
-            ShadowCubeDepthPass(scene, lightPos, nearPlane, farPlane);
+            ShadowCubeDepthPass(scene.GetObjects(), lightPos, nearPlane, farPlane);
         }
 
         RenderNonLuminousObjectsCombined(scene, rCamera, hasDir, hasPoint);
-        RenderLuminousObjects(scene, rCamera);
+        RenderLuminousObjects(scene.GetObjects(), rCamera);
 
         RenderGridIfVisible(scene);
     }
@@ -762,17 +778,19 @@ namespace Andromeda::Rendering
         glClearColor(backgroundColor.r, backgroundColor.g, backgroundColor.b, backgroundColor.a);
     }
 
-    glm::mat4 RendererOpenGL::RendererOpenGLImpl::ComputeLightSpaceMatrix(const IScene& scene) const
+    glm::mat4 RendererOpenGL::RendererOpenGLImpl::ComputeLightSpaceMatrix(
+        const std::unordered_map<int, const IDirectionalLight*>& directionalLights,
+        const Math::Vec3& sceneCenter
+    ) const
     {
-        const auto directionalLightMap = scene.GetDirectionalLights();
-        const IDirectionalLight* light = directionalLightMap.begin()->second;
+        const IDirectionalLight* light = directionalLights.begin()->second;
 
         glm::vec3 lightDirection = MathUtils::ToGLM(light->GetDirection());
 
         glm::vec3 up(0.0f, 1.0f, 0.0f);
-        glm::vec3 lightPos = MathUtils::ToGLM(scene.GetSceneCenter()) - lightDirection * 20.0f;
+        glm::vec3 lightPos = MathUtils::ToGLM(sceneCenter) - lightDirection * 20.0f;
 
-        glm::mat4 lightView = glm::lookAt(lightPos, MathUtils::ToGLM(scene.GetSceneCenter()), up);
+        glm::mat4 lightView = glm::lookAt(lightPos, MathUtils::ToGLM(sceneCenter), up);
         glm::mat4 lightProj = glm::ortho(
             -light->GetLightOrthographicHalfSize(),
             light->GetLightOrthographicHalfSize(),

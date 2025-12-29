@@ -15,6 +15,7 @@
 #include <limits>
 #include <map>
 #include <memory>
+#include <unordered_set>
 #include <sstream>
 #include <stdexcept>
 #include <string>

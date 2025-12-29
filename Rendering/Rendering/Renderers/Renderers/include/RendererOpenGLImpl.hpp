@@ -11,6 +11,8 @@
 #include "../../../Vertices/include/VertexLayouts.hpp"
 #include "../../../OpenGL/Geometry/include/GpuMeshOpenGL.hpp"
 
+#include "glad/gl.h"
+
 #include "glm/glm.hpp"
 
 #include <chrono>
@@ -45,44 +47,55 @@ namespace Andromeda::Rendering
         void Resize(int width, int height);
 
     private:
-        void SyncGpuMeshes(const IScene& scene);
-
+        void SyncGpuMeshes(const std::unordered_map<int, IGeometricObject*>& objects);
         const GpuMeshOpenGL* TryGetGpuMesh(int objectId) const;
-
-        void ShadowMapDepthPass(const IScene& scene) const;
+        void ShadowMapDepthPass(const std::unordered_map<int, IGeometricObject*>& objects) const;
         void ShadowCubeDepthPass(
-            const IScene& scene,
+            const std::unordered_map<int, IGeometricObject*>& objects,
             const glm::vec3& lightPos,
             float nearPlane,
             float farPlane
         ) const;
-
         void RenderNonLuminousObjectsCombined(const IScene& scene, const ICamera& rCamera, bool hasDir, bool hasPoint) const;
-        void RenderLuminousObjects(const IScene& scene, const ICamera& rCamera) const;
-        void RenderObjects(const IScene& scene, const ICamera& rCamera) const;
-
+        void RenderLuminousObjects(
+            const std::unordered_map<int, IGeometricObject*>& objects,
+            const ICamera& rCamera
+        ) const;
+        void RenderObjects(
+            const std::unordered_map<int, IGeometricObject*>& objects,
+            const ICamera& rCamera
+        ) const;
         void RenderGrid(const GpuMeshOpenGL& mesh) const;
-
-        void PopulatePointLightUniforms(ShaderOpenGL& shader, const IScene& scene) const;
-        void RenderEachObjectDepthOnly(ShaderOpenGL& shader, const IScene& scene) const;
-
+        void PopulatePointLightUniforms(
+            ShaderOpenGL& shader,
+            const std::unordered_map<int, const IPointLight*>& pointLights
+        ) const;
+        void RenderEachObjectDepthOnly(
+            ShaderOpenGL& shader, 
+            const std::unordered_map<int, IGeometricObject*>& objects
+        ) const;
         void BeginFrame() const;
         void EndFrame() const;
         void LogFPS() const;
-
         void PrepareFramebufferForNonLuminousPass() const;
         void BindShadowMap(int textureUnit) const;
-
         void RenderGridIfVisible(const IScene& scene) const;
-
-        void PopulateLightUniforms(ShaderOpenGL& shader, const IScene& scene) const;
-        void RenderEachNonLuminousObject(ShaderOpenGL& shader, const IScene& scene) const;
-
+        void PopulateLightUniforms(
+            ShaderOpenGL& shader,
+            const std::unordered_map<int, const IDirectionalLight*>& directionalLights
+        ) const;
+        void RenderEachNonLuminousObject(
+            ShaderOpenGL& shader, 
+            const std::unordered_map<int, IGeometricObject*>& objects
+        ) const;
         void ConfigurePointShadowDepthTexture();
         void RenderLuminousMode(const IScene& scene, const ICamera& rCamera);
-
         void SetBackgroundColor(const glm::vec4& backgroundColor);
-        glm::mat4 ComputeLightSpaceMatrix(const IScene& scene) const;
+        // TODO: consider making it a void and calculating ONLY when the scene state has been changed
+        glm::mat4 ComputeLightSpaceMatrix(
+            const std::unordered_map<int, const IDirectionalLight*>& directionalLights,
+            const Math::Vec3& sceneCenter
+        ) const;
 
     private:
         bool m_isInitialized;
@@ -101,6 +114,10 @@ namespace Andromeda::Rendering
         std::unordered_map<int, GpuMeshOpenGL> m_gpuMeshes;
 
         mutable std::chrono::steady_clock::time_point m_lastFrameTime = std::chrono::steady_clock::now();
+
+
+        mutable GLuint m_DebugShader = 0;
+
     };
 }
 
