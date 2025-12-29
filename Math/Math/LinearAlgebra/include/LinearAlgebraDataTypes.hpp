@@ -245,7 +245,10 @@ namespace Andromeda::Math
         std::array<Vec2, 2> data;
 
         constexpr Mat2()
-            : data{ Vec2(), Vec2() }
+            : data{
+                Vec2(1.0f, 0.0f),
+                Vec2(0.0f, 1.0f)
+            }
         {
         }
 
@@ -295,7 +298,11 @@ namespace Andromeda::Math
         std::array<Vec3, 3> data;
 
         constexpr Mat3()
-            : data{ Vec3(), Vec3(), Vec3() }
+            : data{
+                Vec3(1.0f, 0.0f, 0.0f),
+                Vec3(0.0f, 1.0f, 0.0f),
+                Vec3(0.0f, 0.0f, 1.0f)
+            }
         {
         }
 
@@ -347,7 +354,12 @@ namespace Andromeda::Math
         std::array<Vec4, 4> data;
 
         constexpr Mat4()
-            : data{ Vec4(), Vec4(), Vec4(), Vec4() }
+            : data{
+                Vec4(1.0f, 0.0f, 0.0f, 0.0f),
+                Vec4(0.0f, 1.0f, 0.0f, 0.0f),
+                Vec4(0.0f, 0.0f, 1.0f, 0.0f),
+                Vec4(0.0f, 0.0f, 0.0f, 1.0f)
+            }
         {
         }
 
