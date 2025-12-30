@@ -3,7 +3,7 @@
 
 
 #include "Andromeda/GraphicsContext/IGraphicsContext.hpp"
-#include "Andromeda/Window/IWindow.hpp"
+#include "Andromeda/Window/Window/IWindow.hpp"
 #include "GLFW/glfw3.h"
 
 

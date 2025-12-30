@@ -6,7 +6,7 @@
 #include "Andromeda/Components/GraphicsBackend.hpp"
 #include "Andromeda/GraphicsContext/IGraphicsContext.hpp"
 #include "Andromeda/Platform/IPlatform.hpp"
-#include "Andromeda/Window/IWindow.hpp"
+#include "Andromeda/Window/Window/IWindow.hpp"
 
 
 namespace Andromeda::Platform
