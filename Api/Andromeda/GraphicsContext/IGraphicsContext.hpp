@@ -2,7 +2,7 @@
 #define API__GRAPHICS_CONTEXT__I_GRAPHICS_CONTEXT__HPP
 
 
-#include "../Window/IWindow.hpp"
+#include "../Window/Window/IWindow.hpp"
 
 
 namespace Andromeda

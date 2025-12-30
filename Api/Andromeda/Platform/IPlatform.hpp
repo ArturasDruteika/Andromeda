@@ -5,7 +5,7 @@
 #include "../MacroExports/MacroExports.hpp"
 #include "../Components/GraphicsBackend.hpp"
 #include "../GraphicsContext/IGraphicsContext.hpp"
-#include "../Window/IWindow.hpp"
+#include "../Window/Window/IWindow.hpp"
 #include <memory>
 #include <string>
 

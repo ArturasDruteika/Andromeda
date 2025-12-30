@@ -2,7 +2,8 @@
 #define API__WINDOW__I_WINDOW__HPP
 
 
-#include "IEvent.hpp"
+#include "../Events/IEvent.hpp"
+#include <functional>
 #include <string>
 
 

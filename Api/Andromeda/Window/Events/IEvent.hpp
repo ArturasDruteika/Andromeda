@@ -1,5 +1,5 @@
-#ifndef ANDROMEDA__WINDOW__EVENT__HPP
-#define ANDROMEDA__WINDOW__EVENT__HPP
+#ifndef API__WINDOW__EVENTS__I_EVENT_HPP
+#define API__WINDOW__EVENTS__I_EVENT_HPP
 
 
 #include "EventType.hpp"
@@ -24,4 +24,4 @@ namespace Andromeda
 }
 
 
-#endif // ANDROMEDA__WINDOW__EVENT__HPP
+#endif // API__WINDOW__EVENTS__I_EVENT_HPP

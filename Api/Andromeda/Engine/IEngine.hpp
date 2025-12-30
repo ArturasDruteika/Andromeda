@@ -6,7 +6,7 @@
 #include "../Components/GraphicsBackend.hpp"
 #include "../Renderer/IRenderer.hpp"
 #include "../Space/Scene/IScene.hpp"
-#include "../Window/IEvent.hpp"
+#include "Andromeda/Window/Events/IEvent.hpp"
 #include <memory>
 
 

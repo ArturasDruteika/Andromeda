@@ -100,9 +100,13 @@ set(VERTICES_HEADERS
 
 # ==== Window ====
 set(WINDOW_HEADERS
-    Andromeda/Window/EventType.hpp
-    Andromeda/Window/IEvent.hpp
-    Andromeda/Window/IWindow.hpp
+    Andromeda/Window/Events/EventType.hpp
+    Andromeda/Window/Events/IEvent.hpp
+    Andromeda/Window/Events/IKeyEvents.hpp
+    Andromeda/Window/Events/IMouseEvents.hpp
+    Andromeda/Window/MouseAndKeyCodes/KeyCodes.hpp
+    Andromeda/Window/MouseAndKeyCodes/MouseCodes.hpp
+    Andromeda/Window/Window/IWindow.hpp
 )
 
 target_sources(${PROJECT_NAME}
