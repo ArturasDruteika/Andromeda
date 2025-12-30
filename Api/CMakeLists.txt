@@ -102,6 +102,7 @@ set(VERTICES_HEADERS
 set(WINDOW_HEADERS
     Andromeda/Window/Events/EventType.hpp
     Andromeda/Window/Events/IEvent.hpp
+    Andromeda/Window/Events/IFrameBufferEvents.hpp
     Andromeda/Window/Events/IKeyEvents.hpp
     Andromeda/Window/Events/IMouseEvents.hpp
     Andromeda/Window/MouseAndKeyCodes/KeyCodes.hpp

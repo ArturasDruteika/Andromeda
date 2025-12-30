@@ -3,6 +3,7 @@
 #include "Andromeda/Window/Events/EventType.hpp"
 #include "Andromeda/Window/MouseAndKeyCodes/MouseCodes.hpp"
 #include "Andromeda/Window/MouseAndKeyCodes/KeyCodes.hpp"
+#include "Andromeda/Window/Events/IFrameBufferEvents.hpp"
 #include "Andromeda/Window/Events/IKeyEvents.hpp"
 #include "Andromeda/Window/Events/IMouseEvents.hpp"
 #include "Andromeda/Space/Camera/ICameraController.hpp"
@@ -226,6 +227,18 @@ namespace Andromeda::EngineCore
                 break;
             }
 
+            case EventType::WindowResize:
+            {
+                HandleWindowResize(event);
+                break;
+            }
+
+            case EventType::WindowClose:
+            {
+                HandleWindowClose(event);
+                break;
+            }
+
             default:
             {
                 break;
@@ -438,6 +451,56 @@ namespace Andromeda::EngineCore
             pCamera->Rotate(yaw, pitch, 0.0f);
         }
     }
+
+    void Engine::HandleWindowResize(IEvent& event)
+    {
+        IWindowResizeEvent* e = dynamic_cast<IWindowResizeEvent*>(&event);
+        if (!e)
+        {
+            return;
+        }
+
+        // If you want: update camera aspect or renderer viewport.
+        // Renderer likely should react to framebuffer size, but window size can also be used.
+        if (m_renderer)
+        {
+            float aspect = static_cast<float>(e->GetWidth()) / static_cast<float>(e->GetHeight());
+            m_pScene->GetActiveCamera()->SetAspect(aspect);
+            m_renderer->Resize(e->GetWidth(), e->GetHeight());
+        }
+    }
+
+    void Engine::HandleFramebufferResize(IEvent& event)
+    {
+        IFramebufferResizeEvent* e = dynamic_cast<IFramebufferResizeEvent*>(&event);
+        if (!e)
+        {
+            return;
+        }
+
+        // Most correct place to resize GL viewport and projection aspects.
+        if (m_renderer)
+        {
+            m_renderer->Resize(e->GetWidth(), e->GetHeight());
+        }
+
+        // Optional: if your camera projection is owned by the scene active camera,
+        // you can update aspect here too (depends on your API).
+    }
+
+    void Engine::HandleWindowClose(IEvent& event)
+    {
+        IWindowCloseEvent* e = dynamic_cast<IWindowCloseEvent*>(&event);
+        if (!e)
+        {
+            return;
+        }
+
+        // Usually you don't "close" here; Platform/Window sets ShouldClose().
+        // But you may still want to mark handled or run shutdown logic.
+        event.SetHandled(true);
+    }
+
 }
 
 namespace Andromeda

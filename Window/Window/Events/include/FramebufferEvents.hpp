@@ -4,6 +4,8 @@
 
 #include "EventBase.hpp"
 #include "Andromeda/Window/Events/EventType.hpp"
+#include "Andromeda/Window/Events/IFramebufferEvents.hpp"
+
 #include <string>
 
 
@@ -11,13 +13,14 @@ namespace Andromeda::Window
 {
     class WindowResizeEvent
         : public EventBase
+        , public virtual Andromeda::IWindowResizeEvent
     {
     public:
         WindowResizeEvent(int width, int height);
         ~WindowResizeEvent() override;
 
-        int GetWidth() const;
-        int GetHeight() const;
+        int GetWidth() const override;
+        int GetHeight() const override;
 
         bool IsInCategory(EventCategory category) override;
         int GetCategoryFlags() const override;
@@ -32,6 +35,7 @@ namespace Andromeda::Window
 
     class WindowCloseEvent
         : public EventBase
+        , public virtual Andromeda::IWindowCloseEvent
     {
     public:
         WindowCloseEvent();
@@ -46,13 +50,14 @@ namespace Andromeda::Window
 
     class FramebufferResizeEvent
         : public EventBase
+        , public virtual Andromeda::IFramebufferResizeEvent
     {
     public:
         FramebufferResizeEvent(int width, int height);
         ~FramebufferResizeEvent() override;
 
-        int GetWidth() const;
-        int GetHeight() const;
+        int GetWidth() const override;
+        int GetHeight() const override;
 
         bool IsInCategory(EventCategory category) override;
         int GetCategoryFlags() const override;

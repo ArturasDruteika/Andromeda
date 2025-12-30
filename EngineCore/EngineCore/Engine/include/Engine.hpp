@@ -38,6 +38,9 @@ namespace Andromeda::EngineCore
         void HandleKeyPressed(IEvent& event);
         void HandleKeyReleased(IEvent& event);
         void HandleMouseMoved(IEvent& event);
+        void HandleWindowResize(IEvent& event);
+        void HandleWindowClose(IEvent& event);
+        void HandleFramebufferResize(IEvent& event);
 
     private:
         bool m_initialized;
