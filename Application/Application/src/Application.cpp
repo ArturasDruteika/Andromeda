@@ -26,6 +26,11 @@ namespace Andromeda::Application
         }
     }
 
+    IRenderer* Application::GetRenderer()
+    {
+        return m_pRenderer;
+    }
+
     bool Application::Init(unsigned int width, unsigned int height, const std::string& title)
     {
         if (m_Initialized)

@@ -4,6 +4,7 @@
 
 #include "../Components/GraphicsBackend.hpp"
 #include "../MacroExports/MacroExports.hpp"
+#include "../Renderer/IRenderer.hpp"
 #include "../Space/Scene/IScene.hpp"
 
 #include <memory>
@@ -15,6 +16,9 @@ namespace Andromeda
     {
     public:
         virtual ~IApplication() = default;
+
+        // Getters
+        virtual IRenderer* GetRenderer() = 0;
 
         virtual bool Init(unsigned int width, unsigned int height, const std::string& title) = 0;
         virtual void DeInit() = 0;

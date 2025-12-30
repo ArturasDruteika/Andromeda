@@ -25,6 +25,9 @@ namespace Andromeda::Application
         Application(Application&& other) noexcept = delete;
         Application& operator=(Application&& other) noexcept = delete;
 
+        // Getters
+        IRenderer* GetRenderer() override;
+
         bool Init(
             unsigned int width, 
             unsigned int height, 

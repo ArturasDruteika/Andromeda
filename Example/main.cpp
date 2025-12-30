@@ -20,10 +20,10 @@ int main(void)
 	Andromeda::Space::Scene* pScene = new Andromeda::Space::Scene();
 	Andromeda::Space::Camera* pCamera = new Andromeda::Space::Camera(Andromeda::Math::Vec3{ 0.0f, 0.0f, 10.0f });
 	pScene->SetActiveCamera(pCamera);
-	pScene->SetBackgroundColor(Andromeda::Math::Vec4{ 0.0f, 1.0f, 1.0f, 1.0f });
+	pScene->SetBackgroundColor(Andromeda::Math::Vec4{ 0.0f, 0.0f, 0.0f, 1.0f });
 
 	Andromeda::Space::Sphere* pSphere = new Andromeda::Space::Sphere(
-		1.0f, 
+		0.1f, 
 		Andromeda::Math::Vec3{ 0.0f, 0.0f, 0.0f }, 
 		Andromeda::Color{ 0.8f, 0.2f, 0.2f, 1.0f }
 	);
@@ -34,6 +34,7 @@ int main(void)
 
 	std::mt19937 rng(1337);
 	std::uniform_real_distribution<float> dist(-kHalfExtent, kHalfExtent);
+	std::uniform_real_distribution<float> colorDist(0.1f, 0.9f);
 
 	for (int i = 1; i < kSphereCount; ++i)
 	{
@@ -43,15 +44,22 @@ int main(void)
 			dist(rng)
 		};
 
-		// Radius 1.0, white color (adjust as you want)
+		Andromeda::Color color{
+			colorDist(rng),
+			colorDist(rng),
+			colorDist(rng),
+			1.0f
+		};
+
 		Andromeda::Space::Sphere* pSphere = new Andromeda::Space::Sphere(
 			1.0f,
 			pos,
-			Andromeda::Color{ 0.2f, 0.2f, 0.8f, 0.0f }
+			color
 		);
 
 		pScene->AddObject(i, pSphere);
 	}
+
 
 	std::unique_ptr<Andromeda::IApplication> pApp = Andromeda::CreateApp(Andromeda::GraphicsBackend::OpenGL);
 	if (!pApp->Init(width, height, title))
@@ -61,6 +69,8 @@ int main(void)
 	}
 
 	pApp->SetScene(pScene);
+	Andromeda::IRenderer* pRenderer = pApp->GetRenderer();
+	//pRenderer->SetIlluminationMode(true);
 	pApp->Run();
 
 	return 0;
