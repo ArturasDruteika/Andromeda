@@ -53,10 +53,10 @@ namespace Andromeda::Space
         UpdateDirection();
     }
 
-    void CameraController::SetOnDistanceChange(OnDistanceChange callback)
-    {
-		// TODO: Implement observer pattern if needed
-    }
+  //  void CameraController::SetOnDistanceChange(OnDistanceChange callback)
+  //  {
+		//// TODO: Implement observer pattern if needed
+  //  }
 
     void CameraController::UpdateDirection()
     {

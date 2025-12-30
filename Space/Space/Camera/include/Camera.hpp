@@ -22,10 +22,10 @@ namespace Andromeda::Space
         ~Camera();
 
         void Zoom(float deltaDistance);
-        void SetOnDistanceChange(OnDistanceChange callback);
+        //void SetOnDistanceChange(OnDistanceChange callback);
 
-    private:
-        OnDistanceChange m_onDistanceChangeCallback;
+    //private:
+        //OnDistanceChange m_onDistanceChangeCallback;
     };
 }
 

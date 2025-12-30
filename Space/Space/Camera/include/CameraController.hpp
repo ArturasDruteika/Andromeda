@@ -21,7 +21,7 @@ namespace Andromeda::Space
 		void Rotate(float yaw, float pitch, float roll) override;
 		void Zoom(float deltaDistance) override;
 
-		void SetOnDistanceChange(OnDistanceChange callback) override;
+		//void SetOnDistanceChange(OnDistanceChange callback) override;
 
 	private:
 		void UpdateDirection();

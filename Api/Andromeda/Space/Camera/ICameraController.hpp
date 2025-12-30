@@ -2,12 +2,12 @@
 #define API__CAMERA__I_CAMERA_CONTROLLER__HPP
 
 
-#include <functional>
+//#include <functional>
 
 
 namespace Andromeda
 {
-    using OnDistanceChange = std::function<void(float)>;
+    //using OnDistanceChange = std::function<void(float)>;
 
     class ICameraController
     {
@@ -18,7 +18,7 @@ namespace Andromeda
         virtual void Zoom(float deltaDistance) = 0;
 
         // Observer for distance (zoom) changes.
-        virtual void SetOnDistanceChange(OnDistanceChange callback) = 0;
+        //virtual void SetOnDistanceChange(OnDistanceChange callback) = 0;
     };
 }
 

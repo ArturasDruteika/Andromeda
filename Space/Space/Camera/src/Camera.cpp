@@ -22,11 +22,11 @@ namespace Andromeda::Space
     void Camera::Zoom(float deltaDistance)
     {
 		CameraController::Zoom(deltaDistance);
-        m_onDistanceChangeCallback(m_distance);
+        //m_onDistanceChangeCallback(m_distance);
     }
 
-    void Camera::SetOnDistanceChange(OnDistanceChange callback)
-    {
-        m_onDistanceChangeCallback = std::move(callback);
-	}
+ //   void Camera::SetOnDistanceChange(OnDistanceChange callback)
+ //   {
+ //       m_onDistanceChangeCallback = std::move(callback);
+	//}
 }
