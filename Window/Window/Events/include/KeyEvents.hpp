@@ -3,24 +3,26 @@
 
 
 #include "EventBase.hpp"
-#include "../../MouseAndKeyCodes/include/KeyCodes.hpp"
-#include "Andromeda/Window/EventType.hpp"
-#include <string>
+#include "Andromeda/Window/Events/EventType.hpp"
+#include "Andromeda/Window/MouseAndKeyCodes/KeyCodes.hpp"
+#include "Andromeda/Window/Events/IKeyEvents.hpp"
+#include "pch.hpp"
 
 
 namespace Andromeda::Window
 {
     class KeyEvent
         : public EventBase
+        , public virtual IKeyEvent
     {
     public:
         explicit KeyEvent(KeyCode keycode);
-        virtual ~KeyEvent() override;
+        ~KeyEvent() override;
 
         bool IsInCategory(EventCategory category) override;
         int GetCategoryFlags() const override;
 
-        KeyCode GetKeyCode() const;
+        KeyCode GetKeyCode() const override;
 
     protected:
         KeyCode m_keyCode;
@@ -28,12 +30,13 @@ namespace Andromeda::Window
 
     class KeyPressedEvent
         : public KeyEvent
+        , public virtual IKeyPressedEvent
     {
     public:
         KeyPressedEvent(KeyCode keycode, bool isRepeat);
         ~KeyPressedEvent() override;
 
-        bool IsRepeat() const;
+        bool IsRepeat() const override;
 
         EventType GetEventType() const override;
         std::string GetName() const override;
@@ -45,6 +48,7 @@ namespace Andromeda::Window
 
     class KeyReleasedEvent
         : public KeyEvent
+        , public virtual IKeyReleasedEvent
     {
     public:
         explicit KeyReleasedEvent(KeyCode keycode);
@@ -57,6 +61,7 @@ namespace Andromeda::Window
 
     class KeyTypedEvent
         : public KeyEvent
+        , public virtual IKeyTypedEvent
     {
     public:
         explicit KeyTypedEvent(KeyCode keycode);

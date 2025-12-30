@@ -2,10 +2,10 @@
 #define WINDOW__GLFW_WINDOW__HPP_HPP
 
 
-#include "Andromeda/Window/IEvent.hpp"
-#include "Andromeda/Window/IWindow.hpp"
-#include <GLFW/glfw3.h>
-#include <functional>
+#include "Andromeda/Window/Events/IEvent.hpp"
+#include "Andromeda/Window/Window/IWindow.hpp"
+#include "pch.hpp"
+#include "GLFW/glfw3.h"
 
 
 constexpr int DEFAULT_WINDOW_WIDTH = 640;

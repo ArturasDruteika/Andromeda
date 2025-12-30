@@ -2,7 +2,7 @@
 #define WINDOW__EVENT_DISPATCHER__HPP
 
 
-#include "Andromeda/Window/IEvent.hpp"
+#include "Andromeda/Window/Events/IEvent.hpp"
 
 
 namespace Andromeda::Window

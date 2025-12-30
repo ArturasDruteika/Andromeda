@@ -3,7 +3,7 @@
 
 
 #include "EventBase.hpp"
-#include "Andromeda/Window/EventType.hpp"
+#include "Andromeda/Window/Events/EventType.hpp"
 #include <string>
 
 

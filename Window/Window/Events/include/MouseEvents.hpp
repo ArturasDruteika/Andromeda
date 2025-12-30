@@ -3,21 +3,24 @@
 
 
 #include "EventBase.hpp"
-#include "Andromeda/Window/EventType.hpp"
-#include "../../MouseAndKeyCodes/include/MouseCodes.hpp"
+#include "Andromeda/Window/Events/EventType.hpp"
+#include "Andromeda/Window/MouseAndKeyCodes/MouseCodes.hpp"
+#include "Andromeda/Window/Events/IMouseEvents.hpp"
+#include "pch.hpp"
 
 
 namespace Andromeda::Window
 {
     class MouseMovedEvent
         : public EventBase
+        , public virtual IMouseMovedEvent
     {
     public:
         MouseMovedEvent(float x, float y);
         ~MouseMovedEvent() override = default;
 
-        float GetX() const;
-        float GetY() const;
+        float GetX() const override;
+        float GetY() const override;
 
         bool IsInCategory(EventCategory category) override;
         int GetCategoryFlags() const override;
@@ -32,13 +35,14 @@ namespace Andromeda::Window
 
     class MouseScrolledEvent
         : public EventBase
+        , public virtual IMouseScrolledEvent
     {
     public:
         MouseScrolledEvent(float xOffset, float yOffset);
         ~MouseScrolledEvent() override = default;
 
-        float GetXOffset() const;
-        float GetYOffset() const;
+        float GetXOffset() const override;
+        float GetYOffset() const override;
 
         bool IsInCategory(EventCategory category) override;
         int GetCategoryFlags() const override;
@@ -53,12 +57,13 @@ namespace Andromeda::Window
 
     class MouseButtonEvent
         : public EventBase
+        , public virtual IMouseButtonEvent
     {
     public:
         explicit MouseButtonEvent(MouseCode button);
-        virtual ~MouseButtonEvent() override = default;
+        ~MouseButtonEvent() override = default;
 
-        MouseCode GetMouseButton() const;
+        MouseCode GetMouseButton() const override;
 
         bool IsInCategory(EventCategory category) override;
         int GetCategoryFlags() const override;
@@ -69,6 +74,7 @@ namespace Andromeda::Window
 
     class MouseButtonPressedEvent
         : public MouseButtonEvent
+        , public virtual IMouseButtonPressedEvent
     {
     public:
         explicit MouseButtonPressedEvent(MouseCode button);
@@ -81,6 +87,7 @@ namespace Andromeda::Window
 
     class MouseButtonReleasedEvent
         : public MouseButtonEvent
+        , public virtual IMouseButtonReleasedEvent
     {
     public:
         explicit MouseButtonReleasedEvent(MouseCode button);

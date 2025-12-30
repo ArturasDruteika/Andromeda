@@ -37,12 +37,6 @@ set(EVENTS_SOURCES
     Window/Events/src/EventDispatcher.cpp
 )
 
-# ==== MouseAndKeyEvents ====
-set(MOUSE_AND_KEY_EVENTS_HEADERS
-    Window/MouseAndKeyCodes/include/KeyCodes.hpp
-    Window/MouseAndKeyCodes/include/MouseCodes.hpp
-)
-
 # ==== WindowGLFW ====
 set(WINDOW_GLFW_HEADERS
     Window/WindowGLFW/include/WindowGLFW.hpp
@@ -56,7 +50,6 @@ add_library(${PROJECT_NAME}
     STATIC
         ${EVENTS_HEADERS}
         ${EVENTS_SOURCES}
-        ${MOUSE_AND_KEY_EVENTS_HEADERS}
         ${WINDOW_GLFW_HEADERS}
         ${WINDOW_GLFW_SOURCES}
 )
@@ -95,15 +88,6 @@ source_group(
     FILES
         ${EVENTS_HEADERS}
         ${EVENTS_SOURCES}
-)
-
-source_group(
-    TREE 
-        ${CMAKE_CURRENT_SOURCE_DIR}/${PROJECT_NAME}/MouseAndKeyCodes 
-    PREFIX 
-        "MouseAndKeyCodes" 
-    FILES
-        ${MOUSE_AND_KEY_EVENTS_HEADERS}
 )
 
 source_group(
