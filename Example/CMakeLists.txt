@@ -28,6 +28,7 @@ target_link_libraries(${PROJECT_NAME}
         Space
         Platform
         EngineCore
+        Application
         spdlog::spdlog
 )
 
@@ -37,6 +38,7 @@ add_dependencies(${PROJECT_NAME}
     Space
     Platform
     EngineCore
+    Application
 )
 
 

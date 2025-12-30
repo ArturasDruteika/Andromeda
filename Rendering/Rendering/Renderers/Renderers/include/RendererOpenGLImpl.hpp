@@ -114,10 +114,6 @@ namespace Andromeda::Rendering
         std::unordered_map<int, GpuMeshOpenGL> m_gpuMeshes;
 
         mutable std::chrono::steady_clock::time_point m_lastFrameTime = std::chrono::steady_clock::now();
-
-
-        mutable GLuint m_DebugShader = 0;
-
     };
 }
 

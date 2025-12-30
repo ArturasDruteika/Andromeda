@@ -1,4 +1,3 @@
-// RendererOpenGLImpl.cpp
 #include "../include/RendererOpenGLImpl.hpp"
 
 // If you use grid ID via SpecialIndices, include it here
@@ -164,7 +163,7 @@ namespace Andromeda::Rendering
         }
 
         EndFrame();
-        //LogFPS();
+        LogFPS();
     }
 
 
