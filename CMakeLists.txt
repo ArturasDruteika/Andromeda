@@ -32,6 +32,7 @@ add_subdirectory(imgui)
 add_subdirectory(Window)
 add_subdirectory(GraphicsContext)
 add_subdirectory(Platform)
+add_subdirectory(Application)
 add_subdirectory(Example)
 
 # --- Install Rules ---
