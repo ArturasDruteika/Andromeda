@@ -22,7 +22,9 @@ namespace Andromeda::Space
 		size_t GetSize() const;
 		std::filesystem::path GetMaterialsConfigFilePath() const;
 		std::unordered_map<MaterialType, Material> GetMaterials() const;
+		std::vector<MaterialType> GetAllMaterialTypes() const;
 		Material GetMaterial(const MaterialType& materialType) const;
+		const Material* GetMaterialPtr(const MaterialType& materialType) const;
 
 		bool LoadFromFile(const std::filesystem::path& filePath);
 		bool SaveToFile(const std::filesystem::path& filePath) const;

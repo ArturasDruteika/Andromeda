@@ -1,4 +1,5 @@
 #include "../include/MaterialsLibrary.hpp"
+#include "Utils/FileOperations/include/FileOperations.hpp"
 #include "Utils/nlohmann_json/include/json.hpp"
 #include "spdlog/spdlog.h"
 
@@ -68,6 +69,17 @@ namespace Andromeda::Space
 		return m_materials;
 	}
 
+	std::vector<MaterialType> MaterialLibrary::GetAllMaterialTypes() const
+	{
+		std::vector<MaterialType> result;
+		result.reserve(m_materials.size());
+		for (const auto& kv : m_materials)
+		{
+			result.push_back(kv.first);
+		}
+		return result;
+	}
+
 	Material MaterialLibrary::GetMaterial(const MaterialType& materialType) const
 	{
 		std::unordered_map<MaterialType, Material>::const_iterator it = m_materials.find(materialType);
@@ -83,49 +95,93 @@ namespace Andromeda::Space
 		return it->second;
 	}
 
+	const Material* MaterialLibrary::GetMaterialPtr(const MaterialType& materialType) const
+	{
+		auto it = m_materials.find(materialType);
+		if (it == m_materials.end())
+		{
+			spdlog::error(
+				"MaterialLibrary::GetMaterialPtr - material '{}' not found; returning nullptr",
+				static_cast<int>(materialType)
+			);
+			return nullptr;
+		}
+		return &it->second;
+	}
 
 	bool MaterialLibrary::LoadFromFile(const std::filesystem::path& filePath)
 	{
-		std::ifstream in(filePath);
-		if (!in.is_open()) 
+		std::string fileContent;
+
+		try
 		{
-			spdlog::error("File {} is open.", filePath.string());
+			fileContent = Andromeda::Utils::FileOperations::LoadFileAsString(filePath);
+		}
+		catch (const std::exception& e)
+		{
+			spdlog::error(
+				"MaterialLibrary::LoadFromFile - failed to load file \"{}\": {}",
+				filePath.string(),
+				e.what()
+			);
 			return false;
 		}
 
 		nlohmann::json j;
-		in >> j;
-		if (!j.is_array()) 
+		try
 		{
-			spdlog::error("It is not a JSON array.");
+			j = nlohmann::json::parse(fileContent);
+		}
+		catch (const nlohmann::json::parse_error& e)
+		{
+			spdlog::error(
+				"MaterialLibrary::LoadFromFile - JSON parse error in \"{}\": {}",
+				filePath.string(),
+				e.what()
+			);
+			return false;
+		}
+
+		if (!j.is_array())
+		{
+			spdlog::error("MaterialLibrary::LoadFromFile - it is not a JSON array: \"{}\"", filePath.string());
 			return false;
 		}
 
 		m_materials.clear();
 
-		for (auto& entry : j)
+		for (const auto& entry : j)
 		{
-			// Required fields
-			std::string name = entry.at("name").get<std::string>();
-			auto& amb = entry.at("ambient");
-			auto& dif = entry.at("diffuse");
-			auto& spec = entry.at("specular");
-			float shininess = entry.at("shininess").get<float>();
+			try
+			{
+				// Required fields
+				std::string name = entry.at("name").get<std::string>();
+				const auto& amb = entry.at("ambient");
+				const auto& dif = entry.at("diffuse");
+				const auto& spec = entry.at("specular");
+				float shininess = entry.at("shininess").get<float>();
 
-			// Build Material struct
-			Material mat;
-			mat.SetShininess(shininess);
-			mat.SetName(name);
-			mat.SetAmbient({ amb[0].get<float>(), amb[1].get<float>(), amb[2].get<float>() });
-			mat.SetDiffuse({ dif[0].get<float>(), dif[1].get<float>(), dif[2].get<float>() });
-			mat.SetSpecular({ spec[0].get<float>(), spec[1].get<float>(), spec[2].get<float>() });
+				Material mat;
+				mat.SetShininess(shininess);
+				mat.SetName(name);
+				mat.SetAmbient({ amb[0].get<float>(), amb[1].get<float>(), amb[2].get<float>() });
+				mat.SetDiffuse({ dif[0].get<float>(), dif[1].get<float>(), dif[2].get<float>() });
+				mat.SetSpecular({ spec[0].get<float>(), spec[1].get<float>(), spec[2].get<float>() });
 
-			// Map to enum and insert
-			MaterialType type = materialTypeFromString(name);
-			m_materials[type] = std::move(mat);
+				MaterialType type = materialTypeFromString(name);
+				m_materials[type] = std::move(mat);
+			}
+			catch (const std::exception& e)
+			{
+				spdlog::warn(
+					"MaterialLibrary::LoadFromFile - skipping invalid material entry in \"{}\": {}",
+					filePath.string(),
+					e.what()
+				);
+			}
 		}
-		m_materialsConfigFilePath = filePath;
 
+		m_materialsConfigFilePath = filePath;
 		return true;
 	}
 
