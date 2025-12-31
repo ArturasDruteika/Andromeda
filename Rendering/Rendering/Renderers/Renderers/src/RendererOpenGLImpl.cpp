@@ -34,8 +34,6 @@ namespace Andromeda::Rendering
         , m_gpuMeshes{}
     {
         m_pShaderManager = new ShaderManager(true);
-        //SetCameraAspect(m_width, m_height);
-
         m_defaultVertexLayout = VertexLayout(
             {
                 { VertexSemantic::Position, ComponentType::Float32, 3, false, 0 },
@@ -119,7 +117,6 @@ namespace Andromeda::Rendering
         }
 
         ConfigurePointShadowDepthTexture();
-        //SetCameraAspect(width, height);
         m_isInitialized = true;
     }
 
@@ -135,7 +132,6 @@ namespace Andromeda::Rendering
     void RendererOpenGL::RendererOpenGLImpl::Resize(int width, int height)
     {
         SizeControl::Resize(width, height);
-        //SetCameraAspect(width, height);
         m_mainFBO.Resize(width, height);
     }
 
@@ -363,8 +359,8 @@ namespace Andromeda::Rendering
         ShaderOpenGL* shader = m_pShaderManager->GetShader(ShaderOpenGLTypes::RenderableObjectsNonLuminous);
         shader->Bind();
 
-        shader->SetUniform("u_view", MathUtils::ToGLM(rCamera.GetViewMatrix()));
-        shader->SetUniform("u_projection", MathUtils::ToGLM(rCamera.GetProjection()));
+        shader->SetUniform("u_view", glm::transpose(MathUtils::ToGLM(rCamera.GetViewMatrix())));
+        shader->SetUniform("u_projection", glm::transpose(MathUtils::ToGLM(rCamera.GetProjection())));
         shader->SetUniform("u_cameraPosWS", MathUtils::ToGLM(rCamera.GetPosition()));
 
         if (hasDir)
@@ -431,8 +427,8 @@ namespace Andromeda::Rendering
         ShaderOpenGL* shader = m_pShaderManager->GetShader(ShaderOpenGLTypes::RenderableObjects); 
         shader->Bind(); 
 
-        shader->SetUniform("u_view", MathUtils::ToGLM(rCamera.GetViewMatrix()));
-        shader->SetUniform("u_projection", glm::transpose(MathUtils::ToGLM(rCamera.GetProjection())));
+        shader->SetUniform("u_view", glm::transpose(MathUtils::ToGLM(rCamera.GetViewMatrix())));
+        shader->SetUniform("u_projection", glm::transpose(glm::transpose(MathUtils::ToGLM(rCamera.GetProjection()))));
 
         for (const auto& [id, obj] : objects) 
         { 
@@ -632,7 +628,7 @@ namespace Andromeda::Rendering
         //const GpuMeshOpenGL* mesh = TryGetGpuMesh(gridId);
 
         // Minimal generic approach: first object with negative key is treated as grid
-        const auto& objects = scene.GetObjects();
+        const std::unordered_map<int, IGeometricObject*>& objects = scene.GetObjects();
         for (const auto& [id, obj] : objects)
         {
             if (id >= 0)
@@ -745,10 +741,10 @@ namespace Andromeda::Rendering
 
     void RendererOpenGL::RendererOpenGLImpl::RenderLuminousMode(const IScene& scene, const ICamera& rCamera)
     {
-        const auto dirLights = scene.GetDirectionalLights();
+        const std::unordered_map<int, const IDirectionalLight*>& dirLights = scene.GetDirectionalLights();
         const bool hasDir = !dirLights.empty();
 
-        const auto pointLights = scene.GetPointLights();
+        const std::unordered_map<int, const IPointLight*>& pointLights = scene.GetPointLights();
         const bool hasPoint = !pointLights.empty();
 
         if (hasDir)
