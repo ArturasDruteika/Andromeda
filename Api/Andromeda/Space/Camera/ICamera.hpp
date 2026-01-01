@@ -10,7 +10,7 @@ namespace Andromeda
 {
     class ICamera
         : public virtual ICameraController
-		, public virtual ICameraView
+		, public virtual IPerspectiveControl
     {
     public:
         virtual ~ICamera() = default;

@@ -19,11 +19,11 @@ namespace Andromeda::Space
 
     Camera::~Camera() = default;
 
-    void Camera::Zoom(float deltaDistance)
-    {
-		CameraController::Zoom(deltaDistance);
-        //m_onDistanceChangeCallback(m_distance);
-    }
+  //  void Camera::Zoom(float deltaDistance)
+  //  {
+		//CameraController::Zoom(deltaDistance);
+  //      //m_onDistanceChangeCallback(m_distance);
+  //  }
 
  //   void Camera::SetOnDistanceChange(OnDistanceChange callback)
  //   {

@@ -2,6 +2,7 @@
 #define API__CAMERA__I_CAMERA_CONTROLLER__HPP
 
 
+#include "ICameraView.hpp"
 //#include <functional>
 
 
@@ -10,6 +11,7 @@ namespace Andromeda
     //using OnDistanceChange = std::function<void(float)>;
 
     class ICameraController
+		: public virtual ICameraView
     {
     public:
         virtual ~ICameraController() = default;

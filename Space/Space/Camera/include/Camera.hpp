@@ -12,7 +12,7 @@
 namespace Andromeda::Space
 {
     class SPACE_API Camera
-        : public virtual ICamera
+        : public ICamera
         , public PerspectiveControl
         , public CameraController
     {
@@ -21,7 +21,6 @@ namespace Andromeda::Space
         Camera(const Math::Vec3& position, float yawRadians = -Math::PI_HALF, float pitchRadians = 0.0f);
         ~Camera();
 
-        void Zoom(float deltaDistance);
         //void SetOnDistanceChange(OnDistanceChange callback);
 
     //private:

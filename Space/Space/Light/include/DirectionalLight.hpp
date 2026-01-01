@@ -4,6 +4,7 @@
 
 #include "Light.hpp"
 #include "../../Objects/include/LightObject.hpp"
+#include "../../Transformations/include/Rotatable.hpp"
 #include "../../MacroExports/include/MacroExports.hpp"
 #include "Andromeda/Space/Light/IDirectionalLight.hpp"
 #include "Math/LinearAlgebra/include/LinearAlgebraDataTypes.hpp"
@@ -12,9 +13,11 @@
 namespace Andromeda::Space
 {
 	class SPACE_API DirectionalLight
-		: public virtual IDirectionalLight
-		, public Light
+		: public Light
 		, public LightObject
+		, public Rotatable
+		, public virtual IDirectionalLight
+
 	{
 	public:
 		DirectionalLight(

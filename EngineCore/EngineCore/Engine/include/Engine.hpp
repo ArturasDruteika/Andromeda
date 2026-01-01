@@ -10,7 +10,8 @@
 
 namespace Andromeda::EngineCore
 {
-    class ENGINECORE_API Engine : public IEngine
+    class ENGINECORE_API Engine
+        : public IEngine
     {
     public:
         Engine(const GraphicsBackend& graphicsBackend);
