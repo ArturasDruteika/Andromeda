@@ -20,7 +20,7 @@ namespace Andromeda::Space
     };
 
     class SPACE_API Skyroom
-		: public virtual ISkyroom
+		: public ISkyroom
         , public GeometricObject
 		, public SurfaceObject
     {

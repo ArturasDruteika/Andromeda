@@ -13,10 +13,10 @@
 namespace Andromeda::Space
 {
 	class SPACE_API DirectionalLight
-		: public Light
+		: public IDirectionalLight
+		, public Light
 		, public LightObject
 		, public Rotatable
-		, public virtual IDirectionalLight
 
 	{
 	public:

@@ -12,7 +12,7 @@
 namespace Andromeda::Space
 {
 	class SPACE_API PointLight
-		: public virtual IPointLight
+		: public IPointLight
 		, public Light
 		, public LightObject
 	{

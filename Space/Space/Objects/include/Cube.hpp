@@ -19,7 +19,7 @@ namespace Andromeda::Space
     };
 
     class SPACE_API Cube
-        : public virtual ICube
+        : public ICube
         , public GeometricObject
 		, public SurfaceObject
     {

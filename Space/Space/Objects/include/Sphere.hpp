@@ -13,7 +13,7 @@
 namespace Andromeda::Space
 {
     class SPACE_API Sphere
-        : public virtual ISphere
+        : public ISphere
         , public GeometricObject
 		, public SurfaceObject
     {

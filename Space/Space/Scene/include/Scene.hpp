@@ -14,7 +14,7 @@
 namespace Andromeda::Space
 {
 	class SPACE_API Scene
-		: public virtual IScene
+		: public IScene
 		, public CameraHandler
 		, public SceneEnvironment
 		, public SceneLighting
