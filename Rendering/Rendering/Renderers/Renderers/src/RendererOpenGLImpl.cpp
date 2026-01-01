@@ -359,7 +359,7 @@ namespace Andromeda::Rendering
         ShaderOpenGL* shader = m_pShaderManager->GetShader(ShaderOpenGLTypes::RenderableObjectsNonLuminous);
         shader->Bind();
 
-        shader->SetUniform("u_view", glm::transpose(MathUtils::ToGLM(rCamera.GetViewMatrix())));
+        shader->SetUniform("u_view", MathUtils::ToGLM(rCamera.GetViewMatrix()));
         shader->SetUniform("u_projection", glm::transpose(MathUtils::ToGLM(rCamera.GetProjection())));
         shader->SetUniform("u_cameraPosWS", MathUtils::ToGLM(rCamera.GetPosition()));
 
@@ -427,8 +427,8 @@ namespace Andromeda::Rendering
         ShaderOpenGL* shader = m_pShaderManager->GetShader(ShaderOpenGLTypes::RenderableObjects); 
         shader->Bind(); 
 
-        shader->SetUniform("u_view", glm::transpose(MathUtils::ToGLM(rCamera.GetViewMatrix())));
-        shader->SetUniform("u_projection", glm::transpose(glm::transpose(MathUtils::ToGLM(rCamera.GetProjection()))));
+        shader->SetUniform("u_view", MathUtils::ToGLM(rCamera.GetViewMatrix()));
+        shader->SetUniform("u_projection", glm::transpose(MathUtils::ToGLM(rCamera.GetProjection())));
 
         for (const auto& [id, obj] : objects) 
         { 
