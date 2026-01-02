@@ -34,7 +34,6 @@ set(RAYTRACING_HEADERS
 
 # ==== Renderers ====
 set(RENDERERS_HEADERS
-    Rendering/Renderers/Abstracts/include/FaceCullingControlOpenGL.hpp
     Rendering/Renderers/Abstracts/include/GridControl.hpp
     Rendering/Renderers/Abstracts/include/IlluminationControl.hpp
     Rendering/Renderers/Abstracts/include/Renderer.hpp
@@ -46,7 +45,6 @@ set(RENDERERS_HEADERS
 )
 
 set(RENDERERS_SOURCES
-    Rendering/Renderers/Abstracts/src/FaceCullingControlOpenGL.cpp
     Rendering/Renderers/Abstracts/src/GridControl.cpp
     Rendering/Renderers/Abstracts/src/IlluminationControl.cpp
     Rendering/Renderers/Abstracts/src/Renderer.cpp
@@ -106,12 +104,14 @@ set(VERTEX_SOURCES
 # ==== OpenGL backend (platform specific) ====
 set(OPENGL_HEADERS
     Rendering/OpenGL/Geometry/include/GpuMeshOpenGL.hpp
+    Rendering/OpenGL/Support/include/FaceCullingControlOpenGL.hpp
     Rendering/OpenGL/Support/include/FrameBufferOpenGL.hpp
     Rendering/OpenGL/Vertices/include/VertexLayoutOpenGL.hpp
 )
 
 set(OPENGL_SOURCES
     Rendering/OpenGL/Geometry/src/GpuMeshOpenGL.cpp
+    Rendering/OpenGL/Support/src/FaceCullingControlOpenGL.cpp
     Rendering/OpenGL/Support/src/FrameBufferOpenGL.cpp
     Rendering/OpenGL/Vertices/src/VertexLayoutOpenGL.cpp
 )

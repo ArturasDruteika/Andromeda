@@ -4,12 +4,12 @@
 
 #include "../include/RendererOpenGL.hpp"
 #include "../../Abstracts/include/Renderer.hpp"
-#include "../../Abstracts/include/FaceCullingControlOpenGL.hpp"
 #include "../../../OpenGL/Support/include/FrameBufferOpenGL.hpp"
 #include "../../../Shaders/Shaders/include/ShaderManager.hpp"
 
 #include "../../../Vertices/include/VertexLayouts.hpp"
 #include "../../../OpenGL/Geometry/include/GpuMeshOpenGL.hpp"
+#include "../../../OpenGL/Support/include/FaceCullingControlOpenGL.hpp"
 
 #include "glad/gl.h"
 
@@ -22,7 +22,6 @@ namespace Andromeda::Rendering
 {
     class RendererOpenGL::RendererOpenGLImpl
         : public Renderer
-        , public FaceCullingControlOpenGL
     {
     public:
         RendererOpenGLImpl();
@@ -107,6 +106,8 @@ namespace Andromeda::Rendering
         FrameBufferOpenGL m_mainFBO;
         FrameBufferOpenGL m_directionalShadowFBO;
         FrameBufferOpenGL m_pointShadowFBO;
+
+        FaceCullingControlOpenGL m_faceCullingControlOpenGL;
 
         ShaderManager* m_pShaderManager;
 

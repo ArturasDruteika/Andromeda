@@ -212,7 +212,7 @@ namespace Andromeda::Rendering
 
     void RendererOpenGL::RendererOpenGLImpl::ShadowMapDepthPass(const std::unordered_map<int, IGeometricObject*>& objects) const
     {
-        EnableFaceCulling(GL_FRONT, GL_CCW);
+        m_faceCullingControlOpenGL.EnableFaceCulling(GL_FRONT, GL_CCW);
 
         int prevFBO;
         glGetIntegerv(GL_DRAW_FRAMEBUFFER_BINDING, &prevFBO);
@@ -222,8 +222,8 @@ namespace Andromeda::Rendering
         glEnable(GL_DEPTH_TEST);
         glClear(GL_DEPTH_BUFFER_BIT);
 
-        DisableFaceCulling();
-        EnableFaceCulling(GL_FRONT, GL_CW);
+        m_faceCullingControlOpenGL.DisableFaceCulling();
+        m_faceCullingControlOpenGL.EnableFaceCulling(GL_FRONT, GL_CW);
 
         glEnable(GL_POLYGON_OFFSET_FILL);
         glPolygonOffset(2.0f, 4.0f);
@@ -255,7 +255,7 @@ namespace Andromeda::Rendering
 
         glBindFramebuffer(GL_FRAMEBUFFER, prevFBO);
         glDisable(GL_POLYGON_OFFSET_FILL);
-        DisableFaceCulling();
+        m_faceCullingControlOpenGL.DisableFaceCulling();
     }
 
     void RendererOpenGL::RendererOpenGLImpl::ShadowCubeDepthPass(
@@ -265,7 +265,7 @@ namespace Andromeda::Rendering
         float farPlane
     ) const
     {
-        EnableFaceCulling(GL_FRONT, GL_CCW);
+        m_faceCullingControlOpenGL.EnableFaceCulling(GL_FRONT, GL_CCW);
 
         int prevFBO;
         glGetIntegerv(GL_DRAW_FRAMEBUFFER_BINDING, &prevFBO);
@@ -334,13 +334,13 @@ namespace Andromeda::Rendering
 
         depthCubeShader->UnBind();
         glBindFramebuffer(GL_FRAMEBUFFER, prevFBO);
-        DisableFaceCulling();
+        m_faceCullingControlOpenGL.DisableFaceCulling();
     }
 
     void RendererOpenGL::RendererOpenGLImpl::RenderNonLuminousObjectsCombined(const IScene& scene, const ICamera& rCamera, bool hasDir, bool hasPoint) const
     {
         glViewport(0, 0, m_width, m_height);
-        EnableFaceCulling(GL_BACK, GL_CCW);
+        m_faceCullingControlOpenGL.EnableFaceCulling(GL_BACK, GL_CCW);
 
         const int DIR_UNIT = 5;
         const int POINT_UNIT = 6;
@@ -378,7 +378,7 @@ namespace Andromeda::Rendering
 
         RenderEachNonLuminousObject(*shader, scene.GetObjects());
         shader->UnBind();
-        DisableFaceCulling();
+        m_faceCullingControlOpenGL.DisableFaceCulling();
     }
 
     void RendererOpenGL::RendererOpenGLImpl::RenderLuminousObjects(
@@ -416,14 +416,14 @@ namespace Andromeda::Rendering
         }
 
         lumShader->UnBind();
-        DisableFaceCulling();
+        m_faceCullingControlOpenGL.DisableFaceCulling();
     }
 
     void RendererOpenGL::RendererOpenGLImpl::RenderObjects(
         const std::unordered_map<int, IGeometricObject*>& objects, 
         const ICamera& rCamera) const 
     { 
-        EnableFaceCulling(GL_BACK, GL_CCW); 
+        m_faceCullingControlOpenGL.EnableFaceCulling(GL_BACK, GL_CCW);
         ShaderOpenGL* shader = m_pShaderManager->GetShader(ShaderOpenGLTypes::RenderableObjects); 
         shader->Bind(); 
 
@@ -450,7 +450,7 @@ namespace Andromeda::Rendering
         } 
 
         shader->UnBind(); 
-        DisableFaceCulling(); 
+        m_faceCullingControlOpenGL.DisableFaceCulling();
     }
 
     void RendererOpenGL::RendererOpenGLImpl::RenderGrid(const GpuMeshOpenGL& mesh) const
