@@ -41,7 +41,6 @@ set(RENDERERS_HEADERS
     Rendering/Renderers/Interfaces/include/IFrameBufferProvider.hpp
     Rendering/Renderers/Interfaces/include/IRendererOpenGL.hpp
     Rendering/Renderers/Renderers/include/RendererOpenGL.hpp
-    Rendering/Renderers/Renderers/include/RendererOpenGLImpl.hpp
 )
 
 set(RENDERERS_SOURCES
@@ -52,7 +51,6 @@ set(RENDERERS_SOURCES
     Rendering/Renderers/Interfaces/src/IFrameBufferProvider.cpp
     Rendering/Renderers/Interfaces/src/IRendererOpenGL.cpp
     Rendering/Renderers/Renderers/src/RendererOpenGL.cpp
-    Rendering/Renderers/Renderers/src/RendererOpenGLImpl.cpp
 )
 
 # ==== Shaders ====
@@ -104,6 +102,7 @@ set(VERTEX_SOURCES
 # ==== OpenGL backend (platform specific) ====
 set(OPENGL_HEADERS
     Rendering/OpenGL/Geometry/include/GpuMeshOpenGL.hpp
+    Rendering/OpenGL/Renderer/include/RendererOpenGLImpl.hpp
     Rendering/OpenGL/Support/include/FaceCullingControlOpenGL.hpp
     Rendering/OpenGL/Support/include/FrameBufferOpenGL.hpp
     Rendering/OpenGL/Vertices/include/VertexLayoutOpenGL.hpp
@@ -111,6 +110,7 @@ set(OPENGL_HEADERS
 
 set(OPENGL_SOURCES
     Rendering/OpenGL/Geometry/src/GpuMeshOpenGL.cpp
+    Rendering/OpenGL/Renderer/src/RendererOpenGLImpl.cpp
     Rendering/OpenGL/Support/src/FaceCullingControlOpenGL.cpp
     Rendering/OpenGL/Support/src/FrameBufferOpenGL.cpp
     Rendering/OpenGL/Vertices/src/VertexLayoutOpenGL.cpp

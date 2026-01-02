@@ -1,5 +1,5 @@
 #include "../include/RendererOpenGL.hpp"
-#include "../include/RendererOpenGLImpl.hpp"
+#include "../../../OpenGL/Renderer/include/RendererOpenGLImpl.hpp"
 
 
 namespace Andromeda::Rendering

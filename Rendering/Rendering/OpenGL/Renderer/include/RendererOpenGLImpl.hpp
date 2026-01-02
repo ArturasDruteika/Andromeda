@@ -1,18 +1,16 @@
-// RendererOpenGLImpl.hpp
 #ifndef RENDERER__OPENGL_RENDERER_IMPL__HPP
 #define RENDERER__OPENGL_RENDERER_IMPL__HPP
 
-#include "../include/RendererOpenGL.hpp"
-#include "../../Abstracts/include/Renderer.hpp"
-#include "../../../OpenGL/Support/include/FrameBufferOpenGL.hpp"
-#include "../../../Shaders/Shaders/include/ShaderManager.hpp"
 
+#include "../../Geometry/include/GpuMeshOpenGL.hpp"
+#include "../../Support/include/FaceCullingControlOpenGL.hpp"
+#include "../../Support/include/FrameBufferOpenGL.hpp"
+#include "../../../Renderers/Renderers/include/RendererOpenGL.hpp"
+#include "../../../Renderers/Abstracts/include/Renderer.hpp"
+#include "../../../Shaders/Shaders/include/ShaderManager.hpp"
 #include "../../../Vertices/include/VertexLayouts.hpp"
-#include "../../../OpenGL/Geometry/include/GpuMeshOpenGL.hpp"
-#include "../../../OpenGL/Support/include/FaceCullingControlOpenGL.hpp"
 
 #include "glad/gl.h"
-
 #include "glm/glm.hpp"
 
 #include <chrono>
