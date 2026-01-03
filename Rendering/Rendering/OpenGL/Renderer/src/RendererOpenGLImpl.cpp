@@ -53,11 +53,6 @@ namespace Andromeda::Rendering
         return m_isInitialized;
     }
 
-    bool RendererOpenGL::RendererOpenGLImpl::IsGridVisible() const
-    {
-        return m_isGridVisible;
-    }
-
     void* RendererOpenGL::RendererOpenGLImpl::GetFrameTextureHandle() const
     {
         return reinterpret_cast<void*>(static_cast<uintptr_t>(m_mainFBO.GetColorTexture()));
@@ -124,7 +119,7 @@ namespace Andromeda::Rendering
         if (!pCamera)
             return;
 
-        SyncGpuMeshes(scene.GetObjects());
+        m_meshCache.Sync(scene.GetObjects(), m_defaultVertexLayout);
 
         SetBackgroundColor(MathUtils::ToGLM(scene.GetBackgroundColor()));
         BeginFrame();
@@ -140,54 +135,6 @@ namespace Andromeda::Rendering
 
         EndFrame();
         LogFPS();
-    }
-
-
-    void RendererOpenGL::RendererOpenGLImpl::SyncGpuMeshes(const std::unordered_map<int, IGeometricObject*>& objects)
-    {
-        std::unordered_set<int> objIds;
-        objIds.reserve(objects.size());
-
-        for (const auto& [sceneKey, obj] : objects)
-        {
-            if (!obj)
-            {
-                continue;
-            }
-
-            const int objId = obj->GetID();
-            objIds.insert(objId);
-
-            auto it = m_gpuMeshes.find(objId);
-            if (it == m_gpuMeshes.end())
-            {
-                GpuMeshOpenGL gpuMesh;
-                gpuMesh.Create(obj->GetMesh(), m_defaultVertexLayout);
-                m_gpuMeshes.emplace(objId, std::move(gpuMesh));
-            }
-        }
-
-        for (auto it = m_gpuMeshes.begin(); it != m_gpuMeshes.end();)
-        {
-            if (objIds.find(it->first) == objIds.end())
-            {
-                it = m_gpuMeshes.erase(it);
-            }
-            else
-            {
-                ++it;
-            }
-        }
-    }
-
-    const GpuMeshOpenGL* RendererOpenGL::RendererOpenGLImpl::TryGetGpuMesh(int objectId) const
-    {
-        auto it = m_gpuMeshes.find(objectId);
-        if (it == m_gpuMeshes.end())
-        {
-            return nullptr;
-        }
-        return &it->second;
     }
 
     void RendererOpenGL::RendererOpenGLImpl::ShadowMapDepthPass(const std::unordered_map<int, IGeometricObject*>& objects) const
@@ -220,7 +167,7 @@ namespace Andromeda::Rendering
             }
 
             const int objId = obj->GetID();
-            const GpuMeshOpenGL* mesh = TryGetGpuMesh(objId);
+            const GpuMeshOpenGL* mesh = m_meshCache.TryGet(objId);
             if (!mesh)
             {
                 continue;
@@ -301,7 +248,7 @@ namespace Andromeda::Rendering
             }
 
             const int objId = obj->GetID();
-            const GpuMeshOpenGL* mesh = TryGetGpuMesh(objId);
+            const GpuMeshOpenGL* mesh = m_meshCache.TryGet(objId);
             if (!mesh)
             {
                 continue;
@@ -384,7 +331,7 @@ namespace Andromeda::Rendering
             }
 
             const int objId = obj->GetID();
-            const GpuMeshOpenGL* mesh = TryGetGpuMesh(objId);
+            const GpuMeshOpenGL* mesh = m_meshCache.TryGet(objId);
             if (!mesh)
             {
                 continue;
@@ -418,7 +365,7 @@ namespace Andromeda::Rendering
                 continue;
 
             int objID = obj->GetID(); 
-            const GpuMeshOpenGL* mesh = TryGetGpuMesh(objID); 
+            const GpuMeshOpenGL* mesh = m_meshCache.TryGet(objID);
 
             if (!mesh) 
                 continue;
@@ -517,7 +464,7 @@ namespace Andromeda::Rendering
             }
 
             const int objId = obj->GetID();
-            const GpuMeshOpenGL* mesh = TryGetGpuMesh(objId);
+            const GpuMeshOpenGL* mesh = m_meshCache.TryGet(objId);
             if (!mesh)
             {
                 continue;
@@ -622,7 +569,7 @@ namespace Andromeda::Rendering
             }
 
             const int gridId = obj->GetID();
-            const GpuMeshOpenGL* mesh = TryGetGpuMesh(gridId);
+            const GpuMeshOpenGL* mesh = m_meshCache.TryGet(gridId);
             if (!mesh)
             {
                 return;
@@ -691,7 +638,7 @@ namespace Andromeda::Rendering
                 shader.SetUniform("u_normalMatrix", normalMatrix);
 
                 const int objId = obj->GetID();
-                const GpuMeshOpenGL* mesh = TryGetGpuMesh(objId);
+                const GpuMeshOpenGL* mesh = m_meshCache.TryGet(objId);
                 if (!mesh)
                 {
                     continue;

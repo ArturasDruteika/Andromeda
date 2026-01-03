@@ -5,14 +5,11 @@
 namespace Andromeda::Rendering
 {
 	RendererOpenGL::RendererOpenGL()
-		: m_pRendererOpenGLImpl{ new RendererOpenGL::RendererOpenGLImpl() }
+		: m_pRendererOpenGLImpl{ std::make_unique<RendererOpenGL::RendererOpenGLImpl>() }
 	{
 	}
 
-	RendererOpenGL::~RendererOpenGL()
-	{
-		delete m_pRendererOpenGLImpl;
-	}
+	RendererOpenGL::~RendererOpenGL() = default;
 
 	bool RendererOpenGL::IsInitialized() const
 	{

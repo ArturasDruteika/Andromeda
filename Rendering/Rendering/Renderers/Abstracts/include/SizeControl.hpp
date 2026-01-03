@@ -1,5 +1,5 @@
-#ifndef RENDERER__SIZE__HPP
-#define RENDERER__SIZE__HPP
+#ifndef RENDERING__RENDERERS__ABSTRACTS__MESH_CACHE__HPP__HPP
+#define RENDERING__RENDERERS__ABSTRACTS__MESH_CACHE__HPP__HPP
 
 
 namespace Andromeda::Rendering
@@ -23,4 +23,4 @@ namespace Andromeda::Rendering
 }
 
 
-#endif // RENDERER__SIZE__HPP
+#endif // RENDERING__RENDERERS__ABSTRACTS__MESH_CACHE__HPP__HPP

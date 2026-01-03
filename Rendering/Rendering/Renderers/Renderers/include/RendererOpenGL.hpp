@@ -6,6 +6,7 @@
 #include "Andromeda/Renderer/IRenderer.hpp"
 #include "Andromeda/Space/Scene/IScene.hpp"
 #include "Andromeda/Space/Camera/ICamera.hpp"
+#include "pch.hpp"
 
 
 namespace Andromeda::Rendering
@@ -40,7 +41,7 @@ namespace Andromeda::Rendering
 
 	private:
 		class RendererOpenGLImpl;
-		RendererOpenGLImpl* m_pRendererOpenGLImpl;
+		std::unique_ptr<RendererOpenGLImpl> m_pRendererOpenGLImpl;
 	};
 }
 

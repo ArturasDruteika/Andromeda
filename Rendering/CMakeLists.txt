@@ -27,6 +27,25 @@ set(MACRO_EXPORTS_HEADERS
     Rendering/MacroExports/include/MacroExports.hpp
 )
 
+# ==== OpenGL backend (platform specific) ====
+set(OPENGL_HEADERS
+    Rendering/OpenGL/Geometry/include/GpuMeshOpenGL.hpp
+    Rendering/OpenGL/Renderer/include/RendererOpenGLImpl.hpp
+    Rendering/OpenGL/Support/include/FaceCullingControlOpenGL.hpp
+    Rendering/OpenGL/Support/include/FrameBufferOpenGL.hpp
+    Rendering/OpenGL/Support/include/MeshCacheOpenGL.hpp
+    Rendering/OpenGL/Vertices/include/VertexLayoutOpenGL.hpp
+)
+
+set(OPENGL_SOURCES
+    Rendering/OpenGL/Geometry/src/GpuMeshOpenGL.cpp
+    Rendering/OpenGL/Renderer/src/RendererOpenGLImpl.cpp
+    Rendering/OpenGL/Support/src/FaceCullingControlOpenGL.cpp
+    Rendering/OpenGL/Support/src/FrameBufferOpenGL.cpp
+    Rendering/OpenGL/Support/src/MeshCacheOpenGL.cpp
+    Rendering/OpenGL/Vertices/src/VertexLayoutOpenGL.cpp
+)
+
 # ==== RayTracing ====
 set(RAYTRACING_HEADERS
     Rendering/RayTracing/include/Ray.hpp
@@ -91,23 +110,6 @@ set(VERTEX_SOURCES
     Rendering/Vertices/src/VertexFormat.cpp
     Rendering/Vertices/src/VertexLayouts.cpp
     Rendering/Vertices/src/VertexLocationPolicy.cpp
-)
-
-# ==== OpenGL backend (platform specific) ====
-set(OPENGL_HEADERS
-    Rendering/OpenGL/Geometry/include/GpuMeshOpenGL.hpp
-    Rendering/OpenGL/Renderer/include/RendererOpenGLImpl.hpp
-    Rendering/OpenGL/Support/include/FaceCullingControlOpenGL.hpp
-    Rendering/OpenGL/Support/include/FrameBufferOpenGL.hpp
-    Rendering/OpenGL/Vertices/include/VertexLayoutOpenGL.hpp
-)
-
-set(OPENGL_SOURCES
-    Rendering/OpenGL/Geometry/src/GpuMeshOpenGL.cpp
-    Rendering/OpenGL/Renderer/src/RendererOpenGLImpl.cpp
-    Rendering/OpenGL/Support/src/FaceCullingControlOpenGL.cpp
-    Rendering/OpenGL/Support/src/FrameBufferOpenGL.cpp
-    Rendering/OpenGL/Vertices/src/VertexLayoutOpenGL.cpp
 )
 
 add_library(${PROJECT_NAME}

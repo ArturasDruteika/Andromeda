@@ -5,6 +5,7 @@
 #include "../../Geometry/include/GpuMeshOpenGL.hpp"
 #include "../../Support/include/FaceCullingControlOpenGL.hpp"
 #include "../../Support/include/FrameBufferOpenGL.hpp"
+#include "../../Support/include/MeshCacheOpenGL.hpp"
 #include "../../../Renderers/Renderers/include/RendererOpenGL.hpp"
 #include "../../../Renderers/Abstracts/include/GridControl.hpp"
 #include "../../../Renderers/Abstracts/include/IlluminationControl.hpp"
@@ -36,7 +37,6 @@ namespace Andromeda::Rendering
 
         // Getters
         bool IsInitialized() const;
-        bool IsGridVisible() const;
         void* GetFrameTextureHandle() const;
 
         void Init(int width, int height, bool illuminationMode = false);
@@ -45,8 +45,6 @@ namespace Andromeda::Rendering
         void Resize(int width, int height);
 
     private:
-        void SyncGpuMeshes(const std::unordered_map<int, IGeometricObject*>& objects);
-        const GpuMeshOpenGL* TryGetGpuMesh(int objectId) const;
         void ShadowMapDepthPass(const std::unordered_map<int, IGeometricObject*>& objects) const;
         void ShadowCubeDepthPass(
             const std::unordered_map<int, IGeometricObject*>& objects,
@@ -107,6 +105,7 @@ namespace Andromeda::Rendering
         FrameBufferOpenGL m_pointShadowFBO;
 
         FaceCullingControlOpenGL m_faceCullingControlOpenGL;
+        MeshCacheOpenGL m_meshCache;
 
         ShaderManager* m_pShaderManager;
 
