@@ -36,7 +36,6 @@ set(RAYTRACING_HEADERS
 set(RENDERERS_HEADERS
     Rendering/Renderers/Abstracts/include/GridControl.hpp
     Rendering/Renderers/Abstracts/include/IlluminationControl.hpp
-    Rendering/Renderers/Abstracts/include/Renderer.hpp
     Rendering/Renderers/Abstracts/include/SizeControl.hpp
     Rendering/Renderers/Renderers/include/RendererOpenGL.hpp
 )
@@ -44,7 +43,6 @@ set(RENDERERS_HEADERS
 set(RENDERERS_SOURCES
     Rendering/Renderers/Abstracts/src/GridControl.cpp
     Rendering/Renderers/Abstracts/src/IlluminationControl.cpp
-    Rendering/Renderers/Abstracts/src/Renderer.cpp
     Rendering/Renderers/Abstracts/src/SizeControl.cpp
     Rendering/Renderers/Renderers/src/RendererOpenGL.cpp
 )

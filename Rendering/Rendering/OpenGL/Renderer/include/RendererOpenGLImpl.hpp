@@ -6,7 +6,9 @@
 #include "../../Support/include/FaceCullingControlOpenGL.hpp"
 #include "../../Support/include/FrameBufferOpenGL.hpp"
 #include "../../../Renderers/Renderers/include/RendererOpenGL.hpp"
-#include "../../../Renderers/Abstracts/include/Renderer.hpp"
+#include "../../../Renderers/Abstracts/include/GridControl.hpp"
+#include "../../../Renderers/Abstracts/include/IlluminationControl.hpp"
+#include "../../../Renderers/Abstracts/include/SizeControl.hpp"
 #include "../../../Shaders/Shaders/include/ShaderManager.hpp"
 #include "../../../Vertices/include/VertexLayouts.hpp"
 
@@ -19,7 +21,9 @@
 namespace Andromeda::Rendering
 {
     class RendererOpenGL::RendererOpenGLImpl
-        : public Renderer
+        : public GridControl
+        , public IlluminationControl
+        , public SizeControl
     {
     public:
         RendererOpenGLImpl();
@@ -33,10 +37,6 @@ namespace Andromeda::Rendering
         // Getters
         bool IsInitialized() const;
         bool IsGridVisible() const;
-        unsigned int GetFrameBufferObject() const;
-        unsigned int GetDepthRenderBuffer() const;
-        unsigned int GetShadowMap() const;
-        unsigned int GetPointShadowCube() const;
         void* GetFrameTextureHandle() const;
 
         void Init(int width, int height, bool illuminationMode = false);

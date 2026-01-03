@@ -58,26 +58,6 @@ namespace Andromeda::Rendering
         return m_isGridVisible;
     }
 
-    unsigned int RendererOpenGL::RendererOpenGLImpl::GetFrameBufferObject() const
-    {
-        return m_mainFBO.GetId();
-    }
-
-    unsigned int RendererOpenGL::RendererOpenGLImpl::GetDepthRenderBuffer() const
-    {
-        return m_mainFBO.GetDepthRenderbuffer();
-    }
-
-    unsigned int RendererOpenGL::RendererOpenGLImpl::GetShadowMap() const
-    {
-        return m_directionalShadowFBO.GetDepthTexture();
-    }
-
-    unsigned int RendererOpenGL::RendererOpenGLImpl::GetPointShadowCube() const
-    {
-        return m_pointShadowFBO.GetDepthCubeTexture();
-    }
-
     void* RendererOpenGL::RendererOpenGLImpl::GetFrameTextureHandle() const
     {
         return reinterpret_cast<void*>(static_cast<uintptr_t>(m_mainFBO.GetColorTexture()));
