@@ -3,7 +3,7 @@
 
 
 #include "../../../MacroExports/include/MacroExports.hpp"
-#include "../../Interfaces/include/IRendererOpenGL.hpp"
+#include "Andromeda/Renderer/IRenderer.hpp"
 #include "Andromeda/Space/Scene/IScene.hpp"
 #include "Andromeda/Space/Camera/ICamera.hpp"
 
@@ -11,7 +11,7 @@
 namespace Andromeda::Rendering
 {
 	class RENDERING_API RendererOpenGL
-		: public IRendererOpenGL
+		: public IRenderer
 	{
 	public:
 		RendererOpenGL();
