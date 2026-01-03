@@ -1,4 +1,5 @@
 #include "../include/RendererOpenGLImpl.hpp"
+#include "../../Support/include/ShadowRendererOpenGL.hpp"
 
 // If you use grid ID via SpecialIndices, include it here
 //#include "../../../Scene/Support/include/SpecialIndices.hpp"
@@ -14,8 +15,8 @@
 
 #include "glad/gl.h"
 #include "glm/glm.hpp"
-#include <glm/gtc/matrix_transform.hpp>
-#include <glm/gtc/matrix_inverse.hpp>
+#include "glm/gtc/matrix_transform.hpp"
+#include "glm/gtc/matrix_inverse.hpp"
 
 #include "spdlog/spdlog.h"
 
@@ -137,133 +138,6 @@ namespace Andromeda::Rendering
         LogFPS();
     }
 
-    void RendererOpenGL::RendererOpenGLImpl::ShadowMapDepthPass(const std::unordered_map<int, IGeometricObject*>& objects) const
-    {
-        m_faceCullingControlOpenGL.EnableFaceCulling(GL_FRONT, GL_CCW);
-
-        int prevFBO;
-        glGetIntegerv(GL_DRAW_FRAMEBUFFER_BINDING, &prevFBO);
-
-        m_directionalShadowFBO.Bind();
-        glViewport(0, 0, m_directionalShadowResolution, m_directionalShadowResolution);
-        glEnable(GL_DEPTH_TEST);
-        glClear(GL_DEPTH_BUFFER_BIT);
-
-        m_faceCullingControlOpenGL.DisableFaceCulling();
-        m_faceCullingControlOpenGL.EnableFaceCulling(GL_FRONT, GL_CW);
-
-        glEnable(GL_POLYGON_OFFSET_FILL);
-        glPolygonOffset(2.0f, 4.0f);
-
-        ShaderOpenGL* depthShader = m_pShaderManager->GetShader(ShaderOpenGLTypes::ShadowMap);
-        depthShader->Bind();
-        depthShader->SetUniform("u_lightSpaceMatrix", m_shadowMapLightSpace);
-
-        for (const auto& [id, obj] : objects)
-        {
-            if (!obj)
-            {
-                continue;
-            }
-
-            const int objId = obj->GetID();
-            const GpuMeshOpenGL* mesh = m_meshCache.TryGet(objId);
-            if (!mesh)
-            {
-                continue;
-            }
-
-            depthShader->SetUniform("u_model", MathUtils::ToGLM(obj->GetModelMatrix()));
-            glBindVertexArray(mesh->GetVAO());
-            glDrawElements(GL_TRIANGLES, static_cast<GLsizei>(mesh->GetIndexCount()), GL_UNSIGNED_INT, nullptr);
-        }
-
-        depthShader->UnBind();
-
-        glBindFramebuffer(GL_FRAMEBUFFER, prevFBO);
-        glDisable(GL_POLYGON_OFFSET_FILL);
-        m_faceCullingControlOpenGL.DisableFaceCulling();
-    }
-
-    void RendererOpenGL::RendererOpenGLImpl::ShadowCubeDepthPass(
-        const std::unordered_map<int, IGeometricObject*>& objects,
-        const glm::vec3& lightPos,
-        float nearPlane,
-        float farPlane
-    ) const
-    {
-        m_faceCullingControlOpenGL.EnableFaceCulling(GL_FRONT, GL_CCW);
-
-        int prevFBO;
-        glGetIntegerv(GL_DRAW_FRAMEBUFFER_BINDING, &prevFBO);
-
-        m_pointShadowFBO.Bind();
-        glViewport(0, 0, m_shadowCubeResolution, m_shadowCubeResolution);
-        glEnable(GL_DEPTH_TEST);
-        glClear(GL_DEPTH_BUFFER_BIT);
-
-        ShaderOpenGL* depthCubeShader = m_pShaderManager->GetShader(ShaderOpenGLTypes::PointShadowCubeMap);
-        depthCubeShader->Bind();
-
-        const glm::mat4 proj = glm::perspective(glm::radians(90.0f), 1.0f, nearPlane, farPlane);
-
-        std::vector<glm::vec3> ups{
-            { 0, -1,  0},
-            { 0, -1,  0},
-            { 0,  0,  1},
-            { 0,  0, -1},
-            { 0, -1,  0},
-            { 0, -1,  0}
-        };
-
-        std::vector<glm::vec3> targets{
-            lightPos + glm::vec3(1, 0, 0),
-            lightPos + glm::vec3(-1, 0, 0),
-            lightPos + glm::vec3(0, 1, 0),
-            lightPos + glm::vec3(0,-1, 0),
-            lightPos + glm::vec3(0, 0, 1),
-            lightPos + glm::vec3(0, 0,-1)
-        };
-
-        std::vector<glm::mat4> shadowMatrices(6);
-        for (std::size_t i = 0; i < shadowMatrices.size(); ++i)
-        {
-            shadowMatrices[i] = proj * glm::lookAt(lightPos, targets[i], ups[i]);
-        }
-
-        depthCubeShader->SetUniform("u_shadowMatrices[0]", shadowMatrices);
-        depthCubeShader->SetUniform("u_lightPos", lightPos);
-        depthCubeShader->SetUniform("u_farPlane", farPlane);
-
-        for (const auto& [id, obj] : objects)
-        {
-            if (!obj)
-            {
-                continue;
-            }
-
-            if (dynamic_cast<ILightObject*>(obj))
-            {
-                continue;
-            }
-
-            const int objId = obj->GetID();
-            const GpuMeshOpenGL* mesh = m_meshCache.TryGet(objId);
-            if (!mesh)
-            {
-                continue;
-            }
-
-            depthCubeShader->SetUniform("u_model", MathUtils::ToGLM(obj->GetModelMatrix()));
-            glBindVertexArray(mesh->GetVAO());
-            glDrawElements(GL_TRIANGLES, static_cast<GLsizei>(mesh->GetIndexCount()), GL_UNSIGNED_INT, nullptr);
-        }
-
-        depthCubeShader->UnBind();
-        glBindFramebuffer(GL_FRAMEBUFFER, prevFBO);
-        m_faceCullingControlOpenGL.DisableFaceCulling();
-    }
-
     void RendererOpenGL::RendererOpenGLImpl::RenderNonLuminousObjectsCombined(const IScene& scene, const ICamera& rCamera, bool hasDir, bool hasPoint) const
     {
         glViewport(0, 0, m_width, m_height);
@@ -294,13 +168,13 @@ namespace Andromeda::Rendering
         {
             shader->SetUniform("u_dirShadowMap", DIR_UNIT);
             shader->SetUniform("u_lightSpaceMatrix", m_shadowMapLightSpace);
-            PopulateLightUniforms(*shader, scene.GetDirectionalLights());
+            ShadowRendererOpenGL::PopulateDirectionalLightUniforms(*shader, scene.GetDirectionalLights());
         }
 
         if (hasPoint)
         {
             shader->SetUniform("u_pointShadowCube", POINT_UNIT);
-            PopulatePointLightUniforms(*shader, scene.GetPointLights());
+            ShadowRendererOpenGL::PopulatePointLightUniforms(*shader, scene.GetPointLights());
         }
 
         RenderEachNonLuminousObject(*shader, scene.GetObjects());
@@ -398,82 +272,6 @@ namespace Andromeda::Rendering
         //glDrawElements(GL_LINES, static_cast<GLsizei>(mesh.GetIndexCount()), GL_UNSIGNED_INT, nullptr);
 
         //shader->UnBind();
-    }
-
-    void RendererOpenGL::RendererOpenGLImpl::PopulatePointLightUniforms(
-        ShaderOpenGL& shader, 
-        const std::unordered_map<int, const IPointLight*>& pointLights
-    ) const
-    {
-        std::vector<glm::vec3> positions, ambient, diffuse, specular;
-        std::vector<float> intensities, constant, linear, quadratic, farPlanes;
-
-        positions.reserve(pointLights.size());
-        intensities.reserve(pointLights.size());
-        ambient.reserve(pointLights.size());
-        diffuse.reserve(pointLights.size());
-        specular.reserve(pointLights.size());
-        constant.reserve(pointLights.size());
-        linear.reserve(pointLights.size());
-        quadratic.reserve(pointLights.size());
-        farPlanes.reserve(pointLights.size());
-
-        for (const auto& [id, pl] : pointLights)
-        {
-            positions.push_back(MathUtils::ToGLM(pl->GetPosition()));
-            intensities.push_back(pl->GetIntensity());
-            ambient.push_back(MathUtils::ToGLM(pl->GeAmbient()));
-            diffuse.push_back(MathUtils::ToGLM(pl->GetDiffuse()));
-            specular.push_back(MathUtils::ToGLM(pl->GetSpecular()));
-
-            constant.push_back(pl->GetAttenuationConstant());
-            linear.push_back(pl->GetAttenuationLinear());
-            quadratic.push_back(pl->GetAttenuationQuadratic());
-
-            farPlanes.push_back(pl->GetShadowFarPlane());
-        }
-
-        shader.SetUniform("u_numPointLights", static_cast<int>(positions.size()));
-        shader.SetUniform("u_pointLightPositions", positions);
-        shader.SetUniform("u_pointLightIntensity", intensities);
-        shader.SetUniform("u_pointLightAmbient", ambient);
-        shader.SetUniform("u_pointLightDiffuse", diffuse);
-        shader.SetUniform("u_pointLightSpecular", specular);
-
-        shader.SetUniform("u_pointLightConstant", constant);
-        shader.SetUniform("u_pointLightLinear", linear);
-        shader.SetUniform("u_pointLightQuadratic", quadratic);
-        shader.SetUniform("u_pointLightFarPlanes", farPlanes);
-    }
-
-    void RendererOpenGL::RendererOpenGLImpl::RenderEachObjectDepthOnly(
-        ShaderOpenGL& shader, 
-        const std::unordered_map<int, IGeometricObject*>& objects
-    ) const
-    {
-        for (const auto& [id, obj] : objects)
-        {
-            if (!obj)
-            {
-                continue;
-            }
-
-            if (id < 0)
-            {
-                continue;
-            }
-
-            const int objId = obj->GetID();
-            const GpuMeshOpenGL* mesh = m_meshCache.TryGet(objId);
-            if (!mesh)
-            {
-                continue;
-            }
-
-            shader.SetUniform("u_model", MathUtils::ToGLM(obj->GetModelMatrix()));
-            glBindVertexArray(mesh->GetVAO());
-            glDrawElements(GL_TRIANGLES, static_cast<GLsizei>(mesh->GetIndexCount()), GL_UNSIGNED_INT, nullptr);
-        }
     }
 
     void RendererOpenGL::RendererOpenGLImpl::BeginFrame() const
@@ -580,31 +378,6 @@ namespace Andromeda::Rendering
         }
     }
 
-    void RendererOpenGL::RendererOpenGLImpl::PopulateLightUniforms(
-        ShaderOpenGL& shader, 
-        const std::unordered_map<int, const IDirectionalLight*>& directionalLights
-    ) const
-    {
-        std::vector<glm::vec3> lightDirections;
-        std::vector<glm::vec3> lightAmbientValues;
-        std::vector<glm::vec3> lightDiffuseValues;
-        std::vector<glm::vec3> lightSpecularValues;
-
-        for (const auto& [id, directionalLight] : directionalLights)
-        {
-            lightDirections.push_back(MathUtils::ToGLM(directionalLight->GetDirection()));
-            lightAmbientValues.push_back(glm::vec3(0.9f));
-            lightDiffuseValues.push_back(MathUtils::ToGLM(directionalLight->GetDiffuse()));
-            lightSpecularValues.push_back(MathUtils::ToGLM(directionalLight->GetSpecular()));
-        }
-
-        shader.SetUniform("u_numDirLights", static_cast<int>(lightDirections.size()));
-        shader.SetUniform("u_dirLightDirections", lightDirections);
-        shader.SetUniform("u_dirLightAmbient", lightAmbientValues);
-        shader.SetUniform("u_dirLightDiffuse", lightDiffuseValues);
-        shader.SetUniform("u_dirLightSpecular", lightSpecularValues);
-    }
-
     void RendererOpenGL::RendererOpenGLImpl::RenderEachNonLuminousObject(
         ShaderOpenGL& shader, 
         const std::unordered_map<int, IGeometricObject*>& objects
@@ -676,8 +449,20 @@ namespace Andromeda::Rendering
 
         if (hasDir)
         {
-            m_shadowMapLightSpace = ComputeLightSpaceMatrix(scene.GetDirectionalLights(), scene.GetSceneCenter());
-            ShadowMapDepthPass(scene.GetObjects());
+            m_shadowMapLightSpace = ShadowRendererOpenGL::ComputeLightSpaceMatrix(
+                scene.GetDirectionalLights(),
+                scene.GetSceneCenter()
+            );
+
+            ShadowRendererOpenGL::RenderDirectionalShadowMap(
+                scene.GetObjects(),
+                m_directionalShadowFBO,
+                m_directionalShadowResolution,
+                m_shadowMapLightSpace,
+                *m_pShaderManager,
+                m_meshCache,
+                m_faceCullingControlOpenGL
+            );
         }
 
         if (hasPoint)
@@ -686,7 +471,18 @@ namespace Andromeda::Rendering
             const glm::vec3 lightPos = MathUtils::ToGLM(pl->GetPosition());
             const float nearPlane = pl->GetShadowNearPlane();
             const float farPlane = pl->GetShadowFarPlane();
-            ShadowCubeDepthPass(scene.GetObjects(), lightPos, nearPlane, farPlane);
+
+            ShadowRendererOpenGL::RenderPointShadowCube(
+                scene.GetObjects(),
+                m_pointShadowFBO,
+                m_shadowCubeResolution,
+                lightPos,
+                nearPlane,
+                farPlane,
+                *m_pShaderManager,
+                m_meshCache,
+                m_faceCullingControlOpenGL
+            );
         }
 
         RenderNonLuminousObjectsCombined(scene, rCamera, hasDir, hasPoint);
@@ -698,30 +494,5 @@ namespace Andromeda::Rendering
     void RendererOpenGL::RendererOpenGLImpl::SetBackgroundColor(const glm::vec4& backgroundColor)
     {
         glClearColor(backgroundColor.r, backgroundColor.g, backgroundColor.b, backgroundColor.a);
-    }
-
-    glm::mat4 RendererOpenGL::RendererOpenGLImpl::ComputeLightSpaceMatrix(
-        const std::unordered_map<int, const IDirectionalLight*>& directionalLights,
-        const Math::Vec3& sceneCenter
-    ) const
-    {
-        const IDirectionalLight* light = directionalLights.begin()->second;
-
-        glm::vec3 lightDirection = MathUtils::ToGLM(light->GetDirection());
-
-        glm::vec3 up(0.0f, 1.0f, 0.0f);
-        glm::vec3 lightPos = MathUtils::ToGLM(sceneCenter) - lightDirection * 20.0f;
-
-        glm::mat4 lightView = glm::lookAt(lightPos, MathUtils::ToGLM(sceneCenter), up);
-        glm::mat4 lightProj = glm::ortho(
-            -light->GetLightOrthographicHalfSize(),
-            light->GetLightOrthographicHalfSize(),
-            -light->GetLightOrthographicHalfSize(),
-            light->GetLightOrthographicHalfSize(),
-            light->GetLightNearPlane(),
-            light->GetLightFarPlane()
-        );
-
-        return lightProj * lightView;
     }
 }
