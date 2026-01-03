@@ -30,13 +30,14 @@ namespace Andromeda::Rendering
         RendererOpenGLImpl(RendererOpenGLImpl&& other) noexcept = delete;
         RendererOpenGLImpl& operator=(RendererOpenGLImpl&& other) noexcept = delete;
 
+        // Getters
         bool IsInitialized() const;
         bool IsGridVisible() const;
         unsigned int GetFrameBufferObject() const;
-        unsigned int GetFrameBufferTexture() const;
         unsigned int GetDepthRenderBuffer() const;
         unsigned int GetShadowMap() const;
         unsigned int GetPointShadowCube() const;
+        void* GetFrameTextureHandle() const;
 
         void Init(int width, int height, bool illuminationMode = false);
         void DeInit();

@@ -20,7 +20,10 @@ namespace Andromeda
 	public:
 		virtual ~IRenderer() = default;
 
+		// Getters
 		virtual bool IsInitialized() const = 0;
+		virtual void* GetFrameTextureHandle() const = 0;
+
 		virtual void Init(int width, int height, bool illuminationMode = false) = 0;
 		virtual void DeInit() = 0;
 		virtual void RenderFrame(IScene& scene) = 0;

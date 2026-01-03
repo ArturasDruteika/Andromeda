@@ -29,11 +29,6 @@ namespace Andromeda::Rendering
 		return m_pRendererOpenGLImpl->IsIlluminationMode();
 	}
 
-	unsigned int RendererOpenGL::GetFrameBufferTexture() const
-	{
-		return m_pRendererOpenGLImpl->GetFrameBufferTexture();
-	}
-
 	int RendererOpenGL::GetWidth() const
 	{
 		return m_pRendererOpenGLImpl->GetWidth();
@@ -42,6 +37,11 @@ namespace Andromeda::Rendering
 	int RendererOpenGL::GetHeight() const
 	{
 		return m_pRendererOpenGLImpl->GetHeight();
+	}
+
+	void* RendererOpenGL::GetFrameTextureHandle() const
+	{
+		return m_pRendererOpenGLImpl->GetFrameTextureHandle();
 	}
 
 	void RendererOpenGL::SetGridVisible(bool visible)

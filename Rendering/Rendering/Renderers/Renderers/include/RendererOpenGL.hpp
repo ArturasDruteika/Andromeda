@@ -26,9 +26,9 @@ namespace Andromeda::Rendering
 		bool IsInitialized() const override;
 		bool IsGridVisible() const override;
 		bool IsIlluminationMode() const override;
-		unsigned int GetFrameBufferTexture() const override;
 		int GetWidth() const override;
 		int GetHeight() const override;
+		void* GetFrameTextureHandle() const override;
 		// Setters
 		void SetGridVisible(bool visible) override;
 		void SetIlluminationMode(bool mode) override;
