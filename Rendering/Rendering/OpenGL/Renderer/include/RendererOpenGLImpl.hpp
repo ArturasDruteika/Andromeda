@@ -74,21 +74,14 @@ namespace Andromeda::Rendering
         bool m_isInitialized;
         int m_directionalShadowResolution;
         int m_shadowCubeResolution;
-
         glm::mat4 m_shadowMapLightSpace;
-
         FrameBufferOpenGL m_mainFBO;
         FrameBufferOpenGL m_directionalShadowFBO;
         FrameBufferOpenGL m_pointShadowFBO;
-
         FaceCullingControlOpenGL m_faceCullingControlOpenGL;
         MeshCacheOpenGL m_meshCache;
-
         ShaderManager* m_pShaderManager;
-
         VertexLayout m_defaultVertexLayout;
-        std::unordered_map<int, GpuMeshOpenGL> m_gpuMeshes;
-
         mutable std::chrono::steady_clock::time_point m_lastFrameTime = std::chrono::steady_clock::now();
     };
 }

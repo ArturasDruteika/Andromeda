@@ -28,6 +28,11 @@ set(NLOHMANN_HEADERS
     Utils/nlohmann_json/include/json.hpp
 )
 
+# ==== stb ====
+set(STB_HEADERS
+    Utils/stb/include/stb_easy_font.h
+)
+
 
 # Create a library target
 add_library(${PROJECT_NAME} 
@@ -35,6 +40,7 @@ add_library(${PROJECT_NAME}
         ${FILE_OPERATIONS_HEADERS}
         ${FILE_OPERATIONS_SOURCES}
         ${NLOHMANN_HEADERS}
+        ${STB_HEADERS}
 )
 
 target_include_directories(${PROJECT_NAME} 
@@ -69,4 +75,13 @@ source_group(
         "nlohmann_json"
     FILES
         ${NLOHMANN_HEADERS}
+)
+
+source_group(
+    TREE 
+        ${CMAKE_CURRENT_SOURCE_DIR}/${PROJECT_NAME}/stb
+    PREFIX
+        "stb"
+    FILES
+        ${STB_HEADERS}
 )

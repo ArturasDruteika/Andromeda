@@ -32,7 +32,6 @@ namespace Andromeda::Rendering
         , m_directionalShadowFBO{}
         , m_pointShadowFBO{}
         , m_pShaderManager{ nullptr }
-        , m_gpuMeshes{}
     {
         m_pShaderManager = new ShaderManager(true);
         m_defaultVertexLayout = VertexLayout(
@@ -98,7 +97,7 @@ namespace Andromeda::Rendering
 
     void RendererOpenGL::RendererOpenGLImpl::DeInit()
     {
-        m_gpuMeshes.clear();
+        m_meshCache.Clear();
 
         delete m_pShaderManager;
         m_pShaderManager = nullptr;
