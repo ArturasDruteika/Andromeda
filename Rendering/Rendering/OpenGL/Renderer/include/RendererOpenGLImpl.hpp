@@ -5,7 +5,9 @@
 #include "../../Geometry/include/GpuMeshOpenGL.hpp"
 #include "../../Support/include/FaceCullingControlOpenGL.hpp"
 #include "../../Support/include/FrameBufferOpenGL.hpp"
+#include "../../Support/include/FPSCounter.hpp"
 #include "../../Support/include/MeshCacheOpenGL.hpp"
+#include "../../Support/include/TextRendererOpenGL.hpp"
 #include "../../../Renderers/Renderers/include/RendererOpenGL.hpp"
 #include "../../../Renderers/Abstracts/include/GridControl.hpp"
 #include "../../../Renderers/Abstracts/include/IlluminationControl.hpp"
@@ -57,7 +59,7 @@ namespace Andromeda::Rendering
         void RenderGrid(const GpuMeshOpenGL& mesh) const;
         void BeginFrame() const;
         void EndFrame() const;
-        void LogFPS() const;
+        void LogFPS();
         void PrepareFramebufferForNonLuminousPass() const;
         void BindShadowMap(int textureUnit) const;
         void RenderGridIfVisible(const IScene& scene) const;
@@ -82,6 +84,8 @@ namespace Andromeda::Rendering
         MeshCacheOpenGL m_meshCache;
         ShaderManager* m_pShaderManager;
         VertexLayout m_defaultVertexLayout;
+        TextRendererOpenGL m_textRenderer;
+        FpsCounter m_fpsCounter;
         mutable std::chrono::steady_clock::time_point m_lastFrameTime = std::chrono::steady_clock::now();
     };
 }

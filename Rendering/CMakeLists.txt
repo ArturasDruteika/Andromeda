@@ -33,8 +33,10 @@ set(OPENGL_HEADERS
     Rendering/OpenGL/Renderer/include/RendererOpenGLImpl.hpp
     Rendering/OpenGL/Support/include/FaceCullingControlOpenGL.hpp
     Rendering/OpenGL/Support/include/FrameBufferOpenGL.hpp
+    Rendering/OpenGL/Support/include/FPSCounter.hpp
     Rendering/OpenGL/Support/include/MeshCacheOpenGL.hpp
     Rendering/OpenGL/Support/include/ShadowRendererOpenGL.hpp
+    Rendering/OpenGL/Support/include/TextRendererOpenGL.hpp
     Rendering/OpenGL/Vertices/include/VertexLayoutOpenGL.hpp
 )
 
@@ -43,8 +45,10 @@ set(OPENGL_SOURCES
     Rendering/OpenGL/Renderer/src/RendererOpenGLImpl.cpp
     Rendering/OpenGL/Support/src/FaceCullingControlOpenGL.cpp
     Rendering/OpenGL/Support/src/FrameBufferOpenGL.cpp
+    Rendering/OpenGL/Support/src/FPSCounter.cpp
     Rendering/OpenGL/Support/src/MeshCacheOpenGL.cpp
     Rendering/OpenGL/Support/src/ShadowRendererOpenGL.cpp
+    Rendering/OpenGL/Support/src/TextRendererOpenGL.cpp
     Rendering/OpenGL/Vertices/src/VertexLayoutOpenGL.cpp
 )
 
@@ -174,6 +178,7 @@ set(SHADER_FILES
     "fragment_depth_only.glsl"
     "fragment_point_shadow.glsl"
     "geometry_point_shadow.glsl"
+    "vertex_text.glsl"
 )
 
 # Create full source paths

@@ -16,6 +16,7 @@ namespace Andromeda::Rendering
 		ShadowMapTest,
 		PointShadowCubeMap,
 		Grid,
+		Text
 	};
 
 	struct ShaderDefinition

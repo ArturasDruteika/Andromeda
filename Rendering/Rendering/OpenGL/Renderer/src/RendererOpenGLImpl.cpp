@@ -92,6 +92,8 @@ namespace Andromeda::Rendering
         }
 
         ConfigurePointShadowDepthTexture();
+        m_textRenderer.Init();
+
         m_isInitialized = true;
     }
 
@@ -134,7 +136,7 @@ namespace Andromeda::Rendering
         }
 
         EndFrame();
-        LogFPS();
+		LogFPS();
     }
 
     void RendererOpenGL::RendererOpenGLImpl::RenderNonLuminousObjectsCombined(const IScene& scene, const ICamera& rCamera, bool hasDir, bool hasPoint) const
@@ -303,16 +305,69 @@ namespace Andromeda::Rendering
         glBindFramebuffer(GL_FRAMEBUFFER, 0);
     }
 
-    void RendererOpenGL::RendererOpenGLImpl::LogFPS() const
+    void RendererOpenGL::RendererOpenGLImpl::LogFPS()
     {
-        std::chrono::steady_clock::time_point now = std::chrono::steady_clock::now();
-        float duration = std::chrono::duration<float>(now - m_lastFrameTime).count();
-        m_lastFrameTime = now;
+        // Update FPS counter
+        m_fpsCounter.FrameTick();
+        float fps = m_fpsCounter.GetSmoothedFps();
 
-        if (duration > 0.0f)
+        ShaderOpenGL* textShader = m_pShaderManager->GetShader(ShaderOpenGLTypes::Text);
+        if (!textShader)
         {
-            float fps = 1.0f / duration;
-            spdlog::info("FPS: {:.2f}", fps);
+            spdlog::error("Text shader is null (ShaderOpenGLTypes::Text).");
+            return;
+        }
+
+        if (!m_textRenderer.IsValid())
+        {
+            spdlog::error("TextRendererOpenGL is not valid (VAO/VBO not created).");
+            return;
+        }
+
+        // Draw directly to default framebuffer
+        glBindFramebuffer(GL_FRAMEBUFFER, 0);
+        glViewport(0, 0, m_width, m_height);
+
+        textShader->Bind();
+
+        // Y-down orthographic projection to match stb_easy_font coordinates
+        glm::mat4 proj = glm::ortho(
+            0.0f,
+            static_cast<float>(m_width),
+            static_cast<float>(m_height),
+            0.0f
+        );
+
+        textShader->SetUniform("u_projection", proj);
+        textShader->SetUniform("u_color", glm::vec4(1.0f, 1.0f, 1.0f, 1.0f)); // white
+
+        GLboolean depthWasEnabled = glIsEnabled(GL_DEPTH_TEST);
+        GLboolean cullWasEnabled = glIsEnabled(GL_CULL_FACE);
+
+        glDisable(GL_DEPTH_TEST);
+        glDisable(GL_CULL_FACE);
+
+        // Compose FPS text
+        const std::string fpsText = "FPS: " + std::to_string(static_cast<int>(fps));
+
+        // Top-left-ish corner, in pixels
+        m_textRenderer.RenderText(fpsText, 10.0f, 20.0f, 2.0f);
+
+        if (depthWasEnabled)
+        {
+            glEnable(GL_DEPTH_TEST);
+        }
+        if (cullWasEnabled)
+        {
+            glEnable(GL_CULL_FACE);
+        }
+
+        textShader->UnBind();
+
+        GLenum err = glGetError();
+        if (err != GL_NO_ERROR)
+        {
+            spdlog::error("OpenGL error after RenderText: {}", err);
         }
     }
 
