@@ -1,15 +1,10 @@
 #include "../include/RendererOpenGLImpl.hpp"
 #include "../../Support/include/ShadowRendererOpenGL.hpp"
-
-// If you use grid ID via SpecialIndices, include it here
-//#include "../../../Scene/Support/include/SpecialIndices.hpp"
-
 #include "../../../Utils/include/MathUtils.hpp"
 #include "../../../Shaders/Shaders/include/ShaderOpenGL.hpp"
 #include "../../../Shaders/Support/include/ShaderOpenGLTypes.hpp"
 #include "Andromeda/Space/Objects/ILightObject.hpp"
 #include "Andromeda/Space/Objects/ISurfaceObject.hpp"
-#include "Andromeda/Space/Light/ILight.hpp"
 #include "Andromeda/Space/Materials/IMaterial.hpp"
 #include "pch.hpp"
 
@@ -17,7 +12,6 @@
 #include "glm/glm.hpp"
 #include "glm/gtc/matrix_transform.hpp"
 #include "glm/gtc/matrix_inverse.hpp"
-
 #include "spdlog/spdlog.h"
 
 

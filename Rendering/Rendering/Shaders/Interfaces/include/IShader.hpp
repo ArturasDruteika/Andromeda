@@ -2,9 +2,6 @@
 #define RENDERER__I_SHADER__HPP
 
 
-#include "pch.hpp"
-
-
 namespace Andromeda::Rendering
 {
 	class IShader

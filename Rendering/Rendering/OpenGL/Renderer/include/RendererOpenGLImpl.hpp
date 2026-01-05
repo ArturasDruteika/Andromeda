@@ -14,12 +14,8 @@
 #include "../../../Renderers/Abstracts/include/SizeControl.hpp"
 #include "../../../Shaders/Shaders/include/ShaderManager.hpp"
 #include "../../../Vertices/include/VertexLayouts.hpp"
+#include "pch.hpp"
 
-#include "glad/gl.h"
-#include "glm/glm.hpp"
-
-#include <chrono>
-#include <unordered_map>
 
 namespace Andromeda::Rendering
 {

@@ -2,7 +2,7 @@
 #define RENDERER__GRID_CONTROL__HPP
 
 
-#include "Andromeda/Space/Colors//Colors.hpp"
+#include "Andromeda/Space/Colors/Colors.hpp"
 
 
 namespace Andromeda::Rendering

@@ -5,14 +5,11 @@
 #include "FrameBufferOpenGL.hpp"
 #include "FaceCullingControlOpenGL.hpp"
 #include "../../../Shaders/Shaders/include/ShaderManager.hpp"
-#include "../../Geometry/include/GpuMeshOpenGL.hpp"
 #include "../../Support/include/MeshCacheOpenGL.hpp"
 #include "Andromeda/Space/Light/IDirectionalLight.hpp"
 #include "Andromeda/Space/Light/IPointLight.hpp"
 #include "Andromeda/Space/Objects/IGeometricObject.hpp"
 #include "pch.hpp"
-
-#include "glm/glm.hpp"
 
 
 namespace Andromeda::Rendering

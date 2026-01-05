@@ -2,9 +2,8 @@
 #define RENDERING__OPENGL__SUPPORT__TEXT_RENDERER_OPENGL__HPP
 
 
+#include "pch.hpp"
 #include "glad/gl.h"
-
-#include <string>
 
 
 namespace Andromeda::Rendering

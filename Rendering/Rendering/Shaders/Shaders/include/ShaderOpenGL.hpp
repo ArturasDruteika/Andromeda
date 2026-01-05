@@ -7,6 +7,7 @@
 #include "../../Support/include/UniformSetterOpenGL.hpp"
 #include "../../Interfaces/include/IShader.hpp"
 
+
 namespace Andromeda::Rendering
 {
 	class ShaderOpenGL

@@ -5,7 +5,6 @@
 #include "../../../MacroExports/include/MacroExports.hpp"
 #include "Andromeda/Renderer/IRenderer.hpp"
 #include "Andromeda/Space/Scene/IScene.hpp"
-#include "Andromeda/Space/Camera/ICamera.hpp"
 #include "pch.hpp"
 
 

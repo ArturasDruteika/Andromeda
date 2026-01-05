@@ -2,9 +2,9 @@
 #define RENDERER__SHADER_MANAGER__HPP
 
 
-#include "pch.hpp"
-#include "../../Support/include/ShaderOpenGLTypes.hpp"
 #include "ShaderOpenGL.hpp"
+#include "../../Support/include/ShaderOpenGLTypes.hpp"
+#include "pch.hpp"
 
 
 namespace Andromeda::Rendering
