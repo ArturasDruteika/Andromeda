@@ -1,137 +1,143 @@
-#include "Application.hpp"
-#include "LinearAlgebraDataTypes.hpp"
-#include "SphereObjectOpenGL.hpp"
-#include "SkyroomOpenGL.hpp"
-#include "CubeObjectOpenGL.hpp"
-#include "Constants.hpp"
-#include "DirectionalLight.hpp"
-#include "PointLight.hpp"
-#include "LuminousBehavior.hpp"
-#include "NonLuminousBehavior.hpp"
-#include "MaterialsLibrary.hpp"
-#include "Materials.hpp"
-#include "MaterialTypes.hpp"
-#include "glm/glm.hpp"
+#include "Andromeda/Application/IApplication.hpp"
+#include "Space/Objects/include/Sphere.hpp"
+#include "Space/Objects/include/Cube.hpp"
+#include "Space/Scene/include/Scene.hpp"
+#include "Space/Camera/include/Camera.hpp"
+#include "Space/Materials/include/MaterialsLibrary.hpp"
+#include "Space/Light/include/DirectionalLight.hpp"
+
+#include "spdlog/spdlog.h"
+
+#include <random>
+
+
+void PopulateSceneWithDummyObjects(
+	Andromeda::Space::Scene& scene,
+	const Andromeda::Space::MaterialLibrary& materialLibrary
+)
+{
+	// Precompute available material types for random selection
+	std::vector<Andromeda::Space::MaterialType> materialTypes = materialLibrary.GetAllMaterialTypes();
+	if (materialTypes.empty())
+	{
+		spdlog::warn("PopulateSceneWithDummyObjects - MaterialLibrary is empty; spheres will have no materials set.");
+	}
+
+	std::mt19937 rng(1337);
+	std::uniform_real_distribution<float> dist(-100.0f, 100.0f);
+	std::uniform_real_distribution<float> colorDist(0.1f, 0.9f);
+
+	std::uniform_int_distribution<size_t> materialDist(
+		0,
+		materialTypes.empty() ? 0 : materialTypes.size() - 1
+	);
+
+	// Sun
+	Andromeda::Space::DirectionalLight* pSun = new Andromeda::Space::DirectionalLight(
+		Andromeda::Math::Vec3{ 10.0f, 10.0f, 10.0f },
+		Andromeda::Math::Vec3{ 1.0f, 1.0f, 1.0f },
+		1.0f
+	);
+
+	scene.AddLightObject(0, pSun);
+
+
+	Andromeda::Space::Sphere* pCenterSphere = new Andromeda::Space::Sphere(
+		0.1f,
+		Andromeda::Math::Vec3{ 0.0f, 0.0f, 0.0f },
+		Andromeda::Color{ 0.8f, 0.2f, 0.2f, 1.0f }
+	);
+	scene.AddObject(1, pCenterSphere);
+
+	if (!materialTypes.empty())
+	{
+		Andromeda::Space::MaterialType sphereCenterMatType = materialTypes[materialDist(rng)];
+		const Andromeda::IMaterial* pSphereCenterMat =
+			materialLibrary.GetMaterialPtr(sphereCenterMatType);
+		if (pSphereCenterMat)
+		{
+			pCenterSphere->SetMaterial(pSphereCenterMat);
+		}
+	}
+
+	const int kSphereCount = 1000;
+
+	for (int i = 2; i < kSphereCount; ++i)
+	{
+		Andromeda::Math::Vec3 pos{
+			dist(rng),
+			dist(rng),
+			dist(rng)
+		};
+
+		Andromeda::Color color{
+			colorDist(rng),
+			colorDist(rng),
+			colorDist(rng),
+			1.0f
+		};
+
+		Andromeda::Space::Sphere* pSphere = new Andromeda::Space::Sphere(
+			1.0f,
+			pos,
+			color
+		);
+
+		// Assign random material
+		if (!materialTypes.empty())
+		{
+			Andromeda::Space::MaterialType matType = materialTypes[materialDist(rng)];
+			const Andromeda::IMaterial* pMat =
+				materialLibrary.GetMaterialPtr(matType);
+			if (pMat)
+			{
+				pSphere->SetMaterial(pMat);
+			}
+		}
+
+		scene.AddObject(i, pSphere);
+	}
+}
 
 
 int main(void)
 {
-    Andromeda::EngineCore::Application app;
-    app.Init();
+	unsigned int width = 800;
+	unsigned int height = 600;
+	std::string title = "Andromeda";
 
-    Andromeda::Rendering::MaterialLibrary materialsLib("material_properties/material_properties.json");
-
-    float cubeHalfExtent = 0.5f;
-    float spacing = 1.05f;
-    int pyramidHeight = 10;
-
-    int objectId = 0;
-
-    // Collect available materials
-    std::vector<Andromeda::Rendering::MaterialType> materialTypes;
-    for (int i = 0; i < static_cast<int>(Andromeda::Rendering::MaterialType::Count); ++i)
-    {
-        Andromeda::Rendering::MaterialType type = static_cast<Andromeda::Rendering::MaterialType>(i);
-        if (type != Andromeda::Rendering::MaterialType::None && materialsLib.Has(type))
-        {
-            materialTypes.push_back(type);
-        }
-    }
-
-    size_t numMaterials = materialTypes.size();
-    if (numMaterials == 0)
-    {
-        std::cerr << "No materials found in material library. Aborting." << std::endl;
-        return -1;
-    }
-
-    // Build material-based pyramid
-    for (int level = 0; level < pyramidHeight; ++level)
-    {
-        int width = pyramidHeight - level;
-        float y = level * spacing;
-
-        for (int row = 0; row < width; ++row)
-        {
-            for (int col = 0; col < width; ++col)
-            {
-                float x = (col - width / 2.0f + 0.5f) * spacing;
-                float z = (row - width / 2.0f + 0.5f) * spacing;
-                Andromeda::Math::Vec3 pos(x, y, z);
-
-                // Select material in cyclic order
-                Andromeda::Rendering::MaterialType materialType = materialTypes[objectId % numMaterials];
-                Andromeda::Rendering::Material material = materialsLib.GetMaterial(materialType);
-
-                Andromeda::Space::Color color(
-                    material.GetDiffuse()[0],
-                    material.GetDiffuse()[1],
-                    material.GetDiffuse()[2],
-                    1.0f
-                );
-
-                Andromeda::Rendering::CubeObjectOpenGL* pCube = new Andromeda::Rendering::CubeObjectOpenGL(pos, cubeHalfExtent, color);
-                Andromeda::Rendering::NonLuminousBehavior* nlBehavior = new Andromeda::Rendering::NonLuminousBehavior(material);
-                pCube->SetLuminousBehavior(nlBehavior); // if your class supports material application
-                app.AddToScene(objectId++, pCube);
-            }
-        }
-    }
-
-    // Light source sphere
-    float sphereRadius = 0.7f;
-    Andromeda::Math::Vec3 spherePosition(10.0f, 5.0f, -5.0f);
-    Andromeda::Space::Color sphereColor(1.0f, 1.0f, 1.0f, 1.0f);
-
-    Andromeda::Rendering::PointLight* pPointLight = new Andromeda::Rendering::PointLight(
-        glm::vec3(spherePosition[0], spherePosition[1], spherePosition[2]),                 // position
-        glm::vec3(sphereColor.r, sphereColor.g, sphereColor.b),                    // color
-        1.0f,                           // intensity
-        glm::vec3(1.0f, 1.0f, 1.0f),    // ambient
-        glm::vec3(1.0f, 1.0f, 1.0f),    // diffuse
-        glm::vec3(1.0f, 1.0f, 1.0f),    // specular
-        1.0f,                           // k_c (constant attenuation)
-        0.0f,                           // k_l (linear attenuation)
-        0.0f,                           // k_q (quadratic attenuation)
-        0.1f,                           // near (shadow z range)
-        1000.0f                         // far (shadow z range)
-    );
-
-    Andromeda::Rendering::SphereObjectOpenGL* pSphere = new Andromeda::Rendering::SphereObjectOpenGL(
-        spherePosition,
-        sphereRadius,
-        sphereColor
-    );
-    pSphere->SetLuminousBehavior(pPointLight);
-
-	glm::vec3 directionalLightDirection(2.0f, -1.0f, -4.0f);
-    Andromeda::Rendering::DirectionalLight* pDirectionalLight = new Andromeda::Rendering::DirectionalLight(
-        directionalLightDirection,
-        glm::vec3(1.0f, 1.0f, 1.0f), // Color
-        1.0f, // Intensity
-        glm::vec3(0.1f), // Ambient
-        glm::vec3(0.4f, 0.4f, 0.4f), // Diffuse
-        glm::vec3(0.4f, 0.4f, 0.4f) // Specular
+	// Load materials once and reuse
+	// Adjust the path to your actual JSON file location
+	Andromeda::Space::MaterialLibrary materialLibrary(
+		std::filesystem::path("material_properties/material_properties.json")
 	);
 
-    Andromeda::Rendering::MaterialType materialType = materialTypes[5];
-    Andromeda::Rendering::Material material = materialsLib.GetMaterial(materialType);
+	if (materialLibrary.GetSize() == 0)
+	{
+		spdlog::warn("No materials loaded from assets/materials.json; spheres will fall back to having no materials.");
+	}
 
-    Andromeda::Rendering::SkyroomOpenGL* pSkyroom = new Andromeda::Rendering::SkyroomOpenGL(
-        Andromeda::Math::Vec3(0.0f, 0.0f, 0.0f),
-        50.0f,
-        Andromeda::Space::Color(0.5f, 0.7f, 0.9f, 1.0f) // Light blue
+	Andromeda::Space::Scene* pScene = new Andromeda::Space::Scene();
+	Andromeda::Space::Camera* pCamera = new Andromeda::Space::Camera(
+		Andromeda::Math::Vec3{ 0.0f, 0.0f, 10.0f }
 	);
+	pScene->SetActiveCamera(pCamera);
+	pScene->SetBackgroundColor(Andromeda::Math::Vec4{ 0.0f, 0.0f, 0.0f, 1.0f });
 
-    Andromeda::Rendering::NonLuminousBehavior* nlBehavior = new Andromeda::Rendering::NonLuminousBehavior(material);
-	pSkyroom->SetLuminousBehavior(nlBehavior);
+	PopulateSceneWithDummyObjects(*pScene, materialLibrary);
 
-    app.AddToScene(objectId++, pDirectionalLight);
-    app.AddToScene(objectId++, pSphere);
-    app.AddToScene(objectId++, pSkyroom);
+	std::unique_ptr<Andromeda::IApplication> pApp =
+		Andromeda::CreateApp(Andromeda::GraphicsBackend::OpenGL);
+	if (!pApp->Init(width, height, title))
+	{
+		spdlog::error("Failed to initialize Application.");
+		return -1;
+	}
 
-    app.RunMainLoop();
-    app.DeInit();
+	pApp->SetScene(pScene);
+	Andromeda::IRenderer* pRenderer = pApp->GetRenderer();
+	pRenderer->SetIlluminationMode(true);
+	pApp->Run();
 
-    return 0;
+	return 0;
 }

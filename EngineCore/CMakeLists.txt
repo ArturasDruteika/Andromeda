@@ -8,13 +8,6 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 add_definitions(-DENGINECORE_EXPORT)
 
-# OpenGL
-find_package(OpenGL REQUIRED)
-if (APPLE)
-    # Ignore macOS OpenGL deprecation warnings
-    target_compile_definitions(${PROJECT_NAME} PRIVATE GL_SILENCE_DEPRECATION)
-endif ()
-
 # SPDLog
 file(TO_CMAKE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/../../3rdParty/spdlog/ spdlog_root_path)
 file(TO_CMAKE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/../../3rdParty/spdlog/lib/cmake/spdlog/ spdlog_path)
@@ -22,95 +15,58 @@ set(spdlog_DIR ${spdlog_path})
 find_package(spdlog REQUIRED)
 
 
-# ==== Application ====
-set(APPLICATION_HEADERS
-    Application/include/Application.hpp
-    Application/include/ApplicationImpl.hpp
-    Application/include/CameraInputMapper.hpp
+# ==== Engine ====
+set(ENGINE_HEADERS
+    EngineCore/Engine/include/Engine.hpp
 )
 
-set(APPLICATION_SOURCES
-    Application/src/Application.cpp
-    Application/src/ApplicationImpl.cpp
-    Application/src/CameraInputMapper.cpp
+set(ENGINE_SOURCES
+    EngineCore/Engine/src/Engine.cpp
 )
 
 # ==== Macro Exports ====
 set(MACRO_EXPORTS_HEADERS
-    MacroExports/include/MacroExports.hpp
+    EngineCore/MacroExports/include/MacroExports.hpp
 )
-
-# ==== RenderingWindows ====
-set(RENDERING_WINDOWS_HEADERS
-    RenderingWindows/include/GraphicalModalWindow.hpp
-    RenderingWindows/include/ImGuiDockspaceManager.hpp
-    RenderingWindows/include/RendererWindowOpenGL.hpp
-)
-
-set(RENDERING_WINDOWS_SOURCES
-    RenderingWindows/src/GraphicalModalWindow.cpp
-    RenderingWindows/src/ImGuiDockspaceManager.cpp
-    RenderingWindows/src/RendererWindowOpenGL.cpp
-)
-
 
 # ==== Target ====
 add_library(${PROJECT_NAME}
     SHARED
         ${APPLICATION_HEADERS}
         ${APPLICATION_SOURCES}
+        ${ENGINE_HEADERS}
+        ${ENGINE_SOURCES}
         ${MACRO_EXPORTS_HEADERS}
-        ${RENDERING_WINDOWS_HEADERS}
-        ${RENDERING_WINDOWS_SOURCES}
 )
 
-# Include dirs (alphabetical)
-target_include_directories(${PROJECT_NAME}
-    PRIVATE
-        ../Context/GLFWContext/include/
-        ../Math/Constants/include/
-        ../Math/Trigonometry/include/
-        ../Rendering/Attributes/include/
-        ../Rendering/Camera/Cameras/include/
-        ../Rendering/Light/LightTypes/include/
-        ../Rendering/OpenGLLoader/include/
-        ../Rendering/RenderableObjects/Interfaces/include/
-        ../Rendering/Renderers/Renderers/include/
-        ../Rendering/Scene/Interfaces/include/
-        ../Rendering/Scene/Scenes/include/
-        ../Rendering/Vertices/include/
-        ../Window/GLFWWindow/include/
-        ../glfw/
-        ../glfw/include/
-        ../imgui/imgui/
-        ../imgui/imgui/backends/
+target_include_directories(${PROJECT_NAME} 
+    PUBLIC
+        ${CMAKE_CURRENT_SOURCE_DIR}/
+)
+
+target_compile_definitions(${PROJECT_NAME}
+    PRIVATE 
+        ANDROMEDA_API_BUILD
 )
 
 # Link libraries (alphabetical)
 target_link_libraries(${PROJECT_NAME}
     PRIVATE
+        Rendering
+        spdlog::spdlog
+    PUBLIC
         PrecompiledHeaders
         Math
-        Context
-        ExternalGraphicsLibs
-        OpenGL::GL
-        Rendering
-        Window
-        glfw
-        imgui
-        spdlog::spdlog
+        Api
+
 )
 
 # Explicit build ordering (alphabetical)
 add_dependencies(${PROJECT_NAME}
-    Context
-    ExternalGraphicsLibs
     Math
     Rendering
     Utils
     Window
-    glfw
-    imgui
 )
 
 
@@ -148,29 +104,19 @@ endif()
 # ==== IDE Organization ====
 source_group(
     TREE
-        ${CMAKE_CURRENT_SOURCE_DIR}/Application
+        ${CMAKE_CURRENT_SOURCE_DIR}/${PROJECT_NAME}/Engine
     PREFIX
-        "Application"
+        "Engine"
     FILES
-        ${APPLICATION_HEADERS}
-        ${APPLICATION_SOURCES}
+        ${ENGINE_HEADERS}
+        ${ENGINE_SOURCES}
 )
 
 source_group(
     TREE
-        ${CMAKE_CURRENT_SOURCE_DIR}/MacroExports
+        ${CMAKE_CURRENT_SOURCE_DIR}/${PROJECT_NAME}/MacroExports
     PREFIX
         "MacroExports"
     FILES
         ${MACRO_EXPORTS_HEADERS}
-)
-
-source_group(
-    TREE
-        ${CMAKE_CURRENT_SOURCE_DIR}/RenderingWindows
-    PREFIX
-        "RenderingWindows"
-    FILES
-        ${RENDERING_WINDOWS_HEADERS}
-        ${RENDERING_WINDOWS_SOURCES}
 )

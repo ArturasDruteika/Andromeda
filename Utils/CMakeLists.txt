@@ -14,12 +14,38 @@ set(spdlog_DIR ${spdlog_path})
 find_package(spdlog REQUIRED)
 
 
+# ==== FileOperations ====
+set(FILE_OPERATIONS_HEADERS
+    Utils/FileOperations/include/FileOperations.hpp
+)
+
+set(FILE_OPERATIONS_SOURCES
+    Utils/FileOperations/src/FileOperations.cpp
+)
+
+# ==== nlohmann ====
+set(NLOHMANN_HEADERS
+    Utils/nlohmann_json/include/json.hpp
+)
+
+# ==== stb ====
+set(STB_HEADERS
+    Utils/stb/include/stb_easy_font.h
+)
+
+
 # Create a library target
 add_library(${PROJECT_NAME} 
     STATIC
-        FileOperations/include/FileOperations.hpp
-        FileOperations/src/FileOperations.cpp
-        nlohmann_json/include/json.hpp
+        ${FILE_OPERATIONS_HEADERS}
+        ${FILE_OPERATIONS_SOURCES}
+        ${NLOHMANN_HEADERS}
+        ${STB_HEADERS}
+)
+
+target_include_directories(${PROJECT_NAME} 
+    PUBLIC
+        ${CMAKE_CURRENT_SOURCE_DIR}/
 )
 
 set_target_properties(${PROJECT_NAME} PROPERTIES POSITION_INDEPENDENT_CODE ON)
@@ -34,19 +60,28 @@ target_link_libraries(${PROJECT_NAME}
 
 source_group(
     TREE 
-        ${CMAKE_CURRENT_SOURCE_DIR}/FileOperations
+        ${CMAKE_CURRENT_SOURCE_DIR}/${PROJECT_NAME}/FileOperations
     PREFIX
         "FileOperations"
     FILES
-        FileOperations/include/FileOperations.hpp
-        FileOperations/src/FileOperations.cpp
+        ${FILE_OPERATIONS_HEADERS}
+        ${FILE_OPERATIONS_SOURCES}
 )
 
 source_group(
     TREE 
-        ${CMAKE_CURRENT_SOURCE_DIR}/nlohmann_json
+        ${CMAKE_CURRENT_SOURCE_DIR}/${PROJECT_NAME}/nlohmann_json
     PREFIX
         "nlohmann_json"
     FILES
-        nlohmann_json/include/json.hpp
+        ${NLOHMANN_HEADERS}
+)
+
+source_group(
+    TREE 
+        ${CMAKE_CURRENT_SOURCE_DIR}/${PROJECT_NAME}/stb
+    PREFIX
+        "stb"
+    FILES
+        ${STB_HEADERS}
 )
