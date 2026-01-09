@@ -78,8 +78,10 @@ set(RENDERER_HEADERS
 set(SCENE_HEADERS
     Andromeda/Space/Scene/ICameraHandler.hpp
     Andromeda/Space/Scene/IScene.hpp
+    Andromeda/Space/Scene/ISceneComponent.hpp
     Andromeda/Space/Scene/ISceneEnvironment.hpp
     Andromeda/Space/Scene/ISceneLighting.hpp
+    Andromeda/Space/Scene/ISceneNode.hpp
     Andromeda/Space/Scene/ISceneObjects.hpp
     Andromeda/Space/Scene/ISceneState.hpp
 )
