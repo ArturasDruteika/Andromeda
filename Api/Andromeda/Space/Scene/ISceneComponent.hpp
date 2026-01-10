@@ -17,7 +17,7 @@ namespace Andromeda
         virtual void OnAttach(ISceneNode& node) = 0;
 
         // Called right before the component is removed/destroyed or the node is destroyed.
-        virtual void OnDetach(ISceneNode& node) = 0;
+        virtual void OnDetach() = 0;
     };
 }
 
