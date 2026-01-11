@@ -98,8 +98,10 @@ set(OBJECTS_SOURCES
 set(SCENE_HEADERS
     Space/Scene/include/CameraHandler.hpp
     Space/Scene/include/Scene.hpp
+    Space/Scene/include/SceneComponent.hpp
     Space/Scene/include/SceneEnvironment.hpp
     Space/Scene/include/SceneLighting.hpp
+    Space/Scene/include/SceneNode.hpp
     Space/Scene/include/SceneObjects.hpp
     Space/Scene/include/SceneState.hpp
 )
@@ -107,8 +109,10 @@ set(SCENE_HEADERS
 set(SCENE_SOURCES
     Space/Scene/src/CameraHandler.cpp
     Space/Scene/src/Scene.cpp
+    Space/Scene/src/SceneComponent.cpp
     Space/Scene/src/SceneEnvironment.cpp
     Space/Scene/src/SceneLighting.cpp
+    Space/Scene/src/SceneNode.cpp
     Space/Scene/src/SceneObjects.cpp
     Space/Scene/src/SceneState.cpp
 )

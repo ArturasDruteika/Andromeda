@@ -10,33 +10,34 @@
 
 namespace Andromeda::Space
 {
-    class SPACE_API SceneNode : public Andromeda::ISceneNode
+    class SPACE_API SceneNode
+        : public ISceneNode
     {
     public:
         // SceneNode owns its transform implementation.
-        explicit SceneNode(std::unique_ptr<Andromeda::ITransformable> transform);
+        explicit SceneNode(std::unique_ptr<ITransformable> transform);
 
         ~SceneNode() override;
 
         // Transform
-        Andromeda::ITransformable& GetTransform() override;
-        const Andromeda::ITransformable& GetTransform() const override;
+        ITransformable* GetTransform() override;
+        const ITransformable* GetTransform() const override;
 
         // Hierarchy
-        Andromeda::ISceneNode* GetParent() const override;
+        ISceneNode* GetParent() const override;
 
-        void AttachChild(std::unique_ptr<Andromeda::ISceneNode> child) override;
-        std::unique_ptr<Andromeda::ISceneNode> DetachChild(Andromeda::ISceneNode& child) override;
+        void AttachChild(std::unique_ptr<ISceneNode> child) override;
+        std::unique_ptr<ISceneNode> DetachChild(ISceneNode& child) override;
 
-        void ForEachChild(const std::function<void(Andromeda::ISceneNode&)>& fn) override;
-        void ForEachChild(const std::function<void(const Andromeda::ISceneNode&)>& fn) const override;
+        void ForEachChild(const std::function<void(ISceneNode&)>& fn) override;
+        void ForEachChild(const std::function<void(const ISceneNode&)>& fn) const override;
 
         // Components
-        Andromeda::ISceneComponent& AddComponent(std::unique_ptr<Andromeda::ISceneComponent> component) override;
-        bool RemoveComponent(Andromeda::ISceneComponent& component) override;
+        ISceneComponent& AddComponent(std::unique_ptr<ISceneComponent> component) override;
+        bool RemoveComponent(ISceneComponent& component) override;
 
-        void ForEachComponent(const std::function<void(Andromeda::ISceneComponent&)>& fn) override;
-        void ForEachComponent(const std::function<void(const Andromeda::ISceneComponent&)>& fn) const override;
+        void ForEachComponent(const std::function<void(ISceneComponent&)>& fn) override;
+        void ForEachComponent(const std::function<void(const ISceneComponent&)>& fn) const override;
 
     private:
         // Internal helper to keep parent pointer consistent.
@@ -47,11 +48,11 @@ namespace Andromeda::Space
         SceneNode* m_parent = nullptr;
 
         // Owned transform.
-        std::unique_ptr<Andromeda::ITransformable> m_transform;
+        std::unique_ptr<ITransformable> m_transform;
 
         // Owned children and components.
-        std::vector<std::unique_ptr<Andromeda::ISceneNode>> m_children;
-        std::vector<std::unique_ptr<Andromeda::ISceneComponent>> m_components;
+        std::vector<std::unique_ptr<ISceneNode>> m_children;
+        std::vector<std::unique_ptr<ISceneComponent>> m_components;
     };
 }
 

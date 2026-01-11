@@ -1,12 +1,13 @@
 // SceneNode.cpp
 #include "../include/SceneNode.hpp"
+#include "Andromeda/Space/Scene/ISceneComponent.hpp"
 
 #include "spdlog/spdlog.h"
 
 
 namespace Andromeda::Space
 {
-    SceneNode::SceneNode(std::unique_ptr<Andromeda::ITransformable> transform)
+    SceneNode::SceneNode(std::unique_ptr<ITransformable> transform)
         : m_transform(std::move(transform))
     {
         if (m_transform == nullptr)
@@ -42,22 +43,22 @@ namespace Andromeda::Space
         m_transform.reset();
     }
 
-    Andromeda::ITransformable& SceneNode::GetTransform()
+    ITransformable* SceneNode::GetTransform()
     {
-        return *m_transform;
+        return m_transform.get();
     }
 
-    const Andromeda::ITransformable& SceneNode::GetTransform() const
+    const ITransformable* SceneNode::GetTransform() const
     {
-        return *m_transform;
+        return m_transform.get();
     }
 
-    Andromeda::ISceneNode* SceneNode::GetParent() const
+    ISceneNode* SceneNode::GetParent() const
     {
         return m_parent;
     }
 
-    void SceneNode::AttachChild(std::unique_ptr<Andromeda::ISceneNode> child)
+    void SceneNode::AttachChild(std::unique_ptr<ISceneNode> child)
     {
         if (child == nullptr)
         {
@@ -72,10 +73,10 @@ namespace Andromeda::Space
         // Best-effort support for "removing from old parent" while still taking unique_ptr:
         // If the child reports a parent, attempt to detach it from that parent and use the returned ownership.
         // IMPORTANT: This only works safely if the caller is not still double-owning the same node elsewhere.
-        Andromeda::ISceneNode* oldParent = child->GetParent();
+        ISceneNode* oldParent = child->GetParent();
         if (oldParent != nullptr)
         {
-            std::unique_ptr<Andromeda::ISceneNode> transferred = oldParent->DetachChild(*child);
+            std::unique_ptr<ISceneNode> transferred = oldParent->DetachChild(*child);
             if (transferred != nullptr)
             {
                 // Avoid double delete: release the passed-in unique_ptr and use the transferred ownership.
@@ -99,7 +100,7 @@ namespace Andromeda::Space
         m_children.push_back(std::move(child));
     }
 
-    std::unique_ptr<Andromeda::ISceneNode> SceneNode::DetachChild(Andromeda::ISceneNode& child)
+    std::unique_ptr<ISceneNode> SceneNode::DetachChild(ISceneNode& child)
     {
         for (size_t i = 0; i < m_children.size(); ++i)
         {
@@ -111,7 +112,7 @@ namespace Andromeda::Space
                     childNode->SetParentInternal(nullptr);
                 }
 
-                std::unique_ptr<Andromeda::ISceneNode> out = std::move(m_children[i]);
+                std::unique_ptr<ISceneNode> out = std::move(m_children[i]);
                 m_children.erase(m_children.begin() + static_cast<long>(i));
                 return out;
             }
@@ -120,7 +121,7 @@ namespace Andromeda::Space
         return nullptr;
     }
 
-    void SceneNode::ForEachChild(const std::function<void(Andromeda::ISceneNode&)>& fn)
+    void SceneNode::ForEachChild(const std::function<void(ISceneNode&)>& fn)
     {
         for (auto& child : m_children)
         {
@@ -128,7 +129,7 @@ namespace Andromeda::Space
         }
     }
 
-    void SceneNode::ForEachChild(const std::function<void(const Andromeda::ISceneNode&)>& fn) const
+    void SceneNode::ForEachChild(const std::function<void(const ISceneNode&)>& fn) const
     {
         for (const auto& child : m_children)
         {
@@ -136,7 +137,7 @@ namespace Andromeda::Space
         }
     }
 
-    Andromeda::ISceneComponent& SceneNode::AddComponent(std::unique_ptr<Andromeda::ISceneComponent> component)
+    ISceneComponent& SceneNode::AddComponent(std::unique_ptr<ISceneComponent> component)
     {
         if (component == nullptr)
         {
@@ -148,7 +149,7 @@ namespace Andromeda::Space
         return *m_components.back();
     }
 
-    bool SceneNode::RemoveComponent(Andromeda::ISceneComponent& component)
+    bool SceneNode::RemoveComponent(ISceneComponent& component)
     {
         for (size_t i = 0; i < m_components.size(); ++i)
         {
@@ -163,7 +164,7 @@ namespace Andromeda::Space
         return false;
     }
 
-    void SceneNode::ForEachComponent(const std::function<void(Andromeda::ISceneComponent&)>& fn)
+    void SceneNode::ForEachComponent(const std::function<void(ISceneComponent&)>& fn)
     {
         for (auto& component : m_components)
         {
@@ -171,7 +172,7 @@ namespace Andromeda::Space
         }
     }
 
-    void SceneNode::ForEachComponent(const std::function<void(const Andromeda::ISceneComponent&)>& fn) const
+    void SceneNode::ForEachComponent(const std::function<void(const ISceneComponent&)>& fn) const
     {
         for (const auto& component : m_components)
         {
