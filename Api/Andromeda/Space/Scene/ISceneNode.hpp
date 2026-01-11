@@ -2,7 +2,6 @@
 #define API__SPACE__SCENE__I_SCENE_NODE__HPP
 
 
-#include "ISceneComponent.hpp"
 #include "../Transformations/ITransformable.hpp"
 
 #include <functional>
@@ -11,26 +10,23 @@
 
 namespace Andromeda
 {
+    class ISceneComponent;
+
     class ISceneNode
     {
     public:
         virtual ~ISceneNode() = default;
 
         // Transform
-        virtual ITransformable& GetTransform() = 0;
-        virtual const ITransformable& GetTransform() const = 0;
+        virtual ITransformable* GetTransform() = 0;
+        virtual const ITransformable* GetTransform() const = 0;
 
         // Hierarchy
         virtual ISceneNode* GetParent() const = 0;
 
-        // Parent takes ownership of the child node.
-        // Implementation must keep invariants consistent (child parent pointer, removing from old parent, etc.).
         virtual void AttachChild(std::unique_ptr<ISceneNode> child) = 0;
-
-        // Detach a child and return ownership to the caller (nullptr if not found).
         virtual std::unique_ptr<ISceneNode> DetachChild(ISceneNode& child) = 0;
 
-        // Non-owning traversal (keeps storage private).
         virtual void ForEachChild(const std::function<void(ISceneNode&)>& fn) = 0;
         virtual void ForEachChild(const std::function<void(const ISceneNode&)>& fn) const = 0;
 
