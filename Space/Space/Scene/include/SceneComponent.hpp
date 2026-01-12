@@ -1,13 +1,16 @@
 #ifndef API__SPACE__SCENE__SCENE_COMPONENT__HPP
 #define API__SPACE__SCENE__SCENE_COMPONENT__HPP
 
+
 #include "../../MacroExports/include/MacroExports.hpp"
 #include "Andromeda/Space/Scene/ISceneComponent.hpp"
-#include "../../Transformations/include/Transformable.hpp" // optional; see note below
+#include "../../Transformations/include/Transformable.hpp"
+
 
 namespace Andromeda::Space
 {
-    class SPACE_API SceneComponent : public Andromeda::ISceneComponent
+    class SPACE_API SceneComponent
+        : public Andromeda::ISceneComponent
     {
     public:
         SceneComponent();

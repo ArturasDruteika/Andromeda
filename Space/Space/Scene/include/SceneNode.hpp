@@ -1,4 +1,3 @@
-// SceneNode.hpp
 #ifndef API__SPACE__SCENE__SCENE_NODE__HPP
 #define API__SPACE__SCENE__SCENE_NODE__HPP
 
