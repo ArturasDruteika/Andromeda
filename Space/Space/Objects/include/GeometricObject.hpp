@@ -4,7 +4,6 @@
 
 #include "Object.hpp"
 #include "../../MacroExports/include/MacroExports.hpp"
-#include "../../Transformations/include/Transformable.hpp"
 #include "Andromeda/Space/Colors/Colors.hpp"
 #include "Andromeda/Space/Objects/IGeometricObject.hpp"
 #include "Mesh.hpp"
@@ -15,7 +14,6 @@ namespace Andromeda::Space
 	class SPACE_API GeometricObject
 		: public virtual IGeometricObject
 		, public Object
-		, public Transformable
 	{
 	public:
 		GeometricObject();
