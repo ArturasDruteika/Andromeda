@@ -18,8 +18,8 @@ namespace Andromeda
         virtual ~ISceneNode() = default;
 
         // Transform
-        virtual ITransformable* GetTransform() = 0;
-        virtual const ITransformable* GetTransform() const = 0;
+        virtual ITransformable& GetTransform() = 0;
+        virtual const ITransformable& GetTransform() const = 0;
 
         // Hierarchy
         virtual ISceneNode* GetParent() const = 0;

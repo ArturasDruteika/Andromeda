@@ -43,14 +43,14 @@ namespace Andromeda::Space
         m_transform.reset();
     }
 
-    ITransformable* SceneNode::GetTransform()
+    ITransformable& SceneNode::GetTransform()
     {
-        return m_transform.get();
+        return *m_transform;
     }
 
-    const ITransformable* SceneNode::GetTransform() const
+    const ITransformable& SceneNode::GetTransform() const
     {
-        return m_transform.get();
+        return *m_transform;
     }
 
     ISceneNode* SceneNode::GetParent() const

@@ -19,8 +19,8 @@ namespace Andromeda::Space
         ~SceneNode() override;
 
         // Transform
-        ITransformable* GetTransform() override;
-        const ITransformable* GetTransform() const override;
+        ITransformable& GetTransform() override;
+        const ITransformable& GetTransform() const override;
 
         // Hierarchy
         ISceneNode* GetParent() const override;

@@ -84,7 +84,6 @@ set(SCENE_HEADERS
     Andromeda/Space/Scene/ISceneNode.hpp
     Andromeda/Space/Scene/ISceneObjects.hpp
     Andromeda/Space/Scene/ISceneState.hpp
-    Andromeda/Space/Scene/ITransformProxy.hpp
 )
 
 # ==== Transformations ====
