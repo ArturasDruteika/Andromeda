@@ -18,7 +18,7 @@ namespace Andromeda::Space
 		, public SurfaceObject
     {
     public:
-        Sphere(float radius, const Math::Vec3& position, const Color& color);
+        Sphere(float radius, const Color& color);
         ~Sphere();
 
         // Getters

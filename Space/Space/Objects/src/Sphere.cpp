@@ -6,8 +6,8 @@
 
 namespace Andromeda::Space
 {
-	Sphere::Sphere(float radius, const Math::Vec3& position, const Color& color)
-		: GeometricObject{ position, color }
+	Sphere::Sphere(float radius, const Color& color)
+		: GeometricObject{ color }
 		, m_radius{ radius }
 	{
         ConstructSphere(m_radius, 36, 18, color);

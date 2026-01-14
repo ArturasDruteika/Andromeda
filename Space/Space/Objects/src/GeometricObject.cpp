@@ -5,9 +5,8 @@ namespace Andromeda::Space
 {
 	GeometricObject::GeometricObject() = default;
 
-	GeometricObject::GeometricObject(const Math::Vec3& centerPosition, const Color& color)
-		: Transformable{ centerPosition }
-		, m_color{ color }
+	GeometricObject::GeometricObject(const Color& color)
+		: m_color{ color }
 	{
 	}
 

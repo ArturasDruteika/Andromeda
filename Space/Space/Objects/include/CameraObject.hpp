@@ -16,7 +16,6 @@ namespace Andromeda::Space
 	{
 	public:
 		CameraObject();
-		CameraObject(const Math::Vec3& centerPosition);
 		~CameraObject() override;
 	};
 }

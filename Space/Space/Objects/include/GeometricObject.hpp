@@ -17,7 +17,7 @@ namespace Andromeda::Space
 	{
 	public:
 		GeometricObject();
-		GeometricObject(const Math::Vec3& centerPosition, const Color& color);
+		GeometricObject(const Color& color);
 		~GeometricObject() override;
 
 		// Getters

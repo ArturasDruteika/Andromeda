@@ -4,8 +4,8 @@
 
 namespace Andromeda::Space
 {
-	Cube::Cube(float halfExtent, const Math::Vec3& position, const Color& color)
-		: GeometricObject(position, color)
+	Cube::Cube(float halfExtent, const Color& color)
+		: GeometricObject(color)
 		, m_halfExtent(halfExtent)
 	{
 		ConstructCube(m_halfExtent, color);

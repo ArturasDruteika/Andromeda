@@ -3,8 +3,8 @@
 
 namespace Andromeda::Space
 {
-    Skyroom::Skyroom(float halfExtent, const Math::Vec3& position, const Color& color)
-        : GeometricObject(position, color)
+    Skyroom::Skyroom(float halfExtent, const Color& color)
+        : GeometricObject(color)
         , m_halfExtent(halfExtent)
     {
         ConstructSkyroom(m_halfExtent, color);
