@@ -1,4 +1,4 @@
-#include "../include/FpsCounter.hpp"
+#include "../include/FPSCounter.hpp"
 
 
 namespace Andromeda::Rendering
