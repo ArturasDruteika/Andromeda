@@ -4,7 +4,7 @@
 
 #include "EventBase.hpp"
 #include "Andromeda/Window/Events/EventType.hpp"
-#include "Andromeda/Window/Events/IFramebufferEvents.hpp"
+#include "Andromeda/Window/Events/IFrameBufferEvents.hpp"
 
 #include <string>
 

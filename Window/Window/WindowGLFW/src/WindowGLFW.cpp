@@ -1,6 +1,6 @@
 #include "pch.hpp"
 #include "../include/WindowGLFW.hpp"
-#include "../../Events/include/FramebufferEvents.hpp"
+#include "../../Events/include/FrameBufferEvents.hpp"
 #include "../../Events/include/KeyEvents.hpp"
 #include "../../Events/include/MouseEvents.hpp"
 #include "spdlog/spdlog.h"
