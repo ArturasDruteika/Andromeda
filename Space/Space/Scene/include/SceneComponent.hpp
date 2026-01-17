@@ -10,21 +10,21 @@
 namespace Andromeda::Space
 {
     class SPACE_API SceneComponent
-        : public Andromeda::ISceneComponent
+        : public ISceneComponent
     {
     public:
         SceneComponent();
         ~SceneComponent() override;
 
-        void OnAttach(Andromeda::ISceneNode& node) override;
+        void OnAttach(ISceneNode& node) override;
         void OnDetach() override;
 
     protected:
         bool IsAttached() const;
-        Andromeda::ITransformable* GetTransform() const;
+        ITransformable* GetTransform() const;
 
     private:
-        Andromeda::ITransformable* m_transform = nullptr;
+        ISceneNode* m_node;
     };
 }
 

@@ -4,27 +4,35 @@
 
 namespace Andromeda::Space
 {
-    SceneComponent::SceneComponent() = default;
+    SceneComponent::SceneComponent()
+        : m_node{ nullptr }
+    {
+	}
+
     SceneComponent::~SceneComponent() = default;
 
     void SceneComponent::OnAttach(ISceneNode& node)
     {
-        // Cache the transform interface pointer (safe and matches ISceneNode API).
-        m_transform = node.GetTransform();
+        m_node = &node;
     }
 
     void SceneComponent::OnDetach()
     {
-        m_transform = nullptr;
+        m_node = nullptr;
     }
 
     bool SceneComponent::IsAttached() const
     {
-        return m_transform != nullptr;
+        return m_node != nullptr;
     }
 
     ITransformable* SceneComponent::GetTransform() const
     {
-        return m_transform;
+        if (m_node == nullptr)
+        {
+            return nullptr;
+        }
+        return &m_node->GetTransform();
     }
+
 }

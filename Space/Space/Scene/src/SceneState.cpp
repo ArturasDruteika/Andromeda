@@ -9,13 +9,15 @@ namespace Andromeda::Space
 
 	bool SceneState::StateChanged(const std::unordered_map<int, IGeometricObject*>& objects) const
 	{
-		for (const auto& [id, object] : objects)
-		{
-			if (object->StateChanged())
-			{
-				return true;
-			}
-		}
+		// TODO: Implement state change detection logic based on nodes, not the object itself
+		//for (const auto& [id, object] : objects)
+		//{
+		//	if (object->StateChanged())
+		//	{
+		//		return true;
+		//	}
+		//}
+		//return false;
 		return false;
 	}
 }

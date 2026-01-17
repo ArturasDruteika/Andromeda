@@ -43,6 +43,7 @@ namespace Andromeda::Space
         // Only SceneNode modifies SceneNode parent pointers.
         void SetParentInternal(SceneNode* parent);
 
+    private:
         // Non-owning parent pointer.
         SceneNode* m_parent = nullptr;
 
