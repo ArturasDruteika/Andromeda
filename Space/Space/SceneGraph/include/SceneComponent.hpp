@@ -3,7 +3,7 @@
 
 
 #include "../../MacroExports/include/MacroExports.hpp"
-#include "Andromeda/Space/Scene/ISceneComponent.hpp"
+#include "Andromeda/Space/SceneGraph/ISceneComponent.hpp"
 #include "../../Transformations/include/Transformable.hpp"
 
 

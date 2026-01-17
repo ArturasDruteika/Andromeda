@@ -3,7 +3,7 @@
 
 
 #include "../../MacroExports/include/MacroExports.hpp"
-#include "Andromeda/Space/Scene/ISceneNode.hpp"
+#include "Andromeda/Space/SceneGraph/ISceneNode.hpp"
 #include "pch.hpp"
 
 

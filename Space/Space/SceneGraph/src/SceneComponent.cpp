@@ -1,5 +1,5 @@
 #include "../include/SceneComponent.hpp"
-#include "Andromeda/Space/Scene/ISceneNode.hpp"
+#include "Andromeda/Space/SceneGraph/ISceneNode.hpp"
 
 
 namespace Andromeda::Space
@@ -34,5 +34,4 @@ namespace Andromeda::Space
         }
         return &m_node->GetTransform();
     }
-
 }

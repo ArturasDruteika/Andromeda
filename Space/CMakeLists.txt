@@ -98,10 +98,8 @@ set(OBJECTS_SOURCES
 set(SCENE_HEADERS
     Space/Scene/include/CameraHandler.hpp
     Space/Scene/include/Scene.hpp
-    Space/Scene/include/SceneComponent.hpp
     Space/Scene/include/SceneEnvironment.hpp
     Space/Scene/include/SceneLighting.hpp
-    Space/Scene/include/SceneNode.hpp
     Space/Scene/include/SceneObjects.hpp
     Space/Scene/include/SceneState.hpp
 )
@@ -109,12 +107,21 @@ set(SCENE_HEADERS
 set(SCENE_SOURCES
     Space/Scene/src/CameraHandler.cpp
     Space/Scene/src/Scene.cpp
-    Space/Scene/src/SceneComponent.cpp
     Space/Scene/src/SceneEnvironment.cpp
     Space/Scene/src/SceneLighting.cpp
-    Space/Scene/src/SceneNode.cpp
     Space/Scene/src/SceneObjects.cpp
     Space/Scene/src/SceneState.cpp
+)
+
+# ==== SceneGraph ====
+set(SCENE_GRAPH_HEADERS
+    Space/SceneGraph/include/SceneComponent.hpp
+    Space/SceneGraph/include/SceneNode.hpp
+)
+
+set(SCENE_GRAPH_SOURCES
+    Space/SceneGraph/src/SceneComponent.cpp
+    Space/SceneGraph/src/SceneNode.cpp
 )
 
 # ==== Transformations ====
@@ -148,6 +155,8 @@ add_library(${PROJECT_NAME}
         ${OBJECTS_SOURCES}
         ${SCENE_HEADERS}
         ${SCENE_SOURCES}
+        ${SCENE_GRAPH_HEADERS}
+        ${SCENE_GRAPH_SOURCES}
         ${TRANSFORMATIONS_HEADERS}
         ${TRANSFORMATIONS_SOURCES}
 )
@@ -269,6 +278,16 @@ source_group(
     FILES
         ${SCENE_HEADERS}
         ${SCENE_SOURCES}
+)
+
+source_group(
+    TREE
+        ${CMAKE_CURRENT_SOURCE_DIR}/${PROJECT_NAME}/SceneGraph
+    PREFIX
+        "SceneGraph"
+    FILES
+        ${SCENE_GRAPH_HEADERS}
+        ${SCENE_GRAPH_SOURCES}
 )
 
 source_group(

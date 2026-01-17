@@ -1,6 +1,6 @@
 // SceneNode.cpp
 #include "../include/SceneNode.hpp"
-#include "Andromeda/Space/Scene/ISceneComponent.hpp"
+#include "Andromeda/Space/SceneGraph/ISceneComponent.hpp"
 
 #include "spdlog/spdlog.h"
 
