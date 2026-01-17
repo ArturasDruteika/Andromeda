@@ -23,6 +23,7 @@ namespace Andromeda::Space
         // Setters
         void Active(bool active);
         void SetName(const std::string& name);
+		void SetID(int id) override;
 
     private:
         bool m_isActive;
