@@ -1,4 +1,4 @@
-#include "../include/FramebufferEvents.hpp"
+#include "../include/FrameBufferEvents.hpp"
 #include <sstream>
 
 

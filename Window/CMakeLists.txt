@@ -25,14 +25,14 @@ set(EVENTS_HEADERS
     Window/Events/include/EventBase.hpp
     Window/Events/include/MouseEvents.hpp
     Window/Events/include/KeyEvents.hpp
-    Window/Events/include/FramebufferEvents.hpp
+    Window/Events/include/FrameBufferEvents.hpp
     Window/Events/include/EventDispatcher.hpp
 )
 
 set(EVENTS_SOURCES
     Window/Events/src/EventBase.cpp
     Window/Events/src/MouseEvents.cpp
-    Window/Events/src/FramebufferEvents.cpp
+    Window/Events/src/FrameBufferEvents.cpp
     Window/Events/src/KeyEvents.cpp
     Window/Events/src/EventDispatcher.cpp
 )
