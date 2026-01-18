@@ -2,6 +2,10 @@
 #include "Space/Objects/include/Sphere.hpp"
 #include "Space/Objects/include/Cube.hpp"
 #include "Space/Scene/include/Scene.hpp"
+#include "Space/SceneGraph/include/SceneNode.hpp"
+#include "Space/SceneGraph/include/ObjectComponent.hpp"
+#include "Space/SceneGraph/include/LightComponent.hpp"
+#include "Space/Transformations/include/Transformable.hpp"
 #include "Space/Camera/include/Camera.hpp"
 #include "Space/Materials/include/MaterialsLibrary.hpp"
 #include "Space/Light/include/DirectionalLight.hpp"
@@ -39,15 +43,22 @@ void PopulateSceneWithDummyObjects(
 		1.0f
 	);
 
-	scene.AddLightObject(0, pSun);
+	{
+		auto sunNode = std::make_unique<Andromeda::Space::SceneNode>(std::make_unique<Andromeda::Transformable>());
+		sunNode->AddComponent(std::make_unique<Andromeda::Space::LightComponent>(0, pSun));
+		scene.AttachNode(std::move(sunNode));
+	}
 
 
 	Andromeda::Space::Sphere* pCenterSphere = new Andromeda::Space::Sphere(
 		0.1f,
-		Andromeda::Math::Vec3{ 0.0f, 0.0f, 0.0f },
 		Andromeda::Color{ 0.8f, 0.2f, 0.2f, 1.0f }
 	);
-	scene.AddObject(1, pCenterSphere);
+	{
+		auto centerNode = std::make_unique<Andromeda::Space::SceneNode>(std::make_unique<Andromeda::Transformable>());
+		centerNode->AddComponent(std::make_unique<Andromeda::Space::ObjectComponent>(1, pCenterSphere));
+		scene.AttachNode(std::move(centerNode));
+	}
 
 	if (!materialTypes.empty())
 	{
@@ -79,7 +90,6 @@ void PopulateSceneWithDummyObjects(
 
 		Andromeda::Space::Sphere* pSphere = new Andromeda::Space::Sphere(
 			1.0f,
-			pos,
 			color
 		);
 
@@ -87,15 +97,18 @@ void PopulateSceneWithDummyObjects(
 		if (!materialTypes.empty())
 		{
 			Andromeda::Space::MaterialType matType = materialTypes[materialDist(rng)];
-			const Andromeda::IMaterial* pMat =
-				materialLibrary.GetMaterialPtr(matType);
+			const Andromeda::IMaterial* pMat = materialLibrary.GetMaterialPtr(matType);
 			if (pMat)
 			{
 				pSphere->SetMaterial(pMat);
 			}
 		}
 
-		scene.AddObject(i, pSphere);
+		{
+			auto sphereNode = std::make_unique<Andromeda::Space::SceneNode>(std::make_unique<Andromeda::Transformable>());
+			sphereNode->AddComponent(std::make_unique<Andromeda::Space::ObjectComponent>(i, pSphere));
+			scene.AttachNode(std::move(sphereNode));
+		}
 	}
 }
 
