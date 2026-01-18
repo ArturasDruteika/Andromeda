@@ -20,18 +20,4 @@ namespace Andromeda::Space
     {
         m_node = nullptr;
     }
-
-    bool SceneComponent::IsAttached() const
-    {
-        return m_node != nullptr;
-    }
-
-    ITransformable* SceneComponent::GetTransform() const
-    {
-        if (m_node == nullptr)
-        {
-            return nullptr;
-        }
-        return &m_node->GetTransform();
-    }
 }

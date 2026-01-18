@@ -4,6 +4,7 @@
 
 #include "../Objects/IGeometricObject.hpp"
 #include "../Objects/ILightObject.hpp"
+#include "../Transformations/ITransformable.hpp"
 #include <map>
 
 
@@ -16,6 +17,7 @@ namespace Andromeda
 
 		// Getters
 		virtual const std::unordered_map<int, IGeometricObject*>& GetObjects() const = 0;
+		virtual const std::unordered_map<int, ITransformable*>& GetObjectTransforms() const = 0;
 		
 		virtual void AddObject(int id, IGeometricObject* object) = 0;
 		virtual void RemoveObject(int id) = 0;

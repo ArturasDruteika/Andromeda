@@ -5,6 +5,7 @@ namespace Andromeda::Space
 {
 	SceneObjects::SceneObjects()
 		: m_objects{}
+		, m_objectTransforms{}
 	{
 	}
 
@@ -14,11 +15,17 @@ namespace Andromeda::Space
 		{
 			delete object;
 		}
+		m_objectTransforms.clear();
 	}
 
 	const std::unordered_map<int, IGeometricObject*>& SceneObjects::GetObjects() const
 	{
 		return m_objects;
+	}
+
+	const std::unordered_map<int, ITransformable*>& SceneObjects::GetObjectTransforms() const
+	{
+		return m_objectTransforms;
 	}
 
 	void SceneObjects::AddObject(int id, IGeometricObject* object)
@@ -34,5 +41,11 @@ namespace Andromeda::Space
 			delete it->second;
 			m_objects.erase(it);
 		}
+		m_objectTransforms.erase(id);
+	}
+
+	void SceneObjects::SetObjectTransform(int id, ITransformable* transform)
+	{
+		m_objectTransforms[id] = transform;
 	}
 }

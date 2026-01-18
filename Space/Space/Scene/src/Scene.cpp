@@ -1,5 +1,7 @@
 #include "../include/Scene.hpp"
 #include "../../Transformations/include/Transformable.hpp"
+#include "../../SceneGraph/include/ObjectComponent.hpp"
+#include "../../SceneGraph/include/LightComponent.hpp"
 
 
 namespace Andromeda::Space
@@ -18,6 +20,22 @@ namespace Andromeda::Space
 	Scene::~Scene()
 	{
 		ClearScene();
+	}
+
+	void Scene::AttachNode(std::unique_ptr<SceneNode> node)
+	{
+		if (!node)
+		{
+			return;
+		}
+
+		SceneNode* nodePtr = node.get();
+		m_rootNode->AttachChild(std::move(node));
+
+		if (nodePtr)
+		{
+			RegisterNodeRecursive(*nodePtr);
+		}
 	}
 
 	void Scene::AddObject(int id, IGeometricObject* object)
@@ -51,6 +69,7 @@ namespace Andromeda::Space
 			delete object;
 		}
 		m_objects.clear();
+		m_objectTransforms.clear();
 		for (const auto& [id, light] : m_directionalLights)
 		{
 			delete light;
@@ -70,5 +89,55 @@ namespace Andromeda::Space
 
 	void Scene::ResetSceneState()
 	{
+	}
+
+	void Scene::RegisterNode(SceneNode& node)
+	{
+		node.ForEachComponent(
+			[this, &node](ISceneComponent& component)
+			{
+				auto* objComponent = dynamic_cast<ObjectComponent*>(&component);
+				if (!objComponent)
+				{
+					auto* lightComponent = dynamic_cast<LightComponent*>(&component);
+					if (!lightComponent)
+					{
+						return;
+					}
+
+					const ILightObject* lightObject = lightComponent->GetLightObject();
+					if (!lightObject)
+					{
+						return;
+					}
+
+					AddLightObject(lightComponent->GetId(), lightObject);
+					return;
+				}
+
+				IGeometricObject* object = objComponent->GetObject();
+				if (!object)
+				{
+					return;
+				}
+
+				AddObject(objComponent->GetId(), object);
+				SetObjectTransform(objComponent->GetId(), &node.GetTransform());
+			});
+	}
+
+	void Scene::RegisterNodeRecursive(SceneNode& node)
+	{
+		RegisterNode(node);
+
+		node.ForEachChild(
+			[this](ISceneNode& child)
+			{
+				auto* childNode = dynamic_cast<SceneNode*>(&child);
+				if (childNode)
+				{
+					RegisterNodeRecursive(*childNode);
+				}
+			});
 	}
 }

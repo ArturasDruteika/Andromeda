@@ -117,11 +117,15 @@ set(SCENE_SOURCES
 set(SCENE_GRAPH_HEADERS
     Space/SceneGraph/include/SceneComponent.hpp
     Space/SceneGraph/include/SceneNode.hpp
+    Space/SceneGraph/include/ObjectComponent.hpp
+    Space/SceneGraph/include/LightComponent.hpp
 )
 
 set(SCENE_GRAPH_SOURCES
     Space/SceneGraph/src/SceneComponent.cpp
     Space/SceneGraph/src/SceneNode.cpp
+    Space/SceneGraph/src/ObjectComponent.cpp
+    Space/SceneGraph/src/LightComponent.cpp
 )
 
 # ==== Transformations ====

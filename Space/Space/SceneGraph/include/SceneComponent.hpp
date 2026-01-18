@@ -4,7 +4,6 @@
 
 #include "../../MacroExports/include/MacroExports.hpp"
 #include "Andromeda/Space/SceneGraph/ISceneComponent.hpp"
-#include "../../Transformations/include/Transformable.hpp"
 
 
 namespace Andromeda::Space
@@ -18,10 +17,6 @@ namespace Andromeda::Space
 
         void OnAttach(ISceneNode& node) override;
         void OnDetach() override;
-
-    protected:
-        bool IsAttached() const;
-        ITransformable* GetTransform() const;
 
     private:
         ISceneNode* m_node;
