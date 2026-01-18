@@ -1,4 +1,5 @@
 #include "../include/Scene.hpp"
+#include "../../Transformations/include/Transformable.hpp"
 
 
 namespace Andromeda::Space
@@ -10,6 +11,7 @@ namespace Andromeda::Space
 		, SceneObjects{}
 		, SceneState{}
 		, m_sceneCenter{ Math::Vec3{ 0.0f } }
+		, m_rootNode{ std::make_unique<SceneNode>(std::make_unique<Transformable>()) }
 	{
 	}
 

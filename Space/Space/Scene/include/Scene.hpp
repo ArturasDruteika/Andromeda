@@ -7,8 +7,10 @@
 #include "SceneLighting.hpp"
 #include "SceneObjects.hpp"
 #include "SceneState.hpp"
+#include "../../SceneGraph/include/SceneNode.hpp"
 #include "../../MacroExports/include/MacroExports.hpp"
 #include "Andromeda/Space/Scene/IScene.hpp"
+#include "pch.hpp"
 
 
 namespace Andromeda::Space
@@ -36,6 +38,7 @@ namespace Andromeda::Space
 
 	private:
 		Math::Vec3 m_sceneCenter;
+		std::unique_ptr<SceneNode> m_rootNode;
 	};
 }
 
