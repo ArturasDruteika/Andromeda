@@ -44,7 +44,9 @@ void PopulateSceneWithDummyObjects(
 	);
 
 	{
-		auto sunNode = std::make_unique<Andromeda::Space::SceneNode>(std::make_unique<Andromeda::Transformable>());
+		auto sunNode = std::make_unique<Andromeda::Space::SceneNode>(
+			std::make_unique<Andromeda::Transformable>(Andromeda::Math::Vec3{ 10.0f, 10.0f, 10.0f })
+		);
 		sunNode->AddComponent(std::make_unique<Andromeda::Space::LightComponent>(0, pSun));
 		scene.AttachNode(std::move(sunNode));
 	}
@@ -55,7 +57,9 @@ void PopulateSceneWithDummyObjects(
 		Andromeda::Color{ 0.8f, 0.2f, 0.2f, 1.0f }
 	);
 	{
-		auto centerNode = std::make_unique<Andromeda::Space::SceneNode>(std::make_unique<Andromeda::Transformable>());
+		auto centerNode = std::make_unique<Andromeda::Space::SceneNode>(
+			std::make_unique<Andromeda::Transformable>(Andromeda::Math::Vec3{ 0.0f, 0.0f, 0.0f })
+		);
 		centerNode->AddComponent(std::make_unique<Andromeda::Space::ObjectComponent>(1, pCenterSphere));
 		scene.AttachNode(std::move(centerNode));
 	}
@@ -105,7 +109,9 @@ void PopulateSceneWithDummyObjects(
 		}
 
 		{
-			auto sphereNode = std::make_unique<Andromeda::Space::SceneNode>(std::make_unique<Andromeda::Transformable>());
+			auto sphereNode = std::make_unique<Andromeda::Space::SceneNode>(
+				std::make_unique<Andromeda::Transformable>(pos)
+			);
 			sphereNode->AddComponent(std::make_unique<Andromeda::Space::ObjectComponent>(i, pSphere));
 			scene.AttachNode(std::move(sphereNode));
 		}
