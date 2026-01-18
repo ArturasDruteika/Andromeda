@@ -14,6 +14,7 @@
 #include "../../../Renderers/Abstracts/include/SizeControl.hpp"
 #include "../../../Shaders/Shaders/include/ShaderManager.hpp"
 #include "../../../Vertices/include/VertexLayouts.hpp"
+#include "Andromeda/Space/Transformations/ITransformable.hpp"
 #include "pch.hpp"
 
 
@@ -46,10 +47,12 @@ namespace Andromeda::Rendering
         void RenderNonLuminousObjectsCombined(const IScene& scene, const ICamera& rCamera, bool hasDir, bool hasPoint) const;
         void RenderLuminousObjects(
             const std::unordered_map<int, IGeometricObject*>& objects,
+            const std::unordered_map<int, ITransformable*>& objectTransforms,
             const ICamera& rCamera
         ) const;
         void RenderObjects(
             const std::unordered_map<int, IGeometricObject*>& objects,
+            const std::unordered_map<int, ITransformable*>& objectTransforms,
             const ICamera& rCamera
         ) const;
         void RenderGrid(const GpuMeshOpenGL& mesh) const;
@@ -61,7 +64,8 @@ namespace Andromeda::Rendering
         void RenderGridIfVisible(const IScene& scene) const;
         void RenderEachNonLuminousObject(
             ShaderOpenGL& shader, 
-            const std::unordered_map<int, IGeometricObject*>& objects
+            const std::unordered_map<int, IGeometricObject*>& objects,
+            const std::unordered_map<int, ITransformable*>& objectTransforms
         ) const;
         void ConfigurePointShadowDepthTexture();
         void RenderLuminousMode(const IScene& scene, const ICamera& rCamera);
