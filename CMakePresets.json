@@ -8,7 +8,7 @@
     "configurePresets": [
         {
             "name": "debug-linux-clang",
-            "generator": "Unix Makefiles",
+            "generator": "Ninja",
             "binaryDir": "${sourceDir}/../build/linux-clang-debug",
             "cacheVariables": {
                 "CMAKE_BUILD_TYPE": "Debug",
@@ -26,7 +26,7 @@
         },
         {
             "name": "release-linux-clang",
-            "generator": "Unix Makefiles",
+            "generator": "Ninja",
             "binaryDir": "${sourceDir}/../build/linux-clang-release",
             "cacheVariables": {
                 "CMAKE_BUILD_TYPE": "Release",
