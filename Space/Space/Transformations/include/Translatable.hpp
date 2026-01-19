@@ -17,11 +17,11 @@ namespace Andromeda
 		~Translatable() override;
 
 		// Getters
-		bool StateChanged() const;
+		bool StateChanged() const override;
 		const Math::Vec3& GetPosition() const override;
 		const Math::Mat4& GetTranslationMatrix() const override;
 		// Setters
-		void ResetState();
+		void ResetState() override;
 		void SetPosition(const Math::Vec3& position) override;
 
 		void Translate(const Math::Vec3& translation) override;
