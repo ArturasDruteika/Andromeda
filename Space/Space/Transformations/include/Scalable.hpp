@@ -16,11 +16,11 @@ namespace Andromeda
 		~Scalable() override;
 
 		// Getters
-		bool StateChanged() const;
+		bool StateChanged() const override;
 		const Math::Vec3& GetScale() const override;
-		const Math::Mat4& GetScaleMatrix() const;
+		const Math::Mat4& GetScaleMatrix() const override;
 		// Setters
-		void ResetState();
+		void ResetState() override;
 		void SetScale(const Math::Vec3& scale) override;
 
 		void Scale(const Math::Vec3& scale) override;

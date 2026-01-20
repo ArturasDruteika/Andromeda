@@ -31,7 +31,7 @@ namespace Andromeda::Window
 		bool IsInitialized() const override;
 		unsigned int GetWidth() const override;
 		unsigned int GetHeight() const override;
-		std::string GetTitle() const;
+		std::string GetTitle() const override;
 		void SetTitle(const std::string& title) override;
 		virtual void PollEvents() override;
 		virtual bool ShouldClose() const override;
