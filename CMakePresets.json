@@ -7,11 +7,13 @@
     },
     "configurePresets": [
         {
-            "name": "debug-linux",
-            "generator": "Unix Makefiles",
-            "binaryDir": "${sourceDir}/../build/",
+            "name": "debug-linux-clang",
+            "generator": "Ninja",
+            "binaryDir": "${sourceDir}/../build/linux-clang-debug",
             "cacheVariables": {
                 "CMAKE_BUILD_TYPE": "Debug",
+                "CMAKE_C_COMPILER": "clang",
+                "CMAKE_CXX_COMPILER": "clang++",
                 "CMAKE_RUNTIME_OUTPUT_DIRECTORY": "${sourceDir}/../build/Debug",
                 "CMAKE_LIBRARY_OUTPUT_DIRECTORY": "${sourceDir}/../build/Debug",
                 "CMAKE_ARCHIVE_OUTPUT_DIRECTORY": "${sourceDir}/../build/Debug"
@@ -23,11 +25,49 @@
             }
         },
         {
-            "name": "release-linux",
-            "generator": "Unix Makefiles",
-            "binaryDir": "${sourceDir}/../build/",
+            "name": "release-linux-clang",
+            "generator": "Ninja",
+            "binaryDir": "${sourceDir}/../build/linux-clang-release",
             "cacheVariables": {
                 "CMAKE_BUILD_TYPE": "Release",
+                "CMAKE_C_COMPILER": "clang",
+                "CMAKE_CXX_COMPILER": "clang++",
+                "CMAKE_RUNTIME_OUTPUT_DIRECTORY": "${sourceDir}/../build/Release",
+                "CMAKE_LIBRARY_OUTPUT_DIRECTORY": "${sourceDir}/../build/Release",
+                "CMAKE_ARCHIVE_OUTPUT_DIRECTORY": "${sourceDir}/../build/Release"
+            },
+            "condition": {
+                "type": "equals",
+                "lhs": "${hostSystemName}",
+                "rhs": "Linux"
+            }
+        },
+        {
+            "name": "debug-linux-gcc",
+            "generator": "Unix Makefiles",
+            "binaryDir": "${sourceDir}/../build/linux-gcc-debug",
+            "cacheVariables": {
+                "CMAKE_BUILD_TYPE": "Debug",
+                "CMAKE_C_COMPILER": "gcc",
+                "CMAKE_CXX_COMPILER": "g++",
+                "CMAKE_RUNTIME_OUTPUT_DIRECTORY": "${sourceDir}/../build/Debug",
+                "CMAKE_LIBRARY_OUTPUT_DIRECTORY": "${sourceDir}/../build/Debug",
+                "CMAKE_ARCHIVE_OUTPUT_DIRECTORY": "${sourceDir}/../build/Debug"
+            },
+            "condition": {
+                "type": "equals",
+                "lhs": "${hostSystemName}",
+                "rhs": "Linux"
+            }
+        },
+        {
+            "name": "release-linux-gcc",
+            "generator": "Unix Makefiles",
+            "binaryDir": "${sourceDir}/../build/linux-gcc-release",
+            "cacheVariables": {
+                "CMAKE_BUILD_TYPE": "Release",
+                "CMAKE_C_COMPILER": "gcc",
+                "CMAKE_CXX_COMPILER": "g++",
                 "CMAKE_RUNTIME_OUTPUT_DIRECTORY": "${sourceDir}/../build/Release",
                 "CMAKE_LIBRARY_OUTPUT_DIRECTORY": "${sourceDir}/../build/Release",
                 "CMAKE_ARCHIVE_OUTPUT_DIRECTORY": "${sourceDir}/../build/Release"
@@ -75,8 +115,8 @@
     ],
     "buildPresets": [
         {
-            "name": "build-debug-linux",
-            "configurePreset": "debug-linux",
+            "name": "build-debug-linux-clang",
+            "configurePreset": "debug-linux-clang",
             "condition": {
                 "type": "equals",
                 "lhs": "${hostSystemName}",
@@ -84,8 +124,26 @@
             }
         },
         {
-            "name": "build-release-linux",
-            "configurePreset": "release-linux",
+            "name": "build-release-linux-clang",
+            "configurePreset": "release-linux-clang",
+            "condition": {
+                "type": "equals",
+                "lhs": "${hostSystemName}",
+                "rhs": "Linux"
+            }
+        },
+        {
+            "name": "build-debug-linux-gcc",
+            "configurePreset": "debug-linux-gcc",
+            "condition": {
+                "type": "equals",
+                "lhs": "${hostSystemName}",
+                "rhs": "Linux"
+            }
+        },
+        {
+            "name": "build-release-linux-gcc",
+            "configurePreset": "release-linux-gcc",
             "condition": {
                 "type": "equals",
                 "lhs": "${hostSystemName}",

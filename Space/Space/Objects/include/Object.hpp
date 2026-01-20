@@ -17,12 +17,12 @@ namespace Andromeda::Space
 		~Object() override;
 
         // Getters
-        bool IsActive() const;
-        int GetID() const;
-        const std::string& GetName() const;
+        bool IsActive() const override;
+        int GetID() const override;
+        const std::string& GetName() const override;
         // Setters
-        void Active(bool active);
-        void SetName(const std::string& name);
+        void Active(bool active) override;
+        void SetName(const std::string& name) override;
 		void SetID(int id) override;
 
     private:
