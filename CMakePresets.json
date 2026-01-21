@@ -85,9 +85,9 @@
             "cacheVariables": {
                 "CMAKE_CONFIGURATION_TYPES": "Debug",
                 "CMAKE_GENERATOR_PLATFORM": "x64",
-                "CMAKE_RUNTIME_OUTPUT_DIRECTORY": "${sourceDir}/../build/Debug",
-                "CMAKE_LIBRARY_OUTPUT_DIRECTORY": "${sourceDir}/../build/Debug",
-                "CMAKE_ARCHIVE_OUTPUT_DIRECTORY": "${sourceDir}/../build/Debug"
+                "CMAKE_RUNTIME_OUTPUT_DIRECTORY": "${sourceDir}/../build",
+                "CMAKE_LIBRARY_OUTPUT_DIRECTORY": "${sourceDir}/../build",
+                "CMAKE_ARCHIVE_OUTPUT_DIRECTORY": "${sourceDir}/../build"
             },
             "condition": {
                 "type": "equals",
@@ -102,9 +102,9 @@
             "cacheVariables": {
                 "CMAKE_CONFIGURATION_TYPES": "Release",
                 "CMAKE_GENERATOR_PLATFORM": "x64",
-                "CMAKE_RUNTIME_OUTPUT_DIRECTORY": "${sourceDir}/../build/Release",
-                "CMAKE_LIBRARY_OUTPUT_DIRECTORY": "${sourceDir}/../build/Release",
-                "CMAKE_ARCHIVE_OUTPUT_DIRECTORY": "${sourceDir}/../build/Release"
+                "CMAKE_RUNTIME_OUTPUT_DIRECTORY": "${sourceDir}/../build",
+                "CMAKE_LIBRARY_OUTPUT_DIRECTORY": "${sourceDir}/../build",
+                "CMAKE_ARCHIVE_OUTPUT_DIRECTORY": "${sourceDir}/../build"
             },
             "condition": {
                 "type": "equals",
