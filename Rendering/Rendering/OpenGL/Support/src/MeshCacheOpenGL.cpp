@@ -27,7 +27,7 @@ namespace Andromeda::Rendering
             const int objId = obj->GetID();
             objIds.insert(objId);
 
-            auto it = m_meshes.find(objId);
+            std::unordered_map<int, GpuMeshOpenGL>::iterator it = m_meshes.find(objId);
             if (it == m_meshes.end())
             {
                 GpuMeshOpenGL gpuMesh;
@@ -36,7 +36,7 @@ namespace Andromeda::Rendering
             }
         }
 
-        for (auto it = m_meshes.begin(); it != m_meshes.end();)
+        for (std::unordered_map<int, GpuMeshOpenGL>::iterator it = m_meshes.begin(); it != m_meshes.end();)
         {
             if (objIds.find(it->first) == objIds.end())
             {
@@ -51,7 +51,7 @@ namespace Andromeda::Rendering
 
     const GpuMeshOpenGL* MeshCacheOpenGL::TryGet(int objectId) const
     {
-        auto it = m_meshes.find(objectId);
+        std::unordered_map<int, GpuMeshOpenGL>::const_iterator it = m_meshes.find(objectId);
         if (it == m_meshes.end())
         {
             return nullptr;

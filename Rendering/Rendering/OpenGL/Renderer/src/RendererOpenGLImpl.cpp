@@ -200,7 +200,8 @@ namespace Andromeda::Rendering
                 continue;
             }
 
-            auto transformIt = objectTransforms.find(id);
+            std::unordered_map<int, ITransformable*>::const_iterator transformIt =
+                objectTransforms.find(id);
             if (transformIt == objectTransforms.end() || !transformIt->second)
             {
                 continue;
@@ -241,7 +242,8 @@ namespace Andromeda::Rendering
             if (id < 0) 
                 continue;
 
-            auto transformIt = objectTransforms.find(id);
+            std::unordered_map<int, ITransformable*>::const_iterator transformIt =
+                objectTransforms.find(id);
             if (transformIt == objectTransforms.end() || !transformIt->second)
             {
                 continue;
@@ -406,7 +408,8 @@ namespace Andromeda::Rendering
         // If your grid is keyed by SpecialIndices::Grid in the map key, uncomment SpecialIndices include
         // and use that to find the object, then use its GetID() to lookup m_gpuMeshes.
 
-        //auto itObj = scene.GetObjects().find(static_cast<int>(SpecialIndices::Grid));
+        //std::unordered_map<int, IGeometricObject*>::const_iterator itObj =
+        //    scene.GetObjects().find(static_cast<int>(SpecialIndices::Grid));
         //if (itObj == scene.GetObjects().end() || !itObj->second)
         //{
         //    return;
@@ -462,7 +465,8 @@ namespace Andromeda::Rendering
 
             if (surfaceObj != nullptr)
             {
-                auto transformIt = objectTransforms.find(id);
+                std::unordered_map<int, ITransformable*>::const_iterator transformIt =
+                    objectTransforms.find(id);
                 if (transformIt == objectTransforms.end() || !transformIt->second)
                 {
                     continue;

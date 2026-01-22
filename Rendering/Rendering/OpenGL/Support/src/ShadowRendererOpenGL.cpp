@@ -46,7 +46,8 @@ namespace Andromeda::Rendering
                 continue;
             }
 
-            auto transformIt = objectTransforms.find(id);
+            std::unordered_map<int, ITransformable*>::const_iterator transformIt =
+                objectTransforms.find(id);
             if (transformIt == objectTransforms.end() || !transformIt->second)
             {
                 continue;
@@ -138,7 +139,8 @@ namespace Andromeda::Rendering
                 continue;
             }
 
-            auto transformIt = objectTransforms.find(id);
+            std::unordered_map<int, ITransformable*>::const_iterator transformIt =
+                objectTransforms.find(id);
             if (transformIt == objectTransforms.end() || !transformIt->second)
             {
                 continue;

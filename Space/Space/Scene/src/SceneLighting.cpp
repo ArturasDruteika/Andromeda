@@ -64,13 +64,14 @@ namespace Andromeda::Space
 
 	void SceneLighting::RemoveLightObject(int id)
 	{
-		auto lightObjectIt = m_lightObjects.find(id);
+		std::unordered_map<int, const ILightObject*>::iterator lightObjectIt = m_lightObjects.find(id);
 		if (lightObjectIt != m_lightObjects.end())
 		{
 			const ILightObject* lightObject = lightObjectIt->second;
 			if (lightObject->GetLightType() == LightType::Directional)
 			{
-				auto directionalLightIt = m_directionalLights.find(id);
+				std::unordered_map<int, const IDirectionalLight*>::iterator directionalLightIt =
+					m_directionalLights.find(id);
 				if (directionalLightIt != m_directionalLights.end())
 				{
 					delete directionalLightIt->second;
@@ -79,7 +80,8 @@ namespace Andromeda::Space
 			}
 			else if (lightObject->GetLightType() == LightType::Point)
 			{
-				auto pointLightIt = m_pointLights.find(id);
+				std::unordered_map<int, const IPointLight*>::iterator pointLightIt =
+					m_pointLights.find(id);
 				if (pointLightIt != m_pointLights.end())
 				{
 					delete pointLightIt->second;

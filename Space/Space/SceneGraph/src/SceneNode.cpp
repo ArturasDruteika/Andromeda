@@ -19,7 +19,7 @@ namespace Andromeda::Space
     SceneNode::~SceneNode()
     {
         // Detach components first (they may rely on child hierarchy still existing).
-        for (auto& component : m_components)
+        for (std::unique_ptr<ISceneComponent>& component : m_components)
         {
             if (component != nullptr)
             {
@@ -29,7 +29,7 @@ namespace Andromeda::Space
         m_components.clear();
 
         // Ensure children no longer reference this as a parent before they are destroyed.
-        for (auto& child : m_children)
+        for (std::unique_ptr<ISceneNode>& child : m_children)
         {
             SceneNode* childNode = dynamic_cast<SceneNode*>(child.get());
             if (childNode != nullptr)
@@ -123,7 +123,7 @@ namespace Andromeda::Space
 
     void SceneNode::ForEachChild(const std::function<void(ISceneNode&)>& fn)
     {
-        for (auto& child : m_children)
+        for (std::unique_ptr<ISceneNode>& child : m_children)
         {
             fn(*child);
         }
@@ -131,7 +131,7 @@ namespace Andromeda::Space
 
     void SceneNode::ForEachChild(const std::function<void(const ISceneNode&)>& fn) const
     {
-        for (const auto& child : m_children)
+        for (const std::unique_ptr<ISceneNode>& child : m_children)
         {
             fn(*child);
         }
@@ -166,7 +166,7 @@ namespace Andromeda::Space
 
     void SceneNode::ForEachComponent(const std::function<void(ISceneComponent&)>& fn)
     {
-        for (auto& component : m_components)
+        for (std::unique_ptr<ISceneComponent>& component : m_components)
         {
             fn(*component);
         }
@@ -174,7 +174,7 @@ namespace Andromeda::Space
 
     void SceneNode::ForEachComponent(const std::function<void(const ISceneComponent&)>& fn) const
     {
-        for (const auto& component : m_components)
+        for (const std::unique_ptr<ISceneComponent>& component : m_components)
         {
             fn(*component);
         }

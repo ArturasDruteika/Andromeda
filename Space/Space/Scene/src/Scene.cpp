@@ -96,10 +96,10 @@ namespace Andromeda::Space
 		node.ForEachComponent(
 			[this, &node](ISceneComponent& component)
 			{
-				auto* objComponent = dynamic_cast<ObjectComponent*>(&component);
+				ObjectComponent* objComponent = dynamic_cast<ObjectComponent*>(&component);
 				if (!objComponent)
 				{
-					auto* lightComponent = dynamic_cast<LightComponent*>(&component);
+					LightComponent* lightComponent = dynamic_cast<LightComponent*>(&component);
 					if (!lightComponent)
 					{
 						return;
@@ -133,7 +133,7 @@ namespace Andromeda::Space
 		node.ForEachChild(
 			[this](ISceneNode& child)
 			{
-				auto* childNode = dynamic_cast<SceneNode*>(&child);
+				SceneNode* childNode = dynamic_cast<SceneNode*>(&child);
 				if (childNode)
 				{
 					RegisterNodeRecursive(*childNode);

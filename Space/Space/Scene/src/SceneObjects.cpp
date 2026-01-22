@@ -35,7 +35,7 @@ namespace Andromeda::Space
 
 	void SceneObjects::RemoveObject(int id)
 	{
-		auto it = m_objects.find(id);
+		std::unordered_map<int, IGeometricObject*>::iterator it = m_objects.find(id);
 		if (it != m_objects.end())
 		{
 			delete it->second;
