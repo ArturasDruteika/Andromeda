@@ -113,6 +113,21 @@ set(SCENE_SOURCES
     Space/Scene/src/SceneState.cpp
 )
 
+# ==== SceneGraph ====
+set(SCENE_GRAPH_HEADERS
+    Space/SceneGraph/include/SceneComponent.hpp
+    Space/SceneGraph/include/SceneNode.hpp
+    Space/SceneGraph/include/ObjectComponent.hpp
+    Space/SceneGraph/include/LightComponent.hpp
+)
+
+set(SCENE_GRAPH_SOURCES
+    Space/SceneGraph/src/SceneComponent.cpp
+    Space/SceneGraph/src/SceneNode.cpp
+    Space/SceneGraph/src/ObjectComponent.cpp
+    Space/SceneGraph/src/LightComponent.cpp
+)
+
 # ==== Transformations ====
 set(TRANSFORMATIONS_HEADERS
     Space/Transformations/include/Rotatable.hpp
@@ -144,6 +159,8 @@ add_library(${PROJECT_NAME}
         ${OBJECTS_SOURCES}
         ${SCENE_HEADERS}
         ${SCENE_SOURCES}
+        ${SCENE_GRAPH_HEADERS}
+        ${SCENE_GRAPH_SOURCES}
         ${TRANSFORMATIONS_HEADERS}
         ${TRANSFORMATIONS_SOURCES}
 )
@@ -265,6 +282,16 @@ source_group(
     FILES
         ${SCENE_HEADERS}
         ${SCENE_SOURCES}
+)
+
+source_group(
+    TREE
+        ${CMAKE_CURRENT_SOURCE_DIR}/${PROJECT_NAME}/SceneGraph
+    PREFIX
+        "SceneGraph"
+    FILES
+        ${SCENE_GRAPH_HEADERS}
+        ${SCENE_GRAPH_SOURCES}
 )
 
 source_group(

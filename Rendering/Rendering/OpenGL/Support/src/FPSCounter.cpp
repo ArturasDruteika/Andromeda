@@ -16,7 +16,7 @@ namespace Andromeda::Rendering
 
     void FpsCounter::FrameTick()
     {
-        auto now = std::chrono::steady_clock::now();
+        std::chrono::steady_clock::time_point now = std::chrono::steady_clock::now();
 
         m_deltaSeconds =
             std::chrono::duration<float>(now - m_lastTime).count();

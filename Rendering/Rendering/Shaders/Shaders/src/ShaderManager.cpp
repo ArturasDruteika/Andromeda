@@ -16,9 +16,9 @@ namespace Andromeda::Rendering
 
 	ShaderManager::~ShaderManager()
 	{
-        for (auto& pair : m_shadersMap)
+        for (auto& [type, shader] : m_shadersMap)
         {
-            delete pair.second; // Clean up dynamically allocated ShaderOpenGL objects
+            delete shader; // Clean up dynamically allocated ShaderOpenGL objects
         }
         m_shadersMap.clear(); // Clear the map
 		spdlog::info("ShaderManager destroyed and all shaders cleaned up.");
@@ -31,7 +31,8 @@ namespace Andromeda::Rendering
 
     ShaderOpenGL* ShaderManager::GetShader(const ShaderOpenGLTypes& shaderType) const
     {
-        auto it = m_shadersMap.find(shaderType);
+        std::unordered_map<ShaderOpenGLTypes, ShaderOpenGL*>::const_iterator it =
+            m_shadersMap.find(shaderType);
         if (it == m_shadersMap.end() || it->second == nullptr)
         {
 			spdlog::error("Shader of type {} not found in ShaderManager", static_cast<int>(shaderType));
@@ -87,7 +88,7 @@ namespace Andromeda::Rendering
             }
         };
 
-        for (const auto& shader : shaders)
+        for (const ShaderDefinition& shader : shaders)
         {
             if (!CreateShader(shader.type, shader.vertexPath, shader.fragmentPath, shader.geometryPath))
             {

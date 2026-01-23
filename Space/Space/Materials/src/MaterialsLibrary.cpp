@@ -73,9 +73,9 @@ namespace Andromeda::Space
 	{
 		std::vector<MaterialType> result;
 		result.reserve(m_materials.size());
-		for (const auto& kv : m_materials)
+		for (const auto& [type, material] : m_materials)
 		{
-			result.push_back(kv.first);
+			result.push_back(type);
 		}
 		return result;
 	}
@@ -97,7 +97,7 @@ namespace Andromeda::Space
 
 	const Material* MaterialLibrary::GetMaterialPtr(const MaterialType& materialType) const
 	{
-		auto it = m_materials.find(materialType);
+		std::unordered_map<MaterialType, Material>::const_iterator it = m_materials.find(materialType);
 		if (it == m_materials.end())
 		{
 			spdlog::error(
@@ -150,15 +150,15 @@ namespace Andromeda::Space
 
 		m_materials.clear();
 
-		for (const auto& entry : j)
+		for (const nlohmann::json& entry : j)
 		{
 			try
 			{
 				// Required fields
 				std::string name = entry.at("name").get<std::string>();
-				const auto& amb = entry.at("ambient");
-				const auto& dif = entry.at("diffuse");
-				const auto& spec = entry.at("specular");
+				const nlohmann::json& amb = entry.at("ambient");
+				const nlohmann::json& dif = entry.at("diffuse");
+				const nlohmann::json& spec = entry.at("specular");
 				float shininess = entry.at("shininess").get<float>();
 
 				Material mat;
@@ -191,9 +191,9 @@ namespace Andromeda::Space
 
 		// Build a JSON array
 		nlohmann::json j = nlohmann::json::array();
-		for (const auto& kv : m_materials)
+		for (const auto& [type, material] : m_materials)
 		{
-			const Material& m = kv.second;
+			const Material& m = material;
 			nlohmann::json entry;
 			Math::Vec3 ambient = m.GetAmbient();
 			Math::Vec3 diffuse = m.GetDiffuse();

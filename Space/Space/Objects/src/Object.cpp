@@ -38,4 +38,9 @@ namespace Andromeda::Space
 	{
 		m_name = name;
 	}
+
+	void Object::SetID(int id)
+	{
+		m_id = id;
+	}
 }

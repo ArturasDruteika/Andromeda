@@ -126,7 +126,7 @@ namespace Andromeda::Rendering
         }
         else
         {
-            RenderObjects(scene.GetObjects(), *pCamera);
+            RenderObjects(scene.GetObjects(), scene.GetObjectTransforms(), *pCamera);
         }
 
         EndFrame();
@@ -172,13 +172,14 @@ namespace Andromeda::Rendering
             ShadowRendererOpenGL::PopulatePointLightUniforms(*shader, scene.GetPointLights());
         }
 
-        RenderEachNonLuminousObject(*shader, scene.GetObjects());
+        RenderEachNonLuminousObject(*shader, scene.GetObjects(), scene.GetObjectTransforms());
         shader->UnBind();
         m_faceCullingControlOpenGL.DisableFaceCulling();
     }
 
     void RendererOpenGL::RendererOpenGLImpl::RenderLuminousObjects(
-        const std::unordered_map<int, IGeometricObject*>& objects, 
+        const std::unordered_map<int, IGeometricObject*>& objects,
+        const std::unordered_map<int, ITransformable*>& objectTransforms,
         const ICamera& rCamera
     ) const
     {
@@ -199,6 +200,13 @@ namespace Andromeda::Rendering
                 continue;
             }
 
+            std::unordered_map<int, ITransformable*>::const_iterator transformIt =
+                objectTransforms.find(id);
+            if (transformIt == objectTransforms.end() || !transformIt->second)
+            {
+                continue;
+            }
+
             const int objId = obj->GetID();
             const GpuMeshOpenGL* mesh = m_meshCache.TryGet(objId);
             if (!mesh)
@@ -206,7 +214,7 @@ namespace Andromeda::Rendering
                 continue;
             }
 
-            lumShader->SetUniform("u_model", MathUtils::ToGLM(obj->GetModelMatrix()));
+            lumShader->SetUniform("u_model", MathUtils::ToGLM(transformIt->second->GetModelMatrix()));
             glBindVertexArray(mesh->GetVAO());
             glDrawElements(GL_TRIANGLES, static_cast<GLsizei>(mesh->GetIndexCount()), GL_UNSIGNED_INT, nullptr);
         }
@@ -216,7 +224,8 @@ namespace Andromeda::Rendering
     }
 
     void RendererOpenGL::RendererOpenGLImpl::RenderObjects(
-        const std::unordered_map<int, IGeometricObject*>& objects, 
+        const std::unordered_map<int, IGeometricObject*>& objects,
+        const std::unordered_map<int, ITransformable*>& objectTransforms,
         const ICamera& rCamera) const 
     { 
         m_faceCullingControlOpenGL.EnableFaceCulling(GL_BACK, GL_CCW);
@@ -233,13 +242,20 @@ namespace Andromeda::Rendering
             if (id < 0) 
                 continue;
 
+            std::unordered_map<int, ITransformable*>::const_iterator transformIt =
+                objectTransforms.find(id);
+            if (transformIt == objectTransforms.end() || !transformIt->second)
+            {
+                continue;
+            }
+
             int objID = obj->GetID(); 
             const GpuMeshOpenGL* mesh = m_meshCache.TryGet(objID);
 
             if (!mesh) 
                 continue;
 
-            const Math::Mat4& modelMatrix = obj->GetModelMatrix(); 
+            const Math::Mat4& modelMatrix = transformIt->second->GetModelMatrix(); 
             shader->SetUniform("u_model", MathUtils::ToGLM(modelMatrix)); 
             glBindVertexArray(mesh->GetVAO()); 
             glDrawElements(GL_TRIANGLES, static_cast<GLsizei>(mesh->GetIndexCount()), GL_UNSIGNED_INT, nullptr); 
@@ -392,7 +408,8 @@ namespace Andromeda::Rendering
         // If your grid is keyed by SpecialIndices::Grid in the map key, uncomment SpecialIndices include
         // and use that to find the object, then use its GetID() to lookup m_gpuMeshes.
 
-        //auto itObj = scene.GetObjects().find(static_cast<int>(SpecialIndices::Grid));
+        //std::unordered_map<int, IGeometricObject*>::const_iterator itObj =
+        //    scene.GetObjects().find(static_cast<int>(SpecialIndices::Grid));
         //if (itObj == scene.GetObjects().end() || !itObj->second)
         //{
         //    return;
@@ -427,8 +444,9 @@ namespace Andromeda::Rendering
     }
 
     void RendererOpenGL::RendererOpenGLImpl::RenderEachNonLuminousObject(
-        ShaderOpenGL& shader, 
-        const std::unordered_map<int, IGeometricObject*>& objects
+        ShaderOpenGL& shader,
+        const std::unordered_map<int, IGeometricObject*>& objects,
+        const std::unordered_map<int, ITransformable*>& objectTransforms
     ) const
     {
         for (const auto& [id, obj] : objects)
@@ -443,19 +461,28 @@ namespace Andromeda::Rendering
                 continue;
             }
 
-			ISurfaceObject* surfaceObj = dynamic_cast<ISurfaceObject*>(obj);
+            ISurfaceObject* surfaceObj = dynamic_cast<ISurfaceObject*>(obj);
 
             if (surfaceObj != nullptr)
             {
+                std::unordered_map<int, ITransformable*>::const_iterator transformIt =
+                    objectTransforms.find(id);
+                if (transformIt == objectTransforms.end() || !transformIt->second)
+                {
+                    continue;
+                }
+
                 const IMaterial* material = surfaceObj->GetMaterial();
-                glm::mat3 normalMatrix = glm::inverseTranspose(MathUtils::ToGLM(obj->GetModelMatrix()));
+                glm::mat3 normalMatrix = glm::inverseTranspose(
+                    MathUtils::ToGLM(transformIt->second->GetModelMatrix())
+                );
 
                 shader.SetUniform("u_materialAmbient", MathUtils::ToGLM(material->GetAmbient()));
                 shader.SetUniform("u_materialDiffuse", MathUtils::ToGLM(material->GetDiffuse()));
                 shader.SetUniform("u_materialSpecular", MathUtils::ToGLM(material->GetSpecular()));
                 shader.SetUniform("u_materialShininess", material->GetShininess());
 
-                shader.SetUniform("u_model", MathUtils::ToGLM(obj->GetModelMatrix()));
+                shader.SetUniform("u_model", MathUtils::ToGLM(transformIt->second->GetModelMatrix()));
                 shader.SetUniform("u_normalMatrix", normalMatrix);
 
                 const int objId = obj->GetID();
@@ -495,6 +522,7 @@ namespace Andromeda::Rendering
         const std::unordered_map<int, const IPointLight*>& pointLights = scene.GetPointLights();
         const bool hasPoint = !pointLights.empty();
 
+
         if (hasDir)
         {
             m_shadowMapLightSpace = ShadowRendererOpenGL::ComputeLightSpaceMatrix(
@@ -504,6 +532,7 @@ namespace Andromeda::Rendering
 
             ShadowRendererOpenGL::RenderDirectionalShadowMap(
                 scene.GetObjects(),
+                scene.GetObjectTransforms(),
                 m_directionalShadowFBO,
                 m_directionalShadowResolution,
                 m_shadowMapLightSpace,
@@ -522,6 +551,7 @@ namespace Andromeda::Rendering
 
             ShadowRendererOpenGL::RenderPointShadowCube(
                 scene.GetObjects(),
+                scene.GetObjectTransforms(),
                 m_pointShadowFBO,
                 m_shadowCubeResolution,
                 lightPos,
@@ -534,7 +564,7 @@ namespace Andromeda::Rendering
         }
 
         RenderNonLuminousObjectsCombined(scene, rCamera, hasDir, hasPoint);
-        RenderLuminousObjects(scene.GetObjects(), rCamera);
+        RenderLuminousObjects(scene.GetObjects(), scene.GetObjectTransforms(), rCamera);
 
         RenderGridIfVisible(scene);
     }

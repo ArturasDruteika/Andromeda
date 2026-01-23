@@ -9,6 +9,7 @@
 #include "Andromeda/Space/Light/IDirectionalLight.hpp"
 #include "Andromeda/Space/Light/IPointLight.hpp"
 #include "Andromeda/Space/Objects/IGeometricObject.hpp"
+#include "Andromeda/Space/Transformations/ITransformable.hpp"
 #include "pch.hpp"
 
 
@@ -19,6 +20,7 @@ namespace Andromeda::Rendering
     public:
         static void RenderDirectionalShadowMap(
             const std::unordered_map<int, IGeometricObject*>& objects,
+            const std::unordered_map<int, ITransformable*>& objectTransforms,
             FrameBufferOpenGL& shadowFbo,
             int resolution,
             const glm::mat4& lightSpaceMatrix,
@@ -29,6 +31,7 @@ namespace Andromeda::Rendering
 
         static void RenderPointShadowCube(
             const std::unordered_map<int, IGeometricObject*>& objects,
+            const std::unordered_map<int, ITransformable*>& objectTransforms,
             FrameBufferOpenGL& pointShadowFbo,
             int resolution,
             const glm::vec3& lightPos,

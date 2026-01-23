@@ -24,7 +24,7 @@ namespace Andromeda::Space
 		, public SurfaceObject
     {
     public:
-        Cube(float halfExtent, const Math::Vec3& position, const Color& color);
+        Cube(float halfExtent, const Color& color);
         ~Cube();
 
 		// Getters

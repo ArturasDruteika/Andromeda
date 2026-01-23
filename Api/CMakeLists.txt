@@ -84,6 +84,12 @@ set(SCENE_HEADERS
     Andromeda/Space/Scene/ISceneState.hpp
 )
 
+# ==== SceneGraph ====
+set(SCENE_GRAPH_HEADERS
+    Andromeda/Space/SceneGraph/ISceneComponent.hpp
+    Andromeda/Space/SceneGraph/ISceneNode.hpp
+)
+
 # ==== Transformations ====
 set(TRANSFORMATION_HEADERS
     Andromeda/Space/Transformations/IRotatable.hpp
@@ -124,6 +130,7 @@ target_sources(${PROJECT_NAME}
             ${PLATFORM_HEADERS}
             ${RENDERER_HEADERS}
             ${SCENE_HEADERS}
+            ${SCENE_GRAPH_HEADERS}
             ${WINDOW_HEADERS}
             ${LIGHT_HEADERS}
             ${MATERIALS_HEADERS}
@@ -240,6 +247,15 @@ source_group(
         "Scene"
     FILES
         ${SCENE_HEADERS}
+)
+
+source_group(
+    TREE
+        ${CMAKE_CURRENT_SOURCE_DIR}/Andromeda/Space/SceneGraph
+    PREFIX
+        "SceneGraph"
+    FILES
+        ${SCENE_GRAPH_HEADERS}
 )
 
 source_group(

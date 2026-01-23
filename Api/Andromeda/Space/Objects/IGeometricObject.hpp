@@ -5,7 +5,6 @@
 #include "IObject.hpp"
 #include "IMesh.hpp"
 #include "../Colors/Colors.hpp"
-#include "../Transformations/ITransformable.hpp"
 #include "Math/LinearAlgebra/include/LinearAlgebraDataTypes.hpp"
 
 
@@ -13,7 +12,6 @@ namespace Andromeda
 {
 	class IGeometricObject
         : public virtual IObject
-        , public virtual ITransformable
 	{
 	public:
 		virtual ~IGeometricObject() = default;

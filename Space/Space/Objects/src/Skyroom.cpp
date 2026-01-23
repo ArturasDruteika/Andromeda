@@ -3,8 +3,8 @@
 
 namespace Andromeda::Space
 {
-    Skyroom::Skyroom(float halfExtent, const Math::Vec3& position, const Color& color)
-        : GeometricObject(position, color)
+    Skyroom::Skyroom(float halfExtent, const Color& color)
+        : GeometricObject(color)
         , m_halfExtent(halfExtent)
     {
         ConstructSkyroom(m_halfExtent, color);
@@ -49,10 +49,10 @@ namespace Andromeda::Space
         std::vector<unsigned int> indices;
         ReserveSkyroomBuffers(vertices, indices);
 
-        const auto faces = BuildSkyroomFaces(halfExtent);
+        std::array<SkyroomFaceData, 6> faces = BuildSkyroomFaces(halfExtent);
 
         unsigned int indexOffset = 0;
-        for (const auto& face : faces)
+        for (const SkyroomFaceData& face : faces)
         {
             AppendFaceInside(face, color, vertices, indices, indexOffset);
         }
@@ -152,7 +152,7 @@ namespace Andromeda::Space
         unsigned int& indexOffset
     )
     {
-        for (const auto& pos : face.vertices)
+        for (const Math::Vec3& pos : face.vertices)
         {
             outVertices.emplace_back(pos, color, face.normal);
         }

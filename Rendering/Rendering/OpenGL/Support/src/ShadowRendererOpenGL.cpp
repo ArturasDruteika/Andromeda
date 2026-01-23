@@ -13,6 +13,7 @@ namespace Andromeda::Rendering
 {
     void ShadowRendererOpenGL::RenderDirectionalShadowMap(
         const std::unordered_map<int, IGeometricObject*>& objects,
+        const std::unordered_map<int, ITransformable*>& objectTransforms,
         FrameBufferOpenGL& shadowFbo,
         int resolution,
         const glm::mat4& lightSpaceMatrix,
@@ -45,13 +46,20 @@ namespace Andromeda::Rendering
                 continue;
             }
 
+            std::unordered_map<int, ITransformable*>::const_iterator transformIt =
+                objectTransforms.find(id);
+            if (transformIt == objectTransforms.end() || !transformIt->second)
+            {
+                continue;
+            }
+
             const GpuMeshOpenGL* mesh = meshCache.TryGet(obj->GetID());
             if (!mesh)
             {
                 continue;
             }
 
-            depthShader->SetUniform("u_model", MathUtils::ToGLM(obj->GetModelMatrix()));
+            depthShader->SetUniform("u_model", MathUtils::ToGLM(transformIt->second->GetModelMatrix()));
             glBindVertexArray(mesh->GetVAO());
             glDrawElements(GL_TRIANGLES, static_cast<GLsizei>(mesh->GetIndexCount()), GL_UNSIGNED_INT, nullptr);
         }
@@ -65,6 +73,7 @@ namespace Andromeda::Rendering
 
     void ShadowRendererOpenGL::RenderPointShadowCube(
         const std::unordered_map<int, IGeometricObject*>& objects,
+        const std::unordered_map<int, ITransformable*>& objectTransforms,
         FrameBufferOpenGL& pointShadowFbo,
         int resolution,
         const glm::vec3& lightPos,
@@ -130,13 +139,20 @@ namespace Andromeda::Rendering
                 continue;
             }
 
+            std::unordered_map<int, ITransformable*>::const_iterator transformIt =
+                objectTransforms.find(id);
+            if (transformIt == objectTransforms.end() || !transformIt->second)
+            {
+                continue;
+            }
+
             const GpuMeshOpenGL* mesh = meshCache.TryGet(obj->GetID());
             if (!mesh)
             {
                 continue;
             }
 
-            shader->SetUniform("u_model", MathUtils::ToGLM(obj->GetModelMatrix()));
+            shader->SetUniform("u_model", MathUtils::ToGLM(transformIt->second->GetModelMatrix()));
             glBindVertexArray(mesh->GetVAO());
             glDrawElements(GL_TRIANGLES, static_cast<GLsizei>(mesh->GetIndexCount()), GL_UNSIGNED_INT, nullptr);
         }

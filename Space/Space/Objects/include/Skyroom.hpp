@@ -25,7 +25,7 @@ namespace Andromeda::Space
 		, public SurfaceObject
     {
     public:
-        Skyroom(float halfExtent, const Math::Vec3& position, const Color& color);
+        Skyroom(float halfExtent, const Color& color);
         ~Skyroom();
 
 		// Getters

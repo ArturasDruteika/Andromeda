@@ -4,8 +4,8 @@
 
 namespace Andromeda::Space
 {
-	Cube::Cube(float halfExtent, const Math::Vec3& position, const Color& color)
-		: GeometricObject(position, color)
+	Cube::Cube(float halfExtent, const Color& color)
+		: GeometricObject(color)
 		, m_halfExtent(halfExtent)
 	{
 		ConstructCube(m_halfExtent, color);
@@ -44,10 +44,10 @@ namespace Andromeda::Space
 		std::vector<unsigned int> indices;
 		ReserveCubeBuffers(vertices, indices);
 
-		const auto faces = BuildCubeFaces(h);
+		std::array<CubeFaceData, 6> faces = BuildCubeFaces(h);
 
 		unsigned int indexOffset = 0;
-		for (const auto& face : faces)
+		for (const CubeFaceData& face : faces)
 		{
 			AppendFace(face, color, vertices, indices, indexOffset);
 		}
@@ -146,7 +146,7 @@ namespace Andromeda::Space
 		unsigned int& indexOffset
 	)
 	{
-		for (const auto& pos : face.vertices)
+		for (const Math::Vec3& pos : face.vertices)
 		{
 			outVertices.emplace_back(
 				pos,

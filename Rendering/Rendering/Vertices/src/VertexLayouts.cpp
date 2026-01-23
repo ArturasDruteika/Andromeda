@@ -37,7 +37,7 @@ namespace Andromeda::Rendering
     {
         size_t offset = 0;
 
-        for (auto& attr : m_attributes)
+        for (VertexAttributeDesc& attr : m_attributes)
         {
             attr.offsetBytes = offset;
             offset += static_cast<size_t>(attr.componentCount) * ComponentTypeSizeBytes(attr.componentType);
