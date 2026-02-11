@@ -53,3 +53,7 @@ out/
 # VS-Code files
 .history/
 .vscode/
+
+# Build
+build/
+build-ci/
