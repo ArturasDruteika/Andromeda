@@ -1,0 +1,203 @@
+name: CI
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  build-linux:
+    name: Build (Ubuntu)
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Debug workspace
+        shell: bash
+        run: |
+          set -euo pipefail
+          echo "GITHUB_WORKSPACE=${GITHUB_WORKSPACE}"
+          echo "ACT=${ACT:-}"
+          echo "User: $(id -u):$(id -g) $(id -un)"
+          echo "Workspace listing:"
+          ls -la "${GITHUB_WORKSPACE}"
+          echo "Parent listing:"
+          ls -la "$(dirname "${GITHUB_WORKSPACE}")"
+
+      - name: Install dependencies
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          sudo apt-get update -y
+          sudo apt-get install -y --no-install-recommends \
+            ca-certificates \
+            curl \
+            file \
+            xz-utils \
+            cmake \
+            ninja-build \
+            clang \
+            g++ \
+            pkg-config \
+            xorg-dev \
+            libwayland-dev \
+            wayland-protocols \
+            libxkbcommon-dev \
+            libgl1-mesa-dev \
+            libglvnd-dev
+
+          echo "Sanity checks:"
+          command -v pkg-config
+          command -v wayland-scanner
+          wayland-scanner --version || true
+
+      - name: Download / prepare 3rdParty
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          WS="${GITHUB_WORKSPACE}"
+          PARENT_DIR="$(dirname "${WS}")"
+
+          # 3rdParty is a sibling of the repo: ../3rdParty
+          THIRD_PARTY_ROOT="${PARENT_DIR}/3rdParty"
+          SPDLOG_PREFIX="${THIRD_PARTY_ROOT}/spdlog"
+
+          FILE_ID="1H-HeqOXuVqSWpIwzJMdDfufm7Quc0otg"
+          FILE_NAME="/tmp/3rdParty.tar.xz"
+
+          # Make sure we can write there under act (needs sudo), then give ownership back
+          sudo mkdir -p "${THIRD_PARTY_ROOT}"
+          sudo chown -R "$(id -u)":"$(id -g)" "${THIRD_PARTY_ROOT}" || true
+
+          if [[ -f "${SPDLOG_PREFIX}/lib/cmake/spdlog/spdlogConfig.cmake" || -f "${SPDLOG_PREFIX}/lib/cmake/spdlog/spdlog-config.cmake" ]]; then
+            echo "3rdParty already present at ${THIRD_PARTY_ROOT}; skipping download."
+          else
+            echo "Downloading 3rdParty.tar.xz from Google Drive..."
+
+            sudo rm -rf "${THIRD_PARTY_ROOT}"
+            sudo mkdir -p "${THIRD_PARTY_ROOT}"
+            sudo chown -R "$(id -u)":"$(id -g)" "${THIRD_PARTY_ROOT}" || true
+
+            rm -f /tmp/gdcookies.txt /tmp/gd.html || true
+
+            # Google Drive confirm token flow (large files)
+            curl -fL --retry 5 --retry-delay 2 --retry-connrefused \
+              -c /tmp/gdcookies.txt \
+              "https://drive.google.com/uc?export=download&id=${FILE_ID}" \
+              -o /tmp/gd.html
+
+            CONFIRM="$(sed -n "s/.*confirm=\\([0-9A-Za-z_]\\+\\).*/\\1/p" /tmp/gd.html | head -n 1)"
+
+            if [[ -n "${CONFIRM}" ]]; then
+              curl -fL --retry 5 --retry-delay 2 --retry-connrefused \
+                -b /tmp/gdcookies.txt \
+                "https://drive.google.com/uc?export=download&confirm=${CONFIRM}&id=${FILE_ID}" \
+                -o "${FILE_NAME}"
+            else
+              curl -fL --retry 5 --retry-delay 2 --retry-connrefused \
+                -b /tmp/gdcookies.txt \
+                "https://drive.google.com/uc?export=download&id=${FILE_ID}" \
+                -o "${FILE_NAME}"
+            fi
+
+            rm -f /tmp/gdcookies.txt /tmp/gd.html
+
+            file "${FILE_NAME}"
+            if ! file "${FILE_NAME}" | grep -Eqi "xz compressed|XZ compressed"; then
+              echo "ERROR: Downloaded file is not an xz tarball (Drive returned HTML?)."
+              echo "First 40 lines for debugging:"
+              head -n 40 "${FILE_NAME}" || true
+              exit 1
+            fi
+
+            # Extract to parent of repo so we end up with ../3rdParty/...
+            sudo tar -xJf "${FILE_NAME}" -C "${PARENT_DIR}"
+            sudo chown -R "$(id -u)":"$(id -g)" "${THIRD_PARTY_ROOT}" || true
+
+            # Flatten if archive contains nested 3rdParty/3rdParty
+            if [[ -d "${THIRD_PARTY_ROOT}/3rdParty" ]]; then
+              echo "Detected nested 3rdParty directory; flattening ${THIRD_PARTY_ROOT}/3rdParty -> ${THIRD_PARTY_ROOT}"
+              shopt -s dotglob
+              mv "${THIRD_PARTY_ROOT}/3rdParty"/* "${THIRD_PARTY_ROOT}/" || true
+              shopt -u dotglob
+              rmdir "${THIRD_PARTY_ROOT}/3rdParty" 2>/dev/null || true
+            fi
+
+            # Move top-level extracted spdlog under 3rdParty if needed
+            if [[ -d "${PARENT_DIR}/spdlog" && ! -d "${THIRD_PARTY_ROOT}/spdlog" ]]; then
+              echo "Detected top-level ../spdlog; moving under ${THIRD_PARTY_ROOT}"
+              mv "${PARENT_DIR}/spdlog" "${THIRD_PARTY_ROOT}/" || true
+            fi
+
+            if [[ ! -f "${SPDLOG_PREFIX}/lib/cmake/spdlog/spdlogConfig.cmake" && ! -f "${SPDLOG_PREFIX}/lib/cmake/spdlog/spdlog-config.cmake" ]]; then
+              echo "ERROR: spdlog cmake config not found after extracting to ${THIRD_PARTY_ROOT}."
+              echo "Listing ${THIRD_PARTY_ROOT}:"
+              ls -la "${THIRD_PARTY_ROOT}" || true
+              exit 1
+            fi
+          fi
+
+          echo "3rdParty tree (top level):"
+          ls -la "${THIRD_PARTY_ROOT}"
+          echo "spdlog prefix:"
+          ls -la "${SPDLOG_PREFIX}" || true
+
+      - name: Configure
+        shell: bash
+        run: |
+          set -euo pipefail
+          WS="${GITHUB_WORKSPACE}"
+          THIRD_PARTY_ROOT="$(dirname "${WS}")/3rdParty"
+          SPDLOG_PREFIX="${THIRD_PARTY_ROOT}/spdlog"
+
+          rm -rf build
+          cmake -S . -B build -G Ninja -DCMAKE_BUILD_TYPE=Release \
+            -DCMAKE_PREFIX_PATH="${SPDLOG_PREFIX}" \
+            -DCMAKE_INSTALL_PREFIX="${WS}/build/INSTALL"
+
+      - name: Build
+        shell: bash
+        run: |
+          set -euo pipefail
+          cmake --build build --parallel
+
+      - name: Install
+        shell: bash
+        run: |
+          set -euo pipefail
+          cmake --install build
+
+      - name: Debug install output
+        shell: bash
+        run: |
+          set -euo pipefail
+          echo "Install dir listing:"
+          ls -la build/INSTALL || true
+          find build/INSTALL -maxdepth 3 -type d -print || true
+
+      # On real GitHub runners, upload artifact works.
+      - name: Upload install artifact
+        if: ${{ env.ACT != 'true' }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: andromeda-ubuntu-release
+          path: build/INSTALL/
+          if-no-files-found: error
+
+      # On act (local), upload-artifact fails because ACTIONS_RUNTIME_TOKEN is not present.
+      # Create a local tarball instead so the job succeeds and you still get an artifact-like output.
+      - name: Package install output (act local)
+        if: ${{ env.ACT == 'true' }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          if [[ ! -d build/INSTALL ]]; then
+            echo "ERROR: build/INSTALL does not exist"
+            exit 1
+          fi
+          tar -czf andromeda-ubuntu-release.tar.gz -C build INSTALL
+          echo "Created: $(pwd)/andromeda-ubuntu-release.tar.gz"
+          ls -lah andromeda-ubuntu-release.tar.gz
