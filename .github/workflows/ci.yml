@@ -1,0 +1,29 @@
+name: CI
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  build-linux:
+    name: Build (Ubuntu)
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Build (scripts)
+        shell: bash
+        run: |
+          set -euo pipefail
+          chmod +x ./scripts/build-linux.sh ./scripts/ci-linux.sh
+          ./scripts/ci-linux.sh
+
+      - name: Upload install artifact
+        if: ${{ env.ACT != 'true' }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: andromeda-ubuntu-release
+          path: build/INSTALL/
+          if-no-files-found: error
