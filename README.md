@@ -10,6 +10,12 @@ An engine made to display solar system.
             ├── andromeda
             ├── 3rdParty
     ```
+    Or just run these if you are on Linux
+    ```sh
+    chmod +x ./scripts/setup-3rdParty.sh
+    ./scripts/setup-3rdParty.sh
+    ```
+
 2. Build andromeda project
 
 ### 2. Running on VS Code (Linux)
