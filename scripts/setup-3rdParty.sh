@@ -1,18 +1,9 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-# Intended to be sourced.
-# Provides:
-# - PrepareSpdlogThirdParty
-#
-# Caller should set:
-# - PARENT_DIR (required)
-#
-# Optional overrides:
-# - THIRD_PARTY_ROOT (default "${PARENT_DIR}/3rdParty")
-# - SPDLOG_PREFIX (default "${THIRD_PARTY_ROOT}/spdlog")
-# - GDRIVE_FILE_ID (default below)
-# - THIRD_PARTY_ARCHIVE (default /tmp/3rdParty.tar.xz)
+# Can be:
+# 1) sourced (provides PrepareSpdlogThirdParty)
+# 2) executed (downloads/extracts to repo_parent/3rdParty)
 
 : "${GDRIVE_FILE_ID:=1H-HeqOXuVqSWpIwzJMdDfufm7Quc0otg}"
 : "${THIRD_PARTY_ARCHIVE:=/tmp/3rdParty.tar.xz}"
@@ -61,7 +52,9 @@ GDriveDownload()
 PrepareSpdlogThirdParty()
 {
   if [[ -z "${PARENT_DIR:-}" ]]; then
-    echo "ERROR: PARENT_DIR is not set (caller must set it)."
+    echo "ERROR: PARENT_DIR is not set."
+    echo "If sourcing: set PARENT_DIR first."
+    echo "If executing: this script will set it automatically."
     exit 1
   fi
 
@@ -118,3 +111,19 @@ PrepareSpdlogThirdParty()
     exit 1
   fi
 }
+
+# If executed (not sourced), run it as a standalone "setup 3rdParty" command.
+if [[ "${BASH_SOURCE[0]}" == "$0" ]]; then
+  SCRIPT_DIR="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)"
+  REPO_ROOT="$(cd -- "${SCRIPT_DIR}/../" && pwd)"
+  PARENT_DIR="$(cd -- "${REPO_ROOT}/../" && pwd)"
+
+  export PARENT_DIR
+
+  ThirdPartyLog "Running standalone 3rdParty setup..."
+  ThirdPartyLog "REPO_ROOT=${REPO_ROOT}"
+  ThirdPartyLog "PARENT_DIR=${PARENT_DIR}"
+
+  PrepareSpdlogThirdParty
+  ThirdPartyLog "3rdParty setup done."
+fi
