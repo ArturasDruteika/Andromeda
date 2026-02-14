@@ -1,5 +1,5 @@
 #include "../include/Application.hpp"
-#include "EngineCore/Engine/include/Engine.hpp"
+#include "Engine/Engine/include/Engine.hpp"
 
 #include "spdlog/spdlog.h"
 
@@ -114,10 +114,10 @@ namespace Andromeda::Application
         // (You added Engine::SetScene(IScene*))
         if (m_pEngine)
         {
-            // EngineCore::Engine has SetScene, but IEngine does not in your original API.
+            // Engine::Engine has SetScene, but IEngine does not in your original API.
             // If you want this call through IEngine, add SetScene to IEngine too.
             // For now, dynamic_cast safely if needed:
-            auto* pEngineImpl = dynamic_cast<EngineCore::Engine*>(m_pEngine.get());
+            auto* pEngineImpl = dynamic_cast<Engine::Engine*>(m_pEngine.get());
             if (pEngineImpl)
             {
                 pEngineImpl->SetScene(m_pScene);
@@ -142,7 +142,7 @@ namespace Andromeda::Application
         // Ensure engine sees the scene (if not already connected)
         if (m_pEngine)
         {
-            EngineCore::Engine* pEngineImpl = dynamic_cast<EngineCore::Engine*>(m_pEngine.get());
+            Engine::Engine* pEngineImpl = dynamic_cast<Engine::Engine*>(m_pEngine.get());
             if (pEngineImpl)
             {
                 pEngineImpl->SetScene(m_pScene);

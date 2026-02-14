@@ -11,7 +11,7 @@
 #include "spdlog/spdlog.h"
 
 
-namespace Andromeda::EngineCore
+namespace Andromeda::Engine
 {
     static constexpr float DEFAULT_MOUSE_YAW_SENSITIVITY = 0.005f;
     static constexpr float DEFAULT_MOUSE_PITCH_SENSITIVITY = 0.005f;
@@ -514,7 +514,7 @@ namespace Andromeda
 
         try
         {
-            std::unique_ptr<IEngine> engine = std::make_unique<EngineCore::Engine>(graphicsBackend);
+            std::unique_ptr<IEngine> engine = std::make_unique<Engine::Engine>(graphicsBackend);
             return engine;
         }
         catch (const std::exception& ex)

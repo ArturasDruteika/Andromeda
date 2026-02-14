@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.24)
 
-project(EngineCore)
+project(Engine)
 
 set(CMAKE_BUILD_PARALLEL_LEVEL)
 set(CMAKE_CXX_STANDARD 23)
@@ -9,24 +9,24 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 add_definitions(-DENGINECORE_EXPORT)
 
 # SPDLog
-file(TO_CMAKE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/../../3rdParty/spdlog/ spdlog_root_path)
-file(TO_CMAKE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/../../3rdParty/spdlog/lib/cmake/spdlog/ spdlog_path)
+file(TO_CMAKE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/../../../../../3rdParty/spdlog/ spdlog_root_path)
+file(TO_CMAKE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/../../../../../3rdParty/spdlog/lib/cmake/spdlog/ spdlog_path)
 set(spdlog_DIR ${spdlog_path})
 find_package(spdlog REQUIRED)
 
 
 # ==== Engine ====
 set(ENGINE_HEADERS
-    EngineCore/Engine/include/Engine.hpp
+    Engine/Engine/include/Engine.hpp
 )
 
 set(ENGINE_SOURCES
-    EngineCore/Engine/src/Engine.cpp
+    Engine/Engine/src/Engine.cpp
 )
 
 # ==== Macro Exports ====
 set(MACRO_EXPORTS_HEADERS
-    EngineCore/MacroExports/include/MacroExports.hpp
+    Engine/MacroExports/include/MacroExports.hpp
 )
 
 # ==== Target ====

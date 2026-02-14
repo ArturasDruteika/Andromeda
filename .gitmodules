@@ -1,8 +1,8 @@
 [submodule "CPP/Andromeda/External/glfw"]
 	path = CPP/Andromeda/External/glfw
 	url = https://github.com/glfw/glfw.git
-[submodule "CPP/Andromeda/External/imgui"]
-	path = CPP/Andromeda/External/imgui
+[submodule "CPP/Andromeda/External/imgui/imgui"]
+	path = CPP/Andromeda/External/imgui/imgui
 	url = https://github.com/ocornut/imgui.git
 [submodule "CPP/Andromeda/External/glm"]
 	path = CPP/Andromeda/External/glm

@@ -8,7 +8,7 @@
 #include "pch.hpp"
 
 
-namespace Andromeda::EngineCore
+namespace Andromeda::Engine
 {
     class ENGINECORE_API Engine
         : public IEngine
