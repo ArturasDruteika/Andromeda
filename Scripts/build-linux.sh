@@ -21,9 +21,9 @@ log()
 }
 
 # shellcheck source=/dev/null
-source "${REPO_ROOT}/scripts/setup-linux.sh"
+source "${REPO_ROOT}/Scripts/setup-linux.sh"
 # shellcheck source=/dev/null
-source "${REPO_ROOT}/scripts/setup-3rdParty.sh"
+source "${REPO_ROOT}/Scripts/setup-3rdParty.sh"
 
 configure()
 {

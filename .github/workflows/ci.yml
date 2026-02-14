@@ -17,8 +17,8 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          chmod +x ./scripts/build-linux.sh ./scripts/ci-linux.sh
-          ./scripts/ci-linux.sh
+          chmod +x ./Scripts/build-linux.sh ./Scripts/ci-linux.sh
+          ./Scripts/ci-linux.sh
 
       - name: Upload install artifact
         if: ${{ env.ACT != 'true' }}

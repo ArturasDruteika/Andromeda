@@ -114,9 +114,10 @@ PrepareSpdlogThirdParty()
 
 # If executed (not sourced), run it as a standalone "setup 3rdParty" command.
 if [[ "${BASH_SOURCE[0]}" == "$0" ]]; then
+
   SCRIPT_DIR="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)"
-  REPO_ROOT="$(cd -- "${SCRIPT_DIR}/../" && pwd)"
-  PARENT_DIR="$(cd -- "${REPO_ROOT}/../" && pwd)"
+  REPO_ROOT="$(cd -- "${SCRIPT_DIR}/.." && pwd)"
+  PARENT_DIR="$(cd -- "${REPO_ROOT}/.." && pwd)"
 
   export PARENT_DIR
 
