@@ -12,6 +12,13 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+        with:
+          submodules: recursive
+
+      - name: Ensure submodules are up to date
+        run: |
+          git submodule sync --recursive
+          git submodule update --init --recursive
 
       - name: Build (scripts)
         shell: bash

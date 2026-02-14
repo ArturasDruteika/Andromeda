@@ -55,9 +55,15 @@ main()
 {
   log "Repo: ${REPO_ROOT}"
 
+  # Ensure submodules are initialized and updated
+  if [ -d "${REPO_ROOT}/.git" ]; then
+    log "Updating git submodules..."
+    git -C "${REPO_ROOT}" submodule sync --recursive
+    git -C "${REPO_ROOT}" submodule update --init --recursive
+  fi
+
   InstallBuildDepsLinux
   PrepareSpdlogThirdParty
-
   configure
   build
   install

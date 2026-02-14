@@ -125,6 +125,13 @@ if [[ "${BASH_SOURCE[0]}" == "$0" ]]; then
   ThirdPartyLog "REPO_ROOT=${REPO_ROOT}"
   ThirdPartyLog "PARENT_DIR=${PARENT_DIR}"
 
+  # Ensure submodules are initialized and updated
+  if [ -d "${REPO_ROOT}/.git" ]; then
+    ThirdPartyLog "Updating git submodules..."
+    git -C "${REPO_ROOT}" submodule sync --recursive
+    git -C "${REPO_ROOT}" submodule update --init --recursive
+  fi
+
   PrepareSpdlogThirdParty
   ThirdPartyLog "3rdParty setup done."
 fi
