@@ -9,10 +9,6 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 add_definitions(-DENGINECORE_EXPORT)
 
 # SPDLog
-file(TO_CMAKE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/../../../../../3rdParty/spdlog/ spdlog_root_path)
-file(TO_CMAKE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/../../../../../3rdParty/spdlog/lib/cmake/spdlog/ spdlog_path)
-set(spdlog_DIR ${spdlog_path})
-find_package(spdlog REQUIRED)
 
 
 # ==== Engine ====
@@ -93,12 +89,6 @@ if (CMAKE_SYSTEM_NAME STREQUAL "Windows")
         )
     endif()
 elseif (CMAKE_SYSTEM_NAME STREQUAL "Linux")
-    add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
-        # Copy and rename directly to the SONAME the loader expects
-        COMMAND ${CMAKE_COMMAND} -E copy_if_different
-            ${spdlog_root_path}/bin/$<$<CONFIG:Debug>:libspdlogd.so.1.15.3>$<$<CONFIG:Release>:libspdlog.so.1.15.3>
-            $<TARGET_FILE_DIR:${PROJECT_NAME}>/$<$<CONFIG:Debug>:libspdlogd.so.1.15>$<$<CONFIG:Release>:libspdlog.so.1.15>
-    )
 endif()
 
 # ==== IDE Organization ====
