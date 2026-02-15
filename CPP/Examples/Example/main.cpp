@@ -55,7 +55,7 @@ void PopulateSceneWithDummyObjects(
 
 	Andromeda::Space::Sphere* pCenterSphere = new Andromeda::Space::Sphere(
 		0.1f,
-		Andromeda::Color{ 0.8f, 0.2f, 0.2f, 1.0f }
+		Andromeda::Color{ 0.2f, 0.9f, 1.0f, 1.0f }
 	);
 	{
 		std::unique_ptr<Andromeda::Space::SceneNode> centerNode =
@@ -158,7 +158,7 @@ int main(void)
 
 	pApp->SetScene(pScene);
 	Andromeda::IRenderer* pRenderer = pApp->GetRenderer();
-	pRenderer->SetIlluminationMode(true);
+	pRenderer->SetIlluminationMode(false);
 	pApp->Run();
 
 	return 0;
