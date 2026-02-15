@@ -13,12 +13,6 @@ target_compile_definitions(Example
         ANDROMEDA_API_USE_DLL
 )
 
-# SPDLog
-file(TO_CMAKE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/../../../../3rdParty/spdlog/ spdlog_root_path)
-file(TO_CMAKE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/../../../../3rdParty/spdlog/lib/cmake/spdlog/ spdlog_path)
-set(spdlog_DIR ${spdlog_path})
-find_package(spdlog REQUIRED)
-
 # Ensure Engine is linked
 target_link_libraries(${PROJECT_NAME} 
     PRIVATE 

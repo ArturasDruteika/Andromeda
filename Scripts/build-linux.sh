@@ -10,10 +10,7 @@ PARENT_DIR="$(cd -- "${REPO_ROOT}/.." && pwd)"
 : "${BUILD_TYPE:=Release}"
 : "${INSTALL_DIR:=${REPO_ROOT}/${BUILD_DIR}/INSTALL}"
 
-# Optional overrides for helpers
-: "${INSTALL_DEPS:=1}"
-: "${THIRD_PARTY_ROOT:=${PARENT_DIR}/3rdParty}"
-: "${SPDLOG_PREFIX:=${THIRD_PARTY_ROOT}/spdlog}"
+
 
 log()
 {
@@ -22,8 +19,6 @@ log()
 
 # shellcheck source=/dev/null
 source "${REPO_ROOT}/Scripts/setup-linux.sh"
-# shellcheck source=/dev/null
-source "${REPO_ROOT}/Scripts/setup-3rdParty.sh"
 
 configure()
 {
@@ -31,7 +26,6 @@ configure()
   rm -rf "${REPO_ROOT:?}/${BUILD_DIR}"
   cmake -S "${REPO_ROOT}" -B "${REPO_ROOT}/${BUILD_DIR}" -G Ninja \
     -DCMAKE_BUILD_TYPE="${BUILD_TYPE}" \
-    -DCMAKE_PREFIX_PATH="${SPDLOG_PREFIX}" \
     -DCMAKE_INSTALL_PREFIX="${INSTALL_DIR}"
 }
 
@@ -63,7 +57,6 @@ main()
   fi
 
   InstallBuildDepsLinux
-  PrepareSpdlogThirdParty
   configure
   build
   install
