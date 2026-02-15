@@ -1,0 +1,54 @@
+#ifndef SPACE__OBJECTS__CUBE__HPP
+#define SPACE__OBJECTS__CUBE__HPP
+
+
+#include "GeometricObject.hpp"
+#include "SurfaceObject.hpp"
+#include "../../MacroExports/include/MacroExports.hpp"
+#include "Math/LinearAlgebra/include/LinearAlgebraDataTypes.hpp"
+#include "Andromeda/Space/Colors/Colors.hpp"
+#include "Andromeda/Space/Objects/ICube.hpp"
+
+
+namespace Andromeda::Space
+{
+    struct CubeFaceData
+    {
+        Math::Vec3 normal;
+        std::array<Math::Vec3, 4> vertices;
+    };
+
+    class SPACE_API Cube
+        : public ICube
+        , public GeometricObject
+		, public SurfaceObject
+    {
+    public:
+        Cube(float halfExtent, const Color& color);
+        ~Cube();
+
+		// Getters
+		float GetHalfExtent() const override;
+		// Setters
+		void SetHalfExtent(float halfExtent);
+    
+    private:
+        void ConstructCube(float halfExtent, const Color& color);
+        static std::array<CubeFaceData, 6> BuildCubeFaces(float halfExtent);
+        static void ReserveCubeBuffers(std::vector<Vertex>& vertices, std::vector<unsigned int>& indices);
+        static void AppendFace(
+            const CubeFaceData& face,
+            const Color& color,
+            std::vector<Vertex>& outVertices,
+            std::vector<unsigned int>& outIndices,
+            unsigned int& indexOffset
+        );
+
+    private:
+		float m_halfExtent;
+
+    };
+}
+
+
+#endif // SPACE__OBJECTS__CUBE__HPP

@@ -1,0 +1,12 @@
+[submodule "CPP/Andromeda/External/glfw"]
+	path = CPP/Andromeda/External/glfw
+	url = https://github.com/glfw/glfw.git
+[submodule "CPP/Andromeda/External/imgui/imgui"]
+	path = CPP/Andromeda/External/imgui/imgui
+	url = https://github.com/ocornut/imgui.git
+[submodule "CPP/Andromeda/External/glm"]
+	path = CPP/Andromeda/External/glm
+	url = https://github.com/g-truc/glm.git
+[submodule "CPP/Andromeda/External/spdlog"]
+	path = CPP/Andromeda/External/spdlog
+	url = https://github.com/gabime/spdlog

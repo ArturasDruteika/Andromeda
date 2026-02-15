@@ -1,0 +1,15 @@
+cmake_minimum_required(VERSION 3.24)
+
+project(AndromedaModules)
+
+add_subdirectory(PrecompiledHeaders)
+add_subdirectory(Math)
+add_subdirectory(Api)
+add_subdirectory(Utils)
+add_subdirectory(Space)
+add_subdirectory(Window)
+add_subdirectory(GraphicsContext)
+add_subdirectory(Rendering)
+add_subdirectory(Platform)
+add_subdirectory(Engine)
+add_subdirectory(Application)
