@@ -7,8 +7,8 @@
 namespace Andromeda::Application
 {
     Application::Application(GraphicsBackend graphicsBackend)
-        : m_Initialized{ false }
-        , m_GraphicsBackend{ graphicsBackend }
+        : m_initialized{ false }
+        , m_graphicsBackend{ graphicsBackend }
         , m_pPlatform{ nullptr }
         , m_pEngine{ nullptr }
         , m_pScene{ nullptr }
@@ -20,7 +20,7 @@ namespace Andromeda::Application
 
     Application::~Application()
     {
-        if (m_Initialized)
+        if (m_initialized)
         {
             DeInit();
         }
@@ -33,7 +33,7 @@ namespace Andromeda::Application
 
     bool Application::Init(unsigned int width, unsigned int height, const std::string& title)
     {
-        if (m_Initialized)
+        if (m_initialized)
         {
             spdlog::warn("Application::Init() called but application is already initialized.");
             return true;
@@ -72,7 +72,7 @@ namespace Andromeda::Application
             return false;
         }
 
-        m_Initialized = true;
+        m_initialized = true;
         return true;
     }
 
@@ -80,7 +80,7 @@ namespace Andromeda::Application
     {
         if (!m_pPlatform && !m_pEngine)
         {
-            m_Initialized = false;
+            m_initialized = false;
             return;
         }
 
@@ -103,7 +103,7 @@ namespace Andromeda::Application
         m_pRenderer = nullptr;
         m_pScene = nullptr;
 
-        m_Initialized = false;
+        m_initialized = false;
     }
 
     void Application::SetScene(IScene* pScene)
@@ -127,7 +127,7 @@ namespace Andromeda::Application
 
     int Application::Run()
     {
-        if (!m_Initialized)
+        if (!m_initialized)
         {
             spdlog::error("Application::Run() called but application is not initialized.");
             return -1;
@@ -152,9 +152,7 @@ namespace Andromeda::Application
         while (!m_pWindow->ShouldClose())
         {
             m_pWindow->PollEvents();
-
             m_pRenderer->RenderFrame(*m_pScene);
-
             m_pContext->Present();
         }
 
@@ -163,7 +161,7 @@ namespace Andromeda::Application
 
     bool Application::InitPlatform(unsigned int width, unsigned int height, const std::string& title)
     {
-        m_pPlatform = CreatePlatform(m_GraphicsBackend);
+        m_pPlatform = CreatePlatform(m_graphicsBackend);
         if (!m_pPlatform)
         {
             spdlog::error("CreatePlatform() returned nullptr.");
@@ -181,7 +179,7 @@ namespace Andromeda::Application
 
     bool Application::InitEngine()
     {
-        m_pEngine = CreateEngine(m_GraphicsBackend);
+        m_pEngine = CreateEngine(m_graphicsBackend);
         if (!m_pEngine)
         {
             spdlog::error("CreateEngine() returned nullptr.");

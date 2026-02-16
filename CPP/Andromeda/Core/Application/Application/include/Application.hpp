@@ -48,8 +48,8 @@ namespace Andromeda::Application
         void ConnectEvents();
 
     private:
-        bool m_Initialized;
-        GraphicsBackend m_GraphicsBackend;
+        bool m_initialized;
+        GraphicsBackend m_graphicsBackend;
 
         std::unique_ptr<IPlatform> m_pPlatform;
         std::unique_ptr<IEngine> m_pEngine;
