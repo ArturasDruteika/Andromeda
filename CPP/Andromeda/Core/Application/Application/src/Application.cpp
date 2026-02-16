@@ -15,6 +15,7 @@ namespace Andromeda::Application
         , m_pWindow{ nullptr }
         , m_pContext{ nullptr }
         , m_pRenderer{ nullptr }
+        // , m_running{ false }
     {
     }
 
@@ -33,47 +34,7 @@ namespace Andromeda::Application
 
     bool Application::Init(unsigned int width, unsigned int height, const std::string& title)
     {
-        if (m_initialized)
-        {
-            spdlog::warn("Application::Init() called but application is already initialized.");
-            return true;
-        }
-
-        if (!InitPlatform(width, height, title))
-        {
-            spdlog::error("Application::Init() failed: platform init failed.");
-            return false;
-        }
-
-        if (!InitEngine())
-        {
-            spdlog::error("Application::Init() failed: engine init failed.");
-            DeInit();
-            return false;
-        }
-
-        m_pWindow = m_pPlatform->GetWindow();
-        m_pContext = m_pPlatform->GetGraphicsContext();
-        m_pRenderer = m_pEngine->GetRenderer();
-
-        if (!m_pWindow || !m_pContext || !m_pRenderer)
-        {
-            spdlog::error("Application::Init() failed: window/context/renderer is null.");
-            DeInit();
-            return false;
-        }
-
-        ConnectEvents();
-
-        if (!InitRenderer(static_cast<int>(width), static_cast<int>(height)))
-        {
-            spdlog::error("Application::Init() failed: renderer init failed.");
-            DeInit();
-            return false;
-        }
-
-        m_initialized = true;
-        return true;
+        return InitInternal(width, height, title);
     }
 
     void Application::DeInit()
@@ -149,13 +110,8 @@ namespace Andromeda::Application
             }
         }
 
-        while (!m_pWindow->ShouldClose())
-        {
-            m_pWindow->PollEvents();
-            m_pRenderer->RenderFrame(*m_pScene);
-            m_pContext->Present();
-        }
-
+        RenderLoop();
+        
         return 0;
     }
 
@@ -202,6 +158,50 @@ namespace Andromeda::Application
         return true;
     }
 
+    bool Application::InitInternal(unsigned int width, unsigned int height, const std::string &title)
+    {
+        if (m_initialized)
+        {
+            spdlog::warn("Application::Init() called but application is already initialized.");
+            return true;
+        }
+
+        if (!InitPlatform(width, height, title))
+        {
+            spdlog::error("Application::Init() failed: platform init failed.");
+            return false;
+        }
+
+        if (!InitEngine())
+        {
+            spdlog::error("Application::Init() failed: engine init failed.");
+            DeInit();
+            return false;
+        }
+
+        m_pWindow = m_pPlatform->GetWindow();
+        m_pContext = m_pPlatform->GetGraphicsContext();
+        m_pRenderer = m_pEngine->GetRenderer();
+
+        if (!m_pWindow || !m_pContext || !m_pRenderer)
+        {
+            spdlog::error("Application::Init() failed: window/context/renderer is null.");
+            DeInit();
+            return false;
+        }
+
+        ConnectEvents();
+
+        if (!InitRenderer(static_cast<int>(width), static_cast<int>(height)))
+        {
+            spdlog::error("Application::Init() failed: renderer init failed.");
+            DeInit();
+            return false;
+        }
+        m_initialized = true;
+        return true;
+    }
+
     void Application::ConnectEvents()
     {
         // This is the thing you wanted hidden from main:
@@ -213,6 +213,16 @@ namespace Andromeda::Application
                     m_pEngine->OnEvent(e);
                 }
             });
+    }
+
+    void Application::RenderLoop()
+    {
+        while (!m_pWindow->ShouldClose())
+        {
+            m_pWindow->PollEvents();
+            m_pRenderer->RenderFrame(*m_pScene);
+            m_pContext->Present();
+        }
     }
 }
 

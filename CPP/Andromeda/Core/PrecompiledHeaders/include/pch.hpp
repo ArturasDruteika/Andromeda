@@ -9,6 +9,7 @@
 #include <array>
 #include <cmath>
 #include <chrono>
+#include <condition_variable>
 #include <cstddef>
 #include <cstdint>
 #include <filesystem>
@@ -19,10 +20,12 @@
 #include <limits>
 #include <map>
 #include <memory>
+#include <mutex>
 #include <unordered_set>
 #include <sstream>
 #include <stdexcept>
 #include <string>
+#include <thread>
 #include <unordered_map>
 #include <vector>
 
