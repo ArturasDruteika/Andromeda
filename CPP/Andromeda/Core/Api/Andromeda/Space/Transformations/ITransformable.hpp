@@ -24,6 +24,7 @@ namespace Andromeda
 		// Setters
         virtual void SetModelMatrix(const Math::Mat4& modelMatrix) = 0;
 
+        virtual void UpdateModelMatrix() = 0;
 		virtual void ResetState() = 0;
     };
 }

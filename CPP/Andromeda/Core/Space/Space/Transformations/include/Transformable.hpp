@@ -28,10 +28,8 @@ namespace Andromeda
 		// Setters
 		void SetModelMatrix(const Math::Mat4& modelMatrix) override;
 
+		void UpdateModelMatrix() override;
 		void ResetState() override;
-
-	private:
-		void UpdateModelMatrix();
 
 	private:
 		bool m_stateChanged;
