@@ -15,7 +15,6 @@ namespace Andromeda::Application
         , m_pWindow{ nullptr }
         , m_pContext{ nullptr }
         , m_pRenderer{ nullptr }
-        // , m_running{ false }
     {
     }
 
