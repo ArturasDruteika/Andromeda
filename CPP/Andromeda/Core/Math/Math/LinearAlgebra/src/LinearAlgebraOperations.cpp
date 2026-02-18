@@ -284,14 +284,7 @@ namespace Andromeda::Math
 
 	Mat4 LinAlgOps::Translate(const Mat4& matrix, const Vec3& translation)
 	{
-		Mat4 result = matrix;
-
-		// Add translation to the last column, like glm::translate
-		result[0][3] += translation[0];
-		result[1][3] += translation[1];
-		result[2][3] += translation[2];
-
-		return result;
+		return matrix * Translate(translation);
 	}
 
 	Vec2 LinAlgOps::Scale(const Vec2& v, float s)

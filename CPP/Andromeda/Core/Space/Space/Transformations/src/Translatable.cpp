@@ -56,6 +56,6 @@ namespace Andromeda
 
 	void Translatable::UpdateTranslationMatrix()
 	{
-		m_translationMatrix = Math::LinAlgOps::Translate(m_translationMatrix, m_position);
+		m_translationMatrix = Math::LinAlgOps::Translate(m_position);
 	}
 }
