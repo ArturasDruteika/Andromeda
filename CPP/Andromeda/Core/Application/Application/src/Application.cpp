@@ -219,6 +219,10 @@ namespace Andromeda::Application
         while (!m_pWindow->ShouldClose())
         {
             m_pWindow->PollEvents();
+            if (m_pScene)
+            {
+                m_pScene->Update(0.016f); // Example deltaTime (60Hz)
+            }
             m_pRenderer->RenderFrame(*m_pScene);
             m_pContext->Present();
         }

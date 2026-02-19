@@ -91,6 +91,11 @@ namespace Andromeda::Space
 	{
 	}
 
+	void Scene::Update(float deltaTime)
+	{
+		// Update scene state based on deltaTime
+	}
+
 	void Scene::RegisterNode(SceneNode& node)
 	{
 		node.ForEachComponent(

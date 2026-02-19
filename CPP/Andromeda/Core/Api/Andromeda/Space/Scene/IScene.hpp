@@ -25,6 +25,7 @@ namespace Andromeda
 
 		virtual void ClearScene() = 0;
 		virtual void ResetSceneState() = 0;
+		virtual void Update(float deltaTime) = 0;
 	};
 }
 

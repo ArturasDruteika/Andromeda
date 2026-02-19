@@ -38,6 +38,7 @@ namespace Andromeda::Space
 
 		void ClearScene() override;
 		void ResetSceneState() override;
+		void Update(float deltaTime) override;
 
 	private:
 		void RegisterNode(SceneNode& node);
