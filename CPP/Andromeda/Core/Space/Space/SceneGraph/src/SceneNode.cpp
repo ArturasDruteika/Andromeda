@@ -45,11 +45,19 @@ namespace Andromeda::Space
 
     ITransformable& SceneNode::GetTransform()
     {
+        if (m_transform == nullptr)
+        {
+            spdlog::error("SceneNode has no transform.");
+        }
         return *m_transform;
     }
 
     const ITransformable& SceneNode::GetTransform() const
     {
+        if (m_transform == nullptr)
+        {
+            spdlog::error("SceneNode has no transform.");
+        }
         return *m_transform;
     }
 
@@ -68,6 +76,7 @@ namespace Andromeda::Space
         if (child.get() == this)
         {
             spdlog::error("Cannot attach node to itself.");
+            return;
         }
 
         // Best-effort support for "removing from old parent" while still taking unique_ptr:
@@ -94,6 +103,7 @@ namespace Andromeda::Space
         if (childNode == nullptr)
         {
             spdlog::error("AttachChild requires child to be a SceneNode instance.");
+            return;
         }
 
         childNode->SetParentInternal(this);
