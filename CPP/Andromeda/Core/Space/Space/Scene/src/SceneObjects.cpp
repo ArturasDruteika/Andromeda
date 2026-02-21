@@ -11,10 +11,7 @@ namespace Andromeda::Space
 
 	SceneObjects::~SceneObjects()
 	{
-		for (const auto& [id, object] : m_objects)
-		{
-			delete object;
-		}
+		m_objects.clear();
 		m_objectTransforms.clear();
 	}
 
@@ -38,7 +35,6 @@ namespace Andromeda::Space
 		std::unordered_map<int, IGeometricObject*>::iterator it = m_objects.find(id);
 		if (it != m_objects.end())
 		{
-			delete it->second;
 			m_objects.erase(it);
 		}
 		m_objectTransforms.erase(id);

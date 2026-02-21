@@ -50,11 +50,15 @@ namespace Andromeda::Space
 
 	void Scene::RemoveObject(int id)
 	{
-		SceneObjects::RemoveObject(id);
-		if (dynamic_cast<ILightObject*>(m_objects[id]))
+		std::unordered_map<int, IGeometricObject*>::const_iterator it = m_objects.find(id);
+		if (it != m_objects.end())
 		{
-			RemoveLightObject(id);
+			if (dynamic_cast<const ILightObject*>(it->second))
+			{
+				RemoveLightObject(id);
+			}
 		}
+		SceneObjects::RemoveObject(id);
 	}
 
 	const Math::Vec3& Scene::GetSceneCenter() const
@@ -64,26 +68,10 @@ namespace Andromeda::Space
 
 	void Scene::ClearScene()
 	{
-		for (const auto& [id, object] : m_objects)
-		{
-			delete object;
-		}
 		m_objects.clear();
 		m_objectTransforms.clear();
-		for (const auto& [id, light] : m_directionalLights)
-		{
-			delete light;
-		}
 		m_directionalLights.clear();
-		for (const auto& [id, light] : m_pointLights)
-		{
-			delete light;
-		}
 		m_pointLights.clear();
-		for (const auto& [id, lightObject] : m_lightObjects)
-		{
-			delete lightObject;
-		}
 		m_lightObjects.clear();
 	}
 

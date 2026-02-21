@@ -12,18 +12,9 @@ namespace Andromeda::Space
 
 	SceneLighting::~SceneLighting()
 	{
-		for (const auto& [id, light] : m_directionalLights)
-		{
-			delete light;
-		}
-		for (const auto& [id, light] : m_pointLights)
-		{
-			delete light;
-		}
-		for (const auto& [id, lightObject] : m_lightObjects)
-		{
-			delete lightObject;
-		}
+		m_directionalLights.clear();
+		m_pointLights.clear();
+		m_lightObjects.clear();
 	}
 
 	const std::unordered_map<int, const IDirectionalLight*>& SceneLighting::GetDirectionalLights() const
@@ -74,7 +65,6 @@ namespace Andromeda::Space
 					m_directionalLights.find(id);
 				if (directionalLightIt != m_directionalLights.end())
 				{
-					delete directionalLightIt->second;
 					m_directionalLights.erase(directionalLightIt);
 				}
 			}
@@ -84,11 +74,9 @@ namespace Andromeda::Space
 					m_pointLights.find(id);
 				if (pointLightIt != m_pointLights.end())
 				{
-					delete pointLightIt->second;
 					m_pointLights.erase(pointLightIt);
 				}
 			}
-			delete lightObject;
 			m_lightObjects.erase(lightObjectIt);
 		}
 	}
