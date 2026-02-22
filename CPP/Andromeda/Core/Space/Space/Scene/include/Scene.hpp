@@ -12,6 +12,8 @@
 #include "Andromeda/Space/Scene/IScene.hpp"
 #include "pch.hpp"
 
+#include <functional>
+
 
 namespace Andromeda::Space
 {
@@ -24,6 +26,8 @@ namespace Andromeda::Space
 		, public SceneState
 	{
 	public:
+		using UpdateCallback = std::function<void(Scene&, float)>;
+
 		Scene();
 		~Scene() override;
 
@@ -40,12 +44,17 @@ namespace Andromeda::Space
 		void ResetSceneState() override;
 		void Update(float deltaTime) override;
 
+		// Simulation / game-logic hooks
+		void AddUpdateCallback(UpdateCallback callback);
+		void ClearUpdateCallbacks();
+
 	private:
 		void RegisterNode(SceneNode& node);
 		void RegisterNodeRecursive(SceneNode& node);
 
 		Math::Vec3 m_sceneCenter;
 		std::unique_ptr<SceneNode> m_rootNode;
+		std::vector<UpdateCallback> m_updateCallbacks;
 	};
 }
 

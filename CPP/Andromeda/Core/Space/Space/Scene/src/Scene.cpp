@@ -81,7 +81,23 @@ namespace Andromeda::Space
 
 	void Scene::Update(float deltaTime)
 	{
-		// Update scene state based on deltaTime
+		for (UpdateCallback& callback : m_updateCallbacks)
+		{
+			if (callback)
+			{
+				callback(*this, deltaTime);
+			}
+		}
+	}
+
+	void Scene::AddUpdateCallback(UpdateCallback callback)
+	{
+		m_updateCallbacks.push_back(std::move(callback));
+	}
+
+	void Scene::ClearUpdateCallbacks()
+	{
+		m_updateCallbacks.clear();
 	}
 
 	void Scene::RegisterNode(SceneNode& node)
