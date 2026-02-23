@@ -7,6 +7,7 @@
 #include "SceneLighting.hpp"
 #include "SceneObjects.hpp"
 #include "SceneState.hpp"
+#include "SceneUpdateHooks.hpp"
 #include "../../SceneGraph/include/SceneNode.hpp"
 #include "../../MacroExports/include/MacroExports.hpp"
 #include "Andromeda/Space/Scene/IScene.hpp"
@@ -45,7 +46,8 @@ namespace Andromeda::Space
 		void Update(float deltaTime) override;
 
 		// Simulation / game-logic hooks
-		void AddUpdateCallback(UpdateCallback callback);
+		SceneUpdateHooks::Handle AddUpdateCallback(SceneUpdateHooks::Callback callback);
+		void RemoveUpdateCallback(SceneUpdateHooks::Handle handle);
 		void ClearUpdateCallbacks();
 
 	private:
@@ -54,7 +56,7 @@ namespace Andromeda::Space
 
 		Math::Vec3 m_sceneCenter;
 		std::unique_ptr<SceneNode> m_rootNode;
-		std::vector<UpdateCallback> m_updateCallbacks;
+		SceneUpdateHooks m_updateHooks;
 	};
 }
 

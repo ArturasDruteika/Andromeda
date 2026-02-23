@@ -236,12 +236,13 @@ int main(void)
 	};
 
 	SolarSystemState solarSystemState{};
-	pScene->AddUpdateCallback(
+	Andromeda::Space::SceneUpdateHooks::Handle handle = pScene->AddUpdateCallback(
 		[solarSystemState, solarSystemIds](Andromeda::Space::Scene& scene, float dt) mutable
 		{
 			solarSystemState.time += dt;
 
 			const auto& transforms = scene.GetObjectTransforms();
+
 			auto sunIt = transforms.find(solarSystemIds.sunId);
 			auto planetIt = transforms.find(solarSystemIds.planetId);
 			auto moonIt = transforms.find(solarSystemIds.moonId);
@@ -259,6 +260,7 @@ int main(void)
 			}
 
 			const Andromeda::Math::Vec3 sunPos = sunTransform->GetPosition();
+
 			const float planetAngle = solarSystemState.time * solarSystemState.planetOrbitSpeed;
 			const Andromeda::Math::Vec3 planetPos{
 				sunPos[0] + std::cos(planetAngle) * solarSystemState.planetOrbitRadius,
@@ -274,6 +276,7 @@ int main(void)
 				planetPos[1],
 				planetPos[2] + std::sin(moonAngle) * solarSystemState.moonOrbitRadius
 			};
+
 			moonTransform->SetPosition(moonPos);
 		}
 	);
