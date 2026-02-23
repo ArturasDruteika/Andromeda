@@ -3,6 +3,13 @@
 
 namespace Andromeda::Space
 {
+    SceneUpdateHooks::SceneUpdateHooks()
+        : m_nextId{ 0 }
+    {
+    }
+
+    SceneUpdateHooks::~SceneUpdateHooks() = default;
+
     SceneUpdateHooks::Handle SceneUpdateHooks::Add(Callback callback)
     {
         Handle handle;
@@ -10,7 +17,7 @@ namespace Andromeda::Space
 
         Entry entry;
         entry.id = handle.id;
-        entry.Fn = std::move(callback);
+        entry.fn = std::move(callback);
 
         m_entries.push_back(std::move(entry));
 
@@ -55,9 +62,9 @@ namespace Andromeda::Space
                     return e.id == id;
                 });
 
-            if (it != m_entries.end() && it->Fn)
+            if (it != m_entries.end() && it->fn)
             {
-                it->Fn(scene, deltaTime);
+                it->fn(scene, deltaTime);
             }
         }
     }

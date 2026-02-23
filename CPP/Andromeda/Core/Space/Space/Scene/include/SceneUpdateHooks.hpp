@@ -17,6 +17,10 @@ namespace Andromeda::Space
         {
             uint64_t id = 0;
         };
+    
+    public:
+        SceneUpdateHooks();
+        ~SceneUpdateHooks();
 
         Handle Add(Callback callback);
         void Remove(Handle handle);
@@ -27,10 +31,11 @@ namespace Andromeda::Space
         struct Entry
         {
             uint64_t id = 0;
-            Callback Fn;
+            Callback fn;
         };
-
-        uint64_t m_nextId = 0;
+    
+    private:
+        uint64_t m_nextId;
         std::vector<Entry> m_entries;
     };
 }
