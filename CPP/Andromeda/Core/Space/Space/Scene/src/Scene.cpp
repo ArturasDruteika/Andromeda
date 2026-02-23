@@ -81,7 +81,7 @@ namespace Andromeda::Space
 
 	void Scene::Update(float deltaTime)
 	{
-		m_updateHooks.Run(*this, deltaTime);
+		m_updateHooks.Run(deltaTime);
 	}
 
 	SceneUpdateHooks::Handle Scene::AddUpdateCallback(SceneUpdateHooks::Callback callback)

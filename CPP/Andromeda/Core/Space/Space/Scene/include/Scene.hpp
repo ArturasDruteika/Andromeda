@@ -27,8 +27,6 @@ namespace Andromeda::Space
 		, public SceneState
 	{
 	public:
-		using UpdateCallback = std::function<void(Scene&, float)>;
-
 		Scene();
 		~Scene() override;
 

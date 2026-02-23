@@ -6,12 +6,10 @@
 
 namespace Andromeda::Space
 {
-    class Scene;
-
     class SceneUpdateHooks
     {
     public:
-        using Callback = std::function<void(Scene&, float)>;
+        using Callback = std::function<void(float dt)>;
 
         struct Handle
         {
@@ -25,7 +23,7 @@ namespace Andromeda::Space
         Handle Add(Callback callback);
         void Remove(Handle handle);
         void Clear();
-        void Run(Scene& scene, float deltaTime);
+        void Run(float deltaTime);
 
     private:
         struct Entry

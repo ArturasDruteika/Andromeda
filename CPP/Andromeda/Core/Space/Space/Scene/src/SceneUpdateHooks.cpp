@@ -42,7 +42,7 @@ namespace Andromeda::Space
         m_entries.clear();
     }
 
-    void SceneUpdateHooks::Run(Scene& scene, float deltaTime)
+    void SceneUpdateHooks::Run(float deltaTime)
     {
         // Capture ids so callbacks can remove themselves safely.
         std::vector<uint64_t> ids;
@@ -64,7 +64,7 @@ namespace Andromeda::Space
 
             if (it != m_entries.end() && it->fn)
             {
-                it->fn(scene, deltaTime);
+                it->fn(deltaTime);
             }
         }
     }
