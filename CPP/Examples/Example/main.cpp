@@ -129,6 +129,15 @@ struct SolarSystemIds
 	int moonId;
 };
 
+struct SolarSystemState
+{
+	float time = 0.0f;
+	float planetOrbitRadius = 6.0f;
+	float moonOrbitRadius = 2.0f;
+	float planetOrbitSpeed = 0.6f;
+	float moonOrbitSpeed = 1.8f;
+};
+
 SolarSystemIds AddSolarSystem(
 	Andromeda::Space::Scene& scene,
 	const Andromeda::Space::MaterialLibrary& materialLibrary
@@ -198,6 +207,54 @@ SolarSystemIds AddSolarSystem(
 	return SolarSystemIds{ sunId, planetId, moonId };
 }
 
+void UpdateSolarSystem(
+	Andromeda::Space::Scene& scene,
+	SolarSystemState& state,
+	const SolarSystemIds& solarSystemIds,
+	float dt
+)
+{
+	state.time += dt;
+
+	const auto& transforms = scene.GetObjectTransforms();
+
+	auto sunIt = transforms.find(solarSystemIds.sunId);
+	auto planetIt = transforms.find(solarSystemIds.planetId);
+	auto moonIt = transforms.find(solarSystemIds.moonId);
+	if (sunIt == transforms.end() || planetIt == transforms.end() || moonIt == transforms.end())
+	{
+		return;
+	}
+
+	Andromeda::ITransformable* sunTransform = sunIt->second;
+	Andromeda::ITransformable* planetTransform = planetIt->second;
+	Andromeda::ITransformable* moonTransform = moonIt->second;
+	if (!sunTransform || !planetTransform || !moonTransform)
+	{
+		return;
+	}
+
+	const Andromeda::Math::Vec3 sunPos = sunTransform->GetPosition();
+
+	const float planetAngle = state.time * state.planetOrbitSpeed;
+	const Andromeda::Math::Vec3 planetPos{
+		sunPos[0] + std::cos(planetAngle) * state.planetOrbitRadius,
+		sunPos[1],
+		sunPos[2] + std::sin(planetAngle) * state.planetOrbitRadius
+	};
+
+	planetTransform->SetPosition(planetPos);
+
+	const float moonAngle = state.time * state.moonOrbitSpeed;
+	const Andromeda::Math::Vec3 moonPos{
+		planetPos[0] + std::cos(moonAngle) * state.moonOrbitRadius,
+		planetPos[1],
+		planetPos[2] + std::sin(moonAngle) * state.moonOrbitRadius
+	};
+
+	moonTransform->SetPosition(moonPos);
+}
+
 
 int main(void)
 {
@@ -226,58 +283,11 @@ int main(void)
 	// PopulateSceneWithDummyObjects(*pScene, materialLibrary);
 	const SolarSystemIds solarSystemIds = AddSolarSystem(*pScene, materialLibrary);
 
-	struct SolarSystemState
-	{
-		float time = 0.0f;
-		float planetOrbitRadius = 6.0f;
-		float moonOrbitRadius = 2.0f;
-		float planetOrbitSpeed = 0.6f;
-		float moonOrbitSpeed = 1.8f;
-	};
-
 	SolarSystemState solarSystemState{};
 	Andromeda::Space::SceneUpdateHooks::Handle handle = pScene->AddUpdateCallback(
-		[solarSystemState, solarSystemIds](Andromeda::Space::Scene& scene, float dt) mutable
+		[pScene, solarSystemState, solarSystemIds](float dt) mutable
 		{
-			solarSystemState.time += dt;
-
-			const auto& transforms = scene.GetObjectTransforms();
-
-			auto sunIt = transforms.find(solarSystemIds.sunId);
-			auto planetIt = transforms.find(solarSystemIds.planetId);
-			auto moonIt = transforms.find(solarSystemIds.moonId);
-			if (sunIt == transforms.end() || planetIt == transforms.end() || moonIt == transforms.end())
-			{
-				return;
-			}
-
-			Andromeda::ITransformable* sunTransform = sunIt->second;
-			Andromeda::ITransformable* planetTransform = planetIt->second;
-			Andromeda::ITransformable* moonTransform = moonIt->second;
-			if (!sunTransform || !planetTransform || !moonTransform)
-			{
-				return;
-			}
-
-			const Andromeda::Math::Vec3 sunPos = sunTransform->GetPosition();
-
-			const float planetAngle = solarSystemState.time * solarSystemState.planetOrbitSpeed;
-			const Andromeda::Math::Vec3 planetPos{
-				sunPos[0] + std::cos(planetAngle) * solarSystemState.planetOrbitRadius,
-				sunPos[1],
-				sunPos[2] + std::sin(planetAngle) * solarSystemState.planetOrbitRadius
-			};
-
-			planetTransform->SetPosition(planetPos);
-
-			const float moonAngle = solarSystemState.time * solarSystemState.moonOrbitSpeed;
-			const Andromeda::Math::Vec3 moonPos{
-				planetPos[0] + std::cos(moonAngle) * solarSystemState.moonOrbitRadius,
-				planetPos[1],
-				planetPos[2] + std::sin(moonAngle) * solarSystemState.moonOrbitRadius
-			};
-
-			moonTransform->SetPosition(moonPos);
+			UpdateSolarSystem(*pScene, solarSystemState, solarSystemIds, dt);
 		}
 	);
 
