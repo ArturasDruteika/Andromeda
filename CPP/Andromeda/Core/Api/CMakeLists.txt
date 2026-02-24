@@ -82,6 +82,7 @@ set(SCENE_HEADERS
     Andromeda/Space/Scene/ISceneLighting.hpp
     Andromeda/Space/Scene/ISceneObjects.hpp
     Andromeda/Space/Scene/ISceneState.hpp
+    Andromeda/Space/Scene/IUpdateHooks.hpp
     Andromeda/Space/Scene/ISceneUpdateHooks.hpp
 )
 

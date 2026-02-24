@@ -25,6 +25,7 @@ namespace Andromeda::Space
 		, public SceneLighting
 		, public SceneObjects
 		, public SceneState
+		, public SceneUpdateHooksManager
 	{
 	public:
 		Scene();
@@ -43,18 +44,12 @@ namespace Andromeda::Space
 		void ResetSceneState() override;
 		void Update(float deltaTime) override;
 
-		// Simulation / game-logic hooks
-		SceneUpdateHooks::Handle AddUpdateCallback(SceneUpdateHooks::Callback callback);
-		void RemoveUpdateCallback(SceneUpdateHooks::Handle handle);
-		void ClearUpdateCallbacks();
-
 	private:
 		void RegisterNode(SceneNode& node);
 		void RegisterNodeRecursive(SceneNode& node);
 
 		Math::Vec3 m_sceneCenter;
 		std::unique_ptr<SceneNode> m_rootNode;
-		SceneUpdateHooks m_updateHooks;
 	};
 }
 

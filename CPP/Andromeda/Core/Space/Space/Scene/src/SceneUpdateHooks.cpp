@@ -3,69 +3,27 @@
 
 namespace Andromeda::Space
 {
-    SceneUpdateHooks::SceneUpdateHooks()
-        : m_nextId{ 0 }
-    {
-    }
+	SceneUpdateHooksManager::SceneUpdateHooksManager() = default;
 
-    SceneUpdateHooks::~SceneUpdateHooks() = default;
+	SceneUpdateHooksManager::~SceneUpdateHooksManager() = default;
 
-    SceneUpdateHooks::Handle SceneUpdateHooks::Add(Callback callback)
-    {
-        Handle handle;
-        handle.id = ++m_nextId;
+	SceneUpdateHooksManager::Handle SceneUpdateHooksManager::AddUpdateCallback(Callback callback)
+	{
+		return m_updateHooks.Add(std::move(callback));
+	}
 
-        Entry entry;
-        entry.id = handle.id;
-        entry.fn = std::move(callback);
+	void SceneUpdateHooksManager::RemoveUpdateCallback(Handle handle)
+	{
+		m_updateHooks.Remove(handle);
+	}
 
-        m_entries.push_back(std::move(entry));
+	void SceneUpdateHooksManager::ClearUpdateCallbacks()
+	{
+		m_updateHooks.Clear();
+	}
 
-        return handle;
-    }
-
-    void SceneUpdateHooks::Remove(Handle handle)
-    {
-        auto it = std::remove_if(
-            m_entries.begin(),
-            m_entries.end(),
-            [&](const Entry& e)
-            {
-                return e.id == handle.id;
-            });
-
-        m_entries.erase(it, m_entries.end());
-    }
-
-    void SceneUpdateHooks::Clear()
-    {
-        m_entries.clear();
-    }
-
-    void SceneUpdateHooks::Run(float deltaTime)
-    {
-        // Capture ids so callbacks can remove themselves safely.
-        std::vector<uint64_t> ids;
-        ids.reserve(m_entries.size());
-        for (const auto& entry : m_entries)
-        {
-            ids.push_back(entry.id);
-        }
-
-        for (uint64_t id : ids)
-        {
-            auto it = std::find_if(
-                m_entries.begin(),
-                m_entries.end(),
-                [id](const Entry& e)
-                {
-                    return e.id == id;
-                });
-
-            if (it != m_entries.end() && it->fn)
-            {
-                it->fn(deltaTime);
-            }
-        }
-    }
+	void SceneUpdateHooksManager::RunUpdateCallbacks(float deltaTime)
+	{
+		m_updateHooks.Run(deltaTime);
+	}
 }

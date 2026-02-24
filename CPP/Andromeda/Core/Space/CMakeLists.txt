@@ -101,6 +101,15 @@ set(SCENE_HEADERS
     Space/Scene/include/SceneUpdateHooks.hpp
 )
 
+# ==== UpdateHooks ====
+set(UPDATE_HOOKS_HEADERS
+    Space/UpdateHooks/include/UpdateHooks.hpp
+)
+
+set(UPDATE_HOOKS_SOURCES
+    Space/UpdateHooks/src/UpdateHooks.cpp
+)
+
 set(SCENE_SOURCES
     Space/Scene/src/CameraHandler.cpp
     Space/Scene/src/Scene.cpp
@@ -157,6 +166,8 @@ add_library(${PROJECT_NAME}
         ${OBJECTS_SOURCES}
         ${SCENE_HEADERS}
         ${SCENE_SOURCES}
+        ${UPDATE_HOOKS_HEADERS}
+        ${UPDATE_HOOKS_SOURCES}
         ${SCENE_GRAPH_HEADERS}
         ${SCENE_GRAPH_SOURCES}
         ${TRANSFORMATIONS_HEADERS}

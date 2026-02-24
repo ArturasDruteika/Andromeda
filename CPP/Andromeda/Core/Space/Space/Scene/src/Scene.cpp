@@ -81,22 +81,7 @@ namespace Andromeda::Space
 
 	void Scene::Update(float deltaTime)
 	{
-		m_updateHooks.Run(deltaTime);
-	}
-
-	SceneUpdateHooks::Handle Scene::AddUpdateCallback(SceneUpdateHooks::Callback callback)
-	{
-		return m_updateHooks.Add(std::move(callback));
-	}
-
-	void Scene::RemoveUpdateCallback(SceneUpdateHooks::Handle handle)
-	{
-		m_updateHooks.Remove(handle);
-	}
-
-	void Scene::ClearUpdateCallbacks()
-	{
-		m_updateHooks.Clear();
+		RunUpdateCallbacks(deltaTime);
 	}
 
 	void Scene::RegisterNode(SceneNode& node)
