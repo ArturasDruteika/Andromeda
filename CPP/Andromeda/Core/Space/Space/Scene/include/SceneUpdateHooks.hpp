@@ -1,39 +1,34 @@
 #pragma once
 
 
+#include "../../MacroExports/include/MacroExports.hpp"
+#include "Andromeda/Space/Scene/ISceneUpdateHooks.hpp"
 #include "pch.hpp"
 
 
 namespace Andromeda::Space
 {
-    class SceneUpdateHooks
+    class SPACE_API SceneUpdateHooks
+        : public virtual ISceneUpdateHooks
     {
     public:
-        using Callback = std::function<void(float dt)>;
-
-        struct Handle
-        {
-            uint64_t id = 0;
-        };
-    
-    public:
         SceneUpdateHooks();
-        ~SceneUpdateHooks();
+        ~SceneUpdateHooks() override;
 
-        Handle Add(Callback callback);
-        void Remove(Handle handle);
-        void Clear();
-        void Run(float deltaTime);
+        ISceneUpdateHooks::Handle Add(ISceneUpdateHooks::Callback callback) override;
+        void Remove(ISceneUpdateHooks::Handle handle) override;
+        void Clear() override;
+        void Run(float deltaTime) override;
 
     private:
         struct Entry
         {
-            uint64_t id = 0;
-            Callback fn;
+            std::uint64_t id = 0;
+            ISceneUpdateHooks::Callback fn;
         };
-    
+	
     private:
-        uint64_t m_nextId;
+        std::uint64_t m_nextId;
         std::vector<Entry> m_entries;
     };
 }

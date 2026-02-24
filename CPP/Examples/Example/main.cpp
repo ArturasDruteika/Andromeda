@@ -284,7 +284,7 @@ int main(void)
 	const SolarSystemIds solarSystemIds = AddSolarSystem(*pScene, materialLibrary);
 
 	SolarSystemState solarSystemState{};
-	Andromeda::Space::SceneUpdateHooks::Handle handle = pScene->AddUpdateCallback(
+	Andromeda::ISceneUpdateHooks::Handle handle = pScene->AddUpdateCallback(
 		[pScene, solarSystemState, solarSystemIds](float dt) mutable
 		{
 			UpdateSolarSystem(*pScene, solarSystemState, solarSystemIds, dt);
