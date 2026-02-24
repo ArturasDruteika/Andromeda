@@ -40,7 +40,7 @@ struct SolarSystemState
 
 constexpr float kPi = 3.1415926535f;
 constexpr float kTwoPi = 2.0f * kPi;
-constexpr float kEarthOrbitRadius = 6.0f;
+constexpr float kEarthOrbitRadius = 10.0f;
 constexpr float kSecondsPerMinute = 60.0f;
 constexpr float kEarthDaysPerMinute = 365.0f;
 constexpr float kKmPerAu = 149597870.7f;
@@ -102,7 +102,7 @@ SolarSystem AddSolarSystem(
         scene,
         pMat,
         system.sunId,
-        2.2f,
+        1.5f,
         Andromeda::Color{ 1.0f, 0.8f, 0.2f, 1.0f },
         Andromeda::Math::Vec3{ 0.0f, 0.0f, 0.0f }
     );
