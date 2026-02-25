@@ -264,7 +264,7 @@ int main(void)
 {
     unsigned int width = 800;
     unsigned int height = 600;
-    std::string title = "Andromeda - EarthRotatingAroundSun";
+    std::string title = "Andromeda - Solar System Simulation";
 
     // Load materials once and reuse
     Andromeda::Space::MaterialLibrary materialLibrary(
