@@ -2,6 +2,8 @@
 #define API__SCENE__I_SCENE_NODE_MANAGER__HPP
 
 
+#include "Andromeda/Space/Scene/ISceneLighting.hpp"
+#include "Andromeda/Space/Scene/ISceneObjects.hpp"
 #include "Andromeda/Space/SceneGraph/ISceneNode.hpp"
 
 #include <memory>
@@ -10,6 +12,8 @@
 namespace Andromeda
 {
 	class ISceneNodeManager
+		: public virtual ISceneObjects
+		, public virtual ISceneLighting
 	{
 	public:
 		virtual ~ISceneNodeManager() = default;
