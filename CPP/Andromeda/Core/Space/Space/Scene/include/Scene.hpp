@@ -7,8 +7,8 @@
 #include "SceneLighting.hpp"
 #include "SceneObjects.hpp"
 #include "SceneState.hpp"
+#include "SceneNodeManager.hpp"
 #include "SceneUpdateHooks.hpp"
-#include "../../SceneGraph/include/SceneNode.hpp"
 #include "../../MacroExports/include/MacroExports.hpp"
 #include "Andromeda/Space/Scene/IScene.hpp"
 #include "pch.hpp"
@@ -22,20 +22,13 @@ namespace Andromeda::Space
 		: public IScene
 		, public CameraHandler
 		, public SceneEnvironment
-		, public SceneLighting
-		, public SceneObjects
 		, public SceneState
+		, public SceneNodeManager
 		, public SceneUpdateHooksManager
 	{
 	public:
 		Scene();
 		~Scene() override;
-
-		// Scene graph integration
-		void AttachNode(std::unique_ptr<SceneNode> node);
-
-		void AddObject(int id, IGeometricObject* object) override;
-		void RemoveObject(int id) override;
 
 		// Getters
 		const Math::Vec3& GetSceneCenter() const override;
@@ -45,11 +38,7 @@ namespace Andromeda::Space
 		void Update(float deltaTime) override;
 
 	private:
-		void RegisterNode(SceneNode& node);
-		void RegisterNodeRecursive(SceneNode& node);
-
 		Math::Vec3 m_sceneCenter;
-		std::unique_ptr<SceneNode> m_rootNode;
 	};
 }
 

@@ -96,6 +96,7 @@ set(SCENE_HEADERS
     Space/Scene/include/Scene.hpp
     Space/Scene/include/SceneEnvironment.hpp
     Space/Scene/include/SceneLighting.hpp
+    Space/Scene/include/SceneNodeManager.hpp
     Space/Scene/include/SceneObjects.hpp
     Space/Scene/include/SceneState.hpp
     Space/Scene/include/SceneUpdateHooks.hpp
@@ -115,6 +116,7 @@ set(SCENE_SOURCES
     Space/Scene/src/Scene.cpp
     Space/Scene/src/SceneEnvironment.cpp
     Space/Scene/src/SceneLighting.cpp
+    Space/Scene/src/SceneNodeManager.cpp
     Space/Scene/src/SceneObjects.cpp
     Space/Scene/src/SceneState.cpp
     Space/Scene/src/SceneUpdateHooks.cpp
