@@ -58,3 +58,7 @@ InstallBuildDepsLinux()
   SetupRequireCmd file
   SetupRequireCmd tar
 }
+
+if [[ "${BASH_SOURCE[0]}" == "$0" ]]; then
+  InstallBuildDepsLinux
+fi
