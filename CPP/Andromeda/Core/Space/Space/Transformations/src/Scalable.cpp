@@ -42,20 +42,20 @@ namespace Andromeda
 
 	void Scalable::Scale(const Math::Vec3& scale)
 	{
-		m_scale += scale;
+		m_scale = scale;
 		UpdateScaleMatrix();
 		m_stateChanged = true;
 	}
 
 	void Scalable::Scale(float uniformScale)
 	{
-		m_scale += Math::Vec3{ uniformScale };
+		m_scale = Math::Vec3{ uniformScale };
 		UpdateScaleMatrix();
 		m_stateChanged = true;
 	}
 
 	void Scalable::UpdateScaleMatrix()
 	{
-		m_scaleMatrix = Math::LinAlgOps::Scale(m_scaleMatrix, m_scale);
+		m_scaleMatrix = Math::LinAlgOps::Scale(Math::Mat4(), m_scale);
 	}
 }

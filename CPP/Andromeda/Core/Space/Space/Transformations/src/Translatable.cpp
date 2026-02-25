@@ -47,7 +47,7 @@ namespace Andromeda
 		m_stateChanged = true;
 	}
 
-	void Translatable::Translatable::Translate(const Math::Vec3& translation)
+	void Translatable::Translate(const Math::Vec3& translation)
 	{
 		m_position += translation;
 		UpdateTranslationMatrix();
@@ -56,6 +56,6 @@ namespace Andromeda
 
 	void Translatable::UpdateTranslationMatrix()
 	{
-		m_translationMatrix = Math::LinAlgOps::Translate(m_translationMatrix, m_position);
+		m_translationMatrix = Math::LinAlgOps::Translate(m_position);
 	}
 }

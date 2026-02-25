@@ -96,8 +96,19 @@ set(SCENE_HEADERS
     Space/Scene/include/Scene.hpp
     Space/Scene/include/SceneEnvironment.hpp
     Space/Scene/include/SceneLighting.hpp
+    Space/Scene/include/SceneNodeManager.hpp
     Space/Scene/include/SceneObjects.hpp
     Space/Scene/include/SceneState.hpp
+    Space/Scene/include/SceneUpdateHooks.hpp
+)
+
+# ==== UpdateHooks ====
+set(UPDATE_HOOKS_HEADERS
+    Space/UpdateHooks/include/UpdateHooks.hpp
+)
+
+set(UPDATE_HOOKS_SOURCES
+    Space/UpdateHooks/src/UpdateHooks.cpp
 )
 
 set(SCENE_SOURCES
@@ -105,8 +116,10 @@ set(SCENE_SOURCES
     Space/Scene/src/Scene.cpp
     Space/Scene/src/SceneEnvironment.cpp
     Space/Scene/src/SceneLighting.cpp
+    Space/Scene/src/SceneNodeManager.cpp
     Space/Scene/src/SceneObjects.cpp
     Space/Scene/src/SceneState.cpp
+    Space/Scene/src/SceneUpdateHooks.cpp
 )
 
 # ==== SceneGraph ====
@@ -155,6 +168,8 @@ add_library(${PROJECT_NAME}
         ${OBJECTS_SOURCES}
         ${SCENE_HEADERS}
         ${SCENE_SOURCES}
+        ${UPDATE_HOOKS_HEADERS}
+        ${UPDATE_HOOKS_SOURCES}
         ${SCENE_GRAPH_HEADERS}
         ${SCENE_GRAPH_SOURCES}
         ${TRANSFORMATIONS_HEADERS}

@@ -25,7 +25,7 @@ namespace Andromeda
 			|| Rotatable::StateChanged() 
 			|| Scalable::StateChanged() 
 			|| Translatable::StateChanged();
-		return m_stateChanged;
+		return stateChanged;
 	}
 
 	Math::Mat4 Transformable::GetModelMatrix()
@@ -48,14 +48,6 @@ namespace Andromeda
 		m_stateChanged = true;
 	}
 
-	void Transformable::ResetState()
-	{
-		m_stateChanged = false;
-		Rotatable::ResetState();
-		Scalable::ResetState();
-		Translatable::ResetState();
-	}
-
 	void Transformable::UpdateModelMatrix()
 	{
 		// Rebuild model matrix from current component matrices.
@@ -64,5 +56,13 @@ namespace Andromeda
 			Translatable::GetTranslationMatrix()
 			* Rotatable::GetRotationMatrix()
 			* Scalable::GetScaleMatrix();
+	}
+
+	void Transformable::ResetState()
+	{
+		m_stateChanged = false;
+		Rotatable::ResetState();
+		Scalable::ResetState();
+		Translatable::ResetState();
 	}
 }

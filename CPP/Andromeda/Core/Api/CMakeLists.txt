@@ -77,11 +77,14 @@ set(RENDERER_HEADERS
 # ==== Scene ====
 set(SCENE_HEADERS
     Andromeda/Space/Scene/ICameraHandler.hpp
+    Andromeda/Space/Scene/ISceneNodeManager.hpp
     Andromeda/Space/Scene/IScene.hpp
     Andromeda/Space/Scene/ISceneEnvironment.hpp
     Andromeda/Space/Scene/ISceneLighting.hpp
     Andromeda/Space/Scene/ISceneObjects.hpp
     Andromeda/Space/Scene/ISceneState.hpp
+    Andromeda/Space/Scene/IUpdateHooks.hpp
+    Andromeda/Space/Scene/ISceneUpdateHooks.hpp
 )
 
 # ==== SceneGraph ====

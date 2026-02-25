@@ -4,8 +4,7 @@
 
 #include "ICameraHandler.hpp"
 #include "ISceneEnvironment.hpp"
-#include "ISceneLighting.hpp"
-#include "ISceneObjects.hpp"
+#include "ISceneNodeManager.hpp"
 #include "ISceneState.hpp"
 
 
@@ -14,8 +13,7 @@ namespace Andromeda
 	class IScene
 		: public virtual ICameraHandler
 		, public virtual ISceneEnvironment
-		, public virtual ISceneLighting
-		, public virtual ISceneObjects
+		, public virtual ISceneNodeManager
 		, public virtual ISceneState
 	{
 	public:
@@ -25,6 +23,7 @@ namespace Andromeda
 
 		virtual void ClearScene() = 0;
 		virtual void ResetSceneState() = 0;
+		virtual void Update(float deltaTime) = 0;
 	};
 }
 

@@ -44,12 +44,17 @@ namespace Andromeda::Application
         bool InitPlatform(unsigned int width, unsigned int height, const std::string& title);
         bool InitEngine();
         bool InitRenderer(int width, int height);
-
+        bool InitInternal(
+            unsigned int width, 
+            unsigned int height, 
+            const std::string& title
+        );
         void ConnectEvents();
+        void RenderLoop();
 
     private:
-        bool m_Initialized;
-        GraphicsBackend m_GraphicsBackend;
+        bool m_initialized;
+        GraphicsBackend m_graphicsBackend;
 
         std::unique_ptr<IPlatform> m_pPlatform;
         std::unique_ptr<IEngine> m_pEngine;
