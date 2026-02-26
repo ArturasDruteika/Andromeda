@@ -2,6 +2,7 @@
 # Andromeda
 A graphics engine made to display the solar system.
 
+![Andromeda demo](Assets/gifs/solar-system-simulation.gif)
 ![Andromeda demo](Assets/gifs/spheres-cube_illumination-off.gif)
 
 ## Project Structure
