@@ -57,6 +57,32 @@ namespace Andromeda::Rendering
             ShaderOpenGL& shader,
             const std::unordered_map<int, const IPointLight*>& pointLights
         );
+
+    private:
+        static void ConfigurePointShadowPass(
+            FrameBufferOpenGL& pointShadowFbo,
+            int resolution,
+            FaceCullingControlOpenGL& culling,
+            int& prevFbo
+        );
+
+        static std::vector<glm::mat4> BuildPointShadowMatrices(
+            const glm::vec3& lightPos,
+            float nearPlane,
+            float farPlane
+        );
+
+        static void RenderPointShadowObjects(
+            const std::unordered_map<int, IGeometricObject*>& objects,
+            const std::unordered_map<int, ITransformable*>& objectTransforms,
+            ShaderOpenGL& shader,
+            MeshCacheOpenGL& meshCache
+        );
+
+        static void FinishPointShadowPass(
+            int prevFbo,
+            FaceCullingControlOpenGL& culling
+        );
     };
 }
 

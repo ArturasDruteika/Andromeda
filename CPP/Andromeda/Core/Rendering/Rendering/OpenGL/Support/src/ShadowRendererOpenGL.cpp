@@ -84,82 +84,23 @@ namespace Andromeda::Rendering
         FaceCullingControlOpenGL& culling
     )
     {
-        culling.EnableFaceCulling(GL_FRONT, GL_CCW);
-
         int prevFBO;
-        glGetIntegerv(GL_DRAW_FRAMEBUFFER_BINDING, &prevFBO);
-
-        pointShadowFbo.Bind();
-        glViewport(0, 0, resolution, resolution);
-        glEnable(GL_DEPTH_TEST);
-        glClear(GL_DEPTH_BUFFER_BIT);
+        ConfigurePointShadowPass(pointShadowFbo, resolution, culling, prevFBO);
 
         ShaderOpenGL* shader = shaderManager.GetShader(ShaderOpenGLTypes::PointShadowCubeMap);
         shader->Bind();
 
-        const glm::mat4 proj = glm::perspective(glm::radians(90.0f), 1.0f, nearPlane, farPlane);
-
-        std::vector<glm::vec3> ups{
-            {0, -1, 0},
-            {0, -1, 0},
-            {0,  0, 1},
-            {0,  0,-1},
-            {0, -1, 0},
-            {0, -1, 0}
-        };
-
-        std::vector<glm::vec3> targets{
-            lightPos + glm::vec3(1, 0, 0),
-            lightPos + glm::vec3(-1, 0, 0),
-            lightPos + glm::vec3(0, 1, 0),
-            lightPos + glm::vec3(0,-1, 0),
-            lightPos + glm::vec3(0, 0, 1),
-            lightPos + glm::vec3(0, 0,-1)
-        };
-
-        std::vector<glm::mat4> matrices(6);
-        for (std::size_t i = 0; i < matrices.size(); ++i)
-        {
-            matrices[i] = proj * glm::lookAt(lightPos, targets[i], ups[i]);
-        }
+        const std::vector<glm::mat4> matrices =
+            BuildPointShadowMatrices(lightPos, nearPlane, farPlane);
 
         shader->SetUniform("u_shadowMatrices[0]", matrices);
         shader->SetUniform("u_lightPos", lightPos);
         shader->SetUniform("u_farPlane", farPlane);
 
-        for (const auto& [id, obj] : objects)
-        {
-            if (!obj)
-            {
-                continue;
-            }
-
-            if (dynamic_cast<const ILightObject*>(obj))
-            {
-                continue;
-            }
-
-            std::unordered_map<int, ITransformable*>::const_iterator transformIt =
-                objectTransforms.find(id);
-            if (transformIt == objectTransforms.end() || !transformIt->second)
-            {
-                continue;
-            }
-
-            const GpuMeshOpenGL* mesh = meshCache.TryGet(obj->GetID());
-            if (!mesh)
-            {
-                continue;
-            }
-
-            shader->SetUniform("u_model", MathUtils::ToGLM(transformIt->second->GetModelMatrix()));
-            glBindVertexArray(mesh->GetVAO());
-            glDrawElements(GL_TRIANGLES, static_cast<GLsizei>(mesh->GetIndexCount()), GL_UNSIGNED_INT, nullptr);
-        }
+        RenderPointShadowObjects(objects, objectTransforms, *shader, meshCache);
 
         shader->UnBind();
-        glBindFramebuffer(GL_FRAMEBUFFER, prevFBO);
-        culling.DisableFaceCulling();
+        FinishPointShadowPass(prevFBO, culling);
     }
 
     glm::mat4 ShadowRendererOpenGL::ComputeLightSpaceMatrix(
@@ -245,5 +186,104 @@ namespace Andromeda::Rendering
         shader.SetUniform("u_pointLightLinear", linear);
         shader.SetUniform("u_pointLightQuadratic", quadratic);
         shader.SetUniform("u_pointLightFarPlanes", farPlane);
+    }
+
+    void ShadowRendererOpenGL::ConfigurePointShadowPass(
+        FrameBufferOpenGL& pointShadowFbo,
+        int resolution,
+        FaceCullingControlOpenGL& culling,
+        int& prevFbo
+    )
+    {
+        culling.EnableFaceCulling(GL_FRONT, GL_CCW);
+
+        glGetIntegerv(GL_DRAW_FRAMEBUFFER_BINDING, &prevFbo);
+
+        pointShadowFbo.Bind();
+        glViewport(0, 0, resolution, resolution);
+        glEnable(GL_DEPTH_TEST);
+        glClear(GL_DEPTH_BUFFER_BIT);
+    }
+
+    std::vector<glm::mat4> ShadowRendererOpenGL::BuildPointShadowMatrices(
+        const glm::vec3& lightPos,
+        float nearPlane,
+        float farPlane
+    )
+    {
+        const glm::mat4 proj = glm::perspective(glm::radians(90.0f), 1.0f, nearPlane, farPlane);
+
+        const std::vector<glm::vec3> ups{
+            {0, -1, 0},
+            {0, -1, 0},
+            {0,  0, 1},
+            {0,  0,-1},
+            {0, -1, 0},
+            {0, -1, 0}
+        };
+
+        const std::vector<glm::vec3> targets{
+            lightPos + glm::vec3(1, 0, 0),
+            lightPos + glm::vec3(-1, 0, 0),
+            lightPos + glm::vec3(0, 1, 0),
+            lightPos + glm::vec3(0,-1, 0),
+            lightPos + glm::vec3(0, 0, 1),
+            lightPos + glm::vec3(0, 0,-1)
+        };
+
+        std::vector<glm::mat4> matrices(6);
+        for (std::size_t i = 0; i < matrices.size(); ++i)
+        {
+            matrices[i] = proj * glm::lookAt(lightPos, targets[i], ups[i]);
+        }
+
+        return matrices;
+    }
+
+    void ShadowRendererOpenGL::RenderPointShadowObjects(
+        const std::unordered_map<int, IGeometricObject*>& objects,
+        const std::unordered_map<int, ITransformable*>& objectTransforms,
+        ShaderOpenGL& shader,
+        MeshCacheOpenGL& meshCache
+    )
+    {
+        for (const auto& [id, obj] : objects)
+        {
+            if (!obj)
+            {
+                continue;
+            }
+
+            if (dynamic_cast<const ILightObject*>(obj))
+            {
+                continue;
+            }
+
+            std::unordered_map<int, ITransformable*>::const_iterator transformIt =
+                objectTransforms.find(id);
+            if (transformIt == objectTransforms.end() || !transformIt->second)
+            {
+                continue;
+            }
+
+            const GpuMeshOpenGL* mesh = meshCache.TryGet(obj->GetID());
+            if (!mesh)
+            {
+                continue;
+            }
+
+            shader.SetUniform("u_model", MathUtils::ToGLM(transformIt->second->GetModelMatrix()));
+            glBindVertexArray(mesh->GetVAO());
+            glDrawElements(GL_TRIANGLES, static_cast<GLsizei>(mesh->GetIndexCount()), GL_UNSIGNED_INT, nullptr);
+        }
+    }
+
+    void ShadowRendererOpenGL::FinishPointShadowPass(
+        int prevFbo,
+        FaceCullingControlOpenGL& culling
+    )
+    {
+        glBindFramebuffer(GL_FRAMEBUFFER, prevFbo);
+        culling.DisableFaceCulling();
     }
 }
