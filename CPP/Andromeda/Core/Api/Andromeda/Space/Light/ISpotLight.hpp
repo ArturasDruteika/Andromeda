@@ -7,7 +7,7 @@ namespace Andromeda
 	class ISpotLight
 	{
 		// TODO: implement later.
-	}
+	};
 }
 
 

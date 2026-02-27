@@ -158,7 +158,7 @@ namespace Andromeda::Rendering
         for (const auto& [id, light] : dirLights)
         {
             directions.push_back(MathUtils::ToGLM(light->GetDirection()));
-            ambient.push_back(glm::vec3(0.9f));
+            ambient.push_back(glm::vec3(0.9f)); // TODO: consider adding a method to IDirectionalLight for ambient color
             diffuse.push_back(MathUtils::ToGLM(light->GetDiffuse()));
             specular.push_back(MathUtils::ToGLM(light->GetSpecular()));
         }

@@ -28,7 +28,7 @@ namespace Andromeda::Space
 			float attenuationLinear = 0.1f,
 			float attenuationQuadratic = 0.01f,
 			float shadowNearPlane = 0.1f,
-			float shadowFarPlane = 25.0f
+			float shadowFarPlane = 1000.0f
 		);
 		~PointLight() override;
 
