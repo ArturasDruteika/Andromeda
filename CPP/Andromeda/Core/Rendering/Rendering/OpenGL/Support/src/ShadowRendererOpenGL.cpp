@@ -11,6 +11,28 @@
 
 namespace Andromeda::Rendering
 {
+    constexpr int CUBEMAP_FACES = 6;
+    constexpr float CUBEMAP_FOV = 90.0f;
+    constexpr float CUBEMAP_ASPECT = 1.0f;
+    constexpr float LIGHT_OFFSET = 20.0f;
+    constexpr glm::vec3 UP = glm::vec3(0.0f, 1.0f, 0.0f);
+    constexpr glm::vec3 CUBEMAP_UPS[CUBEMAP_FACES] = {
+        glm::vec3(0.0f, -1.0f, 0.0f), // POSITIVE_X
+        glm::vec3(0.0f, -1.0f, 0.0f), // NEGATIVE_X
+        glm::vec3(0.0f, 0.0f, 1.0f),  // POSITIVE_Y
+        glm::vec3(0.0f, 0.0f, -1.0f), // NEGATIVE_Y
+        glm::vec3(0.0f, -1.0f, 0.0f), // POSITIVE_Z
+        glm::vec3(0.0f, -1.0f, 0.0f)  // NEGATIVE_Z
+    };
+    constexpr glm::vec3 CUBEMAP_TARGETS[CUBEMAP_FACES] = {
+        glm::vec3(1.0f, 0.0f, 0.0f),   // POSITIVE_X
+        glm::vec3(-1.0f, 0.0f, 0.0f),  // NEGATIVE_X
+        glm::vec3(0.0f, 1.0f, 0.0f),   // POSITIVE_Y
+        glm::vec3(0.0f, -1.0f, 0.0f),  // NEGATIVE_Y
+        glm::vec3(0.0f, 0.0f, 1.0f),   // POSITIVE_Z
+        glm::vec3(0.0f, 0.0f, -1.0f)   // NEGATIVE_Z
+    };
+
     void ShadowRendererOpenGL::RenderDirectionalShadowMap(
         const std::unordered_map<int, IGeometricObject*>& objects,
         const std::unordered_map<int, ITransformable*>& objectTransforms,
@@ -79,7 +101,7 @@ namespace Andromeda::Rendering
         const glm::vec3& lightPos,
         float nearPlane,
         float farPlane,
-        ShaderManager& shaderManager,
+        ShaderOpenGL& pointLightShader,
         MeshCacheOpenGL& meshCache,
         FaceCullingControlOpenGL& culling
     )
@@ -87,19 +109,17 @@ namespace Andromeda::Rendering
         int prevFBO;
         ConfigurePointShadowPass(pointShadowFbo, resolution, culling, prevFBO);
 
-        ShaderOpenGL* shader = shaderManager.GetShader(ShaderOpenGLTypes::PointShadowCubeMap);
-        shader->Bind();
+        pointLightShader.Bind();
 
-        const std::vector<glm::mat4> matrices =
-            BuildPointShadowMatrices(lightPos, nearPlane, farPlane);
+        const std::vector<glm::mat4> matrices = BuildPointShadowMatrices(lightPos, nearPlane, farPlane);
 
-        shader->SetUniform("u_shadowMatrices[0]", matrices);
-        shader->SetUniform("u_lightPos", lightPos);
-        shader->SetUniform("u_farPlane", farPlane);
+        pointLightShader.SetUniform("u_shadowMatrices[0]", matrices);
+        pointLightShader.SetUniform("u_lightPos", lightPos);
+        pointLightShader.SetUniform("u_farPlane", farPlane);
 
-        RenderPointShadowObjects(objects, objectTransforms, *shader, meshCache);
+        RenderPointShadowObjects(objects, objectTransforms, pointLightShader, meshCache);
 
-        shader->UnBind();
+        pointLightShader.UnBind();
         FinishPointShadowPass(prevFBO, culling);
     }
 
@@ -111,13 +131,9 @@ namespace Andromeda::Rendering
         const IDirectionalLight* light = directionalLights.begin()->second;
 
         glm::vec3 direction = MathUtils::ToGLM(light->GetDirection());
-        glm::vec3 up(0.0f, 1.0f, 0.0f);
-
-        glm::vec3 lightPos = MathUtils::ToGLM(sceneCenter) - direction * 20.0f;
-
-        glm::mat4 view = glm::lookAt(lightPos, MathUtils::ToGLM(sceneCenter), up);
-
-        glm::mat4 proj = glm::ortho(
+        glm::vec3 lightPos = MathUtils::ToGLM(sceneCenter) - direction * LIGHT_OFFSET;
+        glm::mat4 view = glm::lookAt(lightPos, MathUtils::ToGLM(sceneCenter), UP);
+            glm::mat4 proj = glm::ortho(
             -light->GetLightOrthographicHalfSize(),
             light->GetLightOrthographicHalfSize(),
             -light->GetLightOrthographicHalfSize(),
@@ -211,30 +227,12 @@ namespace Andromeda::Rendering
         float farPlane
     )
     {
-        const glm::mat4 proj = glm::perspective(glm::radians(90.0f), 1.0f, nearPlane, farPlane);
+        const glm::mat4 proj = glm::perspective(glm::radians(CUBEMAP_FOV), CUBEMAP_ASPECT, nearPlane, farPlane);
 
-        const std::vector<glm::vec3> ups{
-            {0, -1, 0},
-            {0, -1, 0},
-            {0,  0, 1},
-            {0,  0,-1},
-            {0, -1, 0},
-            {0, -1, 0}
-        };
-
-        const std::vector<glm::vec3> targets{
-            lightPos + glm::vec3(1, 0, 0),
-            lightPos + glm::vec3(-1, 0, 0),
-            lightPos + glm::vec3(0, 1, 0),
-            lightPos + glm::vec3(0,-1, 0),
-            lightPos + glm::vec3(0, 0, 1),
-            lightPos + glm::vec3(0, 0,-1)
-        };
-
-        std::vector<glm::mat4> matrices(6);
+        std::vector<glm::mat4> matrices(CUBEMAP_FACES);
         for (std::size_t i = 0; i < matrices.size(); ++i)
         {
-            matrices[i] = proj * glm::lookAt(lightPos, targets[i], ups[i]);
+            matrices[i] = proj * glm::lookAt(lightPos, CUBEMAP_TARGETS[i], CUBEMAP_UPS[i]);
         }
 
         return matrices;
@@ -249,28 +247,16 @@ namespace Andromeda::Rendering
     {
         for (const auto& [id, obj] : objects)
         {
-            if (!obj)
-            {
+            if (!obj || dynamic_cast<const ILightObject*>(obj))
                 continue;
-            }
 
-            if (dynamic_cast<const ILightObject*>(obj))
-            {
-                continue;
-            }
-
-            std::unordered_map<int, ITransformable*>::const_iterator transformIt =
-                objectTransforms.find(id);
+            std::unordered_map<int, ITransformable*>::const_iterator transformIt = objectTransforms.find(id);
             if (transformIt == objectTransforms.end() || !transformIt->second)
-            {
                 continue;
-            }
 
             const GpuMeshOpenGL* mesh = meshCache.TryGet(obj->GetID());
             if (!mesh)
-            {
                 continue;
-            }
 
             shader.SetUniform("u_model", MathUtils::ToGLM(transformIt->second->GetModelMatrix()));
             glBindVertexArray(mesh->GetVAO());

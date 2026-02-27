@@ -37,7 +37,7 @@ namespace Andromeda::Rendering
             const glm::vec3& lightPos,
             float nearPlane,
             float farPlane,
-            ShaderManager& shaderManager,
+            ShaderOpenGL& pointLightShader,
             MeshCacheOpenGL& meshCache,
             FaceCullingControlOpenGL& culling
         );

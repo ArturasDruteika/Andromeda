@@ -557,7 +557,7 @@ namespace Andromeda::Rendering
                 lightPos,
                 nearPlane,
                 farPlane,
-                *m_pShaderManager,
+                *(m_pShaderManager->GetShader(ShaderOpenGLTypes::PointShadowCubeMap)),
                 m_meshCache,
                 m_faceCullingControlOpenGL
             );
