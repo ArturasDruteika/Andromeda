@@ -17,14 +17,14 @@
 
 namespace Andromeda::Rendering
 {
+    constexpr int DEFAULT_DIRECTIONAL_SHADOW_RESOLUTION = 2048;
+    constexpr int DEFAULT_POINT_SHADOW_RESOLUTION = 1024;
+
     RendererOpenGL::RendererOpenGLImpl::RendererOpenGLImpl()
         : m_isInitialized{ false }
-        , m_directionalShadowResolution{ 2048 }
-        , m_shadowCubeResolution{ 1024 }
+        , m_directionalShadowResolution{ DEFAULT_DIRECTIONAL_SHADOW_RESOLUTION }
+        , m_shadowCubeResolution{ DEFAULT_POINT_SHADOW_RESOLUTION }
         , m_shadowMapLightSpace{ glm::mat4{ 1.0f } }
-        , m_mainFBO{}
-        , m_directionalShadowFBO{}
-        , m_pointShadowFBO{}
         , m_pShaderManager{ nullptr }
     {
         m_pShaderManager = new ShaderManager(true);
@@ -237,17 +237,12 @@ namespace Andromeda::Rendering
 
         for (const auto& [id, obj] : objects) 
         { 
-            if (!obj) 
-                continue;
-            if (id < 0) 
+            if (!obj || id < 0) 
                 continue;
 
-            std::unordered_map<int, ITransformable*>::const_iterator transformIt =
-                objectTransforms.find(id);
+            std::unordered_map<int, ITransformable*>::const_iterator transformIt = objectTransforms.find(id);
             if (transformIt == objectTransforms.end() || !transformIt->second)
-            {
                 continue;
-            }
 
             int objID = obj->GetID(); 
             const GpuMeshOpenGL* mesh = m_meshCache.TryGet(objID);

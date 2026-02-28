@@ -11,12 +11,12 @@ namespace Andromeda::Rendering
     {
         switch (type)
         {
-        case Andromeda::Rendering::ComponentType::Float32: return GL_FLOAT;
-        case Andromeda::Rendering::ComponentType::Int32:   return GL_INT;
-        case Andromeda::Rendering::ComponentType::UInt32:  return GL_UNSIGNED_INT;
-        case Andromeda::Rendering::ComponentType::UInt16:  return GL_UNSIGNED_SHORT;
-        case Andromeda::Rendering::ComponentType::UInt8:   return GL_UNSIGNED_BYTE;
-        default:                                           return GL_FLOAT;
+            case Andromeda::Rendering::ComponentType::Float32: return GL_FLOAT;
+            case Andromeda::Rendering::ComponentType::Int32:   return GL_INT;
+            case Andromeda::Rendering::ComponentType::UInt32:  return GL_UNSIGNED_INT;
+            case Andromeda::Rendering::ComponentType::UInt16:  return GL_UNSIGNED_SHORT;
+            case Andromeda::Rendering::ComponentType::UInt8:   return GL_UNSIGNED_BYTE;
+            default:                                           return GL_FLOAT;
         }
     }
 
