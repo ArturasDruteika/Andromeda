@@ -13,9 +13,9 @@ namespace Andromeda
 				throw std::runtime_error("Failed to open file: " + filePath);
 			}
 
-			std::stringstream shaderStream;
-			shaderStream << file.rdbuf();
-			return shaderStream.str();
+			std::stringstream contentStream;
+			contentStream << file.rdbuf();
+			return contentStream.str();
 		}
 
 		std::string FileOperations::LoadFileAsString(const std::filesystem::path& filePath)
@@ -26,9 +26,9 @@ namespace Andromeda
 				throw std::runtime_error("Failed to open file: " + filePath.string());
 			}
 
-			std::stringstream shaderStream;
-			shaderStream << file.rdbuf();
-			return shaderStream.str();
+			std::stringstream contentStream;
+			contentStream << file.rdbuf();
+			return contentStream.str();
 		}
 	}
 }
