@@ -10,6 +10,7 @@ A graphics engine made to display the solar system.
 Andromeda/
 ├── assets/           # Images, shaders, and other assets
 ├── cpp/              # Main C++ source code and modules
+│   └── andromeda/    # Main C++ andromeda graphics engine source code
 │   └── examples/     # Example projects and code samples
 ├── scripts/          # Build and setup scripts
 ├── build/            # Build output directory
@@ -33,7 +34,7 @@ Andromeda/
     ```sh
     ./scripts/build-linux.sh
     ```
-4. Run the app (Example)
+4. Run the app (Solar System Simulation)
     ```sh
     cd build/release/bin
     ./solar_system_simulation
@@ -42,11 +43,11 @@ Andromeda/
 ## Running examples
 After building, you can run the example binaries from the build output directory. For example:
 ```sh
-./build/release/bin/Example
+./build/release/bin/example
 ```
 or (depending on your build type and configuration):
 ```sh
-./build/linux-clang-release/release/bin/Example
+./build/linux-clang-release/release/bin/example
 ```
 All code examples can be found inside the `cpp/examples` directory.
 
