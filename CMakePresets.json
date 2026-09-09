@@ -9,14 +9,14 @@
         {
             "name": "debug-linux-clang",
             "generator": "Ninja",
-            "binaryDir": "${sourceDir}/build/linux-clang-debug",
+            "binaryDir": "${sourceDir}/build/linux_clang_debug",
             "cacheVariables": {
-                "CMAKE_BUILD_TYPE": "Debug",
+                "CMAKE_BUILD_TYPE": "debug",
                 "CMAKE_C_COMPILER": "clang",
                 "CMAKE_CXX_COMPILER": "clang++",
-                "CMAKE_RUNTIME_OUTPUT_DIRECTORY": "${sourceDir}/build/Debug",
-                "CMAKE_LIBRARY_OUTPUT_DIRECTORY": "${sourceDir}/build/Debug",
-                "CMAKE_ARCHIVE_OUTPUT_DIRECTORY": "${sourceDir}/build/Debug"
+                "CMAKE_RUNTIME_OUTPUT_DIRECTORY": "${sourceDir}/build/debug",
+                "CMAKE_LIBRARY_OUTPUT_DIRECTORY": "${sourceDir}/build/debug",
+                "CMAKE_ARCHIVE_OUTPUT_DIRECTORY": "${sourceDir}/build/debug"
             },
             "condition": {
                 "type": "equals",
@@ -27,14 +27,14 @@
         {
             "name": "release-linux-clang",
             "generator": "Ninja",
-            "binaryDir": "${sourceDir}/build/linux-clang-release",
+            "binaryDir": "${sourceDir}/build/linux_clang_release",
             "cacheVariables": {
-                "CMAKE_BUILD_TYPE": "Release",
+                "CMAKE_BUILD_TYPE": "release",
                 "CMAKE_C_COMPILER": "clang",
                 "CMAKE_CXX_COMPILER": "clang++",
-                "CMAKE_RUNTIME_OUTPUT_DIRECTORY": "${sourceDir}/build/Release",
-                "CMAKE_LIBRARY_OUTPUT_DIRECTORY": "${sourceDir}/build/Release",
-                "CMAKE_ARCHIVE_OUTPUT_DIRECTORY": "${sourceDir}/build/Release"
+                "CMAKE_RUNTIME_OUTPUT_DIRECTORY": "${sourceDir}/build/release",
+                "CMAKE_LIBRARY_OUTPUT_DIRECTORY": "${sourceDir}/build/release",
+                "CMAKE_ARCHIVE_OUTPUT_DIRECTORY": "${sourceDir}/build/release"
             },
             "condition": {
                 "type": "equals",
@@ -47,12 +47,12 @@
             "generator": "Unix Makefiles",
             "binaryDir": "${sourceDir}/build/linux-gcc-debug",
             "cacheVariables": {
-                "CMAKE_BUILD_TYPE": "Debug",
+                "CMAKE_BUILD_TYPE": "debug",
                 "CMAKE_C_COMPILER": "gcc",
                 "CMAKE_CXX_COMPILER": "g++",
-                "CMAKE_RUNTIME_OUTPUT_DIRECTORY": "${sourceDir}/build/Debug",
-                "CMAKE_LIBRARY_OUTPUT_DIRECTORY": "${sourceDir}/build/Debug",
-                "CMAKE_ARCHIVE_OUTPUT_DIRECTORY": "${sourceDir}/build/Debug"
+                "CMAKE_RUNTIME_OUTPUT_DIRECTORY": "${sourceDir}/build/debug",
+                "CMAKE_LIBRARY_OUTPUT_DIRECTORY": "${sourceDir}/build/debug",
+                "CMAKE_ARCHIVE_OUTPUT_DIRECTORY": "${sourceDir}/build/debug"
             },
             "condition": {
                 "type": "equals",
@@ -65,12 +65,12 @@
             "generator": "Unix Makefiles",
             "binaryDir": "${sourceDir}/build/linux-gcc-release",
             "cacheVariables": {
-                "CMAKE_BUILD_TYPE": "Release",
+                "CMAKE_BUILD_TYPE": "release",
                 "CMAKE_C_COMPILER": "gcc",
                 "CMAKE_CXX_COMPILER": "g++",
-                "CMAKE_RUNTIME_OUTPUT_DIRECTORY": "${sourceDir}/build/Release",
-                "CMAKE_LIBRARY_OUTPUT_DIRECTORY": "${sourceDir}/build/Release",
-                "CMAKE_ARCHIVE_OUTPUT_DIRECTORY": "${sourceDir}/build/Release"
+                "CMAKE_RUNTIME_OUTPUT_DIRECTORY": "${sourceDir}/build/release",
+                "CMAKE_LIBRARY_OUTPUT_DIRECTORY": "${sourceDir}/build/release",
+                "CMAKE_ARCHIVE_OUTPUT_DIRECTORY": "${sourceDir}/build/release"
             },
             "condition": {
                 "type": "equals",
@@ -83,7 +83,7 @@
             "generator": "Visual Studio 17 2022",
             "binaryDir": "${sourceDir}/build/",
             "cacheVariables": {
-                "CMAKE_CONFIGURATION_TYPES": "Debug",
+                "CMAKE_CONFIGURATION_TYPES": "debug",
                 "CMAKE_GENERATOR_PLATFORM": "x64",
                 "CMAKE_RUNTIME_OUTPUT_DIRECTORY": "${sourceDir}/build",
                 "CMAKE_LIBRARY_OUTPUT_DIRECTORY": "${sourceDir}/build",
@@ -100,7 +100,7 @@
             "generator": "Visual Studio 17 2022",
             "binaryDir": "${sourceDir}/build/",
             "cacheVariables": {
-                "CMAKE_CONFIGURATION_TYPES": "Release",
+                "CMAKE_CONFIGURATION_TYPES": "release",
                 "CMAKE_GENERATOR_PLATFORM": "x64",
                 "CMAKE_RUNTIME_OUTPUT_DIRECTORY": "${sourceDir}/build",
                 "CMAKE_LIBRARY_OUTPUT_DIRECTORY": "${sourceDir}/build",
@@ -153,7 +153,7 @@
         {
             "name": "build-debug-windows",
             "configurePreset": "debug-windows",
-            "configuration": "Debug",
+            "configuration": "debug",
             "condition": {
                 "type": "equals",
                 "lhs": "${hostSystemName}",
@@ -163,7 +163,7 @@
         {
             "name": "build-release-windows",
             "configurePreset": "release-windows",
-            "configuration": "Release",
+            "configuration": "release",
             "condition": {
                 "type": "equals",
                 "lhs": "${hostSystemName}",

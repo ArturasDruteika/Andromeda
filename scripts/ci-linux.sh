@@ -9,43 +9,43 @@ REPO_ROOT="$(cd -- "${SCRIPT_DIR}/.." && pwd)"
 
 log()
 {
-  echo "[$(date -u +%H:%M:%S)] $*"
+    echo "[$(date -u +%H:%M:%S)] $*"
 }
 
 run_build()
 {
-  log "Running build script..."
-  "${REPO_ROOT}/scripts/build-linux.sh"
+    log "Running build script..."
+    "${REPO_ROOT}/scripts/build-linux.sh"
 }
 
 package_for_act()
 {
-  if [[ "${ACT:-}" != "true" ]]; then
-    return
-  fi
+    if [[ "${ACT:-}" != "true" ]]; then
+        return
+    fi
 
-  log "ACT=true detected, packaging INSTALL -> tar.gz"
-  if [[ ! -d "${REPO_ROOT}/${BUILD_DIR}/INSTALL" ]]; then
-    echo "ERROR: install dir missing: ${REPO_ROOT}/${BUILD_DIR}/INSTALL"
-    exit 1
-  fi
+    log "ACT=true detected, packaging INSTALL -> tar.gz"
+    if [[ ! -d "${REPO_ROOT}/${BUILD_DIR}/INSTALL" ]]; then
+        echo "ERROR: install dir missing: ${REPO_ROOT}/${BUILD_DIR}/INSTALL"
+        exit 1
+    fi
 
-  tar -czf andromeda-ubuntu-release.tar.gz -C "${REPO_ROOT}/${BUILD_DIR}" INSTALL
-  ls -lah andromeda-ubuntu-release.tar.gz
+    tar -czf andromeda-ubuntu-release.tar.gz -C "${REPO_ROOT}/${BUILD_DIR}" INSTALL
+    ls -lah andromeda-ubuntu-release.tar.gz
 }
 
 main()
 {
-  # Ensure submodules are initialized and updated
-  if [ -d "${REPO_ROOT}/.git" ]; then
-    log "Updating git submodules..."
-    git -C "${REPO_ROOT}" submodule sync --recursive
-    git -C "${REPO_ROOT}" submodule update --init --recursive
-  fi
+    # Ensure submodules are initialized and updated
+    if [[ -d "${REPO_ROOT}/.git" ]]; then
+        log "Updating git submodules..."
+        git -C "${REPO_ROOT}" submodule sync --recursive
+        git -C "${REPO_ROOT}" submodule update --init --recursive
+    fi
 
-  run_build
-  package_for_act
-  log "Done"
+    run_build
+    package_for_act
+    log "Done"
 }
 
 main "$@"

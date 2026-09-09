@@ -2,16 +2,17 @@
 # Andromeda
 A graphics engine made to display the solar system.
 
-![Andromeda demo](Assets/gifs/solar-system-simulation.gif)
-![Andromeda demo](Assets/gifs/spheres-cube_illumination-off.gif)
+![Andromeda demo](assets/gifs/solar-system-simulation.gif)
+![Andromeda demo](assets/gifs/spheres-cube_illumination-off.gif)
 
 ## Project Structure
 ```
 Andromeda/
-├── Assets/           # Images, shaders, and other assets
-├── CPP/              # Main C++ source code and modules
-│   └── Examples/     # Example projects and code samples
-├── Scripts/          # Build and setup scripts
+├── assets/           # Images, shaders, and other assets
+├── cpp/              # Main C++ source code and modules
+│   └── andromeda/    # Main C++ andromeda graphics engine source code
+│   └── examples/     # Example projects and code samples
+├── scripts/          # Build and setup scripts
 ├── build/            # Build output directory
 ├── README.md         # Project documentation
 ├── LICENSE           # License information
@@ -21,34 +22,34 @@ Andromeda/
 ## Setup & Building
 1. Clone the repository and initialize submodules:
     ```sh
-    git clone --recursive https://github.com/ArturasDruteika/Andromeda.git
+    git clone --recursive https://github.com/ArturasDruteika/andromeda.git
     # or, if already cloned:
     git submodule update --init --recursive
     ```
 2. Install build dependencies (Linux example):
     ```sh
-    ./Scripts/setup-linux.sh
+    ./scripts/setup-linux.sh
     ```
 3. Build the project:
     ```sh
-    ./Scripts/build-linux.sh
+    ./scripts/build-linux.sh
     ```
-4. Run the app (Example)
+4. Run the app (Solar System Simulation)
     ```sh
-    cd build/Release/bin
-    ./Example
+    cd build/release/bin
+    ./solar_system_simulation
     ```
 
-## Running Examples
+## Running examples
 After building, you can run the example binaries from the build output directory. For example:
 ```sh
-./build/Release/bin/Example
+./build/release/bin/example
 ```
 or (depending on your build type and configuration):
 ```sh
-./build/linux-clang-release/Release/bin/Example
+./build/linux-clang-release/release/bin/example
 ```
-All code examples can be found inside the `CPP/Examples` directory.
+All code examples can be found inside the `cpp/examples` directory.
 
 ## Running on VS Code (Linux)
 1. **Install VS Code Extensions:**
@@ -56,11 +57,11 @@ All code examples can be found inside the `CPP/Examples` directory.
 2. **Open the Project:**
     Open the project folder in VS Code.
 3. **Configure Build Mode:**
-    Using the CMake Tools extension, configure the project by selecting either Debug or Release mode. You can do this through the status bar or the command palette (Ctrl+Shift+P → "CMake: Configure").
+    Using the CMake Tools extension, configure the project by selecting either debug or release mode. You can do this through the status bar or the command palette (Ctrl+Shift+P → "CMake: Configure").
 4. **Build and Run:**
     You can use the VS Code build buttons, or simply run:
     ```sh
-    ./Scripts/build-linux.sh
+    ./scripts/build-linux.sh
     ```
     After a successful build, run the application from the build output directory.
 
